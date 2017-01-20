@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post '/login' => 'application#login_post'
 
   # User links
+  get '/settings' => 'users#short_settings'
+  get '/users/settings' => 'users#settings'
   get '/users/:username' => 'users#home'
 
   # Shows

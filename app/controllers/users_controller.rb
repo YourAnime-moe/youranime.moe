@@ -8,4 +8,12 @@ class UsersController < AuthenticatedController
         @shows = Show.lastest
     end
 
+    def short_settings
+        redirect_to '/users/settings'
+    end
+
+    def settings
+        
+    end
+
 end

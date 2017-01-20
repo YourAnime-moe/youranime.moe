@@ -51,9 +51,8 @@ javascript:
             url: '/find_show?given_title=' + title,
             success: function(message) {
                 if (message.err == undefined) {
-                    showNumber = message.show_number;
-                    showTitle = message.title;
-                    url = '/shows?title=' + showTitle + '&showNumber=' + showNumber;
+                    showId = message.id;
+                    url = '/shows?id=' + showId;
                     window.location.replace(url);
                 } else {
                     console.log("Error: " + message.err);

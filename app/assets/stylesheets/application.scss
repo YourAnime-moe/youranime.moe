@@ -184,6 +184,23 @@ div.form {
     float: right;
 }
 
+.strong {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.very.strong {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 #result_box {
     position: absolute;
     top: 29px;

@@ -42,7 +42,7 @@ class JsonController < ApplicationController
             end
         end
         if @show
-            json = {title: @show.title, show_number: @show.show_number}
+            json = {id: @show.id}
         else
             json = {err: "Show was not found. We'll fix this as soon as possible"}
         end

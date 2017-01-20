@@ -3,12 +3,33 @@
 
     .container
         - @shows.all.each do |show|
+            - unless show.is_published?
+                - next
             - if show.has_image?
                 .row
                     .col-md-6
                         img style="width: 80%;" src="http://45.55.212.231/#{show.image_path}"
                     .col-md-6
-                        p This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it.
-                br
-                br
-        
+                        h3 #{show.get_title} (#{show.dub_sub_info})
+                        p Series #{show.show_number} - #{show.year}
+                        span.strong #{show.episodes.size} episode(s)
+                        - if show.discloses_average_run_time?
+                            br
+                            u Episodes last about
+                            span #{": "}#{show.average_run_time.to_i} mins.
+                        - if show.has_starring_info?
+                            br
+                            u Featuring
+                            span #{": "}#{show.starring}
+
+                        br
+                        br
+                        .well.fit
+                            b Description
+                            - if show.description
+                                p #{show.description}
+                            - else
+                                p #{"*** Description coming soon ***"}
+
+                hr
+

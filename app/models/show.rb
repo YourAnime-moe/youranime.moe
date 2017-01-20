@@ -53,7 +53,7 @@ class Show < ActiveRecord::Base
         result += parts[1]
     end
 
-    def has_starrring_info?
+    def has_starring_info?
         self.starring.to_s.strip.size > 0
     end
 

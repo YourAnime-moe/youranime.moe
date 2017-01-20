@@ -5,6 +5,16 @@ class ShowsController < ApplicationController
             view_all
             return
         end
+        if params[:id]
+            @show = Show.find_by(id: params[:id])
+            if @show
+                render 'view'
+            else
+                flash[:danger] = "This show was not found. Please try again."
+                redirect_to '/'
+            end
+            return
+        end
         title = params[:title]
         show_number = params[:showNumber]
         if show_number.nil?
