@@ -223,6 +223,10 @@ div.form {
 }
 
 @media (max-width: 480px) {
+    .desktop {
+        display: none;
+    }
+
     p.welcome-message {
         font-size: 70%;
     }
