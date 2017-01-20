@@ -32,6 +32,8 @@ javascript:
                         suggestions.push(item);
                     }
                 }
+                console.log("Found " + result.length + " item(s).");
+                console.log(result);
                 input.autocomplete({
                     source: result,
                     select: function(e, ui) {
