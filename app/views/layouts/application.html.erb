@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= app_title %></title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name="theme-color" content="<%= app_colour %>" />
+  <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
+  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+</head>
+
+<% if logged_in? %>
+    <header>
+        <%= render 'shared/header' %>
+    </header>
+<% end %>
+
+<body>
+
+<% unless @login %>
+    <div id="wrapper">
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- <a href="#menu-toggle" class="btn btn-default">Show/Hide menu</a> -->
+                        <% unless @login %>
+                            <% flash.each do |message_type, message| %>
+                                <div id="flash" class="alert alert-<%= message_type %>"><%= message %></div>
+                            <% end %>
+                        <% end %>
+                        <% end %>
+                        <%= yield %>
+                        <% unless @login %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- Toggle script -->
+    <script>
+        $('document').ready(function() {
+          setTimeout(function() {
+            $('#flash').slideUp();
+          }, 3000);
+        });
+    
+        $('#menu-toggle').click(function(e) {
+            e.preventDefault();
+            $('#wrapper').toggleClass('toggled');
+        });
+    </script>
+    <% end %>
+<!-- /#wrapper -->
+
+</body>
+</html>

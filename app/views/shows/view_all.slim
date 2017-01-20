@@ -1,0 +1,14 @@
+.text-center
+    h1 Shows
+
+    .container
+        = @shows.all.each do |show|
+            - if show.has_image?
+                .row
+                    .col-md-6
+                        img style="width: 80%;" src="#{show.image_path}"
+                    .col-md-6
+                        p This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it. This is my div with some to it.
+                br
+                br
+        

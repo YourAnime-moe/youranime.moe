@@ -1,0 +1,61 @@
+= form_for(:search, url: "/search", html: {class: "navbar-form navbar-right"}) do |f|
+    .form-group
+        = f.text_field :input, placeholder: "Search for anime...", class: "form-control"
+        - f.submit "Submit", class: "btn btn-default"
+
+        div.right id="result_box" style="display: none; left: 75%; margin-top: 5px; max-height: 300px; overflow-y: auto; overflow-x: hidden;"
+
+
+javascript:
+    var input = $('#search_input');
+    var resultBox = $('#result_box');
+    var sampleAnime = [];
+
+    $(document).ready(function() {
+        input.on('input', function(e) {
+            suggest();
+        });
+    });
+
+    function suggest() {
+        var keyword = $.trim(input.val());
+        $.ajax({
+            type: 'GET',
+            url: '/search',
+            data: 'instance=show' + '&keyword=' + keyword,
+            success: function(message) {
+                result = message.response;
+                suggestions = []
+                for(var i = 0; i < result.length - 1; i++) {
+                    var item = result[i];
+                    if (item && item.length) {
+                        suggestions.push(item);
+                    }
+                }
+                input.autocomplete({
+                    source: result,
+                    select: function(e, ui) {
+                        var animeTitle = ui.item.value;
+                        goToShow(animeTitle);
+                    }
+                });
+            }
+        });
+    }
+
+    function goToShow(title) {
+        $.ajax({
+            type: 'GET',
+            url: '/find_show?given_title=' + title,
+            success: function(message) {
+                if (message.err == undefined) {
+                    showNumber = message.show_number;
+                    showTitle = message.title;
+                    url = '/shows?title=' + showTitle + '&showNumber=' + showNumber;
+                    window.location.replace(url);
+                } else {
+                    console.log("Error: " + message.err);
+                }
+            }
+        })
+    }

@@ -1,0 +1,262 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require jquery-ui
+ */
+
+@font-face {
+    font-family: 'opensans'; /*a name to be used later*/
+    src: url('/fonts/opensans/OpenSans-Regular.ttf'); /*URL to font*/
+}
+
+@font-face {
+    font-family: 'opensans-bold'; /*a name to be used later*/
+    src: url('/fonts/opensans/OpenSans-Bold.ttf'); /*URL to font*/
+}
+body {
+    font-family: opensans;
+    margin: 0;
+    font-size: 150%;
+}
+.wrapper {
+    position: absolute;
+    display: table;
+    width: 100%; /* This could be ANY width */
+    height: 100%; /* This could be ANY height */
+}
+.inner {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.content {
+    display: inline-block;
+    padding: 30px;
+    width: 60%;
+}
+
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+}
+
+.body-content {
+    position: relative;
+    margin: 0 5% 5% 5%;
+}
+
+p.login-form {
+    font-size: 250%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+input[type="text"], 
+input[type="password"] {
+    width: 50%;
+    height: 30px;
+    font-size: 15px;
+    padding-left: 10px;
+}
+
+input[type="text"]:focus,
+input[type="text"].focus,
+input[type="email"].focus,
+input[type="password"]:focus,
+input[type="password"].focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border: solid 1px #707070;
+}
+
+input[type="checkbox"] {
+    margin: 0 10px;
+}
+
+input[type="button"],
+input[type="submit"].login {
+    width: 30%;
+    height: 35px;
+    font-size: 15px;
+}
+
+input[type="submit"].edit {
+    margin: 2px;
+}
+
+input[type="button"].focus,
+input[type="submit"].focus,
+input[type="button"]:focus,
+input[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px 1px #969696;
+}
+
+p.welcome-message {
+    font-weight: bold;
+}
+
+a.go-back {
+    text-decoration: none;
+    color: black;
+}
+
+a.go-back:hover {
+    text-decoration: underline;
+}
+
+div.login-form {
+    input[type="text"]:hover, 
+    input[type="password"]:hover, {
+        background: #f9f9f9;
+    }
+
+    input[type="text"]:focus, 
+    input[type="password"]:focus {
+        background: #f0f0f0;
+    }
+
+    input[type="submit"] {
+        padding: 10px 30px;
+        background: green;
+        border: none;
+        color: white;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    font-style: italic;
+    color: grey;
+}
+
+div.form {
+    label, input[type="submit"] {
+        padding: 50px;
+    }
+}
+
+.error {
+    margin: 0 auto;
+    width: auto;
+    max-width: 60%;
+    background: #ffc1c1;
+    border: 0.5px solid #e58989;
+    padding: 10px;
+    border-radius: 5px;
+    color: red;
+}
+
+.btn-option {
+    width: 70%;
+    margin: 2px;
+}
+
+.hidden {
+    display: none;
+}
+
+#mobile {
+    display: none;
+}
+
+.right {
+    float: right;
+}
+
+#result_box {
+    position: absolute;
+    top: 29px;
+    left: 0px;
+    width: 17%;
+    padding: 5px;
+    color: #fff;
+    background: #353535;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    font-size: 13px;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    z-index: 99;
+    text-align: left;
+}
+
+@media (max-width: 480px) {
+    p.welcome-message {
+        font-size: 70%;
+    }
+
+    input[type="text"], 
+    input[type="password"] {
+        width: 100%;
+    }
+
+    input[type="button"],
+    input[type="submit"] {
+        width: 90%;
+    }
+
+    .body-content {
+        padding-top: 5px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    p.login-form {
+        margin: 20px 0 0 -20px;
+    }
+
+    a.go-back {
+        margin: 10px 0 5px 15px;
+        border: 1px solid black;
+        padding: 5px;
+        text-align: left;
+    }
+
+    .desktop {
+        display: inline;
+    }
+
+    #mobile {
+        display: inline;
+    }
+    #mobile a {
+        margin: 5px 0 10px 0;
+        width: 100%;
+    }
+    #mobile p.warning {
+        margin: 10px;
+        font-size: 60%;
+        color: red;
+    }
+
+    .desktop {
+        display: none;
+    }
+}

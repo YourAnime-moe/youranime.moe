@@ -1,0 +1,14 @@
+ul.nav.navbar-nav
+  li class=""
+    a href="/shows" 
+      | Anime
+      span.sr-only (current)
+
+  li class=""
+    a href="/news" News
+
+  li.dropdown
+    a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button" 
+      | Options
+      span.caret
+    = render 'shared/header/links/options'

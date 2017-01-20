@@ -1,0 +1,18 @@
+<div class="logintron vertical-center">
+    <div class="container text-center">
+
+        <b style="font-size: 300%;">Welcome!</b>
+
+        <% if there_is_an_error? %>
+            <div style="text-align: center;">
+                <div style="margin: 0 auto; width: auto; max-width: 60%; background: #ffc1c1; border: 0.5px solid #e58989; padding: 10px; border-radius: 5px; color: red;">
+                    <%= get_error %>
+                </div>
+            </div>
+        <% end %>
+        <p class="welcome-message">
+            Please enter your username and password below.
+        </p>
+        <%= render "/shared/forms/login" %>
+    </div>
+</div>
