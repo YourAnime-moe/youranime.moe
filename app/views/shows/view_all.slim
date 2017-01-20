@@ -8,7 +8,9 @@
             - if show.has_image?
                 .row
                     .col-md-6
-                        img style="width: 80%;" src="http://45.55.212.231/#{show.image_path}"
+                        a href="/shows?id=#{show.id}"
+                            img style="width: 80%;" src="http://45.55.212.231/#{show.image_path}"
+                            
                     .col-md-6
                         h3 #{show.get_title} (#{show.dub_sub_info})
                         p Series #{show.show_number} - #{show.year}

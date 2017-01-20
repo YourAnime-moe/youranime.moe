@@ -21,7 +21,7 @@ class ShowsController < ApplicationController
             show_number = params[:show_number]
         end
         if title.nil? or show_number.nil?
-            @shows = Show.all
+            @shows = Show.all.sort_by(&:get_title)
             render 'view_all'; return
         end
         Show.all.each do |show|
