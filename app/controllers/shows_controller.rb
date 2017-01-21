@@ -8,6 +8,7 @@ class ShowsController < ApplicationController
         if params[:id]
             @show = Show.find_by(id: params[:id])
             if @show
+                set_title(:before => @show.get_title)
                 render 'view'
             else
                 flash[:danger] = "This show was not found. Please try again."
@@ -22,6 +23,7 @@ class ShowsController < ApplicationController
         end
         if title.nil? or show_number.nil?
             @shows = Show.all.sort_by(&:get_title)
+            set_title(:before => "Shows")
             render 'view_all'; return
         end
         Show.all.each do |show|

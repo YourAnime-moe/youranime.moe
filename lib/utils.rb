@@ -83,7 +83,7 @@ class Utils
         "#{Utils.full_date_from today.year, today.month, today.day}#{ok}"
     end
 
-    def self.search(string, list, instance_attributes=[:title], limit: 10, sort_by: nil)
+    def self.search(string, list, instance_attributes=[:get_title], limit: 10, sort_by: nil)
         return list if string.to_s.strip.empty?
         return list if instance_attributes.nil? or instance_attributes.empty?
         res = []

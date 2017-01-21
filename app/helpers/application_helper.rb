@@ -4,6 +4,24 @@ module ApplicationHelper
         @app_title
     end
 
+    def login_time
+        @login_time ||= session[:user_login_time]
+        return "None" if @login_time.nil?
+        Utils.get_date_from_time(Time.parse(@login_time).getlocal)
+    end
+
+    def is_watching_something(what)
+        return !session[:currently_watching].nil? if what.nil?
+        what = what.to_s
+        return false if session[:currently_watching].nil?
+        !session[:currently_watching][what].nil?
+    end
+
+    def current_episode
+        return nil if session[:currently_watching].nil?
+        @current_episode ||= Episode.find(session[:currently_watching]["episode"])
+    end
+
     def set_title(before: nil, after: nil, reset: true, home: false)
         @app_title = nil if reset
         if @app_title.nil?

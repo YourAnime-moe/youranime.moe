@@ -12,3 +12,26 @@
         object-fit: cover;
     }
 }
+
+p.username-info {
+    color: green;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+p.login-time-info {
+    color: blue;
+    font-size: 70%;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    p.username-info {
+        font-size: 100%;
+    }
+
+    p.login-time-info {
+        font-size: 95%;
+    }
+
+}

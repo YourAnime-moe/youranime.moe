@@ -87,10 +87,10 @@ class Show < ActiveRecord::Base
     end
 
     def self.instances
-        [:title, :get_title]
+        [:get_title]
     end
 
-    def self.lastest
+    def self.lastest(current_user)
         []
     end
 
@@ -101,6 +101,14 @@ class Show < ActiveRecord::Base
 
     def has_image?
         self.image_path.to_s.strip.size > 0
+    end
+
+    def get_description(limit=50)
+        return nil if self.description.nil?
+        if limit >= self.description.size
+            limit = self.description.size - 1
+        end
+        self.description[0, limit] + "..."
     end
 
 end

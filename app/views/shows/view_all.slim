@@ -1,5 +1,5 @@
 .text-center
-    h1 Shows
+    h1 style="padding-bottom: 3%;" Shows
 
     .container
         - @shows.each do |show|
@@ -29,7 +29,11 @@
                         .well.fit.desktop
                             b Description
                             - if show.description
-                                p #{show.description}
+                                br
+                                span #{show.get_description(150)}
+                                - if show.description.size >= 150
+                                    a.italic href="/shows?id=#{show.id}" (More)
+                                br
                             - else
                                 p #{"*** Description coming soon ***"}
 

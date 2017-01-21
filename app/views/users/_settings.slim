@@ -1,20 +1,21 @@
 div style="text-align: left;"
     h3 About your account
 
-    span Username
+    span.underline Username:
+    span  #{current_user.username}
     br
         
-    span Name
+    span.underline Name:
+    span  #{current_user.name}
     br
 
-    span Your settings allow:
+    span.underline Account created on:
+    span  #{Utils.date_from current_user}
     br
 
-    span Account created on:
+    span.underline Account updated on:
+    span  #{Utils.date_from(current_user, false)}
     br
 
-    span Account updated on:
-    br
-
-    span Episodes watched
+    i #{current_user.get_episode_count}
     br

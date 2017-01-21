@@ -53,8 +53,8 @@ class User < ActiveRecord::Base
 
     def get_episode_count
         base = "You have watched "
-        return base << "0 episodes" if self.get_episodes_watched.empty?
-        return base << "#{self.episodes_watched.size} episodes" if self.get_episodes_watched.size > 1
+        return base << "0 episodes." if self.get_episodes_watched.empty?
+        return base << "#{self.episodes_watched.size} episodes." if self.get_episodes_watched.size > 1
         base << "one episode."
     end
 

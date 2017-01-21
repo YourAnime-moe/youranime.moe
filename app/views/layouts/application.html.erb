@@ -36,7 +36,9 @@
                             <% end %>
                         <% end %>
                         <% end %>
-                        <%= yield %>
+                        <div class="anime-body">
+                          <%= yield %>
+                        </div>
                         <% unless @login %>
                     </div>
                 </div>
@@ -62,4 +64,10 @@
 <!-- /#wrapper -->
 
 </body>
+
+<% if logged_in? %>
+  <footer>
+     <%= render 'shared/footer' %>
+  </footer>
+<% end %>
 </html>

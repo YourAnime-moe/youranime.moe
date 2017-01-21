@@ -5,7 +5,7 @@ class UsersController < AuthenticatedController
             redirect_to "/users/#{current_user.username}"
         end
         set_title(before: "Welcome, #{current_user.get_name}")
-        @shows = Show.lastest
+        @shows = Show.lastest(current_user)
     end
 
     def short_settings
@@ -13,7 +13,7 @@ class UsersController < AuthenticatedController
     end
 
     def settings
-        
+        set_title(before: 'Your settings')
     end
 
 end
