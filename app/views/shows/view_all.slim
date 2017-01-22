@@ -1,41 +1,13 @@
 .text-center
-    h1 style="padding-bottom: 3%;" Shows
+    h1 style="padding-bottom: 2%;" Shows
 
     .container
-        - @shows.each do |show|
-            - unless show.is_published?
-                - next
-            - if show.has_image?
-                .row
-                    .col-md-6
-                        a href="/shows?id=#{show.id}"
-                            img style="width: 80%;" src="http://45.55.212.231/#{show.image_path}"
-
-                    .col-md-6
-                        h3 #{show.get_title} (#{show.dub_sub_info})
-                        p Series #{show.show_number} - #{show.year}
-                        span.strong #{show.episodes.size} episode(s)
-                        - if show.discloses_average_run_time?
-                            br
-                            u Episodes last about
-                            span #{": "}#{show.average_run_time.to_i} mins.
-                        - if show.has_starring_info?
-                            br
-                            u Featuring
-                            span #{": "}#{show.starring}
-
-                        br
-                        br
-                        .well.fit.desktop
-                            b Description
-                            - if show.description
-                                br
-                                span #{show.get_description(150)}
-                                - if show.description.size >= 150
-                                    a.italic href="/shows?id=#{show.id}" (More)
-                                br
-                            - else
-                                p #{"*** Description coming soon ***"}
-
-                hr
-
+        - @split_shows.each do |show_group|
+            .row
+            - show_group.each do |show|
+                .col-md-6
+                    a href="/shows?id=#{show.id}"
+                        img src="http://45.55.212.231/#{show.image_path}"
+                    - @show = show
+                    = render 'shows/description'
+                    

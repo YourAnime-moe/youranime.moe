@@ -122,6 +122,38 @@ class Utils
         res
     end
 
+    def self.split_array(klass, sort_by: 4, reverse: false)
+        unless klass.instance_of?(Class) and (klass < ActiveRecord::Base)
+            raise Exception.new("Please pass in instance of ActiveRecord::Base")
+        end
+        amount = klass.all.size
+        return [] if amount == 0
+        return [klass.first] if amount == 1
+        revs = []
+        gen_list = []
+        sub_list = []
+        pos = reverse ? klass.last.id : klass.first.id
+        element = klass.find(pos)
+        index = 0
+        until false
+            break if element.nil?
+            pos = element.id
+            current = pos % sort_by
+            sub_list.push element if element.is_published?
+            if sub_list.size == sort_by
+                gen_list.push sub_list
+                sub_list = []
+            end
+            if reverse ? element.is_first? : element.is_last?
+                gen_list.push sub_list
+                break
+            end
+            element = reverse ? element.previous : element.next
+            index += 1
+        end
+        gen_list
+    end
+
     def self.add_to_list(list, what, doubles: false)
         list.push(what) if doubles or !list.include? what
     end

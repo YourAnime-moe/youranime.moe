@@ -1,0 +1,7 @@
+- unless @episodes.nil?
+    - @episodes.each do |episode_group|
+        .row
+            - episode_group.each do |episode|
+                .col-md-3
+                    .well.well-sm.fit.clickable
+                        span #{episode.episode_number}) #{episode.title}

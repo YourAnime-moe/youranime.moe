@@ -29,6 +29,9 @@ body {
     margin: 0;
     font-size: 150%;
 }
+.mobile {
+    display: none;
+}
 .wrapper {
     position: absolute;
     display: table;
@@ -52,6 +55,10 @@ body {
 
     display: flex;
     align-items: center;
+}
+
+h1.show-title {
+    text-align: center;
 }
 
 .body-content {
@@ -265,9 +272,28 @@ body {
   font-size: 90%;
 }
 
+.description {
+    margin-bottom: 5%;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
 @media (max-width: 480px) {
     .desktop {
         display: none;
+    }
+    .mobile {
+        display: block;
+    }
+
+    .description {
+        font-size: 70%;
+    }
+
+    h1.show-title {
+        font-size: 180%;
     }
 
     p.welcome-message {

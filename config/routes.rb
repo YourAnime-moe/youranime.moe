@@ -21,4 +21,10 @@ Rails.application.routes.draw do
   get '/find_show' => 'json#find_show'
 
 
+  # Oauth
+  get '/auth/:provider/callback' => 'sso#create'
+  get '/auth/failure' => 'sso#failure'
+
+  match '/logout', to: 'sso#destroy', via: :all
+
 end

@@ -1,5 +1,7 @@
 class Show < ActiveRecord::Base
 
+    include Navigatable
+
     before_save {
         # Make the show is at least one of dubbed or subbed.
         if self.dubbed.nil? and self.subbed.nil?
@@ -53,6 +55,13 @@ class Show < ActiveRecord::Base
         result += parts[1]
     end
 
+    def split_episodes(sort_by: 4)
+        episodes = self.episodes
+        return nil if episodes.nil?
+        episodes = episodes.to_a unless episodes.instance_of? Array
+        episodes.each_slice(sort_by).to_a
+    end
+
     def has_starring_info?
         self.starring.to_s.strip.size > 0
     end
@@ -80,6 +89,27 @@ class Show < ActiveRecord::Base
         "#{self.title.downcase}#{sn}"
     end
 
+    def get_image_path
+        return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
+        Config.path self.image_path
+    end
+
+    def has_image?
+        self.image_path.to_s.strip.size > 0
+    end
+
+    def has_description?
+        self.description.to_s.strip.size > 0
+    end
+
+    def get_description(limit=50)
+        return nil unless self.has_description?
+        if limit >= self.description.size
+            limit = self.description.size - 1
+        end
+        self.description[0, limit] + "..."
+    end
+
     def self.get(title: nil, show_number: nil)
         return nil if title.nil? or show_number.nil?
         title = title.capitalize
@@ -92,23 +122,6 @@ class Show < ActiveRecord::Base
 
     def self.lastest(current_user)
         []
-    end
-
-    def get_image_path
-        return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
-        Config.path self.image_path
-    end
-
-    def has_image?
-        self.image_path.to_s.strip.size > 0
-    end
-
-    def get_description(limit=50)
-        return nil if self.description.nil?
-        if limit >= self.description.size
-            limit = self.description.size - 1
-        end
-        self.description[0, limit] + "..."
     end
 
 end

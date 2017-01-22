@@ -23,6 +23,7 @@ class ShowsController < ApplicationController
         end
         if title.nil? or show_number.nil?
             @shows = Show.all.sort_by(&:get_title)
+            @split_shows = Utils.split_array(Show, sort_by: 2)
             set_title(:before => "Shows")
             render 'view_all'; return
         end

@@ -38,6 +38,10 @@ gem 'jquery-ui-rails'
 gem "slim"
 gem "slim-rails"
 
+# Single Sign on
+gem 'omniauth'
+gem 'omniauth-oauth2'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
