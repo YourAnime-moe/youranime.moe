@@ -22,7 +22,7 @@ class SsoController < ApplicationController
     end
 
     def failure
-        flash[:danger] = params[:message]Z
+        flash[:danger] = params[:message]
     end
 
 end
