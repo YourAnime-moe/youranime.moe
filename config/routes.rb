@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   # Shows
   get '/shows' => 'shows#view'
   get '/shows/history' => 'shows#history'
+  get '/search' => 'shows#search' # This not really for shows, but will probably be used mostly for shows
 
   # Episodes
   get '/shows/episodes' => 'episodes#view'

@@ -4,6 +4,7 @@
             - episode_group.each do |episode|
                 .col-md-3
                     - url = '/shows/episodes?id=' + episode.id.to_s
-                    .well.well-sm.fit.clickable onclick="window.location.href='#{url}'"
+                    - watched = "watched" if episode.was_watched_by? current_user
+                    .well.well-sm.fit.clickable class="#{watched}" onclick="window.location.href='#{url}'"
                         span.episode id='episode_#{episode.episode_number}' #{episode.episode_number}) #{episode.title}
 

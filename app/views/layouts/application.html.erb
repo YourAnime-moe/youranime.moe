@@ -53,6 +53,11 @@
           setTimeout(function() {
             $('#flash').slideUp();
           }, 3000);
+
+          watched_episodes = $('html').find('.watched');
+          for (var i = 0; i < watched_episodes.length; i++) {
+            watched_episodes[i].title = "You've already watched this episode.";
+          }
         });
     
         $('#menu-toggle').click(function(e) {

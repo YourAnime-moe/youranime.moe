@@ -58,4 +58,8 @@ class ShowsController < AuthenticatedController
         @episodes.reverse!
     end
 
+    def search
+        @search = true
+    end
+
 end
