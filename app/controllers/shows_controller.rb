@@ -54,6 +54,7 @@ class ShowsController < ApplicationController
           return
         end
         @episodes = episodes.map{|e| Episode.find(e)}
+        @episodes.select!{|e| e.is_published?}
         @episodes.reverse!
     end
 

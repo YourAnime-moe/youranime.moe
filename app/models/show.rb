@@ -125,7 +125,9 @@ class Show < ActiveRecord::Base
         episodes = episodes.map{|e| Episode.find e}.reverse
         shows = []
         episodes.each do |ep|
+            next unless ep.is_published?
             show = ep.show
+            next unless show.is_published?
             next unless show.has_image?
             shows.push show unless shows.include? show
             break if shows.size >= 5

@@ -14,9 +14,11 @@ h2 Welcome!
                 a.btn.btn-primary.right href="/shows/history" View history...
 
 
-.desktop.well.fit.comments
-    h4 Additional note
-    p Do you have a mobile device? Well, this is your lucky day. This website is compatible your any mobile device out there.
+.well.fit.comments
+    h4 Additional notes
+    .desktop
+        p Do you have a mobile device? Well, this is your lucky day. This website is compatible your any mobile device out there.
+    u An important feature comming soon: an indication telling whether or not you've watched an episode.
 
 .well.fit.comments
     h4 Quick links
@@ -24,8 +26,9 @@ h2 Welcome!
     ul
         li
           a href="/shows" Watch anime
-        li
-          a href="" Go to your lastest episode
+        - if current_user.has_watched_anything?
+            li
+              a href="/shows/episodes?id=#{@shows.first.id}" Go to your lastest episode
         li
           a href="/shows/history" Episode history
         li

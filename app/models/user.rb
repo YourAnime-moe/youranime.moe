@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
     def get_latest_episodes(limit: 5)
         limit = 5 if limit < 0
         episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
+        episodes.select!{|e| e.is_published?}
         return episodes if episodes.size <= limit
         episodes[0...limit]
     end
