@@ -14,7 +14,6 @@ h4 id="comment_h4"
                 span id="remaining" style="font-size: 80%;" value="ok"
     div id='comments'
 
-
 javascript:
     // Load the comments once the page is ready...
     var commentTitle = $('#comment_h4');
@@ -28,7 +27,6 @@ javascript:
     var text = commentTextArea.val();
     remainingChars.html(text.length + '/' + limit);
     enableDisableButton(text);
-
 
     $(document).ready(function() {
 
@@ -48,6 +46,7 @@ javascript:
         });
 
         button.on('click', function(e) {
+            disableButton();
             post(text);
         });
     });
@@ -108,6 +107,7 @@ javascript:
                 result = message.response;
                 console.log(message);
                 fetchComments();
+                enableButton();
             }
         });
     };

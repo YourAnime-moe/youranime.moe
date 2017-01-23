@@ -1,13 +1,21 @@
-h1 Account Settings
+h1 Your account
 
-.text-center
-    a.btn.btn-default Please click here to edit your settings
-
-    br
-    br
-
-    .container
+.panel.panel-default
+    div id="new"
         .row
-            .well.fit.col-md-8
-                = render 'users/settings'
+            .col-md-1
+            .panel-body.col-md-10
+                p Edit your account below
+                - @_item = current_user
+                - @_from = "edit_user"
+                = render 'shared/forms/edit_user'
+            .col-md-1
 
+.hidden
+    h1 Other settings
+
+    .panel.panel-default
+        div id="new"
+            .panel-body
+                p Manage other in-app settings
+                = render 'users/settings'

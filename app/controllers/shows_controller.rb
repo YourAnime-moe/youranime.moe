@@ -10,6 +10,9 @@ class ShowsController < ApplicationController
             if @show
                 set_title(:before => @show.get_title)
                 render 'view'
+            elsif !@show.is_published?
+                flash[:warning] = "This show is not available yet. Please try again later."
+                redirect_to '/'
             else
                 flash[:danger] = "This show was not found. Please try again."
                 redirect_to '/'

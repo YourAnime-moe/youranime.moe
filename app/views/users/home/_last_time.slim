@@ -1,0 +1,8 @@
+- unless @episodes.nil?
+    .row
+    - @episodes.each do |episode|
+        .col-md-3
+            - url = '/shows/episodes?id=' + episode.id.to_s
+            .well.well-sm.fit.clickable onclick="window.location.href='#{url}'"
+                span.episode id='episode_#{episode.episode_number}' #{episode.episode_number}) #{episode.title} from "#{episode.show.get_title}"
+

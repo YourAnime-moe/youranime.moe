@@ -1,25 +1,33 @@
-#myCarousel.carousel.slide data-ride="carousel" 
-  /! Indicators
-  ol.carousel-indicators
-    li.active data-target="#myCarousel" data-slide-to="0"
-    li data-target="#myCarousel" data-slide-to="1"
-    li data-target="#myCarousel" data-slide-to="2"
-  /! Wrapper for slides
-  .carousel-inner.slideshow role="listbox"
-    .item.active.upscale
-      /! img.main.image.img-responsive.center-block alt="test01" src="/test/img02.jpg" /
-      img.d-block.img-fluid alt="test01" src="/test/img05.jpg" /
-      .carousel-caption
-        h4 Fairy Tail
-        p Read about Fairy Tail Edolas, Series 3.
-    .item
-      img.d-block.img-fluid alt="test02" src="/test/img01.jpg" /
-      .carousel-caption
-        h4 Ouran High School Host Club
-        p Read about Ouran Host Club, the only series.
-    .item
-      img.d-block.img-fluid alt="test03" src="/test/img03.png" /
-      .carousel-caption
-        h4 Mitsudomoe
-        p Read about Mitsudomoe, Series 1.
+- if @shows.size > 0
+  #myCarousel.carousel.slide data-ride="carousel" 
+    /! Indicators
+    ol.carousel-indicators
+      - ind = 0
+      - @shows.each do |show|
+        - if ind == 0
+          li.active data-target="#myCarousel" data-slide-to="0"
+        - else
+          li data-target="#myCarousel" data-slide-to="#{ind}"
+        - ind += 1
+    /! Wrapper for slides
+    .carousel-inner.slideshow role="listbox"
+      - ind = 0
+      - @shows.each do |show|
+        - if ind == 0
+          .item.active.upscale
+            /! img.main.image.img-responsive.center-block alt="test01" src="/test/img02.jpg" /
+            img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
+            .carousel-caption
+              a.btn.btn-default href="/shows?id=#{show.id}" #{show.get_title}
+              p #{show.episodes.size} episode(s).
+        - else
+          .item
+            /! img.main.image.img-responsive.center-block alt="test01" src="/test/img02.jpg" /
+            img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
+            .carousel-caption
+              a.btn.btn-default href="/shows?id=#{show.id}" #{show.get_title}
+              p #{show.episodes.size} episode(s).
+        - ind += 1
+
+- else
 

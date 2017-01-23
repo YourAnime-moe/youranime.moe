@@ -91,6 +91,9 @@ class Utils
         count = 0
         list = list.all.sort_by {|item| item.method(sort_by).call} unless sort_by.nil?
         list.each do |item|
+            if item.instance_of? Show or item.instance_of? Episode
+                next unless item.is_published?
+            end
             break if limit != nil && count == limit
             instance_attributes.each do |attrb|
                 break if limit != nil && count == limit

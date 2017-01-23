@@ -1,0 +1,11 @@
+h1 Application News
+br
+
+- if News.all.size == 0
+    p No news for now!
+
+- else
+    - News.all.reverse.each do |news_entry|
+        - @first = news_entry.id == News.all.last.id
+        - @_item = news_entry
+        = render 'users/news/item'

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   get '/settings' => 'users#short_settings'
   get '/users/settings' => 'users#settings'
   get '/users/:username' => 'users#home'
+  get '/news' => 'users#news'
+  patch '/users/update/:id' => 'users#update'
 
   # Shows
   get '/shows' => 'shows#view'

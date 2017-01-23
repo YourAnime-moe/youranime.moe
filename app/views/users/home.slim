@@ -1,1 +1,35 @@
 = render 'users/home/carousel'
+h2 Welcome!
+
+.well.fit.comments
+    - if @shows.empty?
+        span It looks like you haven't watched anything yet. 
+        a href='/shows' Start watching anime right away!
+
+    - else
+        h4 Recently watched...
+        .container
+            = render 'users/home/last_time'
+            - if current_user.get_episodes_watched.size > 4
+                a.btn.btn-primary.right href="/shows/history" View history...
+
+
+.desktop.well.fit.comments
+    h4 Additional note
+    p Do you have a mobile device? Well, this is your lucky day. This website is compatible your any mobile device out there.
+
+.well.fit.comments
+    h4 Quick links
+
+    ul
+        li
+          a href="/shows" Watch anime
+        li
+          a href="" Go to your lastest episode
+        li
+          a href="/shows/history" Episode history
+        li
+          a href="/settings" Account settings
+        br
+        li
+          a href="/logout" Logout

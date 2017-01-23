@@ -1,0 +1,42 @@
+- unless @_item.nil?
+    - url = "/users/update/#{@_item.id}"
+    - url << "?from=#{@_from}" if @_from
+    = form_for(@_item, url: url) do |f|
+        .form-group
+            .input-group
+                span.input-group-addon
+                    span.glyphicon.glyphicon-user
+                = f.text_field :username, class: "form-control", placeholder: "Username"
+            br
+            .input-group
+                span.input-group-addon
+                    span.glyphicon.glyphicon-lock
+                - pp = @_item.is_new? ? "Please enter your new password." : "If you want to change passwords for #{@_item.get_name}, do it here."
+                - ppc = @_item.is_new? ? "Please confirm your new password." : "Please confirm your new password (if applicable)."
+                = f.password_field :password, class: "form-control", placeholder: pp
+                = f.password_field :password_confirmation, class: "form-control", placeholder: ppc
+            br
+            .input-group
+                span.input-group-addon
+                    span.glyphicon.glyphicon-pencil
+                = f.text_field :name, class: "form-control", placeholder: "Name (optional)"
+            - unless @_item.id == current_user.id and !current_user.is_admin?
+                br
+                .input-group
+                    span.input-group-addon
+                        span.glyphicon.glyphicon-inbox
+                    = f.select :admin, User.types, {}, {id: "show_type", class: "form-control"}
+
+            
+        .btn-group.left
+            - if @_item.is_new?
+                = f.submit "Create", class: "btn btn-success hidden", name: "create"
+            - else
+                = f.submit "Update", class: "btn btn-primary hidden", name: "update"
+            - unless @_item.is_new? or !current_user.is_admin?
+                - f.submit "Delete", data: {confirm: "Are you sure you want to delete \"#{@_item.get_name}\"?"}, class: "btn btn-danger", name: "delete"
+        .btn-group.right
+            - if @_item.is_new?
+                = f.submit "Create", class: "btn btn-success", name: "create"
+            - else
+                = f.submit "Update", class: "btn btn-primary", name: "update"

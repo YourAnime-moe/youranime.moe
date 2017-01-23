@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
     end
 
     def add_episode(episode, save: true)
-        return nil unless self.allows_setting(:episode_tracking)
+        p "Adding #{episode}..."
+        # return nil unless self.allows_setting(:episode_tracking)
         return false unless episode.class == Episode or episode.class == Fixnum
         if episode.instance_of? Fixnum
             episode = Episode.find_by(id: episode)
@@ -35,6 +36,7 @@ class User < ActiveRecord::Base
             self.episodes_watched.delete(episode.id)
         end
         self.episodes_watched.push episode.id
+        p "Episode #{episode.id} was added."
         save ? self.save : true
     end
 
@@ -45,6 +47,13 @@ class User < ActiveRecord::Base
         return res if as_is
         res.reject! { |episode_id| Episode.find_by(id: episode_id).nil? }
         self.update_attribute(:episodes_watched, res) ? res : nil
+    end
+
+    def get_latest_episodes(limit: 5)
+        limit = 5 if limit < 0
+        episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
+        return episodes if episodes.size <= limit
+        episodes[0...limit]
     end
 
     def has_watched_anything?
@@ -64,11 +73,44 @@ class User < ActiveRecord::Base
         is_ok(what, get_default(what))
     end
 
+    def is_new?
+        self.id.nil?
+    end
+
+    def is_admin?
+        return false if self.admin.nil?
+        self.admin
+    end
+
+    def update_settings(new_settings, save=true)
+        if new_settings.nil?
+            new_settings = {
+                :watch_anime => true,
+                :last_episode => true,
+                episode_tracking: true,
+                recommendations: true,
+                images: true
+            }
+        end
+        if self.settings.class != Hash
+            self.settings = {}
+        end
+        self.settings.update(new_settings)
+        save ? self.save : true
+    end
+
+    def self.types
+        [
+            ["Regular user", false],
+            ["Administrator", true]
+        ]
+    end
+
     private
         def is_ok(value, default)
             res = self.settings[value]
-            res = true if res == "true"
-            res = false if res == "false" or res.nil?
+            res = true if res == "true" or res.nil?
+            res = false if res == "false"
             res
         end
 

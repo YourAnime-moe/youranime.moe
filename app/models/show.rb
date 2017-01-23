@@ -121,7 +121,16 @@ class Show < ActiveRecord::Base
     end
 
     def self.lastest(current_user)
-        []
+        episodes = current_user.get_episodes_watched
+        episodes = episodes.map{|e| Episode.find e}.reverse
+        shows = []
+        episodes.each do |ep|
+            show = ep.show
+            next unless show.has_image?
+            shows.push show unless shows.include? show
+            break if shows.size >= 5
+        end
+        shows
     end
 
 end
