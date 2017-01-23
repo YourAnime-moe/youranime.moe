@@ -21,7 +21,7 @@ javascript:
         var keyword = $.trim(input.val());
         $.ajax({
             type: 'GET',
-            url: '/search',
+            url: '/json/search',
             data: 'instance=show' + '&keyword=' + keyword,
             success: function(message) {
                 result = message.response;
@@ -48,7 +48,7 @@ javascript:
     function goToShow(title) {
         $.ajax({
             type: 'GET',
-            url: '/find_show?given_title=' + title,
+            url: '/json/find_show?given_title=' + title,
             success: function(message) {
                 if (message.err == undefined) {
                     showId = message.id;

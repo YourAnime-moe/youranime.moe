@@ -16,10 +16,14 @@ Rails.application.routes.draw do
   # Shows
   get '/shows' => 'shows#view'
 
-  # JSON controllers (GET)
-  get '/search' => 'json#search'
-  get '/find_show' => 'json#find_show'
+  # Episodes
+  get '/shows/episodes' => 'episodes#view'
 
+  # JSON controllers (GET)
+  get '/json/search' => 'json#search'
+  get '/json/find_show' => 'json#find_show'
+  get '/json/episodes/get_comments' => 'json#episode_get_comments'
+  post '/json/episodes/add_comment' => 'json#episode_add_comment'
 
   # Oauth
   get '/auth/:provider/callback' => 'sso#create'

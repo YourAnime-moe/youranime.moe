@@ -1,0 +1,39 @@
+div.no-video.hidden
+    span Sorry, it appears this video is broken. Please contact the administrator of the website. 
+    span If you have admin right, please login 
+    a href="" here. 
+
+video style="margin-top: 10px;" class="video-js vjs-default-skin" width="100%" height="80%" controls="true"
+    source src="#{asset_path(@episode.get_path)}" type="video/mp4"
+    source src="#{asset_path(@episode.get_path)}" type="video/mkv"
+    source src="#{asset_path(@episode.get_path)}" type="video/avi"
+    span MP4 not supported or video not found.
+
+
+link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+ul.pager
+    - if @episode.has_previous?
+        li.previous
+            a href="/shows/episodes?id=#{@episode.previous.id}"Episode #{@episode.previous.episode_number}
+    - else
+        li.previous
+            a.none None
+
+    - if @episode.has_next?
+        li.next
+            a href="/shows/episodes?id=#{@episode.next.id}"Episode #{@episode.next.episode_number}
+    - else
+        li.next
+            a href="/shows" style="color: red; float: right;" Done. More?
+
+javascript:
+    $(document).ready(function() {
+        $.ajax({
+            type: 'get',
+            url: '#{@episode.get_path}',
+            error: function() {
+                console.log('This link "#{@episode.get_path}" is not valid.');
+            }
+        });
+    });
+

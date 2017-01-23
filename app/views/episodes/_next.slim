@@ -1,0 +1,15 @@
+h3 Next episodes...
+- if @episode.is_last?
+    - if @episode.show.episodes.size > 5
+        p Wow, you've aleady watched #{@episode.show.episodes.size} episodes!
+    - else
+        p That's it!
+- elsif @episode.is_first?
+    p This is the first episode, there's plenty more to watch!
+
+- @episode.show.episodes(from: @episode).each do |episode|
+    - if episode.id == @episode.show.episodes.first.id
+        break
+    - url = '/shows/episodes?id=' + episode.id.to_s
+    .well.well-sm.fit.clickable onclick="window.location.href='#{url}'"
+        span #{episode.episode_number}) #{episode.title}

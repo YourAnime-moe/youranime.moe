@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170120222114) do
+ActiveRecord::Schema.define(version: 20170122225555) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "show_id"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20170120222114) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.boolean  "published"
+    t.string   "comments"
   end
 
   create_table "news", force: :cascade do |t|

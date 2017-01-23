@@ -62,6 +62,14 @@ module ApplicationHelper
         _logout if logged_in?
     end
 
+    def comments_size_limit
+        100
+    end
+
+    def comments_warning
+        "All comments posted visible to all registered users on this website."
+    end
+
     private
         def _logout
             session.delete(:user_id)

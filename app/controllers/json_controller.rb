@@ -49,6 +49,39 @@ class JsonController < ApplicationController
         render json: json
     end
 
+    def episode_get_comments
+        id = params[:id]
+        if id.nil?
+            render json: {err: 'Episode id was not specified.'}
+        elsif Episode.find_by(id: id).nil?
+            render json: {err: 'Episode was not found.'}
+        else
+            episode = Episode.find(id)
+            usernames = params[:usernames].strip.downcase == 'true'
+            comments = episode.get_comments(usernames: usernames)
+            render json: {instance: episode, comments: comments.reverse}
+        end
+    end
+
+    def episode_add_comment
+        id = params[:id]
+        if id.nil?
+            render json: {err: 'Episode id was not specified.'}
+        elsif Episode.find_by(id: id).nil?
+            render json: {err: 'Episode was not found.'}
+        else
+            e = Episode.find(id)
+            if params[:comments].to_s.strip.size == 0
+                render json: {err: 'No text was received.'}
+            else
+                comment = {text: params[:comments], user_id: current_user.id, time: Time.now}
+                result = e.add_comment(comment)
+                comments = e.comments || []
+                render json: {message: result[:message], success: result[:success], comments: comments, instance: e}
+            end
+        end
+    end
+
     private
         def get_class_from_instance_tag(tag)
             tag = tag.to_s

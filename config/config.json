@@ -1,0 +1,19 @@
+{
+    "hosts": {
+        "main": {
+            "protocol": "http",
+            "sub_domain": null,
+            "domain": "45.55.97.146"
+        },
+        "admin": {
+            "protocol": "https",
+            "sub_domain": "my-akinyele-admin",
+            "domain": "herokuapp.com"
+        },
+        "admin-test": {
+            "protocol": "http",
+            "sub_domain": null,
+            "domain": "localhost:4000"
+        }
+    }
+}
