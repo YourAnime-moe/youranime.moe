@@ -1,4 +1,4 @@
-class ShowsController < ApplicationController
+class ShowsController < AuthenticatedController
 
     def view
         if params[:view] == 'all'

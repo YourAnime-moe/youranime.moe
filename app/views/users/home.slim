@@ -13,6 +13,12 @@ h2 Welcome!
             - if current_user.get_episodes_watched.size > 4
                 a.btn.btn-primary.right href="/shows/history" View history...
 
+- if News.all.size > 0
+    .well.fit.comments
+        - news_entry = News.last
+        h4.strong News: #{news_entry.title}
+        p #{news_entry.description}
+
 
 .well.fit.comments
     h4 Additional notes

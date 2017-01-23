@@ -1,4 +1,4 @@
-class EpisodesController < ApplicationController
+class EpisodesController < AuthenticatedController
 
     def view
         id = params[:id]
