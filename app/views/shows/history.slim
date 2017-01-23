@@ -1,0 +1,22 @@
+h1 Episode history
+br
+
+.row
+    .col-md-1
+    .col-md-10
+        .text-center
+            p You have watched the following episodes - starting from the most recent to the oldest.
+            br
+        - @episodes.each do |episode|
+            .well.well-lg.fit
+                span Episode #{episode.episode_number} ("#{episode.title}" from #{episode.show.get_title})
+                .right.desktop
+                    a.btn.btn-info href="/shows?id=#{episode.show.id}" Go to show
+                    a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
+
+                .mobile.text-center
+                    br
+                    a.btn.btn-info href="/shows?id=#{episode.show.id}" Go to show
+                    a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
+
+    .col-md-1

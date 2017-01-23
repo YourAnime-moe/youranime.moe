@@ -67,7 +67,7 @@ module ApplicationHelper
     end
 
     def comments_warning
-        "All comments posted visible to all registered users on this website."
+        "You are posting as '#{current_user.username}'. Your name will not be displayed."
     end
 
     private

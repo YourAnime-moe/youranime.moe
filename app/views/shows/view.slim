@@ -24,7 +24,7 @@ h1.show-title #{@show.get_title}
             span #{": "}#{@show.starring}
 
     - if @show.has_image?
-        .col-md-7
+        .col-md-7.well.fit.comments
             - if @show.has_description?
                 .description
                     span #{@show.description}

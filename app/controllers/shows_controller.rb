@@ -43,4 +43,15 @@ class ShowsController < ApplicationController
         @shows = Show.all
     end
 
+    def history
+        episodes = current_user.get_episodes_watched
+        if episodes.empty?
+          flash[:warning] = "Sorry, we don't know which epsiodes you've watched yet."
+          redirect_to '/'
+          return
+        end
+        @episodes = episodes.map{|e| Episode.find(e)}
+        @episodes.reverse!
+    end
+
 end
