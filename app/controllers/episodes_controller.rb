@@ -18,4 +18,19 @@ class EpisodesController < AuthenticatedController
         current_user.add_episode @episode
     end
 
+    def random
+        ind = rand(Episode.last.id)
+        episode = nil
+        while true
+            episode = Episode.find_by(id: ind)
+            break unless episode.nil?
+            ind = rand(Episode.last.id) + 1
+        end
+        if episode.is_published?
+            redirect_to "/shows/episodes?id=#{ind}"
+        else
+            redirect_to "/shows/episodes/random"
+        end
+    end
+
 end

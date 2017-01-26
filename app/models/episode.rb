@@ -30,7 +30,7 @@ class Episode < ActiveRecord::Base
 
     def is_published?
         return false if self.published.nil?
-        self.published
+        self.show.is_published? and self.published
     end
 
     def previous

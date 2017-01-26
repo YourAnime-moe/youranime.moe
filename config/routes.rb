@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   # Episodes
   get '/shows/episodes' => 'episodes#view'
+  get '/shows/episodes/random' => 'episodes#random'
 
   # JSON controllers (GET)
   get '/json/search' => 'json#search'

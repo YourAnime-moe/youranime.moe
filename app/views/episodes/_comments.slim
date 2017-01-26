@@ -25,6 +25,8 @@ javascript:
     var remainingChars = $('#remaining');
     var limit = parseInt(#{comments_size_limit});
 
+    var currentUser = "#{current_user.username}";
+
     var text = commentTextArea.val();
     remainingChars.html(text.length + '/' + limit);
     enableDisableButton(text);
@@ -75,6 +77,12 @@ javascript:
                     for (var i = 0; i < comments.length; i++) {
                         comment = comments[i];
                         username = comment.user_id;
+
+                        var isCurrent = username == currentUser;
+
+                        if (isCurrent) {
+                            username = "<u class='italic'>You</u> said";
+                        }
                         time = comment.time;
                         text = comment.text;
 
@@ -86,7 +94,11 @@ javascript:
                         message += username_text;
                         message += '<span> on </span>';
                         message += time_text;
-                        message += '<span> said...</span>';
+                        if (!isCurrent) {
+                            message += '<span> said...</span>';
+                        } else {
+                            message += '<span>:</span>'
+                        }
                         message += comment_text;
                     }
                     commentContainer.html(message);

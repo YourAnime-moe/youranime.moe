@@ -25,8 +25,28 @@ class ShowsController < AuthenticatedController
             show_number = params[:show_number]
         end
         if title.nil? or show_number.nil?
-            @shows = Show.all.sort_by(&:get_title)
-            @split_shows = Utils.split_array(Show, sort_by: 2)
+            @shows = Show.all.to_a.sort_by(&:get_title)
+            shows = @shows.each_slice(2).to_a
+            @split_shows = []
+            shows.each do |show_group|
+                new_group = []
+                if show_group.size == 1
+                    new_group.push [show_group[0]]
+                else
+                    first = show_group[0]
+                    second = show_group[1]
+                    if first.get_title > second.get_title
+                        tmp = first
+                        first = second
+                        second = tmp
+                    end
+                    new_group.push first
+                    new_group.push second
+                end
+                @split_shows.push new_group
+            end
+            @split_shows
+            # @split_shows = Utils.split_array(Show, sort_by: 2)
             set_title(:before => "Shows")
             render 'view_all'; return
         end

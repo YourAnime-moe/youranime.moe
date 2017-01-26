@@ -1,9 +1,9 @@
 div.no-video.hidden
     span Sorry, it appears this video is broken. Please contact the administrator of the website. 
-    span If you have admin right, please login 
+    span If you have admin rights, please login 
     a href="" here. 
 
-video style="margin-top: 10px;" class="video-js vjs-default-skin" width="100%" height="80%" controls="true"
+video#episode_video style="margin-top: 10px;" class="video-js vjs-default-skin" width="100%" height="80%" controls="true"
     source src="#{asset_path(@episode.get_path)}" type="video/mp4"
     source src="#{asset_path(@episode.get_path)}" type="video/mkv"
     source src="#{asset_path(@episode.get_path)}" type="video/avi"
@@ -27,13 +27,5 @@ ul.pager
             a href="/shows" style="color: red; float: right;" Done. More?
 
 javascript:
-    $(document).ready(function() {
-        $.ajax({
-            type: 'get',
-            url: '#{@episode.get_path}',
-            error: function() {
-                console.log('This link "#{@episode.get_path}" is not valid.');
-            }
-        });
-    });
+    var videos = document.getElementById('episode_video');
 
