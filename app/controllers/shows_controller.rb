@@ -31,7 +31,7 @@ class ShowsController < AuthenticatedController
             shows.each do |show_group|
                 new_group = []
                 if show_group.size == 1
-                    new_group.push [show_group[0]]
+                    new_group.push show_group[0]
                 else
                     first = show_group[0]
                     second = show_group[1]
