@@ -16,17 +16,19 @@
         - if ind == 0
           .item.active.upscale
             /! img.main.image.img-responsive.center-block alt="test01" src="/test/img02.jpg" /
-            img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
-            .carousel-caption
-              a.btn.btn-default href="/shows?id=#{show.id}" #{show.get_title}
-              p #{show.episodes.size} episode(s).
+            a href="/shows?id=#{show.id}" title="#{show.get_title}"
+              img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
+              .carousel-caption
+                a.btn.btn-default.hidden #{show.get_title}
+                p.hidden #{show.episodes.size} episode(s).
         - else
           .item
             /! img.main.image.img-responsive.center-block alt="test01" src="/test/img02.jpg" /
-            img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
-            .carousel-caption
-              a.btn.btn-default href="/shows?id=#{show.id}" #{show.get_title}
-              p #{show.episodes.size} episode(s).
+            a href="/shows?id=#{show.id}" title="#{show.get_title}"
+              img.d-block.img-fluid alt="#{show.get_title}" src="#{show.get_image_path}" /
+              .carousel-caption
+                a.btn.btn-default.hidden href="/shows?id=#{show.id}" #{show.get_title}
+                p.hidden #{show.episodes.size} episode(s).
         - ind += 1
 
 - else

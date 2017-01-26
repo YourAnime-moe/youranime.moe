@@ -34,7 +34,7 @@ h2 Welcome!
           a href="/shows" Watch anime
         - if current_user.has_watched_anything?
             li
-              a href="/shows/episodes?id=#{@shows.first.id}" Go to your lastest episode
+              a href="/shows/episodes?id=#{@episodes.first.id}" Go to your lastest episode
         li
           a href="/shows/history" Episode history
         li
