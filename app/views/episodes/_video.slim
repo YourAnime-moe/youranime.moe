@@ -26,6 +26,41 @@ ul.pager
         li.next
             a href="/shows" style="color: red; float: right;" Done. More?
 
-javascript:
-    var videos = document.getElementById('episode_video');
+    .text-cente
+        button#resume_video.btn.btn-success.hidden Resume from last time
 
+javascript:
+    var video = document.getElementById('episode_video');
+    var buttonResume = document.getElementById('resume_video');
+    var videoId = #{@episode.id};
+    var userId = #{current_user.id};
+    var videoInfo = {
+        videoId: videoId,
+        userId: userId
+    };
+
+    video.addEventListener('timeupdate', function() {
+        var currentTime = video.currentTime;
+        videoInfo.currentTime = currentTime;
+        localStorage.setItem('videoInfo', JSON.stringify(videoInfo));
+    });
+
+    var storedInfo = localStorage.getItem('videoInfo');
+    if (storedInfo != undefined && storedInfo != null) {
+        // Then there is something to restore!
+        storedInfo = JSON.parse(storedInfo);
+        storedVideoId = storedInfo.videoId;
+        storedUserId = storedInfo.userId;
+
+        if (storedVideoId == videoId && storedUserId == userId) {
+            buttonResume.classList.remove('hidden');
+            buttonResume.onclick = function(e) {
+                var currentTime = storedInfo.currentTime;
+                video.currentTime = currentTime;
+                video.play();
+                buttonResume.classList.add('disabled');
+            };
+        }
+
+        console.log('Set onclick event for button!');
+    }

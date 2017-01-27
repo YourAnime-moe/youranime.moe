@@ -18,3 +18,9 @@
 .well.watched {
     background-color: lightblue;
 }
+
+@media (max-width: 480px) {
+    button#resume_video {
+        margin-top: 5%;
+    }
+}
