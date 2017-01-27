@@ -1,10 +1,10 @@
-h4 id="comment_h4"
+h4 id="comments_title"
 .well.fit.comments id="comment_section"
-    .row
+    #text_area.row
         .col-md-10
             p
                 span.strong Warning:
-                span All comments posted will be visible to all registered users on this website. Also, once posted, comments 
+                span  All comments posted will be visible to all registered users on this website. Also, once posted, comments 
                 span.underline cannot be edited
                 span .
             br
@@ -13,15 +13,16 @@ h4 id="comment_h4"
             button.btn.btn-success.right id="comment_submit" Submit
             .text-center
                 span id="remaining" style="font-size: 80%;" value="ok"
-    div id='comments'
+    #comments
 
 javascript:
     // Load the comments once the page is ready...
-    var commentTitle = $('#comment_h4');
+    var commentTitle = $('#comments_title');
     var commentSection = $('#comment_section');
     var commentContainer = $('#comments');
     var button = $('#comment_submit');
     var commentTextArea = $('#comment_text_area');
+    var textArea = $('#text_area');
     var remainingChars = $('#remaining');
     var limit = parseInt(#{comments_size_limit});
 
