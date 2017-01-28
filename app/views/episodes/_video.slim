@@ -39,28 +39,101 @@ javascript:
         userId: userId
     };
 
+    episode = getVideoFor(userId, videoId);
+
     video.addEventListener('timeupdate', function() {
         var currentTime = video.currentTime;
         videoInfo.currentTime = currentTime;
-        localStorage.setItem('videoInfo', JSON.stringify(videoInfo));
+        if (currentTime > 10 && episode != null) {
+            update(videoInfo);
+        }
     });
 
-    var storedInfo = localStorage.getItem('videoInfo');
-    if (storedInfo != undefined && storedInfo != null) {
-        // Then there is something to restore!
-        storedInfo = JSON.parse(storedInfo);
-        storedVideoId = storedInfo.videoId;
-        storedUserId = storedInfo.userId;
+    var videosList = localStorage.getItem('videos');
+    if (videosList == null) {
+        localStorage.setItem('videos', "[]");
+    }
+    
+    videosList = getVideosList();
 
-        if (storedVideoId == videoId && storedUserId == userId) {
-            buttonResume.classList.remove('hidden');
-            buttonResume.onclick = function(e) {
-                var currentTime = storedInfo.currentTime;
-                video.currentTime = currentTime;
-                video.play();
-                buttonResume.classList.add('disabled');
-            };
+    if (isCurrentEpisode(episode)) {
+        // Then there is some history with this video
+        buttonResume.classList.remove('hidden');
+        buttonResume.onclick = function(e) {
+            var currentTime = episode.currentTime;
+            if (currentTime > 3) {
+                currentTime -= 3;
+            }
+            video.currentTime = currentTime;
+            video.play();
+            buttonResume.classList.add('disabled');
+        };
+    }
+
+    // if (storedInfo != undefined && storedInfo != null) {
+    //     // Then there is something to restore!
+    //     storedInfo = JSON.parse(storedInfo);
+    //     storedVideoId = storedInfo.videoId;
+    //     storedUserId = storedInfo.userId;
+
+    //     if (storedVideoId == videoId && storedUserId == userId) {
+    //         buttonResume.classList.remove('hidden');
+    //         buttonResume.onclick = function(e) {
+    //             var currentTime = storedInfo.currentTime;
+    //             video.currentTime = currentTime;
+    //             video.play();
+    //             buttonResume.classList.add('disabled');
+    //         };
+    //     }
+
+    //     console.log('Set onclick event for button!');
+    // }
+
+    function update(episode) {
+        console.log("Updating episode");
+        videosList = getVideosList();
+        var index = -1;
+        for(var i = 0; i < videosList.length; i++) {
+            foundEpisode = videosList[i];
+            if (foundEpisode.userId != userId || foundEpisode.videoId != videoId) {
+                continue;
+            }
+            index = i;
         }
+        if (index != -1) {
+            videosList[index] = episode;
+        } else {
+            videosList.push(episode);
+        }
+        setVideosList(videosList);
+    }
 
-        console.log('Set onclick event for button!');
+    function setVideosList(list) {
+        localStorage.setItem('videos', JSON.stringify(list));
+    }
+
+    function getVideosList() {
+        if (localStorage.getItem('videos') == null) {
+            localStorage.setItem('videos', "[]");
+        }
+        return JSON.parse(localStorage.getItem('videos'));
+    }
+
+    function getVideoFor(givenUserId, videoId) {
+        videosList = getVideosList();
+        if (givenUserId != userId) {
+            console.log('Not permitted to get from other users.');
+            return null;
+        }
+        for(var i = 0; i < videosList.length; i++) {
+            foundEpisode = videosList[i];
+            if (foundEpisode.userId == givenUserId && foundEpisode.videoId == videoId) {
+                return foundEpisode;
+            }
+        }
+        return null;
+    }
+
+    function isCurrentEpisode(episode) {
+        return episode != null && episode.userId == userId && episode.videoId == videoId;
     }
