@@ -44,7 +44,7 @@ javascript:
     video.addEventListener('timeupdate', function() {
         var currentTime = video.currentTime;
         videoInfo.currentTime = currentTime;
-        if (currentTime > 10 && episode != null) {
+        if (currentTime > 10) {
             update(videoInfo);
         }
     });
@@ -69,25 +69,6 @@ javascript:
             buttonResume.classList.add('disabled');
         };
     }
-
-    // if (storedInfo != undefined && storedInfo != null) {
-    //     // Then there is something to restore!
-    //     storedInfo = JSON.parse(storedInfo);
-    //     storedVideoId = storedInfo.videoId;
-    //     storedUserId = storedInfo.userId;
-
-    //     if (storedVideoId == videoId && storedUserId == userId) {
-    //         buttonResume.classList.remove('hidden');
-    //         buttonResume.onclick = function(e) {
-    //             var currentTime = storedInfo.currentTime;
-    //             video.currentTime = currentTime;
-    //             video.play();
-    //             buttonResume.classList.add('disabled');
-    //         };
-    //     }
-
-    //     console.log('Set onclick event for button!');
-    // }
 
     function update(episode) {
         console.log("Updating episode");
