@@ -107,6 +107,7 @@ javascript:
     }
 
     function setWatched(episode) {
+        console.log("Making episode as watched");
         $.ajax({
             type: 'POST',
             url: '/json/setWatched',
