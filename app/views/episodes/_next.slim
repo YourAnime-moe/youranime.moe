@@ -19,6 +19,7 @@
             - watched = "watched" if episode.was_watched_by? current_user
             .well.well-sm.fit.clickable.next_episode class="#{watched}" onclick="window.location.href='#{url}'"
                 span #{episode.episode_number}) #{episode.title}
+                div.episode.progressVideo.hidden id="progress_#{episode.id}"
 
 javascript:
     var nextEpisodeContainer = $('#next_episode_container');

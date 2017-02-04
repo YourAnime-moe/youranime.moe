@@ -53,15 +53,18 @@ javascript:
 
     video.addEventListener('timeupdate', function() {
         var currentTime = parseInt(video.currentTime);
-        if (currentTime % 8 != 0) {
-            return;
-        }
+        var duration = parseInt(video.duration);
         videoInfo.currentTime = currentTime;
+        var ratio = (currentTime / duration) * 100;
+        videoInfo.ratio = ratio
+
         if (currentTime > 10) {
             update(videoInfo);
         }
-
-        var ratio = (currentTime / video.duration) * 100;
+        
+        if (currentTime % 8 != 0) {
+            return;
+        }
 
         if (ratio >= watchedMark) {
             setWatched(videoInfo);

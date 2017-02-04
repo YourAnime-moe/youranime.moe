@@ -10,16 +10,17 @@
             br
             .input-group
                 span.input-group-addon
+                    span.glyphicon.glyphicon-pencil
+                = f.text_field :name, class: "form-control", placeholder: "Name (optional)"
+            br
+            .input-group
+                span.input-group-addon
                     span.glyphicon.glyphicon-lock
                 - pp = @_item.is_new? ? "Please enter your new password." : "If you want to change passwords for #{@_item.get_name}, do it here."
                 - ppc = @_item.is_new? ? "Please confirm your new password." : "Please confirm your new password (if applicable)."
                 = f.password_field :password, class: "form-control", placeholder: pp
                 = f.password_field :password_confirmation, class: "form-control", placeholder: ppc
-            br
-            .input-group
-                span.input-group-addon
-                    span.glyphicon.glyphicon-pencil
-                = f.text_field :name, class: "form-control", placeholder: "Name (optional)"
+                
             - unless @_item.id == current_user.id and !current_user.is_admin?
                 br
                 .input-group

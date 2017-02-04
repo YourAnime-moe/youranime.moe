@@ -19,6 +19,12 @@
     background-color: lightblue;
 }
 
+div.episode.progressVideo {
+    height: 4px;
+    background-color: blue;
+    margin-top: 4px;
+}
+
 @media (max-width: 480px) {
     button#resume_video {
         margin-top: 5%;
