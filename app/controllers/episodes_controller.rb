@@ -15,7 +15,7 @@ class EpisodesController < AuthenticatedController
             flash[:warning] = 'Sorry, this episode/show is not ready yet. Please try again later.'
             redirect_to '/shows'; return
         end
-        current_user.add_episode @episode
+        # current_user.add_episode @episode
     end
 
     def random

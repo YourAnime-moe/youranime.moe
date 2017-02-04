@@ -82,6 +82,11 @@ class JsonController < ApplicationController
         end
     end
 
+    def set_watched
+        @episode = Episode.find(params[:id])
+        render json: {message: "sucess", success: current_user.add_episode(@episode)}
+    end
+
     private
         def get_class_from_instance_tag(tag)
             tag = tag.to_s

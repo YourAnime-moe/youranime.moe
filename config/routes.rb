@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get '/json/find_show' => 'json#find_show'
   get '/json/episodes/get_comments' => 'json#episode_get_comments'
   post '/json/episodes/add_comment' => 'json#episode_add_comment'
+  post '/json/setWatched' => 'json#set_watched'
 
   # Oauth
   get '/auth/:provider/callback' => 'sso#create'

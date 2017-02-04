@@ -89,6 +89,14 @@ class Episode < ActiveRecord::Base
         !user.episodes_watched.select { |id| id == self.id }.empty?
     end
 
+    def has_watched_mark?
+        !get_watched_mark.nil?
+    end
+
+    def get_watched_mark
+        80
+    end
+
     def add_comment(comment)
         unless comment.instance_of? Hash
             return {success: false, message: "Invalid data was received."}

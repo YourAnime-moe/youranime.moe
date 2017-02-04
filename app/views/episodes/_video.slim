@@ -1,7 +1,7 @@
 div.no-video.hidden
     span Sorry, it appears this video is broken. Please contact the administrator of the website. 
     span If you have admin rights, please login 
-    a href="" here. 
+    a href="" here.
 
 video#episode_video style="margin-top: 10px;" class="video-js vjs-default-skin" width="100%" height="80%" controls="true"
     source src="#{asset_path(@episode.get_path)}" type="video/mp4"
@@ -29,9 +29,17 @@ ul.pager
     .text-cente
         button#resume_video.btn.btn-success.hidden Resume from last time
 
+- if @episode.has_watched_mark?
+    javascript:
+        var watchedMark = parseInt(#{@episode.get_watched_mark});
+- else
+    javascript:
+        var watchedMark = 91;
+
 javascript:
     var video = document.getElementById('episode_video');
     var buttonResume = document.getElementById('resume_video');
+    var isWatched = #{@episode.was_watched_by? current_user}
     var videoId = #{@episode.id};
     var userId = #{current_user.id};
     var videoInfo = {
@@ -44,10 +52,17 @@ javascript:
     episode = getVideoFor(userId, videoId);
 
     video.addEventListener('timeupdate', function() {
-        var currentTime = video.currentTime;
+        var currentTime = parseInt(video.currentTime);
+        if (currentTime % 8 != 0) {
+            return;
+        }
         videoInfo.currentTime = currentTime;
         if (currentTime > 10) {
             update(videoInfo);
+        }
+
+        if (currentTime >= watchedMark) {
+            setWatched(videoInfo);
         }
     });
 
@@ -89,6 +104,20 @@ javascript:
             videosList.push(episode);
         }
         setVideosList(videosList);
+    }
+
+    function setWatched(episode) {
+        $.ajax({
+            type: 'POST',
+            url: '/json/setWatched',
+            data: 'id=' + videoId,
+            success: function(response) {
+                console.log('')
+            },
+            fail: function() {
+                console.log('Setting episode to watched failed.');
+            }
+        });
     }
 
     function setVideosList(list) {
