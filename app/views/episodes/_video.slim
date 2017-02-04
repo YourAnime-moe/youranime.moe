@@ -61,7 +61,9 @@ javascript:
             update(videoInfo);
         }
 
-        if (currentTime >= watchedMark) {
+        var ratio = (currentTime / video.duration) * 100;
+
+        if (ratio >= watchedMark) {
             setWatched(videoInfo);
         }
     });
