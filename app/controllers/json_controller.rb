@@ -57,7 +57,11 @@ class JsonController < ApplicationController
             render json: {err: 'Episode was not found.'}
         else
             episode = Episode.find(id)
-            usernames = params[:usernames].strip.downcase == 'true'
+            if params[:usernames]
+                usernames = params[:usernames].strip.downcase == 'true'
+            else
+                usernames = false
+            end
             comments = episode.get_comments(usernames: usernames)
             render json: {instance: episode, comments: comments.reverse}
         end
@@ -85,6 +89,17 @@ class JsonController < ApplicationController
     def set_watched
         @episode = Episode.find(params[:id])
         render json: {message: "sucess", success: current_user.add_episode(@episode)}
+    end
+
+    def get_next_episode_id
+        episode = Episode.find_by(id: params[:id])
+        if episode.nil?
+            render json: {success: false}
+        else
+            next_episode = episode.next
+            next_id = next_episode.nil? ? nil : next_episode.id
+            render json: {success: true, next_id: next_id}
+        end
     end
 
     private

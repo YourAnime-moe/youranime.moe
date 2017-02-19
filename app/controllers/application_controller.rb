@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
         end
         redirect_to "/"
     else
+        flash[:danger] = "Your username or password is wrong. Please try again."
         redirect_to "/"
     end
   end

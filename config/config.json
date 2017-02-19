@@ -5,6 +5,11 @@
             "sub_domain": null,
             "domain": "45.55.97.146"
         },
+        "dev": {
+            "protocol": "http",
+            "sub_domain": null,
+            "domain": "192.168.0.13"
+        },
         "admin": {
             "protocol": "https",
             "sub_domain": "my-akinyele-admin",
@@ -15,5 +20,8 @@
             "sub_domain": null,
             "domain": "localhost:4000"
         }
+    },
+    "videojs": {
+        "version": "5.16.0"
     }
 }

@@ -10,6 +10,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
   <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <link rel="stylesheet" type="text/css" href="http://vjs.zencdn.net/<%= videojs_version %>/video-js.css">  
 </head>
 
 <% if logged_in? %>
@@ -58,7 +60,13 @@
           for (var i = 0; i < watched_episodes.length; i++) {
             console.log('Hwllo %s', i);
             watched_episodes[i].title = "You've already watched this episode.";
-            var id = watched_episodes[i].children[0].attributes.name.textContent;
+            var name = watched_episodes[i].children[0].attributes.name;
+
+            if (!name) {
+              return;
+            }
+
+            var id = name.textContent;
             
             videos = localStorage.getItem('videos');
             videos = JSON.parse(videos);
@@ -75,15 +83,12 @@
             }
           }
         });
-    
-        $('#menu-toggle').click(function(e) {
-            e.preventDefault();
-            $('#wrapper').toggleClass('toggled');
-        });
     </script>
     <% end %>
 <!-- /#wrapper -->
 
+    <!-- <script type="text/javascript" src="/js/tp/videojs-playlist/dist/videojs-playlist.js"></script> -->
+    <!-- <script type="text/javascript" src="/js/videojs-playlist.js"></script> -->
 </body>
 
 <% if logged_in? %>

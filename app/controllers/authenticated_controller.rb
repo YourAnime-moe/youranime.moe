@@ -1,5 +1,7 @@
 class AuthenticatedController < ApplicationController
 
+    include EpisodesHelper
+
     before_action {
         unless logged_in?
             redirect_to '/login'

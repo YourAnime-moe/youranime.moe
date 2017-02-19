@@ -20,10 +20,13 @@ $(document).ready(function() {
         remainingChars.html(text.length + '/' + limit);
         if (text.length > limit) {
             setDanger();
+            //disableCTRLSend();
         } else if (text.length >= limit - 10) {
             setWarning();
+            //enableCTRLSend(text);
         } else {
             setNormal();
+            //enableCTRLSend(text);
             enableDisableButton(text);
         }
     });
@@ -33,6 +36,19 @@ $(document).ready(function() {
         post(text);
     });
 });
+
+function disableCTRLSend() {
+    commentTextArea.keydown(null);
+}
+
+function enableCTRLSend(text) {
+    commentTextArea.keydown(function(e) {
+        if (e.keyCode == 13 && e.ctrlKey) {
+            disableButton();
+            post(text);
+        }
+    });
+}
 
 function fetchComments() {
     $.ajax({

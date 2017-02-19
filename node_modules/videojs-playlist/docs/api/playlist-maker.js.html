@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: playlist-maker.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: playlist-maker.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import window from 'global/window';
+import assign from 'object.assign';
+import playItem from './play-item';
+import * as autoadvance from './auto-advance';
+
+/**
+ * Look through an array of playlist items for a specific `source`;
+ * checking both the value of elements and the value of their `src`
+ * property.
+ *
+ * @private
+ * @param  {Array} arr
+ * @param  {String} src
+ * @return {Number}
+ */
+const indexInSources = (arr, src) => {
+  for (let i = 0; i &lt; arr.length; i++) {
+    let sources = arr[i].sources;
+
+    if (Array.isArray(sources)) {
+      for (let j = 0; j &lt; sources.length; j++) {
+        let source = sources[j];
+
+        if (source &amp;&amp; (source === src || source.src === src)) {
+          return i;
+        }
+      }
+    }
+  }
+
+  return -1;
+};
+
+/**
+ * Factory function invoked by the plugin. This creates an own playlist
+ * function on the player instance to replace the method on the Player
+ * prototype.
+ *
+ * @ignore
+ * @param    {Player} player
+ * @param    {Array}  [initialList]
+ *           A initial list of sources from which to build a playlist.
+ *
+ * @return   {Function}
+ */
+const factory = (player, initialList) => {
+  let list = Array.isArray(initialList) ? initialList.slice() : [];
+
+  /**
+   * An instance of {@link Player}.
+   *
+   * @namespace player
+   */
+
+  /**
+   * The own playlist function added to the player instance.
+   *
+   * @function  playlist
+   * @memberOf  player
+   * @namespace player.playlist
+   * @param     {Array} newList
+   * @return    {Array}
+   */
+  const playlist = player.playlist = function(newList) {
+    if (Array.isArray(newList)) {
+      list = newList.slice();
+      playlist.first();
+      playlist.changeTimeout_ = window.setTimeout(() => {
+        player.trigger('playlistchange');
+      }, 0);
+    }
+
+    return list.slice();
+  };
+
+  player.on('loadstart', () => {
+    if (playlist.currentItem() === -1) {
+      autoadvance.reset(player);
+    }
+  });
+
+  player.on('dispose', () => {
+    window.clearTimeout(playlist.changeTimeout_);
+  });
+
+  assign(playlist, {
+    currentIndex_: -1,
+    player_: player,
+    autoadvance_: {},
+
+    /**
+     * Get or set the current item in the playlist.
+     *
+     * @function  currentItem
+     * @memberOf  player.playlist
+     * @param     {Number} [index]
+     *            If given as a valid value, plays the playlist item at that index.
+     *
+     * @return    {Number}
+     *            The current item index.
+     */
+    currentItem(index) {
+      if (
+        typeof index === 'number' &amp;&amp;
+        playlist.currentIndex_ !== index &amp;&amp;
+        index >= 0 &amp;&amp;
+        index &lt; list.length
+      ) {
+        playlist.currentIndex_ = index;
+        playItem(
+          playlist.player_,
+          playlist.autoadvance_.delay,
+          list[playlist.currentIndex_]
+        );
+      } else {
+        playlist.currentIndex_ = playlist.indexOf(playlist.player_.currentSrc() || '');
+      }
+
+      return playlist.currentIndex_;
+    },
+
+    /**
+     * Checks if the playlist contains a value.
+     *
+     * @method    contains
+     * @memberOf  player.playlist
+     * @param     {String|Object|Array} value
+     * @return    {Boolean}
+     */
+    contains(value) {
+      return playlist.indexOf(value) !== -1;
+    },
+
+    /**
+     * Gets the index of a value in the playlist or -1 if not found.
+     *
+     * @method    indexOf
+     * @memberOf  player.playlist
+     * @param     {String|Object|Array} value
+     * @return    {Number}
+     */
+    indexOf(value) {
+      if (typeof value === 'string') {
+        return indexInSources(list, value);
+      }
+
+      let sources = Array.isArray(value) ? value : value.sources;
+
+      for (let i = 0; i &lt; sources.length; i++) {
+        let source = sources[i];
+
+        if (typeof source === 'string') {
+          return indexInSources(list, source);
+        } else if (source.src) {
+          return indexInSources(list, source.src);
+        }
+      }
+
+      return -1;
+    },
+
+    /**
+     * Plays the first item in the playlist.
+     *
+     * @method    first
+     * @memberOf  player.playlist
+     * @return    {Object|undefined}
+     *            Returns undefined and has no side effects if the list is empty.
+     */
+    first() {
+      if (list.length) {
+        return list[playlist.currentItem(0)];
+      }
+
+      playlist.currentIndex_ = -1;
+    },
+
+    /**
+     * Plays the next item in the playlist.
+     *
+     * @method    next
+     * @memberOf  player.playlist
+     * @return    {Object|undefined}
+     *            Returns undefined and has no side effects if on last item.
+     */
+    next() {
+
+      // Make sure we don't go past the end of the playlist.
+      let index = Math.min(playlist.currentIndex_ + 1, list.length - 1);
+
+      if (index !== playlist.currentIndex_) {
+        return list[playlist.currentItem(index)];
+      }
+    },
+
+    /**
+     * Plays the previous item in the playlist.
+     *
+     * @method    previous
+     * @memberOf  player.playlist
+     * @return    {Object|undefined}
+     *            Returns undefined and has no side effects if on first item.
+     */
+    previous() {
+
+      // Make sure we don't go past the start of the playlist.
+      let index = Math.max(playlist.currentIndex_ - 1, 0);
+
+      if (index !== playlist.currentIndex_) {
+        return list[playlist.currentItem(index)];
+      }
+    },
+
+    /**
+     * Sets up auto-advance on the playlist.
+     *
+     * @method    autoadvance
+     * @memberOf  player.playlist
+     * @param     {Number} seconds
+     */
+    autoadvance(seconds) {
+      playlist.autoadvance_.delay = seconds;
+      autoadvance.setup(playlist.player_, seconds);
+    }
+  });
+
+  playlist.first();
+
+  return playlist;
+};
+
+export default factory;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Player_.html">Player</a></li></ul><h3>Namespaces</h3><ul><li><a href="player.html">player</a></li><li><a href="player.playlist.html">playlist</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Dec 30 2015 11:10:20 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

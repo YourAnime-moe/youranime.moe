@@ -3,12 +3,15 @@ div.no-video.hidden
     span If you have admin rights, please login 
     a href="" here.
 
-video#episode_video style="margin-top: 10px;" class="video-js vjs-default-skin" width="100%" height="80%" controls="true"
-    source src="#{asset_path(@episode.get_path)}" type="video/mp4"
-    source src="#{asset_path(@episode.get_path)}" type="video/mkv"
-    source src="#{asset_path(@episode.get_path)}" type="video/avi"
-    span MP4 not supported or video not found.
+div style="margin-top: 10px;"
+    video#episode_video.video-js.vjs-big-play-centered class="video-js vjs-default-skin" width="640" height="264" controls="true" data-setup='{"fluid": true}'
+        source src="#{asset_path(@episode.get_path)}" type="video/mp4"
+        source src="#{asset_path(@episode.get_path)}" type="video/mkv"
+        source src="#{asset_path(@episode.get_path)}" type="video/avi"
+        span MP4 not supported or video not found.
 
+script src="http://vjs.zencdn.net/#{videojs_version}/video.js"
+script src="/js/nextEpisode.js"
 
 link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 ul.pager
@@ -42,12 +45,11 @@ javascript:
     var isWatched = #{@episode.was_watched_by? current_user}
     var videoId = #{@episode.id};
     var userId = #{current_user.id};
+    var markedAsWatched = false;
     var videoInfo = {
         videoId: videoId,
         userId: userId
     };
-
-    video.play();
 
     episode = getVideoFor(userId, videoId);
 
@@ -69,6 +71,39 @@ javascript:
         if (ratio >= watchedMark) {
             setWatched(videoInfo);
         }
+    });
+
+    $('document').ready(function() {
+        window.addEventListener('keydown', function(e) {
+            if (e.keyCode === 32 && e.target == document.body) {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            target = e.target;
+            tagName = target.tagName;
+            if (e.keyCode === 32 && tagName != "TEXTAREA" && tagName != "INPUT") {
+                if (video && video.play) {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+            }
+        });
+    });
+
+    videojs('episode_video').ready(function() {
+        var vjsPlayer = this;
+        vjsPlayer.on("pause", function() {
+            vjsPlayer.bigPlayButton.show();
+        });
+        vjsPlayer.on("play", function() {
+            vjsPlayer.bigPlayButton.hide();
+        });
+        vjsPlayer.play();
     });
 
     var videosList = localStorage.getItem('videos');
@@ -112,13 +147,17 @@ javascript:
     }
 
     function setWatched(episode) {
-        console.log("Making episode as watched");
+        console.log("Making episode as watched...");
+        if (markedAsWatched) {
+            console.log("Already marked as watched.");
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: '/json/setWatched',
             data: 'id=' + videoId,
             success: function(response) {
-                console.log('')
+                markedAsWatched = true;
             },
             fail: function() {
                 console.log('Setting episode to watched failed.');
