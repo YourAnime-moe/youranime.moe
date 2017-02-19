@@ -18,6 +18,7 @@ class UsersController < AuthenticatedController
     end
 
     def news
+        set_title before: "Application News", after: "What's up?"
     end
 
     def update

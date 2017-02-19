@@ -16,14 +16,16 @@ br
         #episode_history_container
             - @episodes.each do |episode|
                 .well.well-lg.fit class="show_#{episode.show.id}"
-                    span Episode #{episode.episode_number} ("#{episode.title}" from #{episode.show.get_title})
+                    span Episode #{episode.episode_number} 
+                    br
+                    span style="font-size: 70%;" "#{episode.title}" from #{episode.show.get_title}
                     .right.desktop
-                        a.btn.btn-info href="/shows?id=#{episode.show.id}" Go to show
+                        a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
                         a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
 
                     .mobile.text-center
                         br
-                        a.btn.btn-info href="/shows?id=#{episode.show.id}" Go to show
+                        a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
                         a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
 
     .col-md-1

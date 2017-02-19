@@ -16,8 +16,7 @@ $(document).ready(function() {
     fetchComments();
 
     commentTextArea.on('input', function(e) {
-        text = commentTextArea.val().trim();
-        remainingChars.html(text.length + '/' + limit);
+        setRemainingChars();
         if (text.length > limit) {
             setDanger();
             //disableCTRLSend();
@@ -48,6 +47,11 @@ function enableCTRLSend(text) {
             post(text);
         }
     });
+}
+
+function setRemainingChars() {
+    text = commentTextArea.val().trim();
+    remainingChars.html(text.length + '/' + limit);
 }
 
 function fetchComments() {
@@ -118,6 +122,7 @@ function post(text) {
             console.log(message);
             fetchComments();
             enableButton();
+            setRemainingChars();
         }
     });
 };

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     if logged_in?
         redirect_to "/users/#{current_user.username}"
     else
-        set_title home: true
+        set_title after: "Welcome", before: "Login"
         render 'login'
     end
   end
