@@ -22,21 +22,21 @@
 
 <body>
 
-<% unless @login %>
+                        <% unless @login %>
     <div id="wrapper">
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
+            <div class="<%= @body_class %>">
                 <div class="row">
                     <div class="col-lg-12">
                         <!-- <a href="#menu-toggle" class="btn btn-default">Show/Hide menu</a> -->
-                        <% unless @login %>
-                            <% flash.each do |message_type, message| %>
-                                <div id="flash" class="alert alert-<%= message_type %>"><%= message %></div>
+                            <% unless @login %>
+                                <% flash.each do |message_type, message| %>
+                                    <div id="flash" class="alert alert-<%= message_type %>"><%= message %></div>
+                                <% end %>
                             <% end %>
-                        <% end %>
                         <% end %>
                         <div class="anime-body">
                           <%= yield %>
@@ -50,12 +50,15 @@
 
     </div>
     <!-- Toggle script -->
-    <script>
+    <script type="text/javascript">
         $('document').ready(function() {
           setTimeout(function() {
             $('#flash').slideUp();
           }, 3000);
-
+        });
+    </script>
+                        <% end %>
+    <script type="text/javascript">
           var watched_episodes = $('html').find('.watched');
           for (var i = 0; i < watched_episodes.length; i++) {
             console.log('Hwllo %s', i);
@@ -82,9 +85,7 @@
                 }
             }
           }
-        });
     </script>
-    <% end %>
 <!-- /#wrapper -->
 
     <!-- <script type="text/javascript" src="/js/tp/videojs-playlist/dist/videojs-playlist.js"></script> -->

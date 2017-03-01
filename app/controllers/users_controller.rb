@@ -7,6 +7,7 @@ class UsersController < AuthenticatedController
         set_title(before: "Welcome, #{current_user.get_name}")
         @shows = Show.lastest(current_user)
         @episodes = current_user.get_latest_episodes(limit: 4)
+        #@body_class = nil
     end
 
     def short_settings
