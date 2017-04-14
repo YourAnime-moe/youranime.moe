@@ -12,7 +12,7 @@
             </p>
 
             <form id="login-form" onsubmit="return login('<%= error_cont_id %>')">
-                <div id="login-error" class="text-center mobile">
+                <div id="login-error" class="text-center">
                     <div class="login-register-error">
                         <p id="error-message"></p>
                     </div>
@@ -20,12 +20,7 @@
 
                 <input type="text" id="username" class="login" name="username" placeholder="your username"/>
                 <input type="password" id="password" class="login" name="password" placeholder="your password"/>
-
-                <div id="login-error" class="text-center desktop">
-                    <div class="login-register-error">
-                        <p id="<%= error_cont_id %>"></p>
-                    </div>
-                </div>
+                <br>
 
                 <button class="btn" value="login" id="">login</button>
             </form>

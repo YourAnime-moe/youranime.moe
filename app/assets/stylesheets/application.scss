@@ -353,6 +353,11 @@ body {
 }
 
 @media (max-width: 480px) {
+    .vertical-center {
+        min-height: 100%;
+        min-height: 85vh;
+    }
+
     .hero-image {
         height: 130px;
         margin: 30px;
