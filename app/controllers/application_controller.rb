@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login_post
-    username = params[:one].strip
+    username = params[:one].strip.downcase
     password = params[:two].strip
 
     render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0

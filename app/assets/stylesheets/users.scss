@@ -13,6 +13,10 @@
     }
 }
 
+div.recently-watched {
+    margin-bottom: 100px;
+}
+
 .item {
     img {
         height: auto;
@@ -39,6 +43,10 @@ p.login-time-info {
 
     p.login-time-info {
         font-size: 95%;
+    }
+
+    div.recently-watched {
+        margin-bottom: 60px;
     }
 
 }

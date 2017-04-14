@@ -1,51 +1,53 @@
 = render 'users/home/carousel'
 
-h2 Welcome!
+.text-center
+    h2 Welcome!
 
-.well.fit.comments
-    - if @shows.empty?
-        span It looks like you haven't watched anything yet. 
-        a href='/shows' Start watching anime right away!
-
-    - else
-        h4 Recently watched...
-        .container
-            = render 'users/home/last_time'
-            - if current_user.get_episodes_watched.size > 4
-                a.btn.btn-primary.right href="/shows/history" View history...
-
-- if News.all.size > 0
+.container
     .well.fit.comments
-        - news_entry = News.last
-        h4.strong News: #{news_entry.title}
-        p #{news_entry.description}
+        - if @shows.empty?
+            span It looks like you haven't watched anything yet. 
+            a href='/shows' Start watching anime right away!
+
+        - else
+            h4 Recently watched...
+            div.recently-watched
+                = render 'users/home/last_time'
+                - if current_user.get_episodes_watched.size > 4
+                    a.btn.btn-primary.right href="/shows/history" View history...
+
+    - if News.all.size > 0
+        .well.fit.comments
+            - news_entry = News.last
+            h4.strong News: #{news_entry.title}
+            p #{news_entry.description}
 
 
-.well.fit.comments
-    h4 Additional notes
-    ul
-        li.desktop
-            p Do you have a mobile device? Well, this is your lucky day. This website is compatible any mobile device out there.
-        li
-            p A new video player skin has been added (no more ugly browser-specify players)!
-        li
-            p.strong New feature: once an episode ends, the next queued episode will automatically start playing.
-        li
-            u An important feature comming soon: make recommendations to easily get new content.
-
-.well.fit.comments
-    h4 Quick links
-
-    ul
-        li
-          a href="/shows" Watch anime
-        - if current_user.has_watched_anything?
+    .well.fit.comments
+        h4 Additional notes
+        ul
+            li.desktop
+                p Do you have a mobile device? Well, this is your lucky day. This website is compatible any mobile device out there.
             li
-              a href="/shows/episodes?id=#{@episodes.first.id}" Go to your lastest episode
-        li
-          a href="/shows/history" Episode history
-        li
-          a href="/settings" Account settings
-        br
-        li
-          a href="/logout" Logout
+                p A new video player skin has been added (no more ugly browser-specify players)!
+            li
+                p.strong New feature: once an episode ends, the next queued episode will automatically start playing.
+            li
+                u An important feature comming soon: make recommendations to easily get new content.
+
+    .well.fit.comments
+        h4 Quick links
+
+        ul
+            li
+              a href="/shows" Watch anime
+            - if current_user.has_watched_anything?
+                li
+                  a href="/shows/episodes?id=#{@episodes.first.id}" Go to your lastest episode
+            li
+              a href="/shows/history" Episode history
+            li
+              a href="/settings" Account settings
+            br
+            li
+              a href="/logout" Logout
