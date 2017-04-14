@@ -7,7 +7,7 @@
 #myCarousel {
     img {
         width: 100%;
-        height: 300px;
+        height: 400px;
         max-height: 600px;
         object-fit: cover;
     }
@@ -47,6 +47,13 @@ p.login-time-info {
 
     div.recently-watched {
         margin-bottom: 60px;
+    }
+
+    #myCarousel {
+        img {
+            height: 200px;
+            max-height: 200px;
+        }
     }
 
 }

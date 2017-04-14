@@ -1,6 +1,7 @@
 class ShowsController < AuthenticatedController
 
     def view
+        @anime_current = "current"
         if params[:view] == 'all'
             view_all
             return
@@ -64,10 +65,12 @@ class ShowsController < AuthenticatedController
     end
 
     def view_all
+        @anime_current = "current"
         @shows = Show.all
     end
 
     def history
+        @anime_current = "current"
         episodes = current_user.get_episodes_watched
         if episodes.empty?
           flash[:warning] = "Sorry, we don't know which epsiodes you've watched yet."

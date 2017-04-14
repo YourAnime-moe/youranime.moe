@@ -1,3 +1,3 @@
 p.strong #{@_item.title} (#{Utils.full_model_date_from(@_item, false)})
-span #{@_item.description}
+span #{@_item.description.html_safe}
 

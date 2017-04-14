@@ -20,7 +20,7 @@
         .well.fit.comments
             - news_entry = News.last
             h4.strong News: #{news_entry.title}
-            p #{news_entry.description}
+            p #{news_entry.description.html_safe}
 
 
     .well.fit.comments

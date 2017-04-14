@@ -1,6 +1,7 @@
 class EpisodesController < AuthenticatedController
 
     def view
+        @anime_current = "current"
         id = params[:id]
         if id.nil?
             flash[:danger] = 'Oops, it looks like an fake episode is with us...'
