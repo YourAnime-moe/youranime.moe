@@ -1,39 +1,42 @@
-a.btn.btn-default href="/shows" Back to shows
+.container-fluid
+    a.btn.btn-default href="/shows" Back to shows
 
-h1.show-title #{@show.get_title}
-/! Episodes go here
-.row
-    .col-md-2
-    .col-md-7
-    .col-md-3.mobile
-        img src="http://45.55.212.231/#{@show.image_path}"
+    h1.show-title #{@show.get_title}
+    /! Episodes go here
+    .row
+        .col-md-2
+        .col-md-7
+        .col-md-3
+            .mobile
+                .text-center
+                    img src="http://45.55.212.231/#{@show.image_path}"
 
-.row style="margin-top: 2%"
-    .col-md-2.description.text-center
-        h3.desktop About
-        span Series #{@show.show_number} - #{@show.year}
-        br
-        span.strong #{@show.episodes.size} episode(s)
-        - if @show.discloses_average_run_time?
+    .row style="margin-top: 2%"
+        .col-md-2.description.text-center
+            h3.desktop About
+            span Series #{@show.show_number} - #{@show.year}
             br
-            u Episodes last about
-            span #{": "}#{@show.average_run_time.to_i} mins.
-        - if @show.has_starring_info?
-            br
-            u Featuring
-            span #{": "}#{@show.starring}
+            span.strong #{@show.episodes.size} episode(s)
+            - if @show.discloses_average_run_time?
+                br
+                u Episodes last about
+                span #{": "}#{@show.average_run_time.to_i} mins.
+            - if @show.has_starring_info?
+                br
+                u Featuring
+                span #{": "}#{@show.starring}
 
-    - if @show.has_image?
-        .col-md-7.well.fit.comments
-            - if @show.has_description?
-                .description
+        - if @show.has_image?
+            .col-md-7.well.fit.comments
+                - if @show.has_description?
+                    .description
+                        span #{@show.description}
+                - @episodes = @show.split_episodes
+                = render 'shows/episodes'
+            .col-md-3.desktop
+                img src="http://45.55.212.231/#{@show.image_path}"
+        - else
+            .col-md-10
+                - if @show.has_description?
                     span #{@show.description}
-            - @episodes = @show.split_episodes
-            = render 'shows/episodes'
-        .col-md-3.desktop
-            img src="http://45.55.212.231/#{@show.image_path}"
-    - else
-        .col-md-10
-            - if @show.has_description?
-                span #{@show.description}
 

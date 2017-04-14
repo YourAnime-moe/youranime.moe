@@ -124,6 +124,9 @@ button, input[type="submit"] {
 .mobile {
     display: none;
 }
+.bootstrap-mobile {
+    display: none;
+}
 .wrapper {
     position: absolute;
     display: table;
@@ -353,6 +356,16 @@ body {
     cursor: pointer;
 }
 
+@media (max-width: 992px) {
+    .mobile {
+        display: block;
+    }
+
+    .desktop {
+        display: none;
+    }
+}
+
 @media (max-width: 480px) {
     .vertical-center {
         min-height: 100%;
@@ -362,13 +375,6 @@ body {
     .hero-image {
         height: 130px;
         margin: 30px;
-    }
-
-    .desktop {
-        display: none;
-    }
-    .mobile {
-        display: block;
     }
 
     .description {
