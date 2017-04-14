@@ -26,20 +26,25 @@ class ApplicationController < ActionController::Base
   end
 
   def login_post
-    username = params[:user][:username]
-    password = params[:user][:password]
+    username = params[:one].strip
+    password = params[:two].strip
+
+    render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0
+    render json: {message: "You forgot your username!"} if password.size > 0 && username.size == 0
+    render json: {message: "You forgot your password, #{username}!"} if username.size > 0 && password.size == 0
+
+    return if username.size == 0 || password.size == 0
 
     user = User.find_by(username: username.downcase)
     unless user.nil?
         if user.authenticate(password)
             log_in user
+            render json: {new_url: "/", success: true}
         else
-          flash[:danger] = "Your username or password is wrong. Please try again."
+          render json: {message: "Sorry #{username}, but your password is wrong. Please try again!"}
         end
-        redirect_to "/"
     else
-        flash[:danger] = "Your username or password is wrong. Please try again."
-        redirect_to "/"
+      render json: {message: "Sorry, but we don't know a \"#{username}\"... Try again!"}
     end
   end
 

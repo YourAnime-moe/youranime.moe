@@ -1,18 +1,35 @@
-<div class="logintron vertical-center">
-    <div class="container text-center">
+<% url = @login_url if !@login_url.nil? %>
+<% url = '/login' if url.nil? %>
+<% error_cont_id = 'error-message' %>
 
-        <b style="font-size: 300%;">Welcome!</b>
+<div class="vertical-center">
+    <div class="wrapper">
+        <div id="login-container" class="text-center">
+            <img src="/img/tanoshimu.png" class="hero-image back"/>
+            <h3 title='Means "to have fun" (楽しむ) in Japanese.'>Tanoshimu ・ Login</h3>
+            <p>
+                Welcome! Please enter your username and password below.
+            </p>
 
-        <% if there_is_an_error? %>
-            <div style="text-align: center;">
-                <div style="margin: 0 auto; width: auto; max-width: 60%; background: #ffc1c1; border: 0.5px solid #e58989; padding: 10px; border-radius: 5px; color: red;">
-                    <%= get_error %>
+            <form id="login-form" onsubmit="return login('<%= error_cont_id %>')">
+                <div id="login-error" class="text-center mobile">
+                    <div class="login-register-error">
+                        <p id="error-message"></p>
+                    </div>
                 </div>
-            </div>
-        <% end %>
-        <p class="welcome-message">
-            Please enter your username and password below.
-        </p>
-        <%= render "/shared/forms/login" %>
+
+                <input type="text" id="username" class="login" name="username" placeholder="your username"/>
+                <input type="password" id="password" class="login" name="password" placeholder="your password"/>
+
+                <div id="login-error" class="text-center desktop">
+                    <div class="login-register-error">
+                        <p id="<%= error_cont_id %>"></p>
+                    </div>
+                </div>
+
+                <button class="btn" value="login" id="">login</button>
+            </form>
+
+        </div>
     </div>
 </div>
