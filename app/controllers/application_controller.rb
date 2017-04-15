@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
     render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0
     render json: {message: "You forgot your username!"} if password.size > 0 && username.size == 0
-    render json: {message: "You forgot your password, #{username}!"} if username.size > 0 && password.size == 0
+    render json: {message: "You forgot your password, <u>#{username}</u>!"} if username.size > 0 && password.size == 0
 
     return if username.size == 0 || password.size == 0
 
@@ -41,10 +41,10 @@ class ApplicationController < ActionController::Base
             log_in user
             render json: {new_url: "/", success: true}
         else
-          render json: {message: "Sorry #{username}, but your password is wrong. Please try again!"}
+          render json: {message: "Sorry <u>#{username}</u>, but your password is wrong. Please try again!"}
         end
     else
-      render json: {message: "Sorry, but we don't know a \"#{username}\"... Try again!"}
+      render json: {message: "Sorry, but we don't know a \"<u>#{username}</u>\"... Try again!"}
     end
   end
 

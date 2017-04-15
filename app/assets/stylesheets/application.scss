@@ -105,6 +105,16 @@ a {
     font-weight: bold;
 }
 
+.login-register-waiting, .message-waiting {
+    color: #b3b300;
+    font-weight: bold;
+}
+
+.login-register-success, .message-success {
+    color: #004d00;
+    font-weight: bold;
+}
+
 .message-success {
     color: green;
     font-weight: bold;

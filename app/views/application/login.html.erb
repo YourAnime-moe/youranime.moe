@@ -1,6 +1,8 @@
 <% url = @login_url if !@login_url.nil? %>
 <% url = '/login' if url.nil? %>
 <% error_cont_id = 'error-message' %>
+<% wait_cont_id = 'waiting-message' %>
+<% succ_cont_id = 'success-message' %>
 
 <div class="vertical-center">
     <div class="wrapper">
@@ -11,10 +13,16 @@
                 Welcome! Please enter your username and password below.
             </p>
 
-            <form id="login-form" onsubmit="return login('<%= error_cont_id %>')">
-                <div id="login-error" class="text-center">
+            <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
+                <div id="login-messages" class="text-center">
                     <div class="login-register-error">
                         <p id="error-message"></p>
+                    </div>
+                    <div class="login-register-waiting">
+                        <p id="waiting-message"></p>
+                    </div>
+                    <div class="login-register-success">
+                        <p id="success-message"></p>
                     </div>
                 </div>
 
