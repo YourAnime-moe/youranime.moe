@@ -55,6 +55,10 @@ class Show < ActiveRecord::Base
         result += parts[1]
     end
 
+    def all_episodes
+        Episode.all.select{ |e| e.show_id == self.id}
+    end
+
     def split_episodes(sort_by: 4)
         episodes = self.episodes
         return nil if episodes.nil?
@@ -72,7 +76,7 @@ class Show < ActiveRecord::Base
 
     def is_published?
         return false if self.published.nil?
-        self.published
+        self.published && self.has_episodes?
     end
 
     def has_episodes?

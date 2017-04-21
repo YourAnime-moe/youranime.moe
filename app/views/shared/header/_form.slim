@@ -1,6 +1,6 @@
 = form_for(:search, url: "/search", html: {onsubmit: "return false;", class: "navbar-form navbar-right"}) do |f|
     .form-group
-        = f.text_field :input, placeholder: "Search for anime...", class: "form-control"
+        = f.text_field :input, placeholder: "Search for anime...", class: "tanoshimu"
         - f.submit "Submit", class: "btn btn-default"
 
         div.right id="result_box" style="display: none; left: 75%; margin-top: 5px; max-height: 300px; overflow-y: auto; overflow-x: hidden;"

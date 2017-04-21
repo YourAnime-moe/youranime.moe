@@ -31,6 +31,17 @@ class Config
         self.all["hosts"]
     end
 
+    def self.api
+        self.all['api']
+    end
+
+    def self.env(key=nil, default=nil)
+        h = self.api["env"]
+        return h unless key and default
+        value = h[key]
+        value ? value : default
+    end
+
     def self.all
         JSONConfig.get(CONFIG_PATH)
     end

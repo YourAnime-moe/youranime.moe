@@ -64,6 +64,14 @@ a {
     height: 75px;
 }
 
+p.small, span.small {
+    size: 50%;
+}
+
+p.very.small, span.very.small {
+    size: 25%;
+}
+
 .back.hero-image {
     /* background: rgba(99,99,139,1); */
 }
@@ -90,7 +98,7 @@ a {
     margin: 5px;
 }
 
-#login-form .input, .login {
+#login-form .input, .login, .tanoshimu {
     height: 40px;
     outline: none;
     border: white;
@@ -98,6 +106,18 @@ a {
     /* background: rgba(99,99,139,0.9); */
     border-radius: 10px;
     border: 1px solid #aaa;
+}
+
+.tanoshimu {
+    height: 35px;
+}
+
+.btn {
+    border-radius: 20px;
+}
+
+.well {
+    border-radius: 0;
 }
 
 .login-register-error, .message-error {

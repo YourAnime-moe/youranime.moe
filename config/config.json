@@ -23,5 +23,15 @@
     },
     "videojs": {
         "version": "5.16.0"
+    },
+    "api": {
+        "host": "https://anilist.co/api",
+        "env": {
+            "client_id": "TANOSHIMU_CLIENT_ID",
+            "secret_id": "TANOSHIMU_CLIENT_SECRET"
+        },
+        "uris": {
+            "req_token": "Post|/auth/access_token"
+        }
     }
 }

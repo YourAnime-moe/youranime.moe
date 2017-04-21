@@ -17,10 +17,12 @@
             h3.desktop About
             span Series #{@show.show_number} - #{@show.year}
             br
-            span.strong #{@show.episodes.size} episode(s)
+            span.strong style="color: green" #{@show.episodes.size} available episode(s)
+            br
+            span.strong.very.small #{@show.all_episodes.size} episodes(s)
             - if @show.discloses_average_run_time?
                 br
-                u Episodes last about
+                u Average length
                 span #{": "}#{@show.average_run_time.to_i} mins.
             - if @show.has_starring_info?
                 br
@@ -28,7 +30,7 @@
                 span #{": "}#{@show.starring}
 
         - if @show.has_image?
-            .col-md-7.well.fit.comments
+            .col-md-7.fit.comments
                 - if @show.has_description?
                     .description
                         span #{@show.description}
