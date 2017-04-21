@@ -1,6 +1,6 @@
 var watched_episodes = $('html').find('.watched');
 for (var i = 0; i < watched_episodes.length; i++) {
-  console.log('Hwllo %s', i);
+  // console.log('Hwllo %s', i);
   watched_episodes[i].title = "You've already watched this episode.";
   var name = watched_episodes[i].children[0].attributes.name;
 

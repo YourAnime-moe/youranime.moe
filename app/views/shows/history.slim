@@ -1,6 +1,6 @@
 .container
     .right
-        select#select_show_control.form-control style="margin-bottom: 5%;"
+        select#select_show_control.form-control style="margin-bottom: 5%; margin-top: 20px; border-radius: 0;"
             option value="none" #{"-- All shows --"}
             - Show.all.to_a.select{|show| show.is_published?}.sort_by(&:get_title).each do |show|
                 option value="show_#{show.id}" #{show.get_title}

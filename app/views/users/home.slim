@@ -14,7 +14,7 @@
             div.recently-watched
                 = render 'users/home/last_time'
                 - if current_user.get_episodes_watched.size > 4
-                    a.btn.btn-primary.right href="/shows/history" View history...
+                    a.btn.btn-primary.right href="/shows/history" style="margin-top: 20px" View history...
 
     - if News.all.size > 0
         .well.fit.comments
@@ -23,7 +23,7 @@
             p #{news_entry.description.html_safe}
 
 
-    .well.fit.comments
+    .well.space.fit.comments
         h4 Additional notes
         ul
             li.desktop
@@ -31,7 +31,7 @@
             li
                 u An important feature comming soon: make recommendations to easily get new content.
 
-    .well.fit.comments.hidden
+    .well.space.fit.comments.hidden
         h4 Quick links
 
         ul

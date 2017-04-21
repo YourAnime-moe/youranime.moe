@@ -13,23 +13,22 @@ div style="margin-top: 10px;"
 script src="https://vjs.zencdn.net/#{videojs_version}/video.js"
 script src="/js/nextEpisode.js"
 
-link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 ul.pager
     - if @episode.has_previous?
-        li.previous
-            a href="/shows/episodes?id=#{@episode.previous.id}"Episode #{@episode.previous.episode_number}
+        .left
+            a.btn.btn-default.previous.chg_video link="/shows/episodes?id=#{@episode.previous.id}" Episode #{@episode.previous.episode_number}
     - else
         li.previous
             a.none None
 
     - if @episode.has_next?
-        li.next
-            a href="/shows/episodes?id=#{@episode.next.id}"Episode #{@episode.next.episode_number}
+        .right
+            a.btn.btn-default.next.chg_video link="/shows/episodes?id=#{@episode.next.id}"Episode #{@episode.next.episode_number}
     - else
         li.next
             a href="/shows" style="color: red; float: right;" Done. More?
 
-    .text-cente
+    .text-center
         button#resume_video.btn.btn-success.hidden Resume from last time
 
 - if @episode.has_watched_mark?
@@ -50,6 +49,15 @@ javascript:
         videoId: videoId,
         userId: userId
     };
+
+    var change_video_elements = document.getElementsByClassName('chg_video');
+    [].forEach.call(change_video_elements, function(element) {
+        element.onclick = function() {
+            video.pause();
+            var url = element.getAttribute('link');
+            document.location.replace(url);
+        }
+    });
 
     episode = getVideoFor(userId, videoId);
 
@@ -112,6 +120,11 @@ javascript:
         vjsPlayer.on("play", function() {
             vjsPlayer.bigPlayButton.hide();
         });
+        var currentTime = episode.currentTime;
+        if (currentTime > 10) {
+            currentTime -= 10;
+        }
+        video.currentTime = currentTime;
         vjsPlayer.play();
     });
 
@@ -137,7 +150,6 @@ javascript:
     }
 
     function update(episode) {
-        console.log("Updating episode");
         videosList = getVideosList();
         var index = -1;
         for(var i = 0; i < videosList.length; i++) {

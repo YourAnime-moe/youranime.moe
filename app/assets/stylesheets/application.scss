@@ -108,8 +108,18 @@ p.very.small, span.very.small {
     border: 1px solid #aaa;
 }
 
-.tanoshimu {
+input.tanoshimu {
     height: 35px;
+}
+
+textarea.tanoshimu {
+    height: auto;
+    outline: none;
+    padding: 10px 15px;
+}
+
+textarea.tanoshimu:focus {
+    outline: none;
 }
 
 .btn {
@@ -118,7 +128,59 @@ p.very.small, span.very.small {
 
 .well {
     border-radius: 0;
+    margin: 0;
+    border: 1px solid #eee;
 }
+
+.well.space {
+    margin-bottom: 20px;
+}
+
+.pager {
+  padding-left: 0;
+  margin: 20px 0;
+  text-align: center;
+  list-style: none;
+}
+.pager li {
+  display: inline;
+}
+.pager li a,
+.pager li span {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+.pager li > a:hover,
+.pager li > a:focus {
+  text-decoration: none;
+  background-color: #eee;
+}
+.pager .next > a,
+.pager .next > span {
+  float: right;
+}
+.pager .previous > a,
+.pager .previous > span {
+  float: left;
+}
+.pager .disabled > a,
+.pager .disabled > a:hover,
+.pager .disabled > a:focus,
+.pager .disabled > span {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff;
+}
+
+.previous, .next {
+  color: #337ab7;
+}
+
+
+
 
 .login-register-error, .message-error {
     color: #990000;
@@ -261,6 +323,14 @@ a.go-back:hover {
     cursor: default;
     font-style: italic;
     color: grey;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
 }
 
 div.form {

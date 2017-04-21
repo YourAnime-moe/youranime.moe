@@ -17,7 +17,7 @@
             - break if episode.id == @episode.show.episodes.first.id
             - url = '/shows/episodes?id=' + episode.id.to_s
             - watched = "watched" if episode.was_watched_by? current_user
-            .well.well-sm.fit.clickable.next_episode class="#{watched}" onclick="window.location.href='#{url}'"
+            .well.space.well-sm.fit.clickable.next_episode class="#{watched}" onclick="window.location.href='#{url}'"
                 span #{episode.episode_number}) #{episode.title}
                 div.episode.progressVideo.hidden id="progress_#{episode.id}"
 

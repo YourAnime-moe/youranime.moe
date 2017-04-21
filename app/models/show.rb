@@ -76,7 +76,7 @@ class Show < ActiveRecord::Base
 
     def is_published?
         return false if self.published.nil?
-        self.published && self.has_episodes?
+        self.published
     end
 
     def has_episodes?

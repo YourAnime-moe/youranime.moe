@@ -1,4 +1,5 @@
 .container-fluid
+    br
     a.btn.btn-default style="white-space: normal;" href='/shows?id=#{@episode.show.id}' Go back to #{@episode.show.get_title}
 
     .row
@@ -7,7 +8,8 @@
             span style="font-size: 200%; padding-top: 20px;" #{@episode.title}
             span  &middot; Episode #{@episode.episode_number}
 
-            = render '/episodes/video'
+            #video_cont
+                = render '/episodes/video'
             = render '/episodes/comments'
 
         .col-md-3.desktop

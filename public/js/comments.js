@@ -34,6 +34,14 @@ $(document).ready(function() {
         disableButton();
         post(text);
     });
+
+    $('#text_area').keydown(function (e) {
+      if (e.ctrlKey && e.keyCode == 13) {
+        disableButton();
+        if (commentTextArea.val().trim())
+            post(commentTextArea.val());
+      }
+    });
 });
 
 function disableCTRLSend() {
@@ -64,7 +72,7 @@ function fetchComments() {
                 console.log('Could not retrieve the comments: ' + message.err);
                 commentTitle.html('Comments are unavailable.');
             } else {
-                console.log(message);
+                // console.log(message);
                 comments = message.comments;
                 if (comments.length < 1) {
                     commentTitle.html('No comments yet.');
