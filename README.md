@@ -3,7 +3,7 @@
 
 #### What is it?
 This is the repository of a functionnal streaming application. Check out a
-live demo [here](https://akinyele.herokuapp.com/#Tanoshimu) on my website!
+live demo [here](https://akinyele.herokuapp.com/#tanoshimu) on my website!
 
 #### How can I use it?
 You can visit [https://tanoshimu.herokuapp.com](https://tanoshimu.herokuapp.com)
