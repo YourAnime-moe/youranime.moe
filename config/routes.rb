@@ -36,6 +36,16 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback' => 'sso#create'
   get '/auth/failure' => 'sso#failure'
 
+  # API
+  post '/api/token' => 'api#token'
+  post '/api/token/destroy' => 'auth_api#destroy_token'
+  get '/api/get/user' => 'auth_api#user'
+  get '/api/get/shows' => 'auth_api#shows'
+  get '/api/get/shows/lastest' => 'auth_api#lastest_shows'
+  get '/api/get/news' => 'auth_api#news'
+  get '/api/get/episodes' => 'auth_api#episodes'
+  get '/api/get/episode/path' => 'auth_api#episode_path'
+
   match '/logout', to: 'sso#destroy', via: :all
 
 end

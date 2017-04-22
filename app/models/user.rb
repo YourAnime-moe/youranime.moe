@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
     }
 
     has_secure_password
+    has_secure_token :auth_token
 
     def get_name
         return "'#{username}'" if self.name.nil?
@@ -50,7 +51,7 @@ class User < ActiveRecord::Base
     end
 
     def get_latest_episodes(limit: 5)
-        limit = 5 if limit < 0
+        limit = 5 if limit.to_s.strip.size < 0 || limit < 0
         episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
         episodes.select!{|e| e.is_published?}
         return episodes if episodes.size <= limit

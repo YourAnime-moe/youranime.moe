@@ -11,6 +11,32 @@ to get started (may take a couple of seconds to load up). But you will need a
 username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail)
 to get your own login credentials!
 
+#### API
+The application comes with a JSON API. It is not fully functionally yet, but allows
+you to login, get information about the current user, get a list of available shows
+and episodes. Here are a couple of useful endpoints:
+```
+POST /api/token => {token, message}
+	username: Your username in base64
+	password: Your password in base64
+
+GET /api/get/shows => {shows: [list of shows]}
+	token :Your token
+
+GET /api/get/episodes => {episodes: [list of episodes]}
+	token :Your token
+
+GET /api/get/news => {news: [list of news]}
+	token :Your token
+
+GET /api/get/user => {all user information}
+	token :Your token
+
+POST /api/token/destroy => {message}
+	token: Your token
+```
+More coming soon!
+
 #### How do I contribute?
 I will create an sqlite3 file for the database. Simply running a migration will
 not work, but I will still post information on how to get started with the app.
