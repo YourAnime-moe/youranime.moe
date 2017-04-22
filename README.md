@@ -21,7 +21,7 @@ Once you have your development environment set up, simply run:
 git clone git@github.com:/thedrummeraki/tanoshimu.git
 cd tanoshimu
 bundle						# Installs all necessary rails packages
-rails 						# Run the server
+rails s						# Run the server
 ```
 
 #### How do I view the models?
@@ -38,7 +38,7 @@ Go to the CLI (command line interface) by running...:
 rails c
 ```
 ... and type:
-```
+```ruby
 users = User.all 			# Gets all saved User instances
 episodes = Episode.all  	# Gets all saved Episode instances
 shows = Show.all 			# Gets all saved Show instances
