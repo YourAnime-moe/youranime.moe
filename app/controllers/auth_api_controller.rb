@@ -1,3 +1,5 @@
+require 'json'
+
 class AuthApiController < ApiController
 
 	before_filter {
@@ -23,13 +25,18 @@ class AuthApiController < ApiController
 
 	def shows
 		if shows_params.empty?
-			shows = Show.all
+			results = Show.all
+			results = results.to_a.sort_by(&:get_title)
+			results.select! {|show| show.is_published?}
 		else
-			shows = Show.find_by(shows_params)
+			results = Show.find_by(shows_params) || {}
+			json = results.to_json
+			my_hash = JSON.parse json
+			my_hash[:available_episodes] = results.episodes.size
+			my_hash[:total_episodes] = results.all_episodes.size
+			results = my_hash
 		end
-		shows = shows.to_a.sort_by(&:get_title)
-		shows.select! {|show| show.is_published?}
-		render json: {shows: shows, success: true}
+		render json: {shows: results, success: true}
 	end
 
 	def latest_shows
@@ -47,11 +54,32 @@ class AuthApiController < ApiController
 	def episodes
 		if episodes_params.empty?
 			episodes = Episode.all
+		elsif episodes_params.keys.include? "show_id"
+			episodes = []
+			show = Show.find_by(id: episodes_params[:show_id])
+			unless show.nil?
+				show.episodes.each do |ep|
+					result = ep.to_json
+					result = JSON.parse result
+					pv = ep.previous
+					nx = ep.next
+					result[:calc_next_id] = nx.id if nx
+					result[:calc_prev_id] = pv.id if pv
+					result[:is_published] = ep.is_published?
+					episodes.push result
+				end
+			end
 		else
 			episodes = Episode.find_by(episodes_params)
 		end
-		episodes = episodes.to_a
-		episodes.select! {|episode| episode.is_published?}
+		unless episodes.class == Episode
+			episodes = episodes.to_a
+			begin
+				episodes.select! {|episode| episode.is_published?}
+			rescue NoMethodError => e
+				episodes.select! {|episode| episode[:is_published] == true}
+			end
+		end
 		render json: {episodes: episodes, success: true}
 	end
 
