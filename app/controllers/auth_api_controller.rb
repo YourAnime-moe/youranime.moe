@@ -27,7 +27,7 @@ class AuthApiController < ApiController
 		else
 			shows = Show.find_by(shows_params)
 		end
-		shows = shows.to_a
+		shows = shows.to_a.sort_by(&:get_title)
 		shows.select! {|show| show.is_published?}
 		render json: {shows: shows, success: true}
 	end
