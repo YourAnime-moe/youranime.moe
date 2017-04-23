@@ -124,7 +124,7 @@ class Show < ActiveRecord::Base
         [:get_title]
     end
 
-    def self.lastest(current_user)
+    def self.lastest(current_user, limit: 5)
         episodes = current_user.get_episodes_watched
         episodes = episodes.map{|e| Episode.find e}.reverse
         shows = []
@@ -134,7 +134,7 @@ class Show < ActiveRecord::Base
             next unless show.is_published?
             next unless show.has_image?
             shows.push show unless shows.include? show
-            break if shows.size >= 5
+            break if shows.size >= limit
         end
         shows
     end

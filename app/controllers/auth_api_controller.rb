@@ -3,16 +3,22 @@ class AuthApiController < ApiController
 	before_filter {
 		token = params[:token]
 		if token.to_s.strip.empty?
-			render json: {message: "Access denied. No token was specified."}
+			render json: {message: "Access denied. No token was specified.", success: false}
 		end
 		@user = User.find_by(auth_token: token)
 		if @user.nil?
-			render json: {message: "Access denied. Invalid token."}
+			render json: {
+				rails_message: "Access denied. Invalid token.",
+				message: "Did you login on another device?",
+				show_login: true,
+				show_login_message: "Re-login",
+				success: false
+			}
 		end
 	}
 
 	def user
-		render json: @user
+		render json: {user: @user, success: true}
 	end
 
 	def shows
@@ -23,19 +29,19 @@ class AuthApiController < ApiController
 		end
 		shows = shows.to_a
 		shows.select! {|show| show.is_published?}
-		render json: {shows: shows}
+		render json: {shows: shows, success: true}
 	end
 
-	def lastest_shows
+	def latest_shows
 		amount = params[:amount]
 		amount = 5 if amount.to_s.strip.empty?
 		amount = amount.to_i
-		shows = @user.get_latest_episodes limit: amount
-		render json: {shows: shows}
+		shows = Show.lastest @user, limit: amount
+		render json: {shows: shows, success: true}
 	end
 
 	def news
-		render json: {news: News.all}
+		render json: {news: News.all, success: true}
 	end
 
 	def episodes
@@ -46,19 +52,19 @@ class AuthApiController < ApiController
 		end
 		episodes = episodes.to_a
 		episodes.select! {|episode| episode.is_published?}
-		render json: {episodes: episodes}
+		render json: {episodes: episodes, success: true}
 	end
 
 	def episode_path
 		id = params[:id]
 		episode = Episode.find_by(id: id)
 		if episode.nil?
-			render json: {path: nil, message: "No ID was specified."}
+			render json: {path: nil, message: "No ID was specified.", success: false}
 		else
 			if episode.is_published?
-				render json: {path: episode.get_path}
+				render json: {path: episode.get_path, success: true}
 			else
-				render json: {path: nil, message: "Episode is not published."}
+				render json: {path: nil, message: "Episode is not published.", success: false}
 			end
 		end
 	end
@@ -66,9 +72,9 @@ class AuthApiController < ApiController
 	def destroy_token
 		username = @user.username
 		if @user.destroy_token
-			render json: {message: "Token for user #{username} was successfully destroyed."}
+			render json: {message: "Token for user #{username} was successfully destroyed.", success: true}
 		else
-			render json: {message: "Could not destroy token for user #{username}"}
+			render json: {message: "Could not destroy token for user #{username}", success: false}
 		end
 	end
 

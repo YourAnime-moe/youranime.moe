@@ -101,6 +101,10 @@ class User < ActiveRecord::Base
         save ? self.save : true
     end
 
+    def destroy_token
+        self.update_attribute(:auth_token, nil)
+    end
+
     def self.types
         [
             ["Regular user", false],

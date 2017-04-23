@@ -10,7 +10,7 @@ class ApiController < ApplicationController
 		password = token_params[:password]
 
 		if username.to_s.strip.empty? or password.to_s.strip.empty?
-			render json: {token: nil, message: "Please refer to the API documentation (if any)."}
+			render json: {token: nil, message: "Please refer to the API documentation (if any).", success: false}
 			return
 		end
 
@@ -19,19 +19,36 @@ class ApiController < ApplicationController
 
 		user = User.find_by(username: username)
 		if user.nil? or !user.authenticate password
-			render json: {token: nil, message: "Invalid username or password"}
+			render json: {token: nil, message: "Invalid username or password.", success: false}
 			return
 		end
-
-		user.regenerate_auth_token
-		render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!"}
+        
+        # Keep generating tokens until no user with that token exists.
+        user.regenerate_auth_token
+		render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!", success: true}
 	end
+
+    def check
+        token = token_params[:token]
+        if token.to_s.strip.empty?
+            render json: {message: "Missing token", success: false}
+            return
+        end
+        user = User.find_by(auth_token: token)
+        if user
+            json = {success: true, message: "Welcome back, #{user.get_name}!"}
+        else
+            json = {success: false, message: "It appears you have been logged out. Please re-enter your credentials."}
+        end
+        render json: json
+    end
 
 	private
 		def token_params
 			params.permit(
 				:username,
-				:password
+				:password,
+                :token
 			)
 		end
 
