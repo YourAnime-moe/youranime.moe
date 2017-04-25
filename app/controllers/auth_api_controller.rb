@@ -71,8 +71,20 @@ class AuthApiController < ApiController
 			end
 		else
 			episodes = Episode.find_by(episodes_params)
+            if episodes.nil?
+                episodes = {}
+            else
+                result = episodes.to_json
+                result = JSON.parse result
+                pv = ep.previous
+                nx = ep.next
+                result[:calc_next_id] = nx.id if nx
+                result[:calc_prev_id] = pv.id if pv
+                result[:is_published] = ep.is_published?
+                episodes = result
+            end
 		end
-		unless episodes.class == Episode
+		unless episodes.class == Episode or episodes.class == Hash
 			episodes = episodes.to_a
 			begin
 				episodes.select! {|episode| episode.is_published?}
