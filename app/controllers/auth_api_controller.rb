@@ -76,11 +76,11 @@ class AuthApiController < ApiController
             else
                 result = episodes.to_json
                 result = JSON.parse result
-                pv = ep.previous
-                nx = ep.next
+                pv = episodes.previous
+                nx = episodes.next
                 result[:calc_next_id] = nx.id if nx
                 result[:calc_prev_id] = pv.id if pv
-                result[:is_published] = ep.is_published?
+                result[:is_published] = episodes.is_published?
                 episodes = result
             end
 		end
