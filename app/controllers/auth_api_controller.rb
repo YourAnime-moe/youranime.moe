@@ -66,6 +66,7 @@ class AuthApiController < ApiController
 					result[:calc_next_id] = nx.id if nx
 					result[:calc_prev_id] = pv.id if pv
 					result[:is_published] = ep.is_published?
+					result[:watched] = @user.has_watched? ep
 					episodes.push result
 				end
 			end
@@ -93,6 +94,16 @@ class AuthApiController < ApiController
 			end
 		end
 		render json: {episodes: episodes, success: true}
+	end
+
+	def add_episode
+		id = episodes_params[:id]
+		episode = Episode.find_by(id: id)
+		if episode
+			render json: {success: @user.add_episode(episode, save: true)}
+		else
+			render json: {success: false, message: "Episode id #{id} not found."}
+		end
 	end
 
 	def episode_path

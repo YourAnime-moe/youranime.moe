@@ -62,6 +62,14 @@ class User < ActiveRecord::Base
         !self.episodes_watched.nil? and !self.get_episodes_watched.empty?
     end
 
+    def has_watched?(episode)
+        if episode.class == Fixnum
+            episode = Episode.find_by? episode
+        end
+        return false if episode.nil?
+        self.get_episodes_watched(:as_is => true).include? episode.id
+    end
+
     def get_episode_count
         base = "You have watched "
         return base << "0 episodes." if self.get_episodes_watched.empty?

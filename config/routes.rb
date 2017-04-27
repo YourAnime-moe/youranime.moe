@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   post '/api/get/shows/latest' => 'auth_api#latest_shows'
   post '/api/get/news' => 'auth_api#news'
   post '/api/get/episodes' => 'auth_api#episodes'
+  post '/api/set/episodes/watched' => 'auth_api#add_episode'
   post '/api/get/episode/path' => 'auth_api#episode_path'
 
   match '/logout', to: 'sso#destroy', via: :all
