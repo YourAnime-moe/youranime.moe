@@ -1,0 +1,138 @@
+.container
+    h1 Make a recommendation
+    p 
+        | Saw an anime out there that you want here? What a second season?
+        |  Let us know below!
+
+    div
+        br
+        form
+            .text-center
+                input#title.tanoshimu style="width: 50%;" type="text" placeholder="title"
+                br
+                br
+                input#url.tanoshimu style="width: 50%;" type="text" placeholder="URL (optional)"
+            br
+            br
+            .text-center
+                select#dub-sub.tanoshimu style="width: auto;"
+                    option value="true" Dubbed
+                    option value="false" Subbed
+            br
+            br
+            - @placeholder = "Brief description (optional)"
+            = render 'shared/forms/quill_editor'
+            br
+            br
+
+        .text-center
+            button#submit.btn.btn-success style="outline: none;" Submit as "#{current_user.username}"
+
+
+        hr
+        h3 Your recommandations
+
+
+    javascript:
+        $(document).ready(function() {
+            var button = document.getElementById("submit");
+            var select = document.getElementById("dub-sub");
+            var input = document.getElementById("title");
+            var url_input = document.getElementById("url");
+
+            function isValidURL(str) {
+              if (!str || !str.trim) {
+                return false;
+              }
+              str = str.trim()
+              var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+              '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+              '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+              '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+              '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+              '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+              return pattern.test(str);
+              if(!pattern.test(str) && str) {
+                return false;
+              } else {
+                return true;
+              }
+            }
+
+            url_input.onkeyup = checkErrorsURL;
+            url_input.onkeydown = checkErrorsURL;
+
+            function isValidData(data) {
+                return data.text.trim() && data.title.trim();
+            }
+
+            function hideErrors(input, placeholder) {
+                input.style.border = "1px solid grey";
+                input.setAttribute("placeholder", placeholder)
+            }
+
+            function showErrors(input, placeholder, hide) {
+                if (hide) {
+                    input.value = "";
+                }
+                input.style.border = "1px solid red";
+                input.setAttribute("placeholder", placeholder);
+            }
+
+            function checkErrorsURL(e) {
+                var data = e && e.target ? e.target.value : e;
+                if (!isValidURL(data)) {
+                    showErrors(url_input, 'Please enter a valid URL.', false);
+                    return;
+                } else {
+                    hideErrors(url_input, 'URL (optional)');
+                }
+            }
+
+            button.addEventListener('click', function(e) {
+                hideErrors(input, 'Title');
+                hideErrors(url_input, 'URL (optional)');
+
+                var my_data = {};
+                my_data.html = quill.root.innerHTML;
+                my_data.text = quill.root.innerText;
+                my_data.dubbed_or_subbed = select.children[select.selectedIndex];
+                my_data.dubbed_or_subbed = my_data.dubbed_or_subbed.getAttribute("value");
+                my_data.title = input.value;
+
+                if (!my_data.title.trim()) {
+                    showErrors(input, 'You forgot the title!');
+                    return;
+                }
+
+                checkErrorsURL();
+
+                var ajax_data = {
+                    url: "/recommendations/new",
+                    method: "post",
+                    data: "title=" + my_data.title + "&dubsub=" + my_data.dubbed_or_subbed + "&html=" + my_data.html,
+                    success: function(e) {
+                        console.log(e);
+                    }
+                }
+
+                $.ajax(ajax_data);
+            });
+        });
+
+        function fetchAllRecommandations() {
+            $.ajax({
+                url: "/recommendations/get?all",
+                method: "get",
+                data: "id=" + "#{current_user.id}",
+                success: function(e) {
+                    addRecommandation(e.result);
+                }
+            });
+        }
+
+        function addRecommandation(recommendation) {
+            var data = recommendation;
+            
+        }
+

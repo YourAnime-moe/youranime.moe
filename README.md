@@ -11,7 +11,7 @@ to get started (may take a couple of seconds to load up). But you will need a
 username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail)
 to get your own login credentials!
 
-#### API
+#### RESTful API
 The application comes with a JSON API. It is not fully functionally yet, but allows
 you to login, get information about the current user, get a list of available shows
 and episodes. Here are a couple of useful endpoints:

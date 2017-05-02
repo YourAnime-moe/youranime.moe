@@ -62,7 +62,6 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id) {
 		success: function(e) {
 			waiting_container.innerHTML = "";
 			error_container.innerHTML = "";
-			console.log(e);
 			if (!e.success) {
 				enableForm(form_container);
 				error_container.innerHTML = e.message;

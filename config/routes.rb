@@ -24,6 +24,10 @@ Rails.application.routes.draw do
   get '/shows/episodes' => 'episodes#view'
   get '/shows/episodes/random' => 'episodes#random'
 
+  # Recommendations
+  get '/recommendations' => 'recommendation#main'
+  post '/recommendations/new' => 'recommendation#create'
+
   # JSON controllers (GET)
   get '/json/search' => 'json#search'
   get '/json/find_show' => 'json#find_show'

@@ -1,0 +1,18 @@
+
+<link rel="stylesheet" type="text/css" href="https://cdn.quilljs.com/1.2.4/quill.snow.css">
+
+<div id="editor">
+</div>
+
+<script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  var options = {theme: 'snow'};
+  var placeholder = "<%= @placeholder %>";
+  if (placeholder) {
+  	options.placeholder = placeholder;
+  }
+  var quill = new Quill('#editor', options);
+  var editor = quill.root;
+</script>
