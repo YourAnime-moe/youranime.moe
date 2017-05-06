@@ -4,7 +4,7 @@ class Config
     LINK_TAG_SIZE = 2
 
     def self.main_host
-        Rails.env == "production" ? _fetch_host(:main) : _fetch_host(:dev)
+        Rails.env == "production" ? _fetch_host(:main) : _fetch_host(:main)
     end
 
     def self.admin_host(*tags)

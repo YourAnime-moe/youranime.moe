@@ -1,0 +1,99 @@
+#!/usr/bin/python
+"""
+A little python script I wrote to generate video
+thumbnails.
+
+To get this working on an Ubuntu machine:
+$ sudo apt-get install python-pip & sudo pip install --upgrade pip
+$ sudo apt-get install python-dev cython libavcodec-dev libavformat-dev libswscale-dev
+$ sudo pip install image
+$ sudo pip install ffvideo
+$ ./create_thumbnails [-f folder] [-ext video extension] [-out output folder]
+
+A regular call
+$ ./create_thumbnails
+Will scan the current folder for videos ending with mp4 extension, and output all
+generated thumbnails to the current video.
+"""
+
+import sys
+from ffvideo import VideoStream
+from os import listdir
+from os.path import isfile, join
+
+
+def generate_images(options):
+	folder = options['folder']
+	extension = options['extension']
+	output_dir = options['out']
+
+	files = _get_files_from_folder(folder, extension)
+	for f in files:
+		name = _get_name_from_filename(f)
+		img_name = name + '.' + 'jpg'
+		if output_dir.endswith('/'):
+			output_dir = output_dir[:-1]
+
+		img_name = '%s/%s' % (output_dir, img_name)
+		
+		video_location = folder
+		if video_location.endswith('/'):
+			video_location = video_location[:-1]
+		video_location = '%s/%s' % (video_location, f)
+
+		video = VideoStream(video_location)
+		duration = int(video.duration / 2)
+		frame = video.get_frame_at_sec(duration)
+
+		frame.image().save(img_name)
+		print('Thumbnail from video %s saved at %s' % (f, img_name))
+
+
+
+def _get_files_from_folder(folder, ext):
+	files = [f for f in listdir(folder) if isfile(join(folder, f))]
+	if ext:
+		files = [_ for _ in files if _.endswith(ext)]
+	return files
+
+
+def _get_name_from_filename(filename):
+	if '.' not in filename:
+		return filename
+
+	return filename.split('.')[0]
+
+
+def _get_arg(key, args, def_val=None):
+	if key not in args:
+		return def_val
+	try:
+		value = args[args.index(key)+1]
+		if value.startswith('-'):
+			raise IndexError()
+		return value
+	except IndexError:
+		print("Invalid use of argument %s" % key)
+		sys.exit(1)
+
+
+def _parse_args(args):
+	options = {}
+	folder = _get_arg('-f', args, def_val='.')
+	out = _get_arg('-out', args, def_val='.')
+	extension = _get_arg('-ext', args, def_val='mp4')
+	if '.' in extension:
+		parts = extension.split('.')
+		extension = parts[len(parts) - 1]
+
+	options['folder'] = folder
+	options['extension'] = extension
+	options['out'] = out
+
+	return options
+
+if __name__ == "__main__":
+	args = sys.argv
+	args = _parse_args(args)
+
+	generate_images(args)

@@ -84,6 +84,17 @@ class Episode < ActiveRecord::Base
         Config.path self.path
     end
 
+    def get_image_path(ext: 'jpg')
+        video_path = self.get_path
+        parts = video_path.split('/')
+        filename = parts[parts.size-1]
+        fs = filename.split '.'
+        fs[1] = ext.to_s
+        filename = fs.join '.'
+        parts[parts.size-1] = filename
+        parts.join '/'
+    end
+
     def was_watched_by?(user)
         return false if user.episodes_watched.nil? or user.episodes_watched.empty?
         !user.episodes_watched.select { |id| id == self.id }.empty?
