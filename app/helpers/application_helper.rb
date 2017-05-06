@@ -10,6 +10,10 @@ module ApplicationHelper
         Utils.get_date_from_time(Time.parse(@login_time).getlocal)
     end
 
+    def update
+        ENV["UPDATE"] || "2017/01/19"
+    end
+
     def is_watching_something(what)
         return !session[:currently_watching].nil? if what.nil?
         what = what.to_s
