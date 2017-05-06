@@ -14,7 +14,8 @@
             div.recently-watched
                 = render 'users/home/last_time'
                 - if current_user.get_episodes_watched.size > 4
-                    a.btn.btn-primary.right href="/shows/history" style="margin-bottom: 20px" View history...
+                    div style="text-align: right"
+                        a.btn.btn-primary href="/shows/history" style="margin-bottom: 20px" View history...
 
     - if News.all.size > 0
         .well.fit.comments
