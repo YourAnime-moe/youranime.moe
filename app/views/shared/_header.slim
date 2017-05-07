@@ -6,6 +6,5 @@ nav.navbar.navbar-default
       = render 'shared/header/links'
 
       = render 'shared/header/form' unless @search
-      - if current_user.username == "akinyele"
-        .right
-          = render 'shared/header/right'
+      .right
+        = render 'shared/header/right'

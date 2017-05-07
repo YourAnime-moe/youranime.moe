@@ -93,7 +93,7 @@ def _parse_args(args):
 	return options
 
 if __name__ == "__main__":
-	args = sys.argv-
+	args = sys.argv
 	args = _parse_args(args)
 
 	generate_images(args)
