@@ -64,7 +64,7 @@ class Config
             protocol = "http" if protocol.nil?
             sub_domain = hosts_info["sub_domain"]
             domain = hosts_info["domain"]
-            if host_info["env"]
+            if hosts_info["env"]
                 domain = ENV[domain]
             end
             raise AppError.new if domain.nil?
