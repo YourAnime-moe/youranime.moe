@@ -16,39 +16,49 @@ The application comes with a JSON API. It is not fully functionally yet, but all
 you to login, get information about the current user, get a list of available shows
 and episodes. Here are a couple of useful endpoints:
 ```
-POST /api/token => {token, message}
+POST /api/token => {token:string, message:string}
 	username: Your username in base64
 	password: Your password in base64
 
-GET /api/get/shows => {shows: [list of shows]}
-	token :Your token
+POST /api/check => {message:string, success:boolean}
+    token: Your token
 
-GET /api/get/episodes => {episodes: [list of episodes]}
-	token :Your token
+POST /api/get/shows => {shows:[list]}
+	token: Your token
 
-GET /api/get/news => {news: [list of news]}
-	token :Your token
+POST /api/get/episodes => {episodes:[list]}
+	token: Your token
 
-GET /api/get/user => {all user information}
-	token :Your token
+POST /api/get/episode/path => {path:null or string, message:string, success:boolean}
+	token: Your token
 
-POST /api/token/destroy => {message}
+POST /api/get/news => {news:[list]}
+	token: Your token
+
+POST /api/get/user => {all user information}
+	token: Your token
+
+POST /api/token/destroy => {message:string}
 	token: Your token
 ```
-More coming soon!
+You can use this API on the production app (provided you have login credentials), or on
+the development application. How? Go to the next section explaining how to install it and
+to get it running!
 
-#### How do I contribute?
-I will create an sqlite3 file for the database. Simply running a migration will
-not work, but I will still post information on how to get started with the app.
+More endpoints coming soon!
 
+#### How do I contribute or check out the project?
 This is a Rails application, so you will have to have *Ruby* and *Ruby on Rails* installed.
 Once you have your development environment set up, simply run:
 ```
 git clone git@github.com:/thedrummeraki/tanoshimu.git
 cd tanoshimu
+cp database.sample db/development.sqlite3
 bundle						# Installs all necessary rails packages
 rails s						# Run the server
 ```
+Once the server is running, you can go to http://localhost:3000. You can login with credentials ```tanoshimu```
+(both username and password).
 
 #### How do I view the models?
 As the time of write this README, the following models available are:
