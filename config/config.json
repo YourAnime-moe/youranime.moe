@@ -3,7 +3,8 @@
         "main": {
             "protocol": "http",
             "sub_domain": null,
-            "domain": "45.55.97.146"
+            "domain": "MAIN_HOST",
+            "env": true
         },
         "dev": {
             "protocol": "http",

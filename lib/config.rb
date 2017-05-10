@@ -4,7 +4,7 @@ class Config
     LINK_TAG_SIZE = 2
 
     def self.main_host
-        Rails.env == "production" ? _fetch_host(:main) : _fetch_host(:main)
+        Rails.env == "production" ? _fetch_host(:main) : _fetch_host(:dev)
     end
 
     def self.admin_host(*tags)
@@ -64,6 +64,9 @@ class Config
             protocol = "http" if protocol.nil?
             sub_domain = hosts_info["sub_domain"]
             domain = hosts_info["domain"]
+            if host_info["env"]
+                domain = ENV[domain]
+            end
             raise AppError.new if domain.nil?
             path = protocol + "://"
             path << sub_domain + "." unless sub_domain.nil?
