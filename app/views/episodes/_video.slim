@@ -120,6 +120,10 @@ javascript:
         vjsPlayer.on("play", function() {
             vjsPlayer.bigPlayButton.hide();
         });
+        if (episode == null) {
+        	vjsPlayer.play();
+        	return;
+        }
         var currentTime = episode.currentTime;
         if (currentTime > 10) {
             currentTime -= 10;
