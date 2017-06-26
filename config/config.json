@@ -9,7 +9,7 @@
         "dev": {
             "protocol": "http",
             "sub_domain": null,
-            "domain": "192.168.0.13"
+            "domain": "192.168.0.37"
         },
         "admin": {
             "protocol": "https",

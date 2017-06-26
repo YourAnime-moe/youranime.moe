@@ -9,11 +9,11 @@
         <div id="login-container" class="text-center">
             <img src="/img/tanoshimu.png" class="hero-image back"/>
             <h3 title='Means "to have fun" (楽しむ) in Japanese.' >Tanoshimu ・ Hi there!</h3>
-            <p style="display: none;" >
+            <p>
                 Welcome! Please enter your username and password below.
             </p>
 
-            <form style="display: none;" id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
+            <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
                 <div id="login-messages" class="text-center">
                     <div class="login-register-error">
                         <p id="error-message"></p>
@@ -31,13 +31,13 @@
                 <br>
 
                 
-                <!-- <button class="btn" value="login" id="">login</button> -->
+                <button class="btn" value="login" id="">login</button>
             </form>
-            <div class="login-register-error">
-                    <p id="error-message">
-                        We are currently experiencing issues with our servers. Please come back soon!
-                    </p>
-                </div>
+            <div class="hidden login-register-error">
+                <p id="error-message">
+                    We are currently experiencing issues with our servers. Please come back soon!
+                </p>
+            </div>
 
         </div>
     </div>
