@@ -31,7 +31,6 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
-gem 'bootstrap-sass'
 gem 'jquery-ui-rails'
 gem 'materialize-sass'
 gem 'material_icons'

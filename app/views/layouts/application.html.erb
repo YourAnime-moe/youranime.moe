@@ -25,12 +25,17 @@
       <%= yield %>
     </div>
 
+    <script type="text/javascript">
+      $(document).ready(function() {
+            $(".button-collapse").sideNav();
+        });
+    </script>
     <script type="text/javascript" src="/js/watched_episodes.js"></script>
 </body>
 
 <% if logged_in? %>
   <footer>
-     <%= render 'shared/footer' %>
+     <% render 'shared/footer' %>
   </footer>
 <% end %>
 </html>

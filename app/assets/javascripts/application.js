@@ -15,4 +15,5 @@
 //= require jquery_ujs
 //= require jquery-ui/widgets/autocomplete
 //= require turbolinks
+//= require materialize-sprockets
 //= require_tree .

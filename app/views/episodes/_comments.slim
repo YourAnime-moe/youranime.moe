@@ -1,20 +1,24 @@
-h4 id="comments_title"
-.well.fit.comments id="comment_section"
-    #text_area.row
-        .col-md-10
-            p
-                span.strong Warning:
-                span  All comments posted will be visible to all registered users on this website. Also, once posted, comments 
-                span.underline cannot be edited
-                span .
-                span.desktop  You can algo press CTRL+Enter to send your comment!
-            br
-            textarea.tanoshimu.form-control id="comment_text_area" placeholder='#{comments_warning}'
-        .col-md-2
-            button.btn.btn-success.right id="comment_submit" Submit
-            .text-center
-                span id="remaining" style="font-size: 80%;" value="ok"
-    #comments
+.container
+    h4 id="comments_title"
+    .fit.comments id="comment_section"
+        #text_area.row
+            .col.m10
+                p
+                    span.strong Warning:
+                    span  All comments posted will be visible to all registered users on this website. Also, once posted, comments 
+                    span.underline cannot be edited
+                    span .
+                    span.desktop  You can algo press CTRL+Enter to send your comment!
+                br
+                .row
+                    .input-field.col.m12
+                        textarea.materialize-textarea id="comment_text_area"
+                        label for="comment_text_area" #{comments_warning}
+            .col.m2
+                button.btn.btn-success.right id="comment_submit" Submit
+                .text-center
+                    span id="remaining" style="font-size: 80%;" value="ok"
+        #comments
 
 javascript:
     var limit = parseInt(#{comments_size_limit});

@@ -1,9 +1,70 @@
-= render 'users/home/carousel'
 
-.text-center
+
+= render 'users/home/carousel-a'
+
+.center.hidden
     h2 Welcome!
 
 .container
+    br
+    h4 Recommended
+    .row
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/iiwtttpugiad.jpg"
+            p It Is Wrong to try to Pick up Girls in a Dungeon?
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/dbz.png"
+            p Dragon Ball Z
+        .col.m4
+            img src="http://99.236.240.169/videos/tanoshimu/snow_white_with_red_hear.png"
+            p Snow White with the Red Hair
+
+    a.btn.waves-effect.waves-light.right More...
+
+    br
+    h4 Featured
+    .row
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/91.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/alice.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+
+    a.btn.waves-effect.waves-light.right More...
+
+    br
+    h4 New Additions
+    .row
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/91.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/alice.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+
+    br
+    h4 This season (Winter 2017)
+    .row
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/91.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/alice.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+
+    br
+    h4 Last season (Fall 2016)
+    .row
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/91.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/alice.jpg"
+        .col.m4
+            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+
+
+.container.hidden
     .well.fit.comments
         - if @shows.empty?
             span It looks like you haven't watched anything yet. 

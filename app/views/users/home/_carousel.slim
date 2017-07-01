@@ -1,5 +1,13 @@
 - if @shows.size > 0
-  #myCarousel.carousel.slide data-ride="carousel" 
+  .carousel.carousel-slider
+    a.carousel-item href="#one!"
+      img src="http://192.168.0.37/videos/icons/sample01.jpeg"
+
+    a.carousel-item href="#two!"
+      img src="http://192.168.0.37/videos/icons/sample02.jpeg"
+
+
+  #myCarousel.hidden.carousel.slide data-ride="carousel" 
     /! Indicators
     ol.carousel-indicators
       - ind = 0
@@ -33,3 +41,7 @@
 
 - else
 
+javascript:
+  $(document).ready(function() {
+      $('.carousel.carousel-slider').carousel({fullWidth: true});
+  });

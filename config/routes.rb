@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   # JSON controllers (GET)
   get '/json/search' => 'json#search'
+  get '/json/shows/latest' => 'users#latest_shows'
   get '/json/find_show' => 'json#find_show'
   get '/json/episodes/get_comments' => 'json#episode_get_comments'
   get '/json/get/episode/next' => 'json#get_next_episode_id'

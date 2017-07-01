@@ -23,6 +23,19 @@ class UsersController < AuthenticatedController
         set_title before: "Application News", after: "What's up?"
     end
 
+    def latest_shows
+        latest = Show.lastest(current_user)
+        res = []
+        latest.each do |l|
+            image_path = l.get_image_path
+            result = l.to_json
+            result = JSON.parse result
+            result[:full_icon_url] = image_path
+            res.push result
+        end
+        render json: res
+    end
+
     def update
         id = params[:id]
         begin

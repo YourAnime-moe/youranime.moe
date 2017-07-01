@@ -24,3 +24,21 @@
     background-repeat: no-repeat;
     padding: 30px;
 }
+
+.title-img {
+     object-fit: cover; 
+     width: 100%; 
+     height: 500px;
+}
+
+@media (max-width: 800px) {
+    .title-img {
+        height: 400px;
+    }
+}
+
+@media (max-width: 400px) {
+    .title-img {
+        height: 300px;
+    }
+}

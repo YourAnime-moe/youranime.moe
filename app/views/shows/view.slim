@@ -25,63 +25,48 @@ css:
       background-position: -24px 0;
     }
 
+.row
+    .col.s12.no-padding
+        img.title-img src="#{Config.path(@show.image_path)}"
+
 .container-fluid
-    div style="margin-top: 20px;"
+    div.hidden style="margin-top: 20px;"
         a.btn.btn-default href="/shows" Back to shows
 
-    h1.show-title #{@show.get_title}
-
-    .col-center
-        / ul#rating.c-rating
-    /! Episodes go here
-    .row
-        .col-md-2
-        .col-md-7
-        .col-md-3
-            .mobile
-                .text-center
-                    img src="#{Config.path(@show.image_path)}"
-
-    .row style="margin-top: 2%"
-        .col-md-2.description.text-center
-            h3.desktop About
-            span Series #{@show.show_number} - #{@show.year}
-            br
-            span.strong style="color: green" #{@show.episodes.size} available episode(s)
-            br
-            span.strong.very.small #{@show.all_episodes.size} episodes(s)
-            - if @show.discloses_average_run_time?
-                br
-                u Average length
-                span #{": "}#{@show.average_run_time.to_i} mins.
-            - if @show.has_starring_info?
-                br
-                u Featuring
-                span #{": "}#{@show.starring}
-
-            .container-fluid
-                h4 Rating
-                .rating.col-lg-1
-                    
-
-        - if @show.has_image?
-            .col-md-7.fit.comments
-                - if @show.has_description?
-                    .description
+    .container
+        .center
+            h4.show-title #{@show.get_title}
+            ul.collapsible data-collapsible="accordion"
+                li
+                    .collapsible-header.active Description
+                    .collapsible-body 
                         span #{@show.description}
-                - @episodes = @show.split_episodes
-                = render 'shows/episodes'
-            .col-md-3.desktop
-                img src="#{Config.path(@show.image_path)}"
-        - else
-            .col-md-10
-                - if @show.has_description?
-                    span #{@show.description}
+                li
+                    .collapsible-header More info...
+                    .collapsible-body 
+                        span Series #{@show.show_number} - #{@show.year}
+                        br
+                        span.strong style="color: green" #{@show.episodes.size} available episode(s)
+                        br
+                        span.strong.very.small #{@show.all_episodes.size} episodes(s)
+                        - if @show.discloses_average_run_time?
+                            br
+                            u Average length
+                            span #{": "}#{@show.average_run_time.to_i} mins.
+                        - if @show.has_starring_info?
+                            br
+                            u Featuring
+                            span #{": "}#{@show.starring}
 
+- @episodes = @show.split_episodes
+= render 'shows/episodes'
 
 script src="/js/rating.min.js"
 
 javascript:
+    $(document).ready(function(){
+        $('.collapsible').collapsible();
+    });
     var rating_cont = document.querySelector("#rating");
     var current_rating = 0;
     var max_rating = 3;
