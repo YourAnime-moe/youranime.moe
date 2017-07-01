@@ -375,6 +375,23 @@ class Utils
         get_day_index_from DateTime.now
     end
 
+    def self.current_season
+        d = Time.now
+        if d.month >= 1 && d.month < 4
+            # JAN -> MAR = Winter
+            return 0
+        elsif d.month >= 4 && d.month < 7
+            # APR -> JUN = Spring
+            return 1
+        elsif d.month >= 7 && d.month <= 10
+            # JUL -> SEP = Summer
+            return 2
+        else
+            # OCT -> DEC = Fall
+            return 3
+        end                
+    end
+
     private
         def Utils.get_month(month_id)
             case month_id

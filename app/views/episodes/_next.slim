@@ -1,8 +1,8 @@
 #next_episode_container
     h3 Next episodes...
     .text-center
-        button#toggle_watched.btn.btn-default
-    br
+        button#toggle_watched.hidden.btn.btn-default\
+        
     - if @episode.is_last?
         - if @episode.show.episodes.size > 5
             p Wow, you've aleady watched #{@episode.show.episodes.size} episodes!
@@ -11,15 +11,13 @@
     - elsif @episode.is_first?
         p This is the first episode, there's plenty more to watch!
 
-    #episodes
+    #episodes.collection
         - @episode.show.episodes(from: @episode).each do |episode|
             - next if @episode == episode
             - break if episode.id == @episode.show.episodes.first.id
             - url = '/shows/episodes?id=' + episode.id.to_s
-            - watched = "watched" if episode.was_watched_by? current_user
-            .well.space.well-sm.fit.clickable.next_episode class="#{watched}" onclick="window.location.href='#{url}'"
-                span #{episode.episode_number}) #{episode.title}
-                div.episode.progressVideo.hidden id="progress_#{episode.id}"
+            - watched = "active" if episode.was_watched_by? current_user
+            a.collection-item class="#{watched}" href="#{url}" #{episode.episode_number}) #{episode.title}
 
 javascript:
     var nextEpisodeContainer = $('#next_episode_container');

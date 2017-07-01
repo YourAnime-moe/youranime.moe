@@ -1,5 +1,4 @@
 
-
 = render 'users/home/carousel-a'
 
 .center.hidden
@@ -7,61 +6,45 @@
 
 .container
     br
-    h4 Recommended
-    .row
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/iiwtttpugiad.jpg"
-            p It Is Wrong to try to Pick up Girls in a Dungeon?
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/dbz.png"
-            p Dragon Ball Z
-        .col.m4
-            img src="http://99.236.240.169/videos/tanoshimu/snow_white_with_red_hear.png"
-            p Snow White with the Red Hair
-
-    a.btn.waves-effect.waves-light.right More...
+    h4 Where you left off...
+    - if @shows.empty?
+        .center
+            p Hmm... it looks like you haven't watched anything yet.
+            a.btn href='/shows' Start watching anime right away!
+    - else
+        .row
+            = render 'users/home/last_time'
 
     br
-    h4 Featured
+    h4 We recommend...
     .row
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/91.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/alice.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
-
-    a.btn.waves-effect.waves-light.right More...
+        - if @recommended.size
+            - @recommended.each do |rec|
+                .col.m4
+                    a href="/shows?id=#{rec.id}"
+                        img src="#{rec.get_image_path}"
+                    p #{rec.get_title}
 
     br
-    h4 New Additions
+    h4 Featured shows
     .row
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/91.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/alice.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+        - if @featured.size
+            - @featured.each do |fet|
+                .col.m4
+                    a href="/shows?id=#{fet.id}"
+                        img src="#{fet.get_image_path}"
+                    p #{fet.get_title}
 
     br
-    h4 This season (Winter 2017)
+    h4 From this season (Winter 2017)
     .row
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/91.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/alice.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
+        - if @this_season.size
+            - @this_season.each do |ts|
+                .col.m4
+                    a href="/shows?id=#{ts.id}"
+                        img src="#{ts.get_image_path}"
+                    p #{ts.get_title}
 
-    br
-    h4 Last season (Fall 2016)
-    .row
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/91.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/alice.jpg"
-        .col.m4
-            img src="http://99.236.240.169/videos/icons/date-a-live.jpg"
 
 
 .container.hidden

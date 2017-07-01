@@ -106,6 +106,43 @@ class Show < ActiveRecord::Base
         self.description.to_s.strip.size > 0
     end
 
+    def is_featured?
+        return false if self.featured.nil?
+        self.featured
+    end
+
+    def is_recommended?
+        return false if self.recommended.nil?
+        self.recommended
+    end
+
+    def is_new_addition?
+
+    end
+
+    def get_year
+        return 0.years.ago.year if self.is_new?
+        self.year
+    end
+
+    def get_season_code
+        return 0 if self.season_code.nil?
+        self.season_code
+    end
+
+    def get_season_year
+        return self.get_year if self.season_year.nil?
+        self.season_year
+    end
+
+    def is_this_season?
+        self.is_from_season? Utils.current_season, Time.now.year
+    end
+
+    def is_from_season?(season_id, year)
+        get_season_code == season_id && get_season_year == year
+    end
+
     def get_description(limit=50)
         return nil unless self.has_description?
         if limit >= self.description.size
@@ -122,6 +159,25 @@ class Show < ActiveRecord::Base
 
     def self.instances
         [:get_title]
+    end
+
+    def self.get_presence(tag, limit=3, options=nil)
+        found_shows = []
+        self.all.each do |show|
+            next unless show.is_published?
+            break if found_shows.size >= limit
+            if tag == :recommended
+                found_shows.push(show) if show.is_recommended?
+            elsif tag == :featured
+                found_shows.push(show) if show.is_featured?
+            elsif tag == :season
+                if options.class != Hash
+                    raise "Invalid season options"
+                end
+                found_shows.push(show) if options[:current] == true && show.is_this_season?
+            end
+        end
+        found_shows
     end
 
     def self.lastest(current_user, limit: 5)

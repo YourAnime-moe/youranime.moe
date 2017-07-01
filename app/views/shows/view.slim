@@ -37,12 +37,14 @@ css:
         .center
             h4.show-title #{@show.get_title}
             ul.collapsible data-collapsible="accordion"
+                - if @show.has_description?
+                  li
+                      .collapsible-header.active Description
+                      .collapsible-body 
+                          span #{@show.description}
                 li
-                    .collapsible-header.active Description
-                    .collapsible-body 
-                        span #{@show.description}
-                li
-                    .collapsible-header More info...
+                    - active = @show.has_description? ? "" : "active"
+                    .collapsible-header class="#{active}" More info...
                     .collapsible-body 
                         span Series #{@show.show_number} - #{@show.year}
                         br
