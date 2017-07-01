@@ -42,7 +42,7 @@ module ApplicationHelper
     end
 
     def app_colour
-        '#e5d8cc'
+        '#BE585C'
     end
 
     def google_search(show)
