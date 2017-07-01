@@ -34,6 +34,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass'
 gem 'jquery-ui-rails'
 gem 'materialize-sass'
+gem 'material_icons'
 
 # Template Engine
 gem "slim"

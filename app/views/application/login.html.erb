@@ -8,34 +8,44 @@
     <div class="wrapper">
         <div id="login-container" class="text-center">
             <img src="/img/tanoshimu.png" class="hero-image back"/>
-            <h3 title='Means "to have fun" (楽しむ) in Japanese.' >Tanoshimu ・ Hi there!</h3>
+            <h4 title='Means "to have fun" (楽しむ) in Japanese.' >Tanoshimu</h4>
             <p>
                 Welcome! Please enter your username and password below.
             </p>
 
-            <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
-                <div id="login-messages" class="text-center">
-                    <div class="login-register-error">
-                        <p id="error-message"></p>
+            <div class="container">
+                <div class="container">
+                    <div id="login-messages" class="text-center">
+                        <div class="login-register-error">
+                            <span id="error-message"></span>
+                        </div>
+                        <div class="login-register-waiting">
+                            <span id="waiting-message"></span>
+                        </div>
+                        <div class="login-register-success">
+                            <span id="success-message"></span>
+                        </div>
                     </div>
-                    <div class="login-register-waiting">
-                        <p id="waiting-message"></p>
-                    </div>
-                    <div class="login-register-success">
-                        <p id="success-message"></p>
+                    <div class="row">
+                        <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                  <input id="username" type="text" class="validate">
+                                  <label for="username">Username</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                  <input id="password" type="password" class="validate">
+                                  <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <button class="btn" value="login" id="">login</button>
+                        </form>
                     </div>
                 </div>
+            </div>
 
-                <input type="text" id="username" class="login" name="username" placeholder="your username"/>
-                <input type="password" id="password" class="login" name="password" placeholder="your password"/>
-                <br>
-
-                
-                <button class="btn" value="login" id="">login</button>
-            </form>
-
-            
-            
             <div class="hidden login-register-error">
                 <p id="error-message">
                     We are currently experiencing issues with our servers. Please come back soon!
