@@ -7,3 +7,20 @@
     height: 480px;
     transform: scale(1.1);
 }
+
+.col-center {
+    float: none;
+    margin: 0 auto;
+}
+
+.like {
+    background-image: url(/img/like_full_small.png);
+    background-repeat: no-repeat;
+    padding: 30px;
+}
+
+.not-like {
+    background-image: url(/img/like_small.png);
+    background-repeat: no-repeat;
+    padding: 30px;
+}

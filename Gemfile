@@ -30,9 +30,10 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-# Use of Twitter Bootstrap and jQuery things
+# Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'bootstrap-sass'
 gem 'jquery-ui-rails'
+gem 'materialize-sass'
 
 # Template Engine
 gem "slim"

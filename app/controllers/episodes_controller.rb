@@ -17,7 +17,6 @@ class EpisodesController < AuthenticatedController
             redirect_to '/shows'; return
         end
         set_title before: "You are watching \"#{@episode.title}\"", after: @episode.show.get_title
-        # current_user.add_episode @episode
     end
 
     def random

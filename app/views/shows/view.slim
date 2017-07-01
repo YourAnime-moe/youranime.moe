@@ -1,8 +1,38 @@
+css:
+    .c-rating {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .c-rating__item {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 24px;
+          -ms-flex: 0 0 24px;
+              flex: 0 0 24px;
+      height: 24px;
+      background: url("/img/stars.svg");
+      background-position: 0 0;
+      cursor: pointer;
+    }
+
+    .c-rating__item:hover,
+    .c-rating__item.is-active {
+      background-position: -24px 0;
+    }
+
 .container-fluid
     div style="margin-top: 20px;"
         a.btn.btn-default href="/shows" Back to shows
 
     h1.show-title #{@show.get_title}
+
+    .col-center
+        / ul#rating.c-rating
     /! Episodes go here
     .row
         .col-md-2
@@ -29,6 +59,11 @@
                 u Featuring
                 span #{": "}#{@show.starring}
 
+            .container-fluid
+                h4 Rating
+                .rating.col-lg-1
+                    
+
         - if @show.has_image?
             .col-md-7.fit.comments
                 - if @show.has_description?
@@ -43,3 +78,13 @@
                 - if @show.has_description?
                     span #{@show.description}
 
+
+script src="/js/rating.min.js"
+
+javascript:
+    var rating_cont = document.querySelector("#rating");
+    var current_rating = 0;
+    var max_rating = 3;
+
+    var rating_inst = rating(rating_cont, current_rating, max_rating, function(r) {console.log(r)});
+    rating_inst.setRating(0);
