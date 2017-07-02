@@ -28,6 +28,7 @@ class Utils
             slice: "Slice of Life",
             sci_fi: "Science-Fiction",
             sports: "Sports",
+            super: "Super Powers",
             supernatural: "Supernatural",
             thriller: "Thriller",
             vampire: "Vampire",
