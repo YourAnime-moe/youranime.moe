@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170429131035) do
+ActiveRecord::Schema.define(version: 20170702014447) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "show_id"
@@ -65,6 +65,11 @@ ActiveRecord::Schema.define(version: 20170429131035) do
     t.string   "default_path"
     t.string   "image_path"
     t.string   "description"
+    t.boolean  "featured"
+    t.boolean  "recommended"
+    t.integer  "season_year"
+    t.integer  "season_code"
+    t.string   "tags"
   end
 
   create_table "todos", force: :cascade do |t|

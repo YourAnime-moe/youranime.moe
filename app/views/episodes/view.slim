@@ -1,6 +1,8 @@
 .container-fluid
     br
-    a.btn.btn-default style="white-space: normal;" href='/shows?id=#{@episode.show.id}' Go back to #{@episode.show.get_title}
+    - @back_name = @episode.show.get_title
+    - @url = '/shows?id=' + @episode.show.id.to_s
+    = render "shared/go_back"
 
     .row
         .col.m9

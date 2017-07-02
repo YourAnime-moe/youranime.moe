@@ -1,5 +1,7 @@
 class Show < ActiveRecord::Base
 
+    serialize :tags
+
     include Navigatable
 
     before_save {
@@ -66,6 +68,23 @@ class Show < ActiveRecord::Base
         episodes.each_slice(sort_by).to_a
     end
 
+    def get_tags
+        if self.tags.nil?
+            self.tags = []
+            self.save
+        end
+        self.tags
+    end
+
+    def add_tag(tag)
+        return nil if tag.to_s.strip.empty?
+        tag = tag.strip if tag.class == String
+        self.tags = [] if self.tags.nil?
+        return false unless Utils.tags.keys.include? tag
+        self.tags.push tag unless self.tags.include? tag
+        self.tags
+    end
+
     def has_starring_info?
         self.starring.to_s.strip.size > 0
     end
@@ -81,6 +100,10 @@ class Show < ActiveRecord::Base
 
     def has_episodes?
         !self.episodes.empty?
+    end
+
+    def has_tags?
+        self.get_tags.size > 0
     end
 
     def get_url_safe_title

@@ -13,6 +13,11 @@ div style="margin-top: 10px;"
 script src="https://vjs.zencdn.net/#{videojs_version}/video.js"
 script src="/js/nextEpisode.js"
 
+css:
+    .previous, .next {
+        color: white;
+    }
+
 ul.pager
     - if @episode.has_previous?
         .left
@@ -53,7 +58,8 @@ javascript:
     var change_video_elements = document.getElementsByClassName('chg_video');
     [].forEach.call(change_video_elements, function(element) {
         element.onclick = function() {
-            video.pause();
+            if (typeof(video.pause) === "function")
+                video.pause();
             var url = element.getAttribute('link');
             document.location.replace(url);
         }

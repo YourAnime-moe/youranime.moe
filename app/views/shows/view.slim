@@ -36,11 +36,12 @@ css:
     .container
         .center
             h4.show-title #{@show.get_title}
+            = render "shows/chips"
             ul.collapsible data-collapsible="accordion"
                 - if @show.has_description?
                   li
                       .collapsible-header.active Description
-                      .collapsible-body 
+                      .collapsible-body
                           span #{@show.description}
                 li
                     - active = @show.has_description? ? "" : "active"

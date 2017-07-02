@@ -1,5 +1,44 @@
 class Utils
 
+    def self.tags
+        {
+            action: "Action",
+            adventure: "Adventure",
+            budou: "Martial Arts",
+            comedy: "Comedy",
+            demons: "Demons",
+            drama: "Drama",
+            ecchi: "Ecchi/Fan Service",
+            fantasy: "Fantasy",
+            game: "Game",
+            harem: "Harem",
+            historical: "Historical",
+            horror: "Horror",
+            josei: "Josei",
+            magic: "Magic",
+            movie: "Movie",
+            mecha: "Mechanical (robots)",
+            music: "Music",
+            mystery: "Mystery",
+            non_school: "No High School",
+            parody: "Parody",
+            psychological: "Psychological",
+            romance: "Romance",
+            seinen: "Seinen",
+            slice: "Slice of Life",
+            sports: "Sports",
+            supernatural: "Supernatural",
+            thriller: "Thriller",
+            vampire: "Vampire",
+            yaoi: "Yaoi",
+            yuri: "Yuri"
+        }
+    end
+
+    def self.get_tag_name(key)
+        self.tags[key]
+    end
+
     require 'fileutils'
 
     def self.get_parent_directory(filename,check=false)
