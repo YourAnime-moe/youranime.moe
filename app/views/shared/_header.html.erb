@@ -1,6 +1,11 @@
    <nav>
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo" style="margin-left: 25px;">Tanoshimu</a>
+      <% if @back_url %>
+        <a href="<%= @back_url %>" class="brand-logo" title="<%= @back_title%>" style="margin-left: 25px;"><i class="material-icons desktop">undo</i>Tanoshimu</a>
+        <a href=""></a>
+      <% else %>
+        <a href="/" class="brand-logo" style="margin-left: 25px;">Tanoshimu</a>
+      <% end %>
       <a href="#" data-activates="tanoshimu-nav" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a title="All anime" href="/shows">Anime</a></li>

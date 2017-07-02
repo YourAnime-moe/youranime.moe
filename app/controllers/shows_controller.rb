@@ -10,6 +10,8 @@ class ShowsController < AuthenticatedController
             @show = Show.find_by(id: params[:id])
             if @show
                 set_title(:before => @show.get_title)
+                @back_url = "/shows"
+                @back_title = "Go back to shows"
                 render 'view'
             elsif !@show.is_published?
                 flash[:warning] = "This show is not available yet. Please try again later."

@@ -19,6 +19,22 @@
     background-color: lightblue;
 }
 
+.playable img {
+    width: 400px;
+    height: 150px;
+}
+
+.playable img:after {
+    content: '';
+    background-image: url(/img/play_white.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    background-position: left 5px top 5px;
+    text-align: left;
+    padding-left: 30px;
+}
+
 div.episode.progressVideo {
     height: 4px;
     background-color: blue;

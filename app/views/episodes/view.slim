@@ -2,7 +2,7 @@
     br
     - @back_name = @episode.show.get_title
     - @url = '/shows?id=' + @episode.show.id.to_s
-    = render "shared/go_back"
+    - render "shared/go_back"
 
     .row
         .col.m9
@@ -12,6 +12,7 @@
 
             #video_cont
                 = render '/episodes/video'
+                
             = render '/episodes/comments'
 
         .col.m3.desktop

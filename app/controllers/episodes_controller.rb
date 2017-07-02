@@ -16,6 +16,8 @@ class EpisodesController < AuthenticatedController
             flash[:warning] = 'Sorry, this episode/show is not ready yet. Please try again later.'
             redirect_to '/shows'; return
         end
+        @back_url = '/shows?id=' + @episode.show.id.to_s
+        @back_title = "Go back to #{@episode.show.get_title}"
         set_title before: "You are watching \"#{@episode.title}\"", after: @episode.show.get_title
     end
 
