@@ -1,87 +1,52 @@
 .container
-    .right
-        select#select_show_control.form-control style="margin-bottom: 5%; margin-top: 20px; border-radius: 0;"
-            option value="none" #{"-- All shows --"}
-            - Show.all.to_a.select{|show| show.is_published?}.sort_by(&:get_title).each do |show|
-                option value="show_#{show.id}" #{show.get_title}
+    
+    select#select_show_control.form-control style="margin-bottom: 5%; margin-top: 20px; border-radius: 0;"
+        option value="none" #{"-- All shows --"}
+        - Show.all.to_a.select{|show| show.is_published?}.sort_by(&:get_title).each do |show|
+            option value="show_#{show.id}" #{show.get_title}
 
-    h1#title Episode history
+    h4 Episode history
     br
 
-    .row
+    .row.center
         .col-md-1
         .col-md-10
             .text-center
                 p#info
                 br
             #episode_history_container
-                - @episodes.each do |episode|
-                    .well.well-lg.fit class="show_#{episode.show.id}"
-                        span Episode #{episode.episode_number} 
-                        br
-                        span style="font-size: 70%;" "#{episode.title}" from #{episode.show.get_title}
-                        .right.desktop
-                            a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
-                            a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
 
-                        .mobile.text-center
-                            br
-                            a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
-                            a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
+    .center
+        .row
+            - count = 1
+            - @episodes.each do |episode|
+                .col.m6.s12
+                    .card.grey.darken-1
+                        .card-content.white-text
+                            span.card-title #{count}) "#{episode.title}"
+                            p Show title: #{episode.show.get_title}
+                        .card-action
+                            a href="/shows/episodes?id=#{episode.id}&from=history" Go to episode
+                            a href="/shows?id=#{episode.show.id}&from=history" Go to show
+                            
+                - count += 1
+
+                    / .well.well-lg.fit class="show_#{episode.show.id}"
+                    /     span Episode #{episode.episode_number} 
+                    /     br
+                    /     span style="font-size: 70%;" "#{episode.title}" from #{episode.show.get_title}
+                    /     .right.desktop
+                    /         a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
+                    /         a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
+
+                    /     .mobile.text-center
+                    /         br
+                    /         a.btn.btn-info href="/shows?id=#{episode.show.id}" style="margin-right: 5px;" Go to show
+                    /         a.btn.btn-success href="/shows/episodes?id=#{episode.id}" Go to episode
 
         .col-md-1
 
 
     javascript:
-        var showsSelect = $('#select_show_control');
-        var episodeHistoryContainer = $('#episode_history_container');
-        var children = episodeHistoryContainer.children();
-        var info = $('#info');
-        var title = $('#title');
 
-        var size = children.size();
-
-        episodesFoundText = "You have watched the following episodes - starting from the most recent to the oldest.";
-        episodesNotFoundText = "No episodes were for found for this show. Please try again.";
-
-        $(document).ready(function() {
-            info.html(episodesFoundText);
-            title.html("Episode History (" + size + ")");
-            showsSelect.change(function(e) {
-                 var value = this.value;
-                 if (value == "none") {
-                    showAllShows();
-                 } else {
-                    showShow(value);
-                 }
-            });
-        });
-
-        function showAllShows() {
-            for (var i = 0; i < children.length; i++) {
-                var child = children[i];
-                child.classList.remove('hidden');
-            }
-            title.html("Episode History (" + size + ")");
-        };
-
-        function showShow(value) {
-            var showClass = '.' + value;
-            var removed = 0;
-            for (var i = 0; i < children.length; i++) {
-                var child = children[i];
-                if (!child.classList.contains(value)) {
-                    child.classList.add('hidden');
-                    removed++;
-                } else {
-                    child.classList.remove('hidden');
-                }
-            }
-            if (removed == children.length) {
-                info.html(episodesNotFoundText);
-            } else {
-                info.html(episodesFoundText);
-            }
-            title.html("Episode History (" + (size - removed) + ")");
-        };
 

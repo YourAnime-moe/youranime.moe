@@ -1,5 +1,29 @@
 module ApplicationHelper
 
+    def back_index
+        {
+            from: {
+                "history" => "/shows/history"
+            },
+            title: {
+                "history" => "episode history"
+            }
+        }
+    end
+
+    def get_back_url(params, default=nil)
+        _get_back params, :from, default
+    end
+
+    def get_back_title(params, default)
+        _get_back params, :title, default
+    end
+
+    def _get_back(params, key, default)
+        return back_index[key][params[:from]] || default if params[:from]
+        default
+    end
+
     def app_title
         @app_title
     end
