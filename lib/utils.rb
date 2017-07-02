@@ -26,6 +26,7 @@ class Utils
             romance: "Romance",
             seinen: "Seinen",
             slice: "Slice of Life",
+            sci_fi: "Science-Fiction",
             sports: "Sports",
             supernatural: "Supernatural",
             thriller: "Thriller",
