@@ -1,6 +1,6 @@
 .container
     .center
-        h4 Search by tags
+        h4.title Search by tags
 
         p Select one or more of the tags below to start filtering.
 
@@ -31,6 +31,15 @@ javascript:
             checkReset();
             getResults();
         }
+        var pre_selected_tag = Config.getParameterByName("selected");
+        if (pre_selected_tag) {
+            if (pre_selected_tag == value) {
+                var event = document.createEvent("MouseEvents");
+                event.initEvent("click", true, true);
+                event.synthetic = true;
+                tag.dispatchEvent(event, true);
+            }
+        }
     });
 
     function checkReset() {
@@ -44,6 +53,7 @@ javascript:
         }
         if (tagValues.length == 0) {
             button.classList.add("disabled");
+            document.getElementById("results").innerHTML = "";
         } else {
             button.classList.remove("disabled");
         }
@@ -57,7 +67,6 @@ javascript:
         var found = true;
         [].forEach.call(tl1, function(current_tag) {
             if (!tl2.includes(current_tag)) {
-                console.warn(current_tag);
                 found = false;
             }
             if (!found) {return;}
@@ -85,7 +94,6 @@ javascript:
 
         [].forEach.call(shows, function(show) {
             var c = compareTags(tagValues, show.tags);
-            console.log(c);
             if (!c) {
                 return;
             }
@@ -104,7 +112,6 @@ javascript:
             method: 'post',
             data: 'token=#{current_user.auth_token}&get_host=true',
             success: function(res) {
-                console.log(res);
                 if (res.success === true) {
                     if (tagValues.length == 0) {
                         document.getElementById("results").innerHTML = "";

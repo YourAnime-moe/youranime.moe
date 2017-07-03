@@ -1,6 +1,125 @@
-h1 Advanced search
+.container
+    .center
+        h4.title Search
 
-.text-center
-    form#search_form
-        .form-group
-            input.form-control placeholder="Your query" type="text"
+    .container
+        ul.collapsible data-collapsible="accordion"
+            li
+                .collapsible-header.active Simple search
+                .collapsible-body
+                    .row
+                        .input-field.col.s12
+                            input.validate#simple-search-query placeholder="What may I help you find?"
+                    .center
+                        a#simple-search.btn Search
+
+            li.hidden
+                .collapsible-header Advanced search
+                .collapsible-body
+                    .center
+                        a#adv-search.btn Search
+
+    #results style="margin-top: 50px;"
+
+
+javascript:
+    $(document).ready(function(){
+        $('.collapsible').collapsible();
+
+        var inputs = document.getElementsByClassName("validate");
+        var simple_button = document.getElementById("simple-search");
+        var adv_button = document.getElementById("adv-search");
+
+        [].forEach.call(inputs, function(input) {
+            input.onkeyup = function(e) {
+                if (input.getAttribute("id") == "simple-search-query") {
+                    if (input.value.trim().length == 0) {
+                        simple_button.classList.remove("pulse");
+                    } else {
+                        simple_button.classList.add("pulse");
+                    }
+                } else {
+                    if (input.value.trim().length == 0) {
+                        adv_button.classList.remove("pulse");
+                    } else {
+                        adv_button.classList.add("pulse");
+                    }
+                }
+            }
+            input.onfocusout = function(e) {
+                if (input.getAttribute("id") == "simple-search-query") {
+                    simple_button.classList.remove("pulse");
+                } else {
+                    adv_button.classList.remove("pulse");
+                }
+            }
+            input.onfocusin = function(e) {
+                if (input.value.trim().length == 0) {
+                    return;
+                }
+                if (input.getAttribute("id") == "simple-search-query") {
+                    simple_button.classList.add("pulse");
+                } else {
+                    adv_button.classList.add("pulse");
+                }
+            }
+        });
+
+        function build(show, host) {
+            //console.log(show);
+            var icon = host + "/" + show.image_path;
+            var html = [
+                '<div class="col m3">',
+                    '<a href="/shows?id=' + show.id + '">',
+                        '<img src="' + icon + '"/>',
+                        '<p>' + (show.alternate_title || show.title) + '</p>',
+                    '</a>',
+                '</div>'
+            ]
+            return html.join("");
+        }
+
+        function drawShows(shows, host) {
+            var html = [
+                '<div class="row">',
+            ];
+
+            [].forEach.call(shows, function(show) {
+                var show_html = build(show, host);
+                html.push(show_html);
+            });
+
+            html.push('</div>');
+
+            return html.join("");
+        }
+
+        simple_button.onclick = function(e) {
+            var results = document.getElementById("results");
+            var input = document.getElementById("simple-search-query");
+            var query = input.value.trim();
+            if (query.length == 0) {
+                results.innerHTML = "<div class='center'><p class='message-error'>We are sorry, but we didn't receive anything from you! Did you forget to type something on the search box above?</p></div>";
+                return;
+            }
+
+            results.innerHTML = "<div class='center'><p class='message-waiting'>Please wait while we are processing your request.</p></div>"
+
+            $.ajax({
+                type: 'GET',
+                url: '/json/search',
+                data: 'instance=show&get_host=true&whole_thing=true' + '&keyword=' + query,
+                success: function(e) {
+                    var suggestions = e.response;
+                    if (suggestions.length == 0) {
+                        results.innerHTML = "<div class='center'><p class='message-error'>We are sorry, but we could not find anything related to \""+ query +"\"! Please try again.</p></div>";
+                        return;
+                    }
+
+                    var host = e.get_host;
+                    var html = drawShows(suggestions, host);
+                    results.innerHTML = html;
+                }
+            })
+        };
+    });

@@ -21,12 +21,28 @@ class JsonController < ApplicationController
 
         begin
             res = Utils.search(keyword, list, get_instances_from_class(klass), limit: limit, sort_by: sort_by)
+            if params[:whole_thing] == "true"
+                ress = []
+                res.each do |title|
+                    next if title.class != String
+                    Show.all.each do |show|
+                        if show.get_title.downcase == title.downcase
+                            ress.push show
+                            break
+                        end
+                        if show.title.downcase == title.downcase
+                            ress.push show
+                        end
+                    end
+                end
+                res = ress
+            end
         rescue NameError => e
             render json: {message: "Invalid data entered", response: e.message, success: false}
             return
         end
 
-        render json: {message: "Success", success: true, response: res}
+        render json: {message: "Success", success: true, response: res, get_host: params[:get_host] == "true" ? Config.main_host : nil}
     end
 
     def find_show

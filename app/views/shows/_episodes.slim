@@ -29,8 +29,6 @@ br
                 var id = progress_div.getAttribute("episode_id");
                 var videos = JSON.parse(localStorage.videos);
                 [].forEach.call(videos, function(video) {
-                    console.log(videos)
-                    console.log("%s vs %s", video.videoId, id)
                     if (video.videoId != id) {
                         return;
                     }

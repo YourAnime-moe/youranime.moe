@@ -67,8 +67,20 @@ css:
 script src="/js/rating.min.js"
 
 javascript:
+
     $(document).ready(function(){
         $('.collapsible').collapsible();
+
+        var tags = document.getElementsByClassName("tag");
+        console.log(tags);
+        [].forEach.call(tags, function(tag) {
+        var value = tag.getAttribute("value");
+        tag.onclick = function(e) {
+            var url = "/tags?selected=" + value;
+            console.log(url);
+            window.location.replace(url);
+        }
+    });
     });
     var rating_cont = document.querySelector("#rating");
     var current_rating = 0;
