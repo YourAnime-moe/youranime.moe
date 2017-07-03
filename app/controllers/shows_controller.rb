@@ -89,4 +89,8 @@ class ShowsController < AuthenticatedController
         @search = true
     end
 
+    def tags
+        
+    end
+
 end

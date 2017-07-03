@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   get '/shows/episodes' => 'episodes#view'
   get '/shows/episodes/random' => 'episodes#random'
 
+  # Tags
+  get '/tags' => 'shows#tags'
+
   # Recommendations
   get '/recommendations' => 'recommendation#main'
   post '/recommendations/new' => 'recommendation#create'

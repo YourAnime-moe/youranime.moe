@@ -24,7 +24,7 @@ class AuthApiController < ApiController
 	end
 
 	def shows
-		if shows_params.empty?
+		if shows_params.empty? || shows_params[:get_host]
 			results = Show.all
 			results = results.to_a.sort_by(&:get_title)
 			results.select! {|show| show.is_published?}
@@ -36,7 +36,9 @@ class AuthApiController < ApiController
 			my_hash[:total_episodes] = results.all_episodes.size
 			results = my_hash
 		end
-		render json: {shows: results, success: true}
+		res = {shows: results, success: true}
+		res[:get_host] = Config.main_host if shows_params[:get_host] == "true"
+		render json: res
 	end
 
 	def latest_shows
@@ -143,7 +145,8 @@ class AuthApiController < ApiController
 				:year,
 				:title,
 				:altername_title,
-				:published
+				:published,
+				:get_host
 			)
 		end
 
