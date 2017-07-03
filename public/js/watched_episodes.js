@@ -39,7 +39,7 @@ $(document).ready(function() {
       if (progress.classList.contains("progress")) {
         var progress_div = progress.children[0];
         var id = progress_div.getAttribute("episode_id");
-        var videos = JSON.parse(localStorage.videos)
+        var videos = JSON.parse(localStorage.videos);
         [].forEach.call(videos, function(video) {
           if (video.videoID != id) {
             return;
