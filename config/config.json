@@ -9,7 +9,8 @@
         "dev": {
             "protocol": "http",
             "sub_domain": null,
-            "domain": "192.168.0.37"
+            "domain": "REMOTE_IP",
+            "env": true
         },
         "admin": {
             "protocol": "https",

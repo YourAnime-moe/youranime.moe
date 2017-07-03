@@ -29,6 +29,22 @@ css:
     .col.s12.no-padding
         img.title-img src="#{Config.path(@show.image_path)}"
 
+#modal1.modal.modal-fixed-footer
+  .modal-content
+   .container
+      .center
+          h4.title Anime with the same tag
+
+      .container
+          - Utils.tags.keys.each do |tag|
+              .chip.tag value="#{tag}"
+                  span #{Utils.tags[tag]}
+
+      .center.hidden style="margin-top: 10px;"
+          a#reset-btn.btn.disabled Reset
+
+      #results style="margin-top: 50px;"
+
 .container-fluid
     div.hidden style="margin-top: 20px;"
         a.btn.btn-default href="/shows" Back to shows
@@ -64,27 +80,46 @@ css:
 - @episodes = @show.split_episodes
 = render 'shows/episodes'
 
-script src="/js/rating.min.js"
+/ script src="/js/rating.min.js"
+
+javascript:
+    var token = '#{current_user.auth_token}';
+
+script src="/js/tags-mgmt.js"
 
 javascript:
 
     $(document).ready(function(){
         $('.collapsible').collapsible();
+        $('.modal').modal();
 
         var tags = document.getElementsByClassName("tag");
-        console.log(tags);
         [].forEach.call(tags, function(tag) {
-        var value = tag.getAttribute("value");
-        tag.onclick = function(e) {
-            var url = "/tags?selected=" + value;
-            console.log(url);
-            window.location.replace(url);
-        }
+            if (!tag.classList.contains("current-show")) {
+                return;
+            }
+            var value = tag.getAttribute("value");
+            tag.onclick = function(e) {
+                [].forEach.call(tags, function(otag) {
+                  if (!otag.classList.contains("current-show")) {
+                    otag.classList.add("hidden");
+                  }
+                  if (otag.getAttribute("value") == tag.getAttribute("value") && !otag.classList.contains("current-show")) {
+                    var event = document.createEvent("MouseEvents");
+                    event.initEvent("click", true, true);
+                    event.synthetic = true;
+                    otag.dispatchEvent(event, true);
+                  }
+                });
+                $('#modal1').modal('open');
+                // console.log(url);
+                // window.location.replace(url);
+            }
+        });
     });
-    });
-    var rating_cont = document.querySelector("#rating");
-    var current_rating = 0;
-    var max_rating = 3;
+    // var rating_cont = document.querySelector("#rating");
+    // var current_rating = 0;
+    // var max_rating = 3;
 
-    var rating_inst = rating(rating_cont, current_rating, max_rating, function(r) {console.log(r)});
-    rating_inst.setRating(0);
+    // var rating_inst = rating(rating_cont, current_rating, max_rating, function(r) {console.log(r)});
+    // rating_inst.setRating(0);
