@@ -92,6 +92,6 @@ see which model-specific methods are available.
 
 
 #### Is this project alive?
-Yes! Last big update was in April 2017. I started this project in
+Yes! Last big update was in July 2017. I started this project in
 December 2016, and plan to continue for a couple of years.
 
