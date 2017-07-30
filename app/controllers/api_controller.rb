@@ -23,6 +23,18 @@ class ApiController < ApplicationController
 			return
 		end
         
+        # If the client requests and admin account.
+        if params[:admin] == "true" && !user.is_admin?
+            render json: {
+                rails_message: "Access denied. This action requires to be an admin.",
+                message: "Access denied. This action requires to be an admin.",
+                show_login: true,
+                show_login_message: "Re-login",
+                success: false
+            }
+            return
+        end
+
         # Keep generating tokens until no user with that token exists.
         if user.regenerate_auth_token
 			render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!", success: true}
