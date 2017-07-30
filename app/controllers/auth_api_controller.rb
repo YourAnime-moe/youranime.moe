@@ -8,10 +8,19 @@ class AuthApiController < ApiController
 			render json: {message: "Access denied. No token was specified.", success: false}
 		end
 		@user = User.find_by(auth_token: token)
+		is_admin = params[:admin] == "true"
 		if @user.nil?
 			render json: {
 				rails_message: "Access denied. Invalid token.",
 				message: "Did you login on another device?",
+				show_login: true,
+				show_login_message: "Re-login",
+				success: false
+			}
+		elsif is_admin && !@user.is_admin?
+			render json: {
+				rails_message: "Access denied. This action requires to be an admin.",
+				message: "Access denied. This action requires to be an admin.",
 				show_login: true,
 				show_login_message: "Re-login",
 				success: false
