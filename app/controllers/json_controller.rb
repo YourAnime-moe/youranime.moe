@@ -118,6 +118,18 @@ class JsonController < ApplicationController
         end
     end
 
+    def all_users
+        result = {data: {}}
+        User.all.each do |user|
+            if user.id == current_user.id
+                result[:data]["Me | " + user.get_name + " | " + user.username] = nil
+            else
+                result[:data][user.get_name + " | " + user.username] = nil
+            end
+        end
+        render json: result
+    end
+
     private
         def get_class_from_instance_tag(tag)
             tag = tag.to_s

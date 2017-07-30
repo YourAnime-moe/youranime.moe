@@ -2,6 +2,11 @@
 <html>
 <head>
   <title><%= app_title %></title>
+
+  <script type="text/javascript">
+    var enableInbox = "<%= @inbox_options %>" === "true";
+  </script>
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -20,6 +25,7 @@
 <% if logged_in? %>
     <header>
         <%= render 'shared/header' %>
+        <%= render 'shared/inbox-options' %>
     </header>
 <% end %>
 
@@ -31,6 +37,32 @@
     <script type="text/javascript">
       $(document).ready(function() {
             $(".button-collapse").sideNav();
+            $('.modal').modal();
+            <% if logged_in? %>
+                var data = {};
+                <% if @inbox_options %>
+                  $.ajax({
+                    method: 'get',
+                    url: '/json/get/users',
+                    success: function(e) {
+                      $('input.autocomplete').autocomplete({
+                        data: e.data,
+                        limit: 20,
+                        onAutocomplete: function(val) {
+                          var pos = -1;
+                          for (var i = 0; i < val.length; i++) {
+                            if (val[i] == "|") {
+                              pos = i + 2;
+                            }
+                          }
+                          username = val.substring(pos, val.length);
+                        },
+                        minLength: 1,
+                      });
+                    }
+                  });
+                <% end %>
+            <% end %>
         });
     </script>
     <script type="text/javascript" src="/js/watched_episodes.js"></script>

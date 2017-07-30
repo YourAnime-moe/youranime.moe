@@ -58,7 +58,7 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id) {
 	$.ajax({
 		url: '/login',
 		method: 'post',
-		data: 'one=' + one + '&two=' + two,
+		data: 'username=' + one + '&password=' + two,
 		success: function(e) {
 			waiting_container.innerHTML = "";
 			error_container.innerHTML = "";

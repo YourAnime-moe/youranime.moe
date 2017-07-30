@@ -1,0 +1,73 @@
+<% if @inbox_options %>
+  <ul id="slide-out" class="side-nav fixed">
+    <li><div style="margin: 10px;" class="user-view">
+      <!-- <a href="#!user"><img class="circle" src="images/yuna.jpg"></a> -->
+      <a href="#!name"><span class="black-text name"><%= current_user.get_name %></span></a> | 
+      <a href="#!email"><span class="black-text email"><%= current_user.username %></span></a>
+    </div></li>
+    <li><div class="divider"></div></li>
+    <li><a href="#compose" class="btn waves-effect waves-light">New message</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>Inbox</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>All messages</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>Sent messages</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="/settings">Account settings</a></li>
+    <li><a class="waves-effect" href="/">Home page</a></li>
+    <li><a class="waves-effect" href="/shows">Watch anime</a></li>
+  </ul>
+  <div style="margin-top: 20px;" class="center">
+  <a href="#" data-activates="slide-out" class="btn waves-effect waves-light hide-on-large-only button-collapse">Inbox Options<i class="material-icons left">menu</i></a>
+  </div>
+
+  <div id="inbox-modals">
+      <div id="compose" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="center">
+                <h4>New message</h4>
+                <h6>You are sending this message: <b><%= current_user.get_name %></b></h6>
+            </div>
+            <div class="message-content">
+                <div class="row">
+                    <div class="col s12">
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix">account_box</i>
+                          <input type="text" id="autocomplete-input" class="autocomplete" placeholder="Begin typing the username or name here...">
+                          <label for="autocomplete-input">To...</label>
+                        </div>
+                      </div>
+                        <div class="row">
+                            <form class="col s12">
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <i class="material-icons prefix">mode_edit</i>
+                                  <textarea rows="20" id="icon_prefix2" class="materialize-textarea"></textarea>
+                                  <label for="icon_prefix2">Message</label>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            <a href="#!" onclick="return false;" id="send-btn" class="modal-action modal-close waves-effect green lighten-1 btn-flat">Send</a>
+        </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+        var send_btn = document.getElementById('send-btn');
+        // send_btn.onclick = function(e) {
+        //     e.preventDefault();
+        //     console.log("sending...");
+        //     return false;
+        // }
+      });
+  </script>
+
+<% end %>

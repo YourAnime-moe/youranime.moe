@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'messages/index'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   root 'application#root'
@@ -33,6 +35,7 @@ Rails.application.routes.draw do
 
   # JSON controllers (GET)
   get '/json/search' => 'json#search'
+  get '/json/get/users' => 'json#all_users'
   get '/json/shows/latest' => 'users#latest_shows'
   get '/json/find_show' => 'json#find_show'
   get '/json/episodes/get_comments' => 'json#episode_get_comments'
@@ -55,6 +58,9 @@ Rails.application.routes.draw do
   post '/api/get/episodes' => 'auth_api#episodes'
   post '/api/set/episodes/watched' => 'auth_api#add_episode'
   post '/api/get/episode/path' => 'auth_api#episode_path'
+
+  # Messages
+  get '/messages' => 'messages#index'
 
   match '/logout', to: 'sso#destroy', via: :all
 

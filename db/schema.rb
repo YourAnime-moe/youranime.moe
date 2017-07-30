@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170702014447) do
+ActiveRecord::Schema.define(version: 20170724024637) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "show_id"
@@ -25,6 +25,19 @@ ActiveRecord::Schema.define(version: 20170702014447) do
     t.datetime "updated_at",     null: false
     t.boolean  "published"
     t.string   "comments"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string   "subject"
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.boolean  "from_flag"
+    t.boolean  "from_read"
+    t.boolean  "to_read"
+    t.text     "content"
+    t.string   "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "news", force: :cascade do |t|

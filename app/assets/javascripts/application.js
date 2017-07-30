@@ -17,3 +17,28 @@
 //= require turbolinks
 //= require materialize-sprockets
 //= require_tree .
+
+function retreiveMessages(container) {
+    if (!container) {
+        console.error("No container was specified.");
+        return;
+    }
+    var id = container;
+    var container = document.getElementById(container);
+    if (!container) {
+        console.error("Invalid container: %s", id);
+        return;
+    }
+    function errorFunction(e) {
+        container.innerHTML = "Sorry, there was an error while retreiving your messages. Please try again later.";
+    }
+    $.ajax({
+        method: 'get',
+        url: '/messages/all/json',
+        success: function(e) {
+            
+        },
+        failure: errorFunction,
+        error: errorFunction
+    });
+}
