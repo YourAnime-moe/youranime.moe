@@ -156,8 +156,7 @@ class AuthApiController < ApiController
 				:title,
 				:altername_title,
 				:published,
-				:get_host,
-				:admin
+				:get_host
 			)
 		end
 
@@ -167,8 +166,7 @@ class AuthApiController < ApiController
 				:show_id,
 				:title,
 				:episode_number,
-				:published,
-				:admin
+				:published
 			)
 		end
 
