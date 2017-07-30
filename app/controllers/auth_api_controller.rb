@@ -26,6 +26,7 @@ class AuthApiController < ApiController
 				success: false
 			}
 		end
+		@is_admin = shows_params[:admin] == "true"
 	}
 
 	def user
@@ -36,7 +37,7 @@ class AuthApiController < ApiController
 		if shows_params.empty? || shows_params[:get_host]
 			results = Show.all
 			results = results.to_a.sort_by(&:get_title)
-			results.select! {|show| show.is_published?}
+			results.select! {|show| show.is_published? || @is_admin}
 		else
 			results = Show.find_by(shows_params) || {}
 			json = results.to_json
@@ -101,7 +102,7 @@ class AuthApiController < ApiController
 		unless episodes.class == Episode or episodes.class == Hash
 			episodes = episodes.to_a
 			begin
-				episodes.select! {|episode| episode.is_published?}
+				episodes.select! {|episode| episode.is_published? || @is_admin}
 			rescue NoMethodError => e
 				episodes.select! {|episode| episode[:is_published] == true}
 			end
@@ -155,7 +156,8 @@ class AuthApiController < ApiController
 				:title,
 				:altername_title,
 				:published,
-				:get_host
+				:get_host,
+				:admin
 			)
 		end
 
@@ -165,7 +167,8 @@ class AuthApiController < ApiController
 				:show_id,
 				:title,
 				:episode_number,
-				:published
+				:published,
+				:admin
 			)
 		end
 
