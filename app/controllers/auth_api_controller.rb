@@ -26,7 +26,7 @@ class AuthApiController < ApiController
 				success: false
 			}
 		end
-		@is_admin = shows_params[:admin] == "true"
+		@is_admin = params[:admin] == "true"
 	}
 
 	def user
