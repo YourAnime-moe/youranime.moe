@@ -8,6 +8,7 @@ class AuthApiController < ApiController
 			render json: {message: "Access denied. No token was specified.", success: false}
 		end
 		@user = User.find_by(auth_token: token)
+		is_admin = params[:admin] == "true"
 		if @user.nil?
 			render json: {
 				rails_message: "Access denied. Invalid token.",
@@ -16,7 +17,16 @@ class AuthApiController < ApiController
 				show_login_message: "Re-login",
 				success: false
 			}
+		elsif is_admin && !@user.is_admin?
+			render json: {
+				rails_message: "Access denied. This action requires to be an admin.",
+				message: "Access denied. This action requires to be an admin.",
+				show_login: true,
+				show_login_message: "Re-login",
+				success: false
+			}
 		end
+		@is_admin = params[:admin] == "true"
 	}
 
 	def user
@@ -27,7 +37,7 @@ class AuthApiController < ApiController
 		if shows_params.empty? || shows_params[:get_host]
 			results = Show.all
 			results = results.to_a.sort_by(&:get_title)
-			results.select! {|show| show.is_published?}
+			results.select! {|show| show.is_published? || @is_admin}
 		else
 			results = Show.find_by(shows_params) || {}
 			json = results.to_json
@@ -92,7 +102,7 @@ class AuthApiController < ApiController
 		unless episodes.class == Episode or episodes.class == Hash
 			episodes = episodes.to_a
 			begin
-				episodes.select! {|episode| episode.is_published?}
+				episodes.select! {|episode| episode.is_published? || @is_admin}
 			rescue NoMethodError => e
 				episodes.select! {|episode| episode[:is_published] == true}
 			end
