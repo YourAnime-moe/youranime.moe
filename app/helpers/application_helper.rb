@@ -50,6 +50,14 @@ module ApplicationHelper
         @current_episode ||= Episode.find(session[:currently_watching]["episode"])
     end
 
+    def current_action(action=nil)
+        @action ||= action
+    end
+
+    def current_controller(controller=nil)
+        @controller ||= controller
+    end
+
     def set_title(before: nil, after: nil, reset: true, home: false)
         @app_title = nil if reset
         if @app_title.nil?

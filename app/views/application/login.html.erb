@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'))">
+                        <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'), '<%= @params.to_json %>')">
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                   <input id="username" type="text" class="validate">

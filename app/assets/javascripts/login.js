@@ -1,5 +1,14 @@
 
-function login(error_p_id, waiting_p_id, success_p_id, form_id) {
+function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
+
+	try {
+		params = JSON.parse(params);
+	} catch (e) {
+		console.error(e);
+		params = {};
+	}
+	params = $.param(params);
+	console.log(params);
 
 	function edForm(form, readOnly) {
 		if (form && form.elements) {
@@ -58,7 +67,7 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id) {
 	$.ajax({
 		url: '/login',
 		method: 'post',
-		data: 'username=' + one + '&password=' + two,
+		data: 'username=' + one + '&password=' + two + '&' + params,
 		success: function(e) {
 			waiting_container.innerHTML = "";
 			error_container.innerHTML = "";

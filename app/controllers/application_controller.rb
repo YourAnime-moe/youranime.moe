@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
     #if logged_in?
     #  logout
     #end
+    cont = params["controller"] || params[:controller]
+    act = params["action"] || params[:action]
+    @par = params
+    current_controller(cont) if cont
+    current_action(act) if act
+    p "Params: #{@par.to_h}"
     @body_class = "container-fluid"
   }
 
@@ -15,6 +21,11 @@ class ApplicationController < ActionController::Base
         redirect_to "/users/#{current_user.username}"
     else
         set_title after: "Welcome", before: "Login"
+        @params = {}
+        params.each do |k, v|
+          next if k == "controller" || k == "action"
+          @params[k] = v
+        end
         render 'login'
     end
   end
@@ -29,8 +40,12 @@ class ApplicationController < ActionController::Base
   end
 
   def login_post
-    username = params[:one].strip.downcase
-    password = params[:two].strip
+    p params.to_h
+    username = params[:username].strip.downcase
+    password = params[:password].strip
+
+    controller = params[:controller]
+    action = params[:caction]
 
     render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0
     render json: {message: "You forgot your username!"} if password.size > 0 && username.size == 0
@@ -42,7 +57,20 @@ class ApplicationController < ActionController::Base
     unless user.nil?
         if user.authenticate(password)
             log_in user
-            render json: {new_url: "/", success: true}
+            if controller && action
+              p "Alternate url detected: c = #{controller} - a = #{action}"
+              new_url = url_for controller: controller, action: action, only_path: true
+              new_url += "?"
+              params.each do |k, v|
+                if k != :ccontroller && k != "ccontroller" && k != :caction && k != "caction" && k != "username" && k != "password"
+                  new_url += "#{k}=#{v}&"
+                end
+              end
+              p "New url: #{new_url}"
+              render json: {new_url: new_url, success: true}
+            else
+              render json: {new_url: "/", success: true}
+            end
         else
           render json: {message: "Sorry <u>#{username}</u>, but your password is wrong. Please try again!"}
         end
