@@ -11,6 +11,11 @@ to get started (may take a couple of seconds to load up). But you will need a
 username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail)
 to get your own login credentials!
 
+##### Side note
+Also, the version online is running the latest code on the branch `heroku`. So this
+means, whatever is on `heroku` is being used in production! The `master` is just more
+of a formality. Also, I don't want to make `heroku` my main branch to avoid desasters.
+
 #### RESTful API
 The application comes with a JSON API. It is not fully functionally yet, but allows
 you to login, get information about the current user, get a list of available shows
@@ -92,6 +97,6 @@ see which model-specific methods are available.
 
 
 #### Is this project alive?
-Yes! Last big update was in July 2017. I started this project in
+Yes! Last big update was in September 2017. I started this project in
 December 2016, and plan to continue for a couple of years.
 
