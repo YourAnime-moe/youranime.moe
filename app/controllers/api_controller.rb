@@ -14,8 +14,12 @@ class ApiController < ApplicationController
 			return
 		end
 
-		username = Base64.urlsafe_decode64 username
-		password = Base64.urlsafe_decode64 password
+        begin
+            username = Base64.urlsafe_decode64 username
+            password = Base64.urlsafe_decode64 password
+        rescue ArgumentError
+            rejder json: {token: nil, message: "Please send your username and password encoded in Base64 format.", success: false}
+        end
 
 		user = User.find_by(username: username)
 		if user.nil? or !user.authenticate password

@@ -16,29 +16,29 @@ The application comes with a JSON API. It is not fully functionally yet, but all
 you to login, get information about the current user, get a list of available shows
 and episodes. Here are a couple of useful endpoints:
 ```
-POST /api/token => {token:string, message:string}
+GET *or* POST /api/token => {token:string, message:string}
 	username: Your username in base64
 	password: Your password in base64
 
-POST /api/check => {message:string, success:boolean}
+GET *or* POST /api/check => {message:string, success:boolean}
     token: Your token
 
-POST /api/get/shows => {shows:[list]}
+GET *or* POST /api/get/shows => {shows:[list]}
 	token: Your token
 
-POST /api/get/episodes => {episodes:[list]}
+GET *or* POST /api/get/episodes => {episodes:[list]}
 	token: Your token
 
-POST /api/get/episode/path => {path:null or string, message:string, success:boolean}
+GET *or* POST /api/get/episode/path => {path:null or string, message:string, success:boolean}
 	token: Your token
 
-POST /api/get/news => {news:[list]}
+GET *or* POST /api/get/news => {news:[list]}
 	token: Your token
 
-POST /api/get/user => {all user information}
+GET *or* POST /api/get/user => {all user information}
 	token: Your token
 
-POST /api/token/destroy => {message:string}
+GET *or* POST /api/token/destroy => {message:string}
 	token: Your token
 ```
 You can use this API on the production app (provided you have login credentials), or on
