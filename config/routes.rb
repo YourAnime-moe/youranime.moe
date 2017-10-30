@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   post '/api/get/episode/path' => 'auth_api#episode_path'
 
   # Messages
-  get '/messages' => 'messages#index'
+  #get '/messages' => 'messages#index'
 
   match '/logout', to: 'sso#destroy', via: :all
 
