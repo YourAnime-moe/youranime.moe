@@ -9,7 +9,9 @@ This is the repository of a streaming application. Check out a live demo
 You can visit [https://tanoshimu.herokuapp.com](https://tanoshimu.herokuapp.com)
 to get started (may take a couple of seconds to load up). But you will need a
 username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail)
-to get your own login credentials!
+to get your own login credentials! *Please note that the contents (ie: videos) of this application 
+are not available publicly for copyright reasons. This application is by all means not built 
+for commercial use.*
 
 ##### Side note
 Also, the version online is running the latest code on the branch `heroku`. So this
@@ -111,3 +113,18 @@ see which model-specific methods are available.
 Yes! Last big update was in September 2017 and I made the development easier in November 2017. I started 
 this project in December 2016, and plan to continue for a couple of years.
 
+### About Tanoshimu
+This project was originally called *My Akinyele* and was running Rails 4. The UI and the code design 
+were terrible so I decided to change everything in January 2017 for the best. A big change was the use of
+Slim and the heavy use of Bootstrap (as well as better overall code architecture).
+
+In July 2017, I went from Bootstrap to Materialize CSS. The transition was nothing short of amazing. It's
+impresive how fuild the CSS transition and translation was.
+
+Starting October 2017, I started re-visiting a feature I discovered with my [reviews website](https://reviews.herokuapp.com):
+internal messaging between users. Most apps these days have a messaging feature. I think this feature will become a 
+requirement very soon. I want to add this feature because I want users to be able to share and recommend shows to
+each other.
+
+*Please note that the contents (ie: videos) of this application are not available publicly for copyright reasons. 
+This application is by all means not built for commercial use.*
