@@ -16,6 +16,16 @@ Also, the version online is running the latest code on the branch `heroku`. So t
 means, whatever is on `heroku` is being used in production! The `master` is just more
 of a formality. Also, I don't want to make `heroku` my main branch to avoid desasters.
 
+#### Technologies
+The following technologies made this app into what it is today:
+- [Ruby on Rails 5](http://rubyonrails.org/) (Server-side and API development)
+- [Materialize CSS](http://materializecss.com/) (JavaScript and CSS library, similar to Bootstrap)
+- [jQuery](https://jquery.com/) (Various JavaScript libraries, mostly used for AJAX here)
+- [Slim](http://slim-lang.com/) (Jade-based Ruby HTML generator, make the HTML easier to read when developing)
+- Python (Used for generating video thumbnails. Still needs a lot of work)
+- Ruby (Other than Ruby of Rails, lots of cool Ruby libraries are used - See [Gemfile](Gemfile))
+- _and more to come!_
+
 #### RESTful API
 The application comes with a JSON API. It is not fully functionally yet, but allows
 you to login, get information about the current user, get a list of available shows
@@ -98,6 +108,6 @@ see which model-specific methods are available.
 
 
 #### Is this project alive?
-Yes! Last big update was in September 2017. I started this project in
-December 2016, and plan to continue for a couple of years.
+Yes! Last big update was in September 2017 and I made the development easier in November 2017. I started 
+this project in December 2016, and plan to continue for a couple of years.
 
