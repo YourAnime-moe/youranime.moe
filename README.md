@@ -60,7 +60,7 @@ git clone git@github.com:/thedrummeraki/tanoshimu.git
 cd tanoshimu
 cp database.sample db/development.sqlite3
 bundle						# Installs all necessary rails packages
-bundle exec rake db:migrate # Initialize the database if necessary
+bundle exec rake db:migrate         # Initialize the database if necessary
 rails s						# Run the server
 ```
 Once the server is running, you can go to http://localhost:3000. You can login with credentials ```tanoshimu```
