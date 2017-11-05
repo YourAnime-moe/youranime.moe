@@ -1,5 +1,7 @@
 #!/usr/bin/python
 """
+Copyright: Akinyele Akintola-Febrissy
+
 A little python script I wrote to generate video
 thumbnails.
 
@@ -14,6 +16,8 @@ A regular call
 $ ./create_thumbnails
 Will scan the current folder for videos ending with mp4 extension, and output all
 generated thumbnails to the current video.
+
+Further document will be added once the development of this script is finalized.
 """
 
 import sys
