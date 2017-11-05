@@ -1,5 +1,6 @@
 # Welcome to Tanoshimu!
 ### 楽しむ (lit. To have fun)
+![Tanoshimu Logo](https://tanoshimu.herokuapp.com/img/tanoshimu.png)
 
 #### What is it?
 This is the repository of a streaming application. Check out a live demo 
