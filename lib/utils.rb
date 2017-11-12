@@ -95,19 +95,19 @@ class Utils
         !result.nil?
     end
 
-    def Utils.random(length=10)
+    def self.random(length=10)
         (0...length).map{ (65+rand(26)).chr }.join
     end
 
-    def Utils.hex_random(length=10)
+    def self.hex_random(length=10)
         (0...length).map{ (65+rand(6)).chr }.join
     end
 
-    def Utils.colour_random
+    def self.colour_random
         '#' + hex_random(6)
     end
 
-    def Utils.color_random
+    def self.color_random
         Utils.colour_random
     end
 
@@ -115,7 +115,7 @@ class Utils
         one + rand(two)
     end
 
-    def Utils.today(hour_of_day=true)
+    def self.today(hour_of_day=true)
         today = Time.now
         hour = Utils.pretty_number today.hour
         min = Utils.pretty_number today.min
@@ -202,7 +202,7 @@ class Utils
         list.push(what) if doubles or !list.include? what
     end
 
-    def Utils.pretty_number(number)
+    def self.pretty_number(number)
         if not number
             ""
         elsif number == 0
@@ -217,7 +217,7 @@ class Utils
         end
     end
 
-    def Utils.get_ordinal_number(number, pretty_number: true)
+    def self.get_ordinal_number(number, pretty_number: true)
         number = number.to_i
         return number.ordinalize if not pretty_number
         return "" if not number
@@ -227,7 +227,7 @@ class Utils
         number.ordinalize
     end
 
-    def Utils.date_from(model=nil, created_at=true)
+    def self.date_from(model=nil, created_at=true)
         if model != nil
             if created_at
                 date = model.created_at.getlocal
@@ -244,12 +244,12 @@ class Utils
         end
     end
 
-    def Utils.get_date_from_time(time)
+    def self.get_date_from_time(time)
         time = Time.now if not time
         Utils.full_date_from time.year, time.month, time.day, time.hour, time.min, time.sec
     end
 
-    def Utils.full_model_date_from(model=nil, created_at=true)
+    def self.full_model_date_from(model=nil, created_at=true)
         if model != nil
             if created_at
                 date = model.created_at.getlocal
@@ -325,7 +325,7 @@ class Utils
         "#{date} #{sep} #{time}"
     end
 
-    def Utils.full_date_from(year, month, day, hour=0, minutes=0, seconds=0)
+    def self.full_date_from(year, month, day, hour=0, minutes=0, seconds=0)
         if Utils.is_valid_date year, month, day
             "#{Utils.get_month(month.to_i)} #{Utils.get_ordinal_number day}, #{year} -"\
                 " #{Utils.pretty_number hour}:#{Utils.pretty_number minutes}:#{Utils.pretty_number seconds}"
@@ -334,7 +334,7 @@ class Utils
         end
     end
 
-    def Utils.is_valid_date(year, month, day)
+    def self.is_valid_date(year, month, day)
         year = year.to_i
         month = month.to_i
         day = day.to_i
@@ -343,7 +343,7 @@ class Utils
             and Utils.is_valid_date_of_month(Utils.is_leap_year(year), month, day)
     end
 
-    def Utils.get_todays_date
+    def self.get_todays_date
         today = Date.today
         year = today.year
         month = today.month
@@ -351,7 +351,7 @@ class Utils
         [year, month, day]
     end
 
-    def Utils.get_years_range
+    def self.get_years_range
         min = Time.now.year
         max = min + 40 # years from today
         range = []
@@ -361,7 +361,7 @@ class Utils
         range
     end
 
-    def Utils.get_months_range
+    def self.get_months_range
         range = []
         (0..12).each do |month|
             range.push [Utils.get_month(month), month]
@@ -369,7 +369,7 @@ class Utils
         range
     end
 
-    def Utils.get_days_range(all=true)
+    def self.get_days_range(all=true)
         range = []
         min = Time.now.day
         max = !all ? Utils.get_max_days_from_month(Time.now.month) : 31
@@ -379,7 +379,7 @@ class Utils
         range
     end
 
-    def Utils.get_hours_range
+    def self.get_hours_range
         range = []
         (0..24).each do |hour|
             range.push [Utils.pretty_number(hour)+" h", hour]
@@ -387,7 +387,7 @@ class Utils
         range
     end
 
-    def Utils.get_minutes_and_seconds_range(seconds=false)
+    def self.get_minutes_and_seconds_range(seconds=false)
         range = []
         (0..59).each do |m_s|
             range.push [Utils.pretty_number(m_s)+(seconds ? " s" : " min"), m_s]
@@ -395,14 +395,14 @@ class Utils
         range
     end
 
-    def Utils.show_currency(money)
+    def self.show_currency(money)
         return "N/A" if !money
         m = money.to_s
         return " - " if m.empty?
         "#{'%.02f' % money}$"
     end
 
-    def Utils.get_class_from_string(string)
+    def self.get_class_from_string(string)
         if not string
             nil
         else
@@ -433,8 +433,19 @@ class Utils
         end                
     end
 
+    def self.current_season_string
+        season = self.current_season
+        season_string = nil
+        season_string = "Winter" if season == 0
+        season_string = "Spring" if season == 1
+        season_string = "Summer" if season == 2
+        season_string = "Fall" if season == 3
+        return "#{season_string} #{0.years.ago.year}" if !season_string.nil?
+        "N/A"
+    end
+
     private
-        def Utils.get_month(month_id)
+        def self.get_month(month_id)
             case month_id
             when 1
                 "January"
@@ -465,7 +476,7 @@ class Utils
             end 
         end
 
-        def Utils.get_day_from(date)
+        def self.get_day_from(date)
             if date != nil
                 if date.monday?
                     "Monday"
@@ -487,7 +498,7 @@ class Utils
             end
         end
 
-        def Utils.get_day_index_from(date)
+        def self.get_day_index_from(date)
             if date != nil
                 if date.monday?
                     1
@@ -509,7 +520,7 @@ class Utils
             end
         end
 
-        def Utils.is_leap_year(year)
+        def self.is_leap_year(year)
             if year % 4 != 0
                 false
             elsif year % 100 != 0
@@ -521,7 +532,7 @@ class Utils
             end
         end
 
-        def Utils.is_valid_date_of_month(leap_year, month, date)
+        def self.is_valid_date_of_month(leap_year, month, date)
             if date < 0
                 false
             end
@@ -539,7 +550,7 @@ class Utils
             end
         end
 
-        def Utils.get_max_days_from_month(month)
+        def self.get_max_days_from_month(month)
             case month
             when 1,3,5,7,8,10
                 31
