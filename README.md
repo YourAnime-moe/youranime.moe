@@ -112,7 +112,7 @@ see which model-specific methods are available.
 | app/controllers  | app/models | app/views |
 
 
-#### Is this project alive?
+#### Is this project alive? 
 Yes! Last big update was in September 2017 and I made the development easier in November 2017. I started 
 this project in December 2016, and plan to continue for a couple of years.
 
