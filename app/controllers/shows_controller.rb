@@ -28,7 +28,8 @@ class ShowsController < AuthenticatedController
             show_number = params[:show_number]
         end
         if title.nil? or show_number.nil?
-            @shows = Show.all.to_a.sort_by(&:get_title)
+            @shows = Show.all.select {|show| show.is_anime?}
+            @shows = @shows.to_a.sort_by(&:get_title)
             @shows.select! {|s| s.is_published?}
             shows = @shows.each_slice(2).to_a
             @split_shows = []
