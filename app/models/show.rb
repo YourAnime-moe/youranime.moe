@@ -143,6 +143,18 @@ class Show < ActiveRecord::Base
 
     end
 
+    def is_anime?
+        self.show_type.to_s.size == 0 || self.show_type == 0
+    end
+
+    def is_drama?
+        self.show_type == 1
+    end
+
+    def is_movie?
+        self.show_type == 2
+    end
+
     def get_year
         return 0.years.ago.year if self.is_new?
         self.year
