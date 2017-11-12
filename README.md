@@ -1,6 +1,7 @@
 # Welcome to Tanoshimu!
 ### 楽しむ (lit. To have fun)
 <img src="public/favicon.ico" width="100" height="100"/>
+<img src="https://circleci.com/gh/thedrummeraki/tanoshimu/tree/master.svg?style=shield&circle-token=79d484b0cb944cc971aa0c65a81927a8735e7e19"/>
 
 #### What is it?
 This is the repository of a streaming application. Check out a live demo 
