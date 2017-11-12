@@ -48,9 +48,7 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sso#failure'
 
   # GET API
-  get '/api/token' => 'api#token'
   get '/api/check' => 'api#check'
-  get '/api/token/destroy' => 'auth_api#destroy_token'
   get '/api/get/user' => 'auth_api#user'
   get '/api/get/shows' => 'auth_api#shows'
   get '/api/get/shows/latest' => 'auth_api#latest_shows'
@@ -62,7 +60,7 @@ Rails.application.routes.draw do
   # POST API
   post '/api/token' => 'api#token'
   post '/api/check' => 'api#check'
-  post '/api/token/destroy' => 'auth_api#destroy_token'
+  post '/api/token/destroy' => 'auth_api#destroy_token' # todo: make delete
   post '/api/get/user' => 'auth_api#user'
   post '/api/get/shows' => 'auth_api#shows'
   post '/api/get/shows/latest' => 'auth_api#latest_shows'
