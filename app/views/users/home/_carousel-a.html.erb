@@ -2,6 +2,7 @@
   <% host = Config.main_host %>
 
   <div class="carousel carousel-slider">
+    <a class="carousel-item" href="/shows?id=49"><img style="object-fit: cover;" src="<%= host %>/videos/icons/boku-no-hero-academia.png"></a>
     <a class="carousel-item" href="/shows?id=60"><img style="object-fit: cover;" src="<%= host %>/videos/icons/tsuredure.jpg"></a>
     <a class="carousel-item" href="/shows?id=56"><img style="object-fit: cover;" src="<%= host %>/videos/icons/charlotte.jpg"></a>
     <a class="carousel-item" href="/shows?id=54"><img style="object-fit: cover;" src="<%= host %>/videos/icons/iiwtttpugiad.jpg"></a>
@@ -10,12 +11,14 @@
     <a class="carousel-item" href="/shows?id=51"><img style="object-fit: cover;" src="<%= host %>/videos/icons/dimension-w.png"></a>
     <a class="carousel-item" href="/shows?id=55"><img style="object-fit: cover;" src="<%= host %>/videos/icons/handa-kun.jpg"></a>
     <a class="carousel-item" href="/shows?id=52"><img style="object-fit: cover;" src="<%= host %>/videos/icons/91.jpg"></a>
-    <a class="carousel-item" href="/shows?id=49"><img style="object-fit: cover;" src="<%= host %>/videos/icons/boku-no-hero-academia.png"></a>
   </div>
 
   <script type="text/javascript">
       $(document).ready(function() {
           $('.carousel.carousel-slider').carousel({fullWidth: true});
+      });
+      $(document).ready(function(){
+          $('.carousel').carousel();
       });
   </script>
   <script type="text/javascript">
