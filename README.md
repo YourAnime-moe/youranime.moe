@@ -10,7 +10,7 @@ This is the repository of a streaming application. Check out a live demo
 #### How can I use it?
 You can visit [https://tanoshimu.herokuapp.com](https://tanoshimu.herokuapp.com)
 to get started (may take a couple of seconds to load up). But you will need a
-username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail)
+username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail.com)
 to get your own login credentials! **Please note that the contents (ie: videos) of this application 
 are not available publicly for copyright reasons. This application is by all means not built 
 for commercial use.**
