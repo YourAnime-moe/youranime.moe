@@ -10,15 +10,15 @@ class ShowsController < AuthenticatedController
             @show = Show.find_by(id: params[:id])
             if @show && @show.is_published?
                 set_title(:before => @show.get_title)
-                @back_url = get_back_url(params, "/shows")
-                @back_title = get_back_title(params, "Go back to shows")
+                @back_url = get_back_url(params, @show.is_movie? ? "/movies" : "/shows")
+                @back_title = get_back_title(params, "Go back to " + (@show.is_movie? ? "movies" : "shows"))
                 render 'view'
             elsif @show && !@show.is_published?
                 flash[:warning] = "This show is not available yet. Please try again later."
-                redirect_to '/'
+                redirect_to '/shows'
             else
                 flash[:danger] = "This show was not found. Please try again."
-                redirect_to '/'
+                redirect_to '/shows'
             end
             return
         end
@@ -28,7 +28,8 @@ class ShowsController < AuthenticatedController
             show_number = params[:show_number]
         end
         if title.nil? or show_number.nil?
-            @shows = Show.all.to_a.sort_by(&:get_title)
+            @shows = Show.all.select {|show| show.is_anime?}
+            @shows = @shows.to_a.sort_by(&:get_title)
             @shows.select! {|s| s.is_published?}
             shows = @shows.each_slice(2).to_a
             @split_shows = []
