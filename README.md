@@ -1,5 +1,5 @@
 # Welcome to Tanoshimu! 
-<a href="https://circleci.com/gh/thedrummeraki/tanoshimu"><img src="https://circleci.com/gh/thedrummeraki/tanoshimu/tree/master.svg?style=shield"/></a>
+<a href="https://circleci.com/gh/thedrummeraki/tanoshimu"><img src="https://circleci.com/gh/thedrummeraki/tanoshimu/tree/heroku.svg?style=shield"/></a>
 ### 楽しむ (lit. To have fun)
 <a href="https://tanoshimu.herokuapp.com"><img src="public/favicon.ico" width="100" height="100"/></a>
 
