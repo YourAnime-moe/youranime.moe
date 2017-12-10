@@ -92,6 +92,26 @@ class User < ActiveRecord::Base
         self.admin
     end
 
+    def is_activated?
+        # All users should be activated by default. They will be deactivated on request.
+        was_nil = self.is_activated.nil?
+        self.activate if was_nil
+        self.save if was_nil
+        self.is_activated
+    end
+
+    def is_demo?
+        return username == "demo"
+    end
+
+    def activate
+        (self.is_activated = true) && save
+    end
+
+    def deactivate
+        !(self.is_activated = false) && save
+    end
+
     def update_settings(new_settings, save=true)
         if new_settings.nil?
             new_settings = {

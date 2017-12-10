@@ -29,6 +29,7 @@ module ApplicationHelper
     end
 
     def login_time
+        return nil unless logged_in?
         @login_time ||= session[:user_login_time]
         return "None" if @login_time.nil?
         Utils.get_date_from_time(Time.parse(@login_time).getlocal)
@@ -86,7 +87,7 @@ module ApplicationHelper
     end
 
     def logged_in?
-        !current_user.nil?
+        !current_user.nil? && current_user.is_activated?
     end
 
     def log_in(user)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724024637) do
+ActiveRecord::Schema.define(version: 20171210033015) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "show_id"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20170724024637) do
     t.string   "episodes_watched"
     t.string   "settings"
     t.string   "auth_token"
+    t.boolean  "is_activated"
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
   end
 

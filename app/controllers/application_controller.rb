@@ -56,6 +56,10 @@ class ApplicationController < ActionController::Base
     user = User.find_by(username: username.downcase)
     unless user.nil?
         if user.authenticate(password)
+            unless user.is_activated?
+              render json: {message: 'Please go to the <a href="https://my-akinyele-admin.herokuapp.com" target="_blank">admin console</a> to get started.', success: false}
+              return
+            end
             log_in user
             if controller && action
               p "Alternate url detected: c = #{controller} - a = #{action}"
