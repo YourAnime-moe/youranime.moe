@@ -95,6 +95,10 @@ class Episode < ActiveRecord::Base
         parts.join '/'
     end
 
+    def get_subtitle_path(ext: 'vtt')
+        get_image_path ext: ext
+    end
+
     def was_watched_by?(user)
         return false if user.episodes_watched.nil? or user.episodes_watched.empty?
         !user.episodes_watched.select { |id| id == self.id }.empty?

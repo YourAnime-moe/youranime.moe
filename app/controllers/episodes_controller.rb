@@ -1,5 +1,7 @@
 class EpisodesController < AuthenticatedController
 
+    require 'net/http'
+
     def view
         @anime_current = "current"
         id = params[:id]
@@ -34,6 +36,30 @@ class EpisodesController < AuthenticatedController
         else
             redirect_to "/shows/episodes/random"
         end
+    end
+
+    def get_subs
+        id = params[:id]
+        if id.to_s.empty?
+            render text: "No episode id was provided."
+            return
+        end
+        episode = Episode.find_by(id: id)
+        if episode.nil?
+            render text: "Episode number #{id} does not exist."
+            return
+        end
+        unless episode.show.subbed
+            render text: "Show #{episode.show.get_title} doesn't seem to be subbed..."
+            return
+        end
+
+        url = URI.parse(episode.get_subtitle_path)
+        req = Net::HTTP::Get.new(url.to_s)
+        res = Net::HTTP.start(url.host, url.port) {|http|
+          http.request(req)
+        }
+        render text: res.body
     end
 
 end

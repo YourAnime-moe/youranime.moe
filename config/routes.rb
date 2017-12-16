@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   # Episodes
   get '/shows/episodes' => 'episodes#view'
   get '/shows/episodes/random' => 'episodes#random'
+  get '/shows/episodes/subs' => 'episodes#get_subs'
 
   # Tags
   get '/tags' => 'shows#tags'
