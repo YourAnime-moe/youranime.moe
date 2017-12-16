@@ -18,10 +18,11 @@ class ApiController < ApplicationController
             username = Base64.urlsafe_decode64 username
             password = Base64.urlsafe_decode64 password
         rescue ArgumentError
-            rejder json: {token: nil, message: "Please send your username and password encoded in Base64 format.", success: false}
+            render json: {token: nil, message: "Please send your username and password encoded in Base64 format.", success: false}
+            return
         end
-
-		user = User.find_by(username: username)
+		    
+        user = User.find_by(username: username)
 		if user.nil? or !user.authenticate password
 			render json: {token: nil, message: "Invalid username or password.", success: false}
 			return
@@ -34,6 +35,17 @@ class ApiController < ApplicationController
                 message: "Access denied. This action requires to be an admin.",
                 show_login: true,
                 show_login_message: "Re-login",
+                success: false
+            }
+            return
+        end
+
+        if !user.is_activated?
+            render json: {
+                rails_message: "Please visit the admin console to get started.",
+                message: "Please go to the <a href=\"https://my-akinyele-admin.herokuapp.com\" target=\"_blank\">admin console</a> to get started.",
+                show_login: true,
+                show_login: "Try again",
                 success: false
             }
             return
