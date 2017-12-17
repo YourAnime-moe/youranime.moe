@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   # Shows
   get '/shows' => 'shows#view'
   get '/shows/history' => 'shows#history'
+  get '/shows/img' => 'shows#render_img'
   get '/search' => 'shows#search' # This not really for shows, but will probably be used mostly for shows
 
   # Movies
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
   get '/shows/episodes' => 'episodes#view'
   get '/shows/episodes/random' => 'episodes#random'
   get '/shows/episodes/subs' => 'episodes#get_subs'
+  get '/shows/episodes/render' => 'episodes#render_type'
 
   # Tags
   get '/tags' => 'shows#tags'

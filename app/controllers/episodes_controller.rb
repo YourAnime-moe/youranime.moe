@@ -62,4 +62,35 @@ class EpisodesController < AuthenticatedController
         render text: res.body
     end
 
+    def render_type
+        id = params[:id]
+        if id.to_s.empty?
+            render text: "No episode id was provided."
+            return
+        end
+        episode = Episode.find_by(id: id)
+        if episode.nil?
+            render text: "Episode number #{id} does not exist."
+            return
+        end
+
+        type = params[:type].to_s.strip
+
+        if type == "video"
+            url = episode.get_path
+        elsif type == "image"
+            url = episode.get_image_path
+        else
+            url = episode.get_path
+        end
+
+        url = URI.parse(url)
+        req = Net::HTTP::Get.new(url.to_s)
+        res = Net::HTTP.start(url.host, url.port) {|http|
+          http.request(req)
+        }
+        
+        send_data res.body, filename: episode.title
+    end
+
 end

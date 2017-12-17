@@ -94,4 +94,29 @@ class ShowsController < AuthenticatedController
         
     end
 
+    def render_img
+        id = params[:id]
+        if id.to_s.empty?
+            render text: "No show id was provided."
+            return
+        end
+        show = Show.find_by(id: id)
+        if show.nil?
+            render text: "Show number #{id} does not exist."
+            return
+        end
+
+        path = show.get_image_path
+        parts = path.split('.')
+        extension = parts.length > 1 ? parts[parts.length - 1] : "jpg"
+
+        url = URI.parse(path)
+        req = Net::HTTP::Get.new(url.to_s)
+        res = Net::HTTP.start(url.host, url.port) {|http|
+          http.request(req)
+        }
+        
+        send_data res.body, filename: "#{show.get_title}.#{extension}"
+    end
+
 end

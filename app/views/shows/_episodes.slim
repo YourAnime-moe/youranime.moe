@@ -12,7 +12,7 @@ br
 	                    - url = '/shows/episodes?id=' + episode.id.to_s
 	                    - watched = "watched" if episode.was_watched_by? current_user
 	                    .hoverable.clickable.hasmenu class="#{watched}" onclick="window.location.href='#{url}'"
-	                        img src="#{episode.get_image_path}" style="max-width: 100%"
+	                        img src="/shows/episodes/render?id=#{episode.id}&type=image" style="max-width: 100%"
 	                        span.episode name="#{episode.id}" id='episode_#{episode.episode_number}' #{episode.episode_number}) #{episode.title}
 	                        div.episode.progressVideo.hidden id="progress_#{episode.id}"
 
