@@ -84,6 +84,25 @@ class Episode < ActiveRecord::Base
         Config.path self.path
     end
 
+    def get_new_path
+        return self.path if self.path.nil? or self.path.start_with? "http"
+        video_path = self.path
+        parts = video_path.split '/'
+        return nil if parts.size <= 2
+
+        # Get the general information
+        filename = parts[parts.size-1]
+        show_name = parts[parts.size-2]
+
+        # Get the episiode number and extension
+        filename_parts = filename.split '.'
+        ext = filename_parts[filename_parts.size-1]
+        filename_name = filename_parts[0].split 'ep'
+        ep_num = filename_name[1] || self.episode_number
+
+        Config.path "videos?show=#{show_name}&episode=#{ep_num}&format=#{ext}&video=true"
+    end
+
     def get_image_path(ext: 'jpg')
         video_path = self.get_path
         parts = video_path.split('/')
@@ -93,6 +112,24 @@ class Episode < ActiveRecord::Base
         filename = fs.join '.'
         parts[parts.size-1] = filename
         parts.join '/'
+    end
+
+    def get_new_image_path(ext: 'jpg')
+        return self.path if self.path.nil? or self.path.start_with? "http"
+        video_path = self.path
+        parts = video_path.split '/'
+        return nil if parts.size <= 2
+
+        # Get the general information
+        filename = parts[parts.size-1]
+        show_name = parts[parts.size-2]
+
+        # Get the episiode number and extension
+        filename_parts = filename.split '.'
+        filename_name = filename_parts[0].split 'ep'
+        ep_num = filename_name[1] || self.episode_number
+
+        Config.path "videos?show=#{show_name}&episode=#{ep_num}&format=#{ext}"
     end
 
     def get_subtitle_path(ext: 'vtt')

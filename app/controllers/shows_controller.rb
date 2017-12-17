@@ -106,9 +106,7 @@ class ShowsController < AuthenticatedController
             return
         end
 
-        path = show.get_image_path
-        parts = path.split('.')
-        extension = parts.length > 1 ? parts[parts.length - 1] : "jpg"
+        path = show.get_new_image_path
 
         url = URI.parse(path)
         req = Net::HTTP::Get.new(url.to_s)
@@ -116,7 +114,7 @@ class ShowsController < AuthenticatedController
           http.request(req)
         }
         
-        send_data res.body, filename: "#{show.get_title}.#{extension}"
+        send_data res.body, filename: "#{show.get_title}"
     end
 
 end

@@ -121,6 +121,21 @@ class Show < ActiveRecord::Base
         Config.path self.image_path
     end
 
+    def get_new_image_path
+        return nil if self.image_path.nil?
+
+        filename = self.image_path.split('/')
+        under = filename[filename.size-2]
+        filename = filename[filename.size-1]
+
+        filename_parts = filename.split '.'
+        extension = filename_parts[filename_parts.size-1]
+        filename_name = filename_parts[0]
+
+        p self.image_path
+        Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}"
+    end
+
     def has_image?
         self.image_path.to_s.strip.size > 0
     end

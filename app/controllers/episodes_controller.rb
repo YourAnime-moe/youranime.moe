@@ -77,14 +77,14 @@ class EpisodesController < AuthenticatedController
         type = params[:type].to_s.strip
 
         if type == "video"
-            url = episode.get_path
+            url = episode.get_new_path
         elsif type == "image"
-            url = episode.get_image_path
+            path = episode.get_new_image_path
         else
             url = episode.get_path
         end
-
-        url = URI.parse(url)
+        
+        url = URI.parse(path)
         req = Net::HTTP::Get.new(url.to_s)
         res = Net::HTTP.start(url.host, url.port) {|http|
           http.request(req)
