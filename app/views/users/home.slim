@@ -20,7 +20,7 @@
     - host = Config.main_host
     .center
         p.hidden Ever feel there is not enough anime to watch or what is already posted is just no for you? We got you covered.
-        .carousel style="margin-top: -50px;"
+        /! .carousel style="margin-top: -50px;"
             a.carousel-item href="/shows?id=49"
                 img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/alice.jpg"
             a.carousel-item href="/shows?id=49"
@@ -41,7 +41,7 @@
             - @recommended.each do |rec|
                 .col.m4
                     a href="/shows?id=#{rec.id}"
-                        img src="#{rec.get_image_path}"
+                        img src="/shows/img?id=#{rec.id}"
                     p #{rec.get_title}
 
     br
@@ -51,7 +51,7 @@
             - @featured.each do |fet|
                 .col.m4
                     a href="/shows?id=#{fet.id}"
-                        img src="#{fet.get_image_path}"
+                        img src="/shows/img?id=#{fet.id}"
                     p #{fet.get_title}
 
     br
@@ -61,7 +61,7 @@
             - @this_season.each do |ts|
                 .col.m4
                     a href="/shows?id=#{ts.id}"
-                        img src="#{ts.get_image_path}"
+                        img src="/shows/img?id=#{ts.id}"
                     p #{ts.get_title}
         - else
             br
