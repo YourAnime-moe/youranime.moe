@@ -1,0 +1,11 @@
+language: ruby
+deploy:
+  provider: heroku
+  api_key:
+    secure: SkTeDSGkF6Z9/25P81ly3S+8+adiJ8iRcwPcF6vUazIH1hIi7L8M1llUhO8Ye8DV1bPJoa06/odEE2VdHhD40UGxGBg4pzjYND34B47UYKkvHqtSg4xFhZ1BdeBR6aae/1zWfpJw3T0K2U57JTMCYgoVPZ0CTETpxg4R+Rx885EFptP4nyCt5kOrV4KsQAskgyDPa9W3CtbgX1OA/Leluz/4plGrCVMJZw+nXBtBFt2Udk8QGp4+02MLleR+8k+MLhpY/EDsHq4N5r/NjIZpK1AcDvcyXqrFecB6rwbhnZdI5TAEwE2JxuuwvUogHo17aOs9TGEoPuGoJ4WL53K9S8XBrhGwXO/Lzq6zAHVQOuNMystNllrl8M8tpQwrs/kAYM7uLmIt8WNu7VYnGmbSFYabY69bfKapZsfF0iY8WpiuXaJN4QYkB7Nmqhso4Anlon/xePl6fIFWP2rrr6Q1zFphHMd8SZn0Dacy0/e3aFTrtfZ9i6nmDn82vnlsPYSrJmktNZpkY94mnKA5hKJCBsUHXbH5T34SQ3nyT0CYqo3gULBMWN9exe347IDl7qWrevDpWDn643xNzmkacWAnd0PDH0XoOiIodDW3wJ17s+Jg2tmyDebLSrNGOLD106llh8erNYY1DE490sgNp4LR2L1RNE5A7Zpf78FVHaDW42I=
+  app: tanoshimu
+  on:
+    repo: thedrummeraki/tanoshimu
+  run:
+    - "bundle exec rake db:migrate"
+    - "bundle exec rake assets:precompile"
