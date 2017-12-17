@@ -6,6 +6,7 @@ deploy:
   app: tanoshimu
   on:
     repo: thedrummeraki/tanoshimu
+    branch: heroku
   run:
     - "bundle exec rake db:migrate"
     - "bundle exec rake assets:precompile"
