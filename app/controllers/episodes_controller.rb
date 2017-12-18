@@ -54,7 +54,7 @@ class EpisodesController < AuthenticatedController
             return
         end
 
-        url = URI.parse(episode.get_subtitle_path)
+        url = URI.parse(episode.get_new_subtitle_path)
         req = Net::HTTP::Get.new(url.to_s)
         res = Net::HTTP.start(url.host, url.port) {|http|
           http.request(req)
