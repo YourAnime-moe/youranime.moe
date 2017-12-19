@@ -43,6 +43,9 @@ gem "slim-rails"
 gem 'omniauth'
 gem 'omniauth-oauth2'
 
+# Coveralls
+gem 'coveralls', require: false
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
