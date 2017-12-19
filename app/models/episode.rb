@@ -141,6 +141,10 @@ class Episode < ActiveRecord::Base
         path + "&subtitles=true"
     end
 
+    def has_subs?
+        self.show.subbed ? true : false
+    end
+
     def was_watched_by?(user)
         return false if user.episodes_watched.nil? or user.episodes_watched.empty?
         !user.episodes_watched.select { |id| id == self.id }.empty?
