@@ -4,7 +4,9 @@ class Config
     LINK_TAG_SIZE = 2
 
     def self.main_host
-        Rails.env == "production" ? _fetch_host(:main) : _fetch_host(:dev)
+        return _fetch_host(:main) if Rails.env == "production"
+        return _fetch_host(:dev) if Rails.env == "development"
+        return _fetch_host(:test) if Rails.env == "test"
     end
 
     def self.admin_host(*tags)
@@ -67,7 +69,7 @@ class Config
             if hosts_info["env"]
                 domain = ENV[domain]
             end
-            raise AppError.new if domain.nil?
+            raise Exception.new("Domain was not found for key #{key}.") if domain.nil?
             path = protocol + "://"
             path << sub_domain + "." unless sub_domain.nil?
             path << domain
