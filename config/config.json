@@ -12,6 +12,12 @@
             "domain": "REMOTE_IP",
             "env": true
         },
+        "test": {
+            "protocol": "http",
+            "sub_domain": null,
+            "domain": "TEST_HOST",
+            "env": true
+        },
         "admin": {
             "protocol": "https",
             "sub_domain": "my-akinyele-admin",

@@ -24,10 +24,6 @@ class Episode < ActiveRecord::Base
         @show = Show.find(self.show_id)
     end
 
-    def get_url_safe_title
-        "episode-#{self.episode_number}"
-    end
-
     def is_published?
         return false if self.published.nil?
         self.show.is_published? and self.published
