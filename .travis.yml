@@ -14,3 +14,5 @@ deploy:
 branches:
   only:
     - heroku
+env:
+  MAIN_HOST=0.0.0.0
