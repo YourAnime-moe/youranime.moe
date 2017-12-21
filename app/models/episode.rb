@@ -30,7 +30,7 @@ class Episode < ActiveRecord::Base
     end
 
     def get_path_extension
-        return nil if self.path.nil?
+        return nil if self.path.nil?
         parts = self.path.split "."
 
         # Only accept the last part, don't accept multiple extensions for videos
@@ -99,6 +99,7 @@ class Episode < ActiveRecord::Base
     end
 
     def get_subtitle_path(ext: 'vtt')
+        return nil if !self.show.nil? && self.show.dubbed
         get_image_path ext: ext
     end
 
@@ -156,8 +157,8 @@ class Episode < ActiveRecord::Base
                 end
                 new_comment[:user_id] = username
             end
-            new_comment[:time] = comments[:time] if new_comment[:time].nil?
-            new_comment[:user_id] = comments[:user_id] if new_comment[:user_id].nil?
+            new_comment[:time] = comment[:time] if new_comment[:time].nil?
+            new_comment[:user_id] = comment[:user_id] if new_comment[:user_id].nil?
             list.push new_comment
         end
         list
