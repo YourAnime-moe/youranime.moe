@@ -1,0 +1,23 @@
+dummy:
+  username: thedrummeraki
+  password: password
+  name: The Drummer Aki
+  admin: false
+  episodes_watched: [1, 2]
+  is_activated: true
+
+admin:
+  username: admin
+  password: password
+  name: Tanoshimu Admin Test
+  admin: true
+  episodes_watched: [1]
+  is_activated: true
+
+fake:
+  username: iamnotarealuserahahahaha
+  password: thisisfakepassword
+  name: Oh... yeah for test
+  admin: false
+  episodes_watched:
+  is_activated: false
