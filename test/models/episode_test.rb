@@ -186,7 +186,7 @@ class EpisodeTest < TanoshimuBaseTest
         ]
         comments.each do |comment|
             assert_equal episode.add_comment(comment), {success: true, message: "Comment was received."}
-        end
+        end 
         assert_equal episode.get_comments, episode.comments
     end
 
