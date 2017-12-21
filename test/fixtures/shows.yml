@@ -1,0 +1,39 @@
+anime_one_subbed:
+  show_type: 0
+  dubbed: false
+  subbed: true
+  starring: The Drummer Aki
+  average_run_time: 23
+  show_number: 1
+  title: Thedrummeraki
+  alternate_title: About The Drummer Aki - Season 1
+  plot: This show talks about Drummer Aki and his testing adventures...!
+  year: 2017
+  published: true
+  default_path: /videos/drummeraki
+  image_path: /videos/tanoshimu/drummeraki.png
+  description: Same as the plot...!
+  featured: true
+  recommended: true
+  season_year: 2017
+  season_code: 3
+
+anime_one_dubbed:
+  show_type: 0
+  subbed: false
+  dubbed: true
+  starring: The Drummer Aki
+  average_run_time: 23
+  show_number: 1
+  title: Thedrummeraki
+  alternate_title: About The Drummer Aki - Season 1
+  plot: This show talks about Drummer Aki and his testing adventures - in English...!
+  year: 2017
+  published: true
+  default_path: /videos/drummeraki
+  image_path: /videos/tanoshimu/drummeraki.png
+  description: Same as the plot...!
+  featured: true
+  recommended: false
+  season_year: 2017
+  season_code: 3
