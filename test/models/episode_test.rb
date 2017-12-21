@@ -180,14 +180,26 @@ class EpisodeTest < TanoshimuBaseTest
         episode = Episode.new
         assert_save episode
 
+        time = Utils.get_date_from_time(Time.now)
+
         comments = [
-            {text: "one", time: Utils.get_date_from_time(Time.now), user_id: @dummy_user.id}, 
-            {text: "two", time: Utils.get_date_from_time(Time.now), user_id: @dummy_user.id}
+            {text: "one", time: time, user_id: @dummy_user.id}, 
+            {text: "two", time: time, user_id: @dummy_user.id},
+            {text: "three", time: time, user_id: @dummy_user.id},
+            {text: "fake", time: time, user_id: 9999}
+        ]
+
+        expected = [
+            {text: "one", time: time, user_id: @dummy_user.username}, 
+            {text: "two", time: time, user_id: @dummy_user.username},
+            {text: "three", time: time, user_id: @dummy_user.username},
+            {text: "fake", time: time, user_id: 'User #9999'}
         ]
         comments.each do |comment|
             assert_equal episode.add_comment(comment), {success: true, message: "Comment was received."}
         end
-        assert_equal episode.get_comments, episode.comments
+        
+        assert_equal episode.get_comments(usernames: true), expected
     end
 
     test "Episode has instances" do

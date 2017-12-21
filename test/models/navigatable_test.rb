@@ -113,4 +113,13 @@ class NavigatableTest < TanoshimuBaseTest
         assert_not episode_4 - 2 == episode_1
     end
 
+    test "Overflow" do
+        episode = Episode.new
+        assert_save episode
+        assert_save Episode.new
+
+        assert_raises(Exception) { episode - 1 }
+        assert_raises(Exception) { episode + 2 }
+    end
+
 end
