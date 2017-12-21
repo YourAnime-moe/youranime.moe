@@ -29,36 +29,6 @@ class Episode < ActiveRecord::Base
         self.show.is_published? and self.published
     end
 
-    def previous
-        return @previous unless @previous.nil?
-        #@previous = Episode.find(self.previous_id) unless self.previous_id.nil?
-        #return @previous unless @previous.nil?
-        return nil if self.episode_number == 1
-        number = self.episode_number-1
-        while true
-            p "Looking at #{number}..."
-            @previous = Episode.find_by(show_id: self.show_id, episode_number: number)
-            return nil if @previous.nil?
-            return @previous if @previous.is_published?
-            number -= 1
-        end
-    end
-    
-    def next
-        return @next unless @next.nil?
-        #@next = Episode.find(self.next_id) unless self.next_id.nil?
-        #return @next unless @next.nil?
-        number = self.episode_number + 1
-        until false
-            p "Looking at #{number}"
-            @next = Episode.find_by(show_id: self.show_id, episode_number: number)
-            return nil if @next.nil?
-            return @next if @next.is_published?
-            number += 1
-        end
-        @next = Episode.find_by(show_id: self.show_id, episode_number: (self.episode_number+1))
-    end
-
     def get_path_extension
         return nil if self.path.nil?
         parts = self.path.split "."
