@@ -5,11 +5,22 @@ class Show < ActiveRecord::Base
     include Navigatable
 
     before_save {
+        success = true
+
         # Make the show is at least one of dubbed or subbed.
         if self.dubbed.nil? and self.subbed.nil?
             # Default to...
             self.subbed = true
         end
+
+        if !self.show_number.nil? && self.show_number < 1
+            success = false
+        elsif self.show_number.nil?
+            self.show_number = 1
+        end
+
+
+        success
     }
 
     def dub_sub_info
@@ -24,22 +35,17 @@ class Show < ActiveRecord::Base
     end
 
     def prequel
-        return nil if self.id == Show.first.id
-        shows = Show.all.select { |e| e.title == self.title }
-        (1...shows.size).each do |current|
-            found = shows[current-1]
-            return found if shows[current].id == self.id && found.title == self.title
+        return nil if self.show_number.nil? || self.show_number < 1
+        Show.all.select { |e| e.title == self.title }.each do |show|
+            return show if show.show_number == self.show_number - 1
         end
         nil
     end
 
     def sequel
-        return nil if self.id == Show.last.id
-        shows = Show.all.select { |e| e.title == self.title }
-        (0...shows.size).each do |current|
-            break if current == shows.size-1
-            found = shows[current+1]
-            return found if shows[current].id == self.id && found.title == self.title
+        return nil if self.show_number.nil? || self.show_number < 1
+        Show.all.select { |e| e.title == self.title }.each do |show|
+            return show if show.show_number == self.show_number + 1
         end
         nil
     end
@@ -106,16 +112,6 @@ class Show < ActiveRecord::Base
         self.get_tags.size > 0
     end
 
-    def get_url_safe_title
-        return nil if self.title.nil?
-        if self.show_number.nil?
-            sn = ""
-        else
-            sn = "-#{self.show_number}"
-        end
-        "#{self.title.downcase}#{sn}"
-    end
-
     def get_image_path
         return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
         Config.path self.image_path
@@ -132,7 +128,6 @@ class Show < ActiveRecord::Base
         extension = filename_parts[filename_parts.size-1]
         filename_name = filename_parts[0]
 
-        p self.image_path
         Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}"
     end
 
@@ -170,6 +165,10 @@ class Show < ActiveRecord::Base
         self.show_type == 2
     end
 
+    def is_new?
+        self.id.nil?
+    end
+
     def get_year
         return 0.years.ago.year if self.is_new?
         self.year
@@ -195,6 +194,7 @@ class Show < ActiveRecord::Base
 
     def get_description(limit=50)
         return nil unless self.has_description?
+        return self.description if limit.nil?
         if limit >= self.description.size
             limit = self.description.size - 1
         end

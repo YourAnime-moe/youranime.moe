@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 deploy:
   provider: heroku
   api_key:
@@ -13,3 +14,5 @@ deploy:
 branches:
   only:
     - heroku
+env:
+  TEST_HOST=0.0.0.0

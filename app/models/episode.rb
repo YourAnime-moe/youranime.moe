@@ -24,10 +24,6 @@ class Episode < ActiveRecord::Base
         @show = Show.find(self.show_id)
     end
 
-    def get_url_safe_title
-        "episode-#{self.episode_number}"
-    end
-
     def is_published?
         return false if self.published.nil?
         self.show.is_published? and self.published
@@ -139,6 +135,10 @@ class Episode < ActiveRecord::Base
     def get_new_subtitle_path(ext: 'vtt')
         path = get_new_image_path ext: ext
         path + "&subtitles=true"
+    end
+
+    def has_subs?
+        self.show.subbed ? true : false
     end
 
     def was_watched_by?(user)
