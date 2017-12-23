@@ -5,22 +5,20 @@ class Show < ActiveRecord::Base
     include Navigatable
 
     before_save {
-        success = true
-
         # Make the show is at least one of dubbed or subbed.
         if self.dubbed.nil? and self.subbed.nil?
             # Default to...
             self.subbed = true
         end
-
-        if !self.show_number.nil? && self.show_number < 1
-            success = false
-        elsif self.show_number.nil?
+        
+        if self.show_number.nil?
             self.show_number = 1
         end
 
-
-        success
+        if !self.show_number.nil? && self.show_number < 1
+            self.errors.add "show_number", "can't be negative"
+            throw :abort
+        end
     }
 
     def dub_sub_info
@@ -51,16 +49,23 @@ class Show < ActiveRecord::Base
     end
 
     def episodes(from: nil)
-        return @episodes unless @episodes.nil?
+        return @episodes unless @episodes.nil? || !from.nil?
         return nil if self.id.nil?
         results = Episode.all.select{ |e| e.show_id == self.id && e.is_published? }
         @episodes = results.sort_by(&:episode_number)
         return @episodes if from.nil?
-        from = from.episode_number
-        return @episodes if from == 1 or from == @episodes.size-1
-        parts = @episodes.partition {|episode| episode.episode_number >= from}
-        result = parts[0]
-        result += parts[1]
+
+        if from.class == Episode
+            from = from.episode_number
+        end
+        
+        results = []
+        @episodes.each do |episode|
+            if episode.episode_number >= from
+                results << episode
+            end
+        end
+        results
     end
 
     def all_episodes
@@ -195,8 +200,8 @@ class Show < ActiveRecord::Base
     def get_description(limit=50)
         return nil unless self.has_description?
         return self.description if limit.nil?
-        if limit >= self.description.size
-            limit = self.description.size - 1
+        if limit > self.description.size
+            limit = self.description.size
         end
         self.description[0, limit] + "..."
     end

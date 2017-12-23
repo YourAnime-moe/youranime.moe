@@ -180,6 +180,32 @@ class ShowTest < TanoshimuBaseTest
         assert show.all_episodes.size == count
     end
 
+    test "Show gets episodes after episode 150" do
+        show = Show.new
+        assert_save show
+        count = 200
+        (1..count).each do |episode_number|
+            episode = Episode.new
+            episode.show_id = show.id
+            assert_save episode
+        end
+        show.episodes(from: 150).each do |episode|
+            assert episode.episode_number >= 150
+        end
+    end
+
+    test "Show splits properly episodes" do
+        show = Show.new(published: true)
+        assert_save show
+        count = 200
+        (1..count).each do
+            episode = Episode.new(show_id: show.id, published: true)
+            assert_save episode
+        end
+        assert_equal show.split_episodes(sort_by: 4).size, 50 # 200/4 = 50
+        assert_equal show.split_episodes(sort_by: 3).size, 67 # 200/3 = 66.6 ==> 67
+    end
+
     test "Show has empty tags" do
         show = Show.new
         assert_save show
@@ -406,6 +432,20 @@ class ShowTest < TanoshimuBaseTest
         show.description = "LongText"*100
         assert_save show
         assert show.get_description(nil).size == show.description.size
+    end
+
+    test "Show get description with larger limit" do
+        show = Show.new
+        show.description = "LongText"
+        assert_save show
+        assert_equal show.get_description(100).size, show.description.size + 3
+    end
+
+    test "Show doesn't allow negative show numbers" do
+        show = Show.new
+        show.show_number = -1
+        assert_not_save show
+        assert show.errors.to_a.include? "Show number can't be negative"
     end
 
 end
