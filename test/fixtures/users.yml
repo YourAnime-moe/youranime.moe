@@ -14,6 +14,14 @@ test:
   episodes_watched: [1, 2, 3]
   is_activated: true
 
+five_episodes_watched:
+  username: five_episodes_watched_user
+  password: password
+  name: Test User With Five Episodes
+  admin: false
+  episodes_watched: [1, 2, 3, 4, 5]
+  is_activated: true
+
 admin:
   username: admin
   password: password

@@ -87,6 +87,16 @@ class Show < ActiveRecord::Base
         self.tags
     end
 
+    def has_tags?(tags=nil)
+        return get_tags.size > 0 if tags.nil?
+        return false if tags.class != Array
+        return false if tags.empty?
+        tags.each do |tag|
+            return false unless get_tags.include? tag
+        end
+        true
+    end
+
     def add_tag(tag)
         return nil if tag.to_s.strip.empty?
         tag = tag.strip if tag.class == String
@@ -111,10 +121,6 @@ class Show < ActiveRecord::Base
 
     def has_episodes?
         !self.episodes.empty?
-    end
-
-    def has_tags?
-        self.get_tags.size > 0
     end
 
     def get_image_path
@@ -207,7 +213,7 @@ class Show < ActiveRecord::Base
     end
 
     def self.get(title: nil, show_number: nil)
-        return nil if title.nil? or show_number.nil?
+        return nil if title.nil? || show_number.nil?
         title = title.capitalize
         self.find_by(title: title, show_number: show_number)
     end
@@ -219,6 +225,9 @@ class Show < ActiveRecord::Base
     def self.get_presence(tag, limit=3, options=nil)
         found_shows = []
         self.all.each do |show|
+            if options.class != Hash && tag == :season
+                raise "Invalid season options"
+            end
             next unless show.is_published?
             break if found_shows.size >= limit
             if tag == :recommended
@@ -226,9 +235,6 @@ class Show < ActiveRecord::Base
             elsif tag == :featured
                 found_shows.push(show) if show.is_featured?
             elsif tag == :season
-                if options.class != Hash
-                    raise "Invalid season options"
-                end
                 found_shows.push(show) if options[:current] == true && show.is_this_season?
             end
         end
