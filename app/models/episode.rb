@@ -25,8 +25,9 @@ class Episode < ActiveRecord::Base
     end
 
     def is_published?
-        return false if self.published.nil?
-        self.show.is_published? and self.published
+        return false if self.published.nil? && !self.show.nil?
+        return self.published if self.show.nil?
+        self.show.is_published? && self.published
     end
 
     def get_path_extension

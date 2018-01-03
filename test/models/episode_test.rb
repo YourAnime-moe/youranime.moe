@@ -207,10 +207,18 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "All episodes are published" do
-        all_episodes = Episode.all_published
-        Episode.all.select{|e| e.is_published?}.each do |episode|
-            all_published.include? episode
+        count = 10
+        (1..count).each do 
+            assert_save Episode.new(published: true)
         end
+        all_episodes = Episode.all_published
+        assert_equal all_episodes.size, count
+        i = 0
+        Episode.all.select{|e| e.is_published?}.each do |episode|
+            all_episodes.include? episode
+            i += 1
+        end
+        assert_equal i, count
     end
 
 end
