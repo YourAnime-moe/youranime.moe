@@ -382,9 +382,10 @@ class ShowTest < TanoshimuBaseTest
     end
 
     test "Show check if not this season" do
-        season_code = 0
-        while season_code == Utils.current_season
+        season_code = -1
+        loop do
             season_code += 1
+            break if season_code == Utils.current_season
         end
         show = Show.new
         show.season_code = season_code
