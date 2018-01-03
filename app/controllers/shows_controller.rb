@@ -27,8 +27,8 @@ class ShowsController < AuthenticatedController
         if show_number.nil?
             show_number = params[:show_number]
         end
-        if title.nil? or show_number.nil?
-            @shows = Show.all.select {|show| show.is_anime?}
+        if title.nil? || show_number.nil?
+            @shows = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
             @shows = @shows.to_a.sort_by(&:get_title)
             @shows.select! {|s| s.is_published?}
             shows = @shows.each_slice(2).to_a
