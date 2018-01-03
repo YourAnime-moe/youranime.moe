@@ -206,4 +206,11 @@ class EpisodeTest < TanoshimuBaseTest
         assert Episode.instances.size > 0
     end
 
+    test "All episodes are published" do
+        all_episodes = Episode.all_published
+        Episode.all.select{|e| e.is_published?}.each do |episode|
+            all_published.include? episode
+        end
+    end
+
 end

@@ -168,4 +168,8 @@ class Episode < ActiveRecord::Base
         [:title, :episode_number]
     end
 
+    def self.all_published
+        Episode.all.select{|e| e.is_published?}
+    end
+
 end
