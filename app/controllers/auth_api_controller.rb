@@ -30,23 +30,26 @@ class AuthApiController < ApiController
 	}
 
 	def user
-		render json: {user: @user, success: true}
+		response = @user.attributes
+		response.delete "password"
+		response.delete "password_digest"
+		render json: {user: response, success: true}
 	end
 
 	def shows
 		if shows_params.empty? || shows_params[:get_host]
-			results = Show.all
+			results = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
 			results = results.to_a.sort_by(&:get_title)
 			results.select! {|show| show.is_published? || @is_admin}
 		else
 			results = Show.find_by(shows_params) || {}
 			json = results.to_json
 			my_hash = JSON.parse json
-			my_hash[:available_episodes] = results.episodes.size
-			my_hash[:total_episodes] = results.all_episodes.size
+			my_hash[:available_episodes] = results.episodes.size if results != {}
+			my_hash[:total_episodes] = results.all_episodes.size if results != {}
 			results = my_hash
 		end
-		res = {shows: results, success: true}
+		res = {shows: results, success: !results.empty?}
 		res[:get_host] = Config.main_host if shows_params[:get_host] == "true"
 		render json: res
 	end
@@ -78,7 +81,7 @@ class AuthApiController < ApiController
 					result[:calc_next_id] = nx.id if nx
 					result[:calc_prev_id] = pv.id if pv
 					result[:is_published] = ep.is_published?
-					result[:image_path] = ep.get_image_path
+					result[:image_path] = ep.get_new_image_path
 					result[:watched] = @user.has_watched? ep
 					episodes.push result
 				end
@@ -95,7 +98,7 @@ class AuthApiController < ApiController
                 result[:calc_next_id] = nx.id if nx
                 result[:calc_prev_id] = pv.id if pv
                 result[:is_published] = episodes.is_published?
-				result[:image_path] = episodes.get_image_path
+				result[:image_path] = episodes.get_new_image_path
                 episodes = result
             end
 		end
@@ -107,7 +110,7 @@ class AuthApiController < ApiController
 				episodes.select! {|episode| episode[:is_published] == true}
 			end
 		end
-		render json: {episodes: episodes, success: true}
+		render json: {episodes: episodes, success: !episodes.empty?}
 	end
 
 	def add_episode
@@ -127,7 +130,7 @@ class AuthApiController < ApiController
 			render json: {path: nil, message: "No ID was specified.", success: false}
 		else
 			if episode.is_published?
-				render json: {path: episode.get_path, success: true}
+				render json: {path: episode.get_new_path, success: true}
 			else
 				render json: {path: nil, message: "Episode is not published.", success: false}
 			end
