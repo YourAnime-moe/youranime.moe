@@ -44,6 +44,11 @@ class UserTest < TanoshimuBaseTest
         assert_not @user.add_episode nil
     end
 
+    test "User add episode fails due to settings" do
+        assert @user.update_settings({episode_tracking: false})
+        assert_not @user.add_episode Episode.create
+    end
+
     test "User add episode returns false if episode does not exist" do
         assert_not @user.add_episode 0
         assert_not @user.add_episode 1000
@@ -65,6 +70,10 @@ class UserTest < TanoshimuBaseTest
         episode = Episode.create
         assert @user.add_episode episode
         assert_equal @user.get_episodes_watched, [1, 2]
+        Episode.find(1).update_attributes published: true
+        Episode.find(2).update_attributes published: true
+        assert_equal @user.get_latest_episodes.size, 2
+        assert_equal @user.get_latest_episodes(limit: 1).size, 1
     end
 
     test "User has watched anything valid" do
