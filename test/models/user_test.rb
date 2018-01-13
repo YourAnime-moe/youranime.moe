@@ -64,6 +64,11 @@ class UserTest < TanoshimuBaseTest
         assert @user.add_episode @episode
     end
 
+    test "User not added episode if save fails" do
+        @user.password = nil
+        assert_not @user.add_episode 1
+    end
+
     test "User get latest episodes valid" do
         assert_equal @user.get_episodes_watched(as_is: true), [1, 2, 3]
         assert_equal @user.get_episodes_watched, [1]
