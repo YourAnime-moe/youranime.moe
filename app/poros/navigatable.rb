@@ -21,6 +21,9 @@ module Navigatable
         return nil if klass.last.id == self.id
         pos = self.id + 1
         while true
+            perc = pos.to_f / klass.last.id.to_f
+            perc *= 100
+            p "looking for next (#{perc}% complete)"
             result = klass.find_by(id: pos)
             pos += 1
             unless result.nil?

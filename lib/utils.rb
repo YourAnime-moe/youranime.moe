@@ -56,7 +56,7 @@ class Utils
 
     def self.create_file(filename, contents)
         dir = Utils.get_parent_directory filename
-        FileUtils.mkdir_p(dir) if !dir.nil? and !dir.empty?
+        FileUtils.mkdir_p(dir) if !dir.nil? && !dir.empty?
         begin
             File.open(filename, "wb") do |file| file.print contents end if contents
         rescue
@@ -126,7 +126,7 @@ class Utils
 
     def self.search(string, list, instance_attributes=[:get_title], limit: 10, sort_by: nil)
         return list if string.to_s.strip.empty?
-        return list if instance_attributes.nil? or instance_attributes.empty?
+        return list if instance_attributes.nil? || instance_attributes.empty?
         res = []
         string.downcase!
         count = 0
@@ -166,37 +166,38 @@ class Utils
         res
     end
 
-    def self.split_array(klass, sort_by: 4, reverse: false)
-        unless klass.instance_of?(Class) and (klass < ActiveRecord::Base)
-            raise Exception.new("Please pass in instance of ActiveRecord::Base")
-        end
-        amount = klass.all.size
-        return [] if amount == 0
-        return [klass.first] if amount == 1
-        revs = []
-        gen_list = []
-        sub_list = []
-        pos = reverse ? klass.last.id : klass.first.id
-        element = klass.find(pos)
-        index = 0
-        until false
-            break if element.nil?
-            pos = element.id
-            current = pos % sort_by
-            sub_list.push element if element.is_published?
-            if sub_list.size == sort_by
-                gen_list.push sub_list
-                sub_list = []
-            end
-            if reverse ? element.is_first? : element.is_last?
-                gen_list.push sub_list
-                break
-            end
-            element = reverse ? element.previous : element.next
-            index += 1
-        end
-        gen_list
-    end
+#    def self.split_array(klass, sort_by: 4, reverse: false)
+#        unless klass.instance_of?(Class) and (klass < ActiveRecord::Base)
+#            raise Exception.new("Please pass in instance of ActiveRecord::Base")
+#        end
+#        amount = klass.all.size
+#        return [] if amount == 0
+#        return [klass.first] if amount == 1
+#        revs = []
+#        gen_list = []
+#        sub_list = []
+#        pos = reverse ? klass.last.id : klass.first.id
+#        element = klass.find(pos)
+#        index = 0
+#        until false
+#            break if element.nil?
+#            pos = element.id
+#            current = pos % sort_by
+#            sub_list.push element if element.is_published?
+#            if sub_list.size == sort_by
+#                gen_list.push sub_list
+#                sub_list = []
+#            end
+#            should_stop = (reverse ? element.is_first? : element.is_last?)
+#            if should_stop
+#                gen_list.push sub_list
+#                break
+#            end
+#            element = reverse ? element.previous : element.next
+#            index += 1
+#        end
+#        gen_list.reject{|array| array.empty?}
+#    end
 
     def self.add_to_list(list, what, doubles: false)
         list.push(what) if doubles or !list.include? what
@@ -220,7 +221,6 @@ class Utils
     def self.get_ordinal_number(number, pretty_number: true)
         number = number.to_i
         return number.ordinalize if not pretty_number
-        return "" if not number
         return 0.ordinalize if number == 0
         return number <= 9 ? "0#{number.ordinalize}" : number.ordinalize if number > 0
         return "-0#{(-number).ordinalize}" if number >= -9
@@ -271,58 +271,6 @@ class Utils
         else
             "N/A"
         end
-    end
-
-    def self.short_model_date_from(model=nil, created_at=true)
-        if model != nil
-            if created_at
-                date = model.created_at.getlocal
-            else
-                date = model.updated_at.getlocal
-            end
-            if created_at
-                res = "Today" if model.created_at.today?
-            else
-                res = "Today" if model.updated_at.today?
-            end
-            if res.nil?
-                month = date.month
-                day = date.day
-                month = "0#{month}" if date.month < 10
-                day = "0#{day}" if date.day < 10
-                res = "#{date.year}/#{month}/#{day}"
-            end
-            return res
-        else
-            "N/A"
-        end
-    end
-
-    def self.model_time_from(model=nil, created_at=true)
-        if model != nil
-            if created_at
-                date = model.created_at.getlocal
-            else
-                date = model.updated_at.getlocal
-            end
-            hour = date.hour
-            minutes = date.min
-            seconds = date.sec
-            hour = "0#{hour}" if date.hour < 10
-            minutes = "0#{minutes}" if date.min < 10
-            seconds = "0#{seconds}" if date.sec < 10
-            "#{hour}:#{minutes}:#{seconds}"
-        else
-            "N/A"
-        end
-    end
-
-    def self.normal_model_date_from(model=nil, created_at=true, sep: ":")
-        date = self.short_model_date_from model, created_at
-        return "N/A" if date == "N/A"
-        time = self.model_time_from model, created_at
-        return "N/A" if time == "N/A"
-        "#{date} #{sep} #{time}"
     end
 
     def self.full_date_from(year, month, day, hour=0, minutes=0, seconds=0)
@@ -416,8 +364,8 @@ class Utils
         get_day_index_from DateTime.now
     end
 
-    def self.current_season
-        d = Time.now
+    def self.current_season(time=nil)
+        d = time || Time.now
         if d.month >= 1 && d.month < 4
             # JAN -> MAR = Winter
             return 0
@@ -433,15 +381,15 @@ class Utils
         end                
     end
 
-    def self.current_season_string
-        season = self.current_season
+    def self.current_season_string(time=nil)
+        time = time || Time.now
+        season = self.current_season(time)
         season_string = nil
         season_string = "Winter" if season == 0
         season_string = "Spring" if season == 1
         season_string = "Summer" if season == 2
         season_string = "Fall" if season == 3
-        return "#{season_string} #{0.years.ago.year}" if !season_string.nil?
-        "N/A"
+        "#{season_string} #{time.year}"
     end
 
     private
