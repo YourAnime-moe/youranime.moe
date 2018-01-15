@@ -3,18 +3,17 @@ class Config
     CONFIG_PATH = "config/config.json"
     LINK_TAG_SIZE = 2
 
-    def self.main_host
-        return _fetch_host(:main) if Rails.env == "production"
-        return _fetch_host(:dev) if Rails.env == "development"
-        return _fetch_host(:test) if Rails.env == "test"
+    def self.main_host(path=nil)
+        return _fetch_host(path, :main) if Rails.env == "production"
+        return _fetch_host(path, :dev) if Rails.env == "development"
+        return _fetch_host(path, :test) if Rails.env == "test"
     end
 
-    def self.admin_host(*tags)
-        host = Rails.env == "production" ? _fetch_host(:admin) : _fetch_host("admin-test")
+    def self.admin_host(path=nil, *tags)
+        host = Rails.env == "production" ? _fetch_host(path, :admin) : _fetch_host(path, "admin-test")
         return host if tags.nil? or tags.empty?
         tags = tags.each_slice(LINK_TAG_SIZE).to_a
         tags.reject!{|t| t.empty?}
-        p tags
         tags.each do |tag_array|
             next if tag_array.size != LINK_TAG_SIZE
             key = tag_array[0]
@@ -29,23 +28,24 @@ class Config
         host
     end
 
-    def self.hosts
-        self.all["hosts"]
+    def self.hosts(path=nil)
+        self.all(path)["hosts"]
     end
 
-    def self.api
-        self.all['api']
+    def self.api(path=nil)
+        self.all(path)['api']
     end
 
-    def self.env(key=nil, default=nil)
-        h = self.api["env"]
-        return h unless key and default
+    def self.env(key=nil, default=nil, path=nil)
+        h = self.api(path)["env"]
+        return h if key.nil? && default.nil?
         value = h[key]
         value ? value : default
     end
 
-    def self.all
-        JSONConfig.get(CONFIG_PATH)
+    def self.all(path=nil)
+        path = CONFIG_PATH if path.nil?
+        JSONConfig.get(path)
     end
 
     def self.path(path)
@@ -57,10 +57,10 @@ class Config
     end
 
     private
-        def self._fetch_host(key)
+        def self._fetch_host(path, key)
             key = key.to_s
             return nil if key.empty?
-            hosts_info = self.hosts[key]
+            hosts_info = self.hosts(path)[key]
             return nil if hosts_info.nil?
             protocol = hosts_info["protocol"]
             protocol = "http" if protocol.nil?

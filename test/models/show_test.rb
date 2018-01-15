@@ -524,4 +524,19 @@ class ShowTest < TanoshimuBaseTest
         assert latest_shows.include? @show_two_subbed
     end
 
+    test "All shows are published" do
+        count = 10
+        (1..count).each do 
+            assert_save Show.new(published: true)
+        end
+        all_episodes = Show.all_published
+        assert_equal all_episodes.size, count + 3
+        i = 0
+        Show.all.select{|e| e.is_published?}.each do |episode|
+            all_episodes.include? episode
+            i += 1
+        end
+        assert_equal i, count + 3
+    end
+
 end

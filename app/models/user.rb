@@ -7,42 +7,51 @@ class User < ActiveRecord::Base
         self.episodes_watched = [] if self.episodes_watched.nil?
 
         if self.username.nil? or self.username.strip.empty?
-            false
+            self.errors.add "username", "cannot be empty"
+            throw :abort
         end
 
-        user = User.find_by(username: self.username)
-        unless user.nil?
-            false if user.id != self.id
+        found_user = User.find_by(username: self.username)
+        unless found_user.nil? || found_user.id == self.id
+            self.errors.add "username", "\"#{self.username}\" already exists"
+            throw :abort
         end
+
     }
 
     has_secure_password
     has_secure_token :auth_token
 
     def get_name
-        return "'#{username}'" if self.name.nil?
+        return "#{username}" if self.name.nil?
         self.name
     end
 
     def add_episode(episode, save: true)
-        p "Adding #{episode}..."
-        # return nil unless self.allows_setting(:episode_tracking)
-        return false unless episode.class == Episode or episode.class == Fixnum
-        if episode.instance_of? Fixnum
+        unless self.allows_setting(:episode_tracking)
+            p "Not adding episode because user settings deny this action"
+            return nil
+        end
+        unless episode.class == Episode || episode.class == Integer
+            return false 
+        end
+        if episode.instance_of? Integer
             episode = Episode.find_by(id: episode)
             return false if episode.nil?
         end
-        self.episodes_watched = [] if self.episodes_watched.nil?
         if self.episodes_watched.include? episode.id
             self.episodes_watched.delete(episode.id)
         end
         self.episodes_watched.push episode.id
-        p "Episode #{episode.id} was added."
-        save ? self.save : true
+        result = save ? self.save : true
+        unless result
+            p "Could not save user: #{self.errors.to_a}"
+        end
+        result
     end
 
     def get_episodes_watched(as_is: false)
-        return nil unless self.episodes_watched.nil? or self.episodes_watched.class == Array
+        return nil unless self.episodes_watched.nil? || self.episodes_watched.class == Array
         return [] if self.episodes_watched.nil?
         res = self.episodes_watched
         return res if as_is
@@ -59,14 +68,14 @@ class User < ActiveRecord::Base
     end
 
     def has_watched_anything?
-        !self.episodes_watched.nil? and !self.get_episodes_watched.empty?
+        !self.episodes_watched.nil? && !self.get_episodes_watched.empty?
     end
 
     def has_watched?(episode)
-        if episode.class == Fixnum
-            episode = Episode.find_by? episode
+        if episode.class == Integer
+            episode = Episode.find_by id: episode
         end
-        return false if episode.nil?
+        return nil if episode.nil?
         self.get_episodes_watched(:as_is => true).include? episode.id
     end
 
@@ -78,8 +87,7 @@ class User < ActiveRecord::Base
     end
 
     def allows_setting(what)
-        return true if self.settings.class != Hash
-        what = what.to_s
+        return get_default(what) if self.settings.class != Hash
         is_ok(what, get_default(what))
     end
 
@@ -113,7 +121,8 @@ class User < ActiveRecord::Base
     end
 
     def update_settings(new_settings, save=true)
-        if new_settings.nil?
+        keys = [:watch_anime, :last_episode, :episode_tracking, :recommendations, :images]
+        if new_settings.nil? || new_settings.class != Hash
             new_settings = {
                 :watch_anime => true,
                 :last_episode => true,
@@ -125,7 +134,15 @@ class User < ActiveRecord::Base
         if self.settings.class != Hash
             self.settings = {}
         end
-        self.settings.update(new_settings)
+        keys.each do |setting_key|
+            new_value = new_settings[setting_key]
+            new_value = new_settings[setting_key.to_s] if new_value.nil?
+            next if new_value.nil?
+            if self.settings.keys.include? setting_key.to_s
+                self.settings.delete setting_key.to_s
+            end
+            self.settings[setting_key] = new_value
+        end
         save ? self.save : true
     end
 
@@ -143,9 +160,10 @@ class User < ActiveRecord::Base
     private
         def is_ok(value, default)
             res = self.settings[value]
-            res = true if res == "true" or res.nil?
+            res = self.settings[value.to_s] if res.nil?
+            res = true if res == "true"
             res = false if res == "false"
-            res
+            res.nil? ? default : res
         end
 
         def get_default(value)

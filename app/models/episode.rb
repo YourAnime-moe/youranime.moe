@@ -170,7 +170,7 @@ class Episode < ActiveRecord::Base
     end
 
     def self.all_published
-        Episode.all.select{|e| e.is_published?}
+        self.all.select{|e| e.is_published?}
     end
 
 end

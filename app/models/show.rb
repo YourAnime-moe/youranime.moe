@@ -256,4 +256,8 @@ class Show < ActiveRecord::Base
         shows
     end
 
+    def self.all_published
+        self.all.select{|e| e.is_published?}
+    end
+
 end
