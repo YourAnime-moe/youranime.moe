@@ -52,7 +52,12 @@ class ApiController < ApplicationController
         end
 
         # Keep generating tokens until no user with that token exists.
-        if user.regenerate_auth_token
+        success = true
+        if params[:preserve_token] != "true"
+            success = user.regenerate_auth_token
+        end
+ 
+        if success
 			render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!", success: true}
 		else
 			render json: {message: "Sorry, our server authenticated you but could not log you in.", success: false}
