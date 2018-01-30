@@ -107,6 +107,10 @@ module ApplicationHelper
         "You are posting as '#{current_user.username}'. Your name will not be displayed."
     end
 
+    def maintenance_activated?
+        ENV["TANOSHIMU_MAINTENANCE"] == "true"
+    end
+
     private
         def _logout
             session.delete(:user_id)
