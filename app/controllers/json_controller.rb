@@ -121,6 +121,7 @@ class JsonController < ApplicationController
     def all_users
         result = {data: {}}
         User.all.each do |user|
+            next if user.get_name.nil? || user.username.nil?
             if user.id == current_user.id
                 result[:data]["Me | " + user.get_name + " | " + user.username] = nil
             else

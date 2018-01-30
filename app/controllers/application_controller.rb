@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  before_action :check_is_in_maintenance_mode
+
   before_action {
     #if logged_in?
     #  logout
@@ -80,6 +82,14 @@ class ApplicationController < ActionController::Base
         end
     else
       render json: {message: "Sorry, but we don't know a \"<u>#{username}</u>\"... Try again!"}
+    end
+  end
+
+  private
+
+  def check_is_in_maintenance_mode
+    if maintenance_activated?
+      render 'maintenance_activated'
     end
   end
 

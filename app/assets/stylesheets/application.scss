@@ -109,18 +109,15 @@ p.very.small, span.very.small {
 }
 
 .wrapper {
-    position: absolute;
-    display: table;
-    width: 100%;
+          position: absolute;
+          display: table;
+          width: 100%;
 }
-
 .vertical-center {
-    min-height: 100%;
-    min-height: 90vh;
-    
-    display: flex;
-    align-items: center;
-}
+   min-height: 90vh;
+   display: flex;
+   align-items: center;
+ }
 
 #login-form input, button {
     margin: 5px;

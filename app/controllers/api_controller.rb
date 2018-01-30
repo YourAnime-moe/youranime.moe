@@ -5,6 +5,8 @@ class ApiController < ApplicationController
 	# skip_before_action :vertify_authenticity_token
 	protect_from_forgery with: :null_session
 
+    before_action :check_is_in_maintenance_mode
+
 	def token
 		username = token_params[:username]
 		password = token_params[:password]
@@ -87,5 +89,15 @@ class ApiController < ApplicationController
                 :token
 			)
 		end
+
+        def check_is_in_maintenance_mode
+            if maintenance_activated?
+                render json: {
+                    success: false,
+                    message: "HaveFun (Tanoshimu) is currently in maintenance mode. We appologize for the inconvience.",
+                    maintenance: true,
+                }
+            end
+        end
 
 end
