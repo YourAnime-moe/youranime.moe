@@ -1,7 +1,7 @@
 {
     "hosts": {
         "main": {
-            "protocol": "http",
+            "protocol": "https",
             "sub_domain": null,
             "domain": "MAIN_HOST",
             "env": true
