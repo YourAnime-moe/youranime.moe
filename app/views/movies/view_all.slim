@@ -8,7 +8,7 @@
                 - show_group.each do |show|
                     .col.m6
                         a href="/shows?id=#{show.id}"
-                            img src="#{Config.path(show.image_path)}"
+                            img src="#{show.get_image_path}"
                         - @show = show
                         = render 'shows/description'
                     

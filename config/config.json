@@ -7,7 +7,7 @@
             "env": true
         },
         "dev": {
-            "protocol": "http",
+            "protocol": "https",
             "sub_domain": null,
             "domain": "REMOTE_IP",
             "env": true

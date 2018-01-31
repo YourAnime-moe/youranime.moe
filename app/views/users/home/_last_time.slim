@@ -5,6 +5,6 @@
             - url = '/shows/episodes?id=' + episode.id.to_s
             .hoverable
                 a href="#{url}"
-    	            img src="/shows/episodes/render?id=#{episode.id}&type=image" style="max-width: 100%; max-height: 200px; object-fit: cover"
+    	            img src="#{episode.get_image_path}" style="max-width: 100%; max-height: 200px; object-fit: cover"
                     span.episode id='episode_#{episode.episode_number}' #{episode.episode_number}) #{episode.title} from "#{episode.show.get_title}"
 
