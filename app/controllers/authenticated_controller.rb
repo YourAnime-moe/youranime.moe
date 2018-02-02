@@ -21,6 +21,8 @@ class AuthenticatedController < ApplicationController
                 url = "/"
             end
             redirect_to url
+        else
+            current_user.regenerate_auth_token if current_user.auth_token.nil?
         end
 
         if params['controller'] == 'shows'

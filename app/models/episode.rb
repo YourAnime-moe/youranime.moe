@@ -46,9 +46,11 @@ class Episode < ActiveRecord::Base
         !self.next.nil?
     end
 
-    def get_path
+    def get_path(token=nil)
         return self.path if self.path.nil? or self.path.start_with? "http"
-        Config.path self.path
+        res = Config.path self.path
+        return res if token.nil?
+        res + '?token=' + token
     end
 
     def get_new_path
@@ -70,7 +72,7 @@ class Episode < ActiveRecord::Base
         Config.path "videos?show=#{show_name}&episode=#{ep_num}&format=#{ext}&video=true"
     end
 
-    def get_image_path(ext: 'jpg')
+    def get_image_path(token=nil, ext: 'jpg')
         video_path = self.get_path
         parts = video_path.split('/')
         filename = parts[parts.size-1]
@@ -78,7 +80,9 @@ class Episode < ActiveRecord::Base
         fs[1] = ext.to_s
         filename = fs.join '.'
         parts[parts.size-1] = filename
-        parts.join '/'
+        path = parts.join '/'
+        return path if token.nil?
+        path + "?token=" + token
     end
 
     def get_new_image_path(ext: 'jpg')

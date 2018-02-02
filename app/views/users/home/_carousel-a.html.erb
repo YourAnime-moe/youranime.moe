@@ -7,7 +7,7 @@
     <% show_ids.each do |show_id| %>
       <% show = Show.find_by id: show_id %>
       <% next if show.nil? %>
-      <a class="carousel-item" href="/shows?id=<%= show_id %>"><img style="object-fit: cover;" src="<%= show.get_image_path %>"></a>  
+      <a class="carousel-item" href="/shows?id=<%= show_id %>"><img style="object-fit: cover;" src="<%= show.get_image_path(current_token) %>"></a>  
     <% end %>
   </div>
 

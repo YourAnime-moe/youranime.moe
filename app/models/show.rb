@@ -123,9 +123,11 @@ class Show < ActiveRecord::Base
         !self.episodes.empty?
     end
 
-    def get_image_path
+    def get_image_path(token=nil)
         return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
-        Config.path self.image_path
+        path = Config.path self.image_path
+        return path if token == nil
+        path + "?token=" + token
     end
 
     def get_new_image_path

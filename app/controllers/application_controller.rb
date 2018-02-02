@@ -58,6 +58,7 @@ class ApplicationController < ActionController::Base
     user = User.find_by(username: username.downcase)
     unless user.nil?
         if user.authenticate(password)
+            user.regenerate_auth_token if user.auth_token.nil?
             unless user.is_activated?
               render json: {message: 'Please go to the <a href="https://my-akinyele-admin.herokuapp.com" target="_blank">admin console</a> to get started.', success: false}
               return

@@ -27,7 +27,7 @@ css:
 
 .row
     .col.s12.no-padding
-        img.title-img src="#{@show.get_image_path}"
+        img.title-img src="#{@show.get_image_path(current_token)}"
 
 #modal1.modal.modal-fixed-footer
   .modal-content
@@ -83,7 +83,7 @@ css:
 / script src="/js/rating.min.js"
 
 javascript:
-    var token = '#{current_user.auth_token}';
+    var token = '#{current_token}';
 
 script src="/js/tags-mgmt.js"
 

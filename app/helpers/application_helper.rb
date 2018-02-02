@@ -86,6 +86,11 @@ module ApplicationHelper
         @current_user ||= User.find_by(id: session[:user_id])
     end
 
+    def current_token
+        return nil unless logged_in?
+        current_user.auth_token
+    end
+
     def logged_in?
         !current_user.nil? && current_user.is_activated?
     end
