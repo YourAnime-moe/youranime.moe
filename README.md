@@ -1,5 +1,6 @@
 # Welcome to Tanoshimu! 
 <a href="https://travis-ci.org/thedrummeraki/tanoshimu"><img src="https://travis-ci.org/thedrummeraki/tanoshimu.svg?branch=heroku"/></a>
+<a href="https://codeclimate.com/github/thedrummeraki/tanoshimu/maintainability"><img src="https://api.codeclimate.com/v1/badges/abb303c2f3865a743c34/maintainability" /></a>
 [![Coverage Status](https://coveralls.io/repos/github/thedrummeraki/tanoshimu/badge.svg?branch=heroku)](https://coveralls.io/github/thedrummeraki/tanoshimu?branch=heroku)
 ### 楽しむ (lit. To have fun)
 <a href="https://tanoshimu.herokuapp.com"><img src="public/favicon.ico" width="100" height="100"/></a>
