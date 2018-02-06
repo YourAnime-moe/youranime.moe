@@ -11,4 +11,18 @@
                             img src="#{show.get_image_path(current_token)}"
                         - @show = show
                         = render 'shows/description'
+
+    - if @has_coming_soon
+        hr
+        .container
+            h4.title style="padding-bottom: 2%" Coming soon!
+
+        .container
+            - @split_coming_soon.each do |show_group|
+                .row
+                    - show_group.each do |show|
+                        .col.m6
+                            img src="#{show.get_image_path(current_token)}"
+                            - @show = show
+                            = render 'shows/description'
                     

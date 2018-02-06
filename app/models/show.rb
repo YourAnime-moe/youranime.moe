@@ -119,6 +119,10 @@ class Show < ActiveRecord::Base
         self.published
     end
 
+    def is_coming_soon?
+        !self.publish_after.nil? && !self.is_published? && self.publish_after > Date.new
+    end
+
     def has_episodes?
         !self.episodes.empty?
     end
@@ -256,6 +260,12 @@ class Show < ActiveRecord::Base
             break if shows.size >= limit
         end
         shows
+    end
+
+    def self.coming_soon limit: nil
+        shows = Show.all.select {|show| show.is_coming_soon?}
+        return shows if limit.nil? || limit < 1
+        shows[0...limit]
     end
 
     def self.all_published

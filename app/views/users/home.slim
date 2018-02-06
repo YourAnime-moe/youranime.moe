@@ -15,44 +15,60 @@
         .row
             = render 'users/home/last_time'
 
-    br
-    h4 Want something else?
-    - host = Config.main_host
-    .center
-        p.hidden Ever feel there is not enough anime to watch or what is already posted is just no for you? We got you covered.
-        /! .carousel style="margin-top: -50px;"
-            a.carousel-item href="/shows?id=49"
-                img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/alice.jpg"
-            a.carousel-item href="/shows?id=49"
-                img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/baka_and_test.jpg"
-            a.carousel-item href="/shows?id=49"
-                img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/kobayashi_dragon.jpg"
-            a.carousel-item href="/shows?id=49"
-                img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/masamune.jpg"
-            a.carousel-item href="/shows?id=49"
-                img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/tsukigakirei.jpg"
+    .hide
+        br
+        h4 Want something else?
+        - host = Config.main_host
+        .center
+            p.hidden Ever feel there is not enough anime to watch or what is already posted is just no for you? We got you covered.
+            /! .carousel style="margin-top: -50px;"
+                a.carousel-item href="/shows?id=49"
+                    img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/alice.jpg"
+                a.carousel-item href="/shows?id=49"
+                    img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/baka_and_test.jpg"
+                a.carousel-item href="/shows?id=49"
+                    img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/kobayashi_dragon.jpg"
+                a.carousel-item href="/shows?id=49"
+                    img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/masamune.jpg"
+                a.carousel-item href="/shows?id=49"
+                    img style="width: 400px; max-width: 600%;" src="#{host}/videos/icons/tsukigakirei.jpg"
 
-        a.btn style="margin-top: -100px;" Make a request!
+            a.btn style="margin-top: -100px;" Make a request!
+    br
+    h4 Coming soon!
+    .row
+        - if @coming_soon.size && !@coming_soon.empty?
+            - @coming_soon.each do |cs|
+                .col.m4
+                    a href="/shows?id=#{cs.id}"
+                        img src="#{cs.get_image_path(current_token)}"
+                    p.italic #{cs.get_title}
+        - else
+            p.center No new additions scheduled at the time!
 
     br
     h4 We recommend...
     .row
-        - if @recommended.size
+        - if @recommended.size && !@recommended.empty?
             - @recommended.each do |rec|
                 .col.m4
                     a href="/shows?id=#{rec.id}"
                         img src="#{rec.get_image_path(current_token)}"
                     p #{rec.get_title}
+        - else
+            p.center No recommendations at the time!
 
     br
     h4 Featured shows
     .row
-        - if @featured.size
+        - if @featured.size && !@featured.empty?
             - @featured.each do |fet|
                 .col.m4
                     a href="/shows?id=#{fet.id}"
                         img src="#{fet.get_image_path(current_token)}"
                     p #{fet.get_title}
+        - else
+            p.center No featured shows at the time!
 
     br
     h4 From this season (#{Utils.current_season_string})
@@ -64,7 +80,7 @@
                         img src="#{ts.get_image_path(current_token)}"
                     p #{ts.get_title}
         - else
-            br
+            b.center
             .center
                 p Nothing for this season (yet)! Come back later for more!
 

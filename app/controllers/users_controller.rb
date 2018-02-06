@@ -11,6 +11,7 @@ class UsersController < AuthenticatedController
         @featured = Show.get_presence :featured
         @this_season = Show.get_presence :season, 3, {current: true}
         @last_season = Show.get_presence :season, 3, {previous: true}
+        @coming_soon = Show.coming_soon limit: 4
         #@body_class = nil
     end
 

@@ -51,6 +51,15 @@ class ShowsController < AuthenticatedController
                 @split_shows.push new_group
             end
             @split_shows
+
+            coming_soon = Show.coming_soon
+                .reject{|show| show.get_title.nil?}
+                .select{|show| show.is_anime? }
+                .to_a.sort_by!(&:get_title)
+
+            @split_coming_soon = coming_soon.each_slice(2).to_a
+            @split_coming_soon.each {|show_group| show_group.sort_by!(&:get_title)}
+            @has_coming_soon = coming_soon.size > 0
             # @split_shows = Utils.split_array(Show, sort_by: 2)
             set_title(:before => "Shows")
             render 'view_all'; return

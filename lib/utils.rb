@@ -273,10 +273,11 @@ class Utils
         end
     end
 
-    def self.full_date_from(year, month, day, hour=0, minutes=0, seconds=0)
+    def self.full_date_from(year, month, day, hour=0, minutes=0, seconds=0, date_only=false)
         if Utils.is_valid_date year, month, day
-            "#{Utils.get_month(month.to_i)} #{Utils.get_ordinal_number day}, #{year} -"\
-                " #{Utils.pretty_number hour}:#{Utils.pretty_number minutes}:#{Utils.pretty_number seconds}"
+            date = "#{Utils.get_month(month.to_i)} #{Utils.get_ordinal_number day}, #{year}"
+            return date if date_only
+            "#{date} - #{Utils.pretty_number hour}:#{Utils.pretty_number minutes}:#{Utils.pretty_number seconds}"
         else
             "N/A"
         end
