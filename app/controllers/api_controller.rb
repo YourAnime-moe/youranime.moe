@@ -60,7 +60,7 @@ class ApiController < ApplicationController
         end
  
         if success
-			render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!", success: true}
+			render json: {token: user.auth_token, message: "Welcome, #{user.get_name}!", user: user, success: true}
 		else
 			render json: {message: "Sorry, our server authenticated you but could not log you in.", success: false}
 		end
