@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
         return res if as_is
         res.reject! { |episode_id| Episode.find_by(id: episode_id).nil? }
         res.select! { |episode_id| Episode.find(episode_id).is_published? }
-        self.update_attribute(:episodes_watched, res) ? res : nil
+        # self.update_attribute(:episodes_watched, res) ? res : nil
     end
 
     def get_latest_episodes(limit: 5)

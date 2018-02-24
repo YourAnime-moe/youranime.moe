@@ -98,7 +98,7 @@ class AuthApiController < ApiController
                 result[:calc_next_id] = nx.id if nx
                 result[:calc_prev_id] = pv.id if pv
                 result[:is_published] = episodes.is_published?
-				result[:image_path] = episodes.get_new_image_path
+				result[:image_path] = episodes.get_image_path
                 episodes = result
             end
 		end

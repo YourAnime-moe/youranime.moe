@@ -71,10 +71,10 @@ class UserTest < TanoshimuBaseTest
 
     test "User get latest episodes valid" do
         assert_equal @user.get_episodes_watched(as_is: true), [1, 2, 3]
-        assert_equal @user.get_episodes_watched, [1]
+        assert_equal @user.get_episodes_watched, []
         episode = Episode.create
         assert @user.add_episode episode
-        assert_equal @user.get_episodes_watched, [1, 2]
+        assert_equal @user.get_episodes_watched, [1]
         Episode.find(1).update_attributes published: true
         Episode.find(2).update_attributes published: true
         assert_equal @user.get_latest_episodes.size, 2
