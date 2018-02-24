@@ -83,6 +83,7 @@ class AuthApiController < ApiController
 					result[:is_published] = ep.is_published?
 					result[:image_path] = ep.get_image_path
 					result[:watched] = @user.has_watched? ep
+					result[:path] = ep.get_path
 					episodes.push result
 				end
 			end
@@ -99,6 +100,7 @@ class AuthApiController < ApiController
                 result[:calc_prev_id] = pv.id if pv
                 result[:is_published] = episodes.is_published?
 				result[:image_path] = episodes.get_image_path
+				result[:path] = episodes.get_path
                 episodes = result
             end
 		end
