@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   get '/api/get/episodes' => 'auth_api#episodes'
   get '/api/set/episodes/watched' => 'auth_api#add_episode'
   get '/api/get/episode/path' => 'auth_api#episode_path'
+  get '/api/get/username' => 'auth_api#get_username'
 
   # POST API
   post '/api/token' => 'api#token'
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
   post '/api/get/episodes' => 'auth_api#episodes'
   post '/api/set/episodes/watched' => 'auth_api#add_episode'
   post '/api/get/episode/path' => 'auth_api#episode_path'
+  post '/api/get/username' => 'auth_api#get_username'
 
   # Messages
   get '/messages' => 'messages#index'

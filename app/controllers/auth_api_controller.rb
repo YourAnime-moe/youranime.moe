@@ -36,6 +36,22 @@ class AuthApiController < ApiController
 		render json: {user: response, success: true}
 	end
 
+	def get_username
+		id = params[:id]
+		user = User.find_by id: id
+		if user.nil?
+			render json: {
+				success: false,
+				message: "User with id #{id} does not exist"
+			}; return
+		end
+		render json: {
+			success: true,
+			username: user.username,
+			current_user: User.find_by(auth_token: params[:token]) == user
+		}
+	end
+
 	def shows
 		if shows_params.empty? || shows_params[:get_host]
 			results = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
