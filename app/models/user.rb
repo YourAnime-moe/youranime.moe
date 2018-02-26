@@ -57,11 +57,13 @@ class User < ActiveRecord::Base
         return res if as_is
         res.reject! { |episode_id| Episode.find_by(id: episode_id).nil? }
         res.select! { |episode_id| Episode.find(episode_id).is_published? }
+        res
         # self.update_attribute(:episodes_watched, res) ? res : nil
     end
 
     def get_latest_episodes(limit: 5)
         limit = 5 if limit.to_s.strip.size < 0 || limit < 0
+        p "Episodes: #{self.get_episodes_watched(as_is: false).nil?}"
         episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
         episodes.select!{|e| e.is_published?}
         return episodes if episodes.size <= limit
