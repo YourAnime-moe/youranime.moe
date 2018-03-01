@@ -47,7 +47,6 @@ class ApiController < ApplicationController
                 rails_message: "Please visit the admin console to get started.",
                 message: "Please go to the <a href=\"https://my-akinyele-admin.herokuapp.com\" target=\"_blank\">admin console</a> to get started.",
                 show_login: true,
-                show_login: "Try again",
                 success: false
             }
             return
@@ -72,7 +71,7 @@ class ApiController < ApplicationController
             render json: {message: "Missing token", success: false}
             return
         end
-        user = User.find_by(auth_token: token)
+        user = User.find_by_token(token)
         if user
             json = {success: true, message: "Welcome back, #{user.get_name}!"}
         else

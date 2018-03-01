@@ -183,6 +183,14 @@ class User < ActiveRecord::Base
         ]
     end
 
+    def self.find_by_token token
+        user = self.find_by auth_token: token
+        return user unless user.nil?
+        self.all.each do |u|
+            return u if u.auth_token == token
+        end
+    end
+
     private
         def is_ok(value, default)
             res = self.settings[value]
