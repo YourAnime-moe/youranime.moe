@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     username = params[:username].strip.downcase
     password = params[:password].strip
 
-    controller = params[:controller]
+    controller = params[:ccontroller]
     action = params[:caction]
 
     render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0
@@ -66,10 +66,15 @@ class ApplicationController < ActionController::Base
             log_in user
             if controller && action
               p "Alternate url detected: c = #{controller} - a = #{action}"
-              new_url = url_for controller: controller, action: action, only_path: true
+              begin
+                new_url = url_for controller: controller, action: action, only_path: true
+              rescue ActionController::UrlGenerationError => e
+                warn "Error: #{e}"
+                new_url = "/"
+              end
               new_url += "?"
               params.each do |k, v|
-                if k != :ccontroller && k != "ccontroller" && k != :caction && k != "caction" && k != "username" && k != "password"
+                if !k.to_s.include?("controller") && !k.to_s.include?("action") && k != "username" && k != "password"
                   new_url += "#{k}=#{v}&"
                 end
               end

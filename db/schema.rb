@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171210033015) do
+ActiveRecord::Schema.define(version: 20180301020539) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "show_id"
@@ -83,6 +83,8 @@ ActiveRecord::Schema.define(version: 20171210033015) do
     t.integer  "season_year"
     t.integer  "season_code"
     t.string   "tags"
+    t.date     "publish_after"
+    t.date     "published_until"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -104,6 +106,7 @@ ActiveRecord::Schema.define(version: 20171210033015) do
     t.string   "settings"
     t.string   "auth_token"
     t.boolean  "is_activated"
+    t.boolean  "demo"
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
   end
 

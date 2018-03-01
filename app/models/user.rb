@@ -17,10 +17,20 @@ class User < ActiveRecord::Base
             throw :abort
         end
 
+        found_user = User.find_by(demo: self.demo)
+        unless found_user.nil? || found_user.id == self.id
+            self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
+            throw :abort
+        end
     }
 
     has_secure_password
     has_secure_token :auth_token
+
+    def auth_token
+        return self[:auth_token] unless self.is_demo_account?
+        "demo"
+    end
 
     def get_name
         return "#{username}" if self.name.nil?
@@ -101,6 +111,19 @@ class User < ActiveRecord::Base
     def is_admin?
         return false if self.admin.nil?
         self.admin
+    end
+
+    def is_demo_account?
+        return false if self.demo.nil?
+        self.demo
+    end
+
+    def set_demo
+        self.update_attributes demo: true
+    end
+
+    def unset_demo
+        self.update_attributes demo: false
     end
 
     def is_activated?
