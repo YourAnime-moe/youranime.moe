@@ -32,6 +32,16 @@ class User < ActiveRecord::Base
         "demo"
     end
 
+    def username
+        return self[:username] unless self.is_demo_account?
+        "demo"
+    end
+
+    def name
+        return self[:name] unless self.is_demo_account?
+        "Demo Account"
+    end
+
     def get_name
         return "#{username}" if self.name.nil?
         self.name
@@ -189,6 +199,7 @@ class User < ActiveRecord::Base
         self.all.each do |u|
             return u if u.auth_token == token
         end
+        nil
     end
 
     private

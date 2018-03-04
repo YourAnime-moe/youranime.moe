@@ -7,7 +7,7 @@ class AuthApiController < ApiController
 		if token.to_s.strip.empty?
 			render json: {message: "Access denied. No token was specified.", success: false}
 		end
-		@user = User.find_by(auth_token: token)
+		@user = User.find_by_token(token)
 		is_admin = params[:admin] == "true"
 		if @user.nil?
 			render json: {
