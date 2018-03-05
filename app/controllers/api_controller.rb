@@ -67,6 +67,7 @@ class ApiController < ApplicationController
 
     def check
         token = token_params[:token]
+        with_user = token_params[:with_user].to_s.strip == "true"
         if token.to_s.strip.empty?
             render json: {message: "Missing token", success: false}
             return
@@ -74,6 +75,7 @@ class ApiController < ApplicationController
         user = User.find_by_token(token)
         if user
             json = {success: true, message: "Welcome back, #{user.get_name}!"}
+            json[:user] = user if with_user
         else
             json = {success: false, message: "It appears you have been logged out. Please re-enter your credentials."}
         end
@@ -85,7 +87,8 @@ class ApiController < ApplicationController
 			params.permit(
 				:username,
 				:password,
-                :token
+                :token,
+                :with_user
 			)
 		end
 
