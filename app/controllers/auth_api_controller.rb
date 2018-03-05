@@ -156,7 +156,7 @@ class AuthApiController < ApiController
 			response[:reason] = "episode-not-saved"
 			response[:errors] = {user: user.errors.to_a, episode: episode.errors.to_a}
 		end
-		response
+		render json: response
 	end
 
 	def add_episode
