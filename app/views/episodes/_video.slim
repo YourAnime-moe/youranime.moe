@@ -85,6 +85,8 @@ javascript:
             return;
         }
 
+        sendProgress({id: videoId, progress: ratio, user_id: userId})
+
         if (ratio >= watchedMark) {
             setWatched(videoInfo);
         }
@@ -180,12 +182,24 @@ javascript:
         setVideosList(videosList);
     }
 
+    function sendProgress(episode) {
+        episode.token = '#{current_token}';
+        $.ajax({
+            type: 'PUT',
+            url: '/api/update/episode/progress',
+            data: episode,
+            success: function(result) {
+                console.log("Progress saved status:");
+                console.log(result);
+            }
+        });
+    }
+
     function setWatched(episode) {
-        console.log("Making episode as watched...");
         if (markedAsWatched) {
-            console.log("Already marked as watched.");
             return;
         }
+        console.log("Making episode as watched...");
         $.ajax({
             type: 'POST',
             url: '/json/setWatched',

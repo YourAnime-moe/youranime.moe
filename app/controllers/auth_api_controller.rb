@@ -100,6 +100,7 @@ class AuthApiController < ApiController
 					result[:image_path] = ep.get_image_path
 					result[:watched] = @user.has_watched? ep
 					result[:path] = ep.get_path
+					result[:progress] = ep.progress_info(@user)
 					episodes.push result
 				end
 			end
@@ -117,6 +118,7 @@ class AuthApiController < ApiController
                 result[:is_published] = episodes.is_published?
 				result[:image_path] = episodes.get_image_path
 				result[:path] = episodes.get_path
+				result[:progress] = episodes.progress_info(@user)
                 episodes = result
             end
 		end
@@ -129,6 +131,32 @@ class AuthApiController < ApiController
 			end
 		end
 		render json: {episodes: episodes, success: !episodes.empty?}
+	end
+
+	def update_episode_progress
+		id = episodes_params[:id]
+		user_id = params[:user_id]
+		progress = episodes_params[:progress]
+
+		user = User.find_by(id: user_id)
+		if user.nil?
+			render json: {success: false, reason: "user-not-found"}
+			return
+		end
+
+		episode = Episode.find_by(id: id)
+		if episode.nil?
+			render json: {success: false, reason: "episode-not-found"}
+			return			
+		end
+
+		success = user.update_episode_progress episode, progress
+		response = {success: success}
+		unless success
+			response[:reason] = "episode-not-saved"
+			response[:errors] = {user: user.errors.to_a, episode: episode.errors.to_a}
+		end
+		response
 	end
 
 	def add_episode
@@ -187,7 +215,8 @@ class AuthApiController < ApiController
 				:show_id,
 				:title,
 				:episode_number,
-				:published
+				:published,
+				:progress
 			)
 		end
 

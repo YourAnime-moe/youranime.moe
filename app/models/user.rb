@@ -1,10 +1,12 @@
 class User < ActiveRecord::Base
 
     serialize :episodes_watched
+    serialize :episode_progress_list
     serialize :settings
 
     before_save {
         self.episodes_watched = [] if self.episodes_watched.nil?
+        self.episode_progress_list = [] if self.episode_progress_list.nil?
 
         if self.username.nil? or self.username.strip.empty?
             self.errors.add "username", "cannot be empty"
@@ -66,6 +68,48 @@ class User < ActiveRecord::Base
         result = save ? self.save : true
         unless result
             p "Could not save user: #{self.errors.to_a}"
+        end
+        result
+    end
+
+    def update_episode_progress(episode, progress)
+        progress = progress.to_i
+        unless self.allows_setting(:episode_tracking)
+            p "Not adding episode because user settings deny this action"
+            return nil
+        end
+        unless episode.class == Episode || episode.class == Integer
+            return false 
+        end
+        if episode.instance_of? Integer
+            episode = Episode.find_by(id: episode)
+            return false if episode.nil?
+        end
+        if progress == 0
+            warn "Skipping this episode (progress == 0)"
+            return true
+        end
+        present = false
+        self.episode_progress_list = [] if self.episode_progress_list.nil?
+        self.episode_progress_list.each do |item|
+            if item[:id] == episode.id
+                item[:progress] = progress
+                present = true
+                break
+            end
+        end
+        unless present
+            self.episode_progress_list.push({id: episode.id, progress: progress})
+        end
+        result = self.save
+        unless result
+            warn "Could not update the episode progress: #{self.errors.to_a}"
+        end
+        if progress >= episode.get_watched_mark
+            result = result && self.add_episode(episode, save: true)
+            unless result
+                warn "Could not update the episode progress by setting episode as watched: #{self.errors.to_a}"
+            end
         end
         result
     end
