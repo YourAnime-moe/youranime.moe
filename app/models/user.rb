@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
             throw :abort
         end
 
-        found_user = User.find_by(demo: self.demo)
+        found_user = User.find_by(demo: true)
         unless found_user.nil? || found_user.id == self.id
             self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
             throw :abort
