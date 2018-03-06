@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   get '/api/get/news' => 'auth_api#news'
   get '/api/get/episodes' => 'auth_api#episodes'
   get '/api/set/episodes/watched' => 'auth_api#add_episode'
+  get '/api/get/episodes/history' => 'auth_api#episodes_history'
   get '/api/get/episode/path' => 'auth_api#episode_path'
   get '/api/get/username' => 'auth_api#get_username'
 

@@ -133,6 +133,12 @@ class AuthApiController < ApiController
 		render json: {episodes: episodes, success: !episodes.empty?}
 	end
 
+	def episodes_history
+		episodes = @user.get_episodes_watched(as_is: params[:as_is] == "true")
+		episodes = episodes.map{|episode_id| Episode.find_by(id: episode_id)}.reject{|episode| episode.nil?}
+		render json: {success: true, episodes: episodes}
+	end
+
 	def update_episode_progress
 		id = episodes_params[:id]
 		user_id = params[:user_id]
