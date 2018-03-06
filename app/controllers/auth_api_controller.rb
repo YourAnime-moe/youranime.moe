@@ -136,7 +136,21 @@ class AuthApiController < ApiController
 	def episodes_history
 		episodes = @user.get_episodes_watched(as_is: params[:as_is] == "true")
 		episodes = episodes.map{|episode_id| Episode.find_by(id: episode_id)}.reject{|episode| episode.nil?}
-		render json: {success: true, episodes: episodes}
+		
+		result = []
+		episodes.each do |episode|
+			entry = JSON.parse episode.to_json
+			pv = episode.previous
+            nx = episode.next
+            entry[:calc_next_id] = nx.id if nx
+            entry[:calc_prev_id] = pv.id if pv
+            entry[:is_published] = episode.is_published?
+			entry[:image_path] = episode.get_image_path
+			entry[:path] = episode.get_path
+			entry[:progress] = episode.progress_info(@user)
+			result << entry
+		end
+		render json: {success: true, episodes: result}
 	end
 
 	def update_episode_progress
