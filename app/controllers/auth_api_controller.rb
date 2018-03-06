@@ -148,6 +148,7 @@ class AuthApiController < ApiController
 			entry[:image_path] = episode.get_image_path
 			entry[:path] = episode.get_path
 			entry[:progress] = episode.progress_info(@user)
+			entry[:show] = episode.show
 			result << entry
 		end
 		render json: {success: true, episodes: result}
