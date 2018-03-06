@@ -213,6 +213,30 @@ class AuthApiController < ApiController
 		end
 	end
 
+	def update_user
+		username = params[:username]
+		password = params[:password] || params[:new_password]
+		user_name = params[:name] || params[:user_name]
+
+		begin
+            username = Base64.urlsafe_decode64 username
+            password = Base64.urlsafe_decode64 password
+            user_name = Base64.urlsafe_decode64 user_name
+        rescue ArgumentError
+            render json: {reason: "u-p-n-not-base64", success: false}
+            return
+        end
+
+		found_user = User.find_by(username: username)
+		if !found_user.nil? && found_user.id != @user.id
+			render json: {success: false, reason: "duplicate-username"}
+			return
+		end
+
+		success = @user.update_attributes(password: password, password_confirmation: password, name: user_name)
+		render json: {success: success, errors: @user.errors.to_a}
+	end
+
 	private
 		def shows_params
 			params.permit(

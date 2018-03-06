@@ -78,6 +78,7 @@ Rails.application.routes.draw do
   post '/api/get/episode/path' => 'auth_api#episode_path'
   post '/api/get/username' => 'auth_api#get_username'
   post '/api/update/episode/progress' => 'auth_api#update_episode_progress'
+  post '/api/update/user' => 'auth_api#update_user'
 
   # PUT API
   put '/api/update/episode/progress' => 'auth_api#update_episode_progress'
