@@ -4,7 +4,7 @@ module Navigatable
         return @previous if save and !@previous.nil?
         klass = self.class
         first_id = klass.first.id
-        return nil if first_id.id == self.id
+        return nil if first_id == self.id
         pos = self.id - 1
         until false
             result = klass.find_by(id: pos)
@@ -22,7 +22,7 @@ module Navigatable
         return @next if save and !@next.nil?
         klass = self.class
         last_id = klass.last.id
-        return nil if last_id.id == self.id
+        return nil if last_id == self.id
         pos = self.id + 1
         while true
             perc = pos.to_f / klass.last.id.to_f
