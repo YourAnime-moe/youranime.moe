@@ -7,6 +7,9 @@ module Navigatable
         pos = self.id - 1
         until false
             result = klass.find_by(id: pos)
+            unless result.nil?
+                result = nil if result.show.id != self.show.id
+            end
             pos -= 1
             unless result.nil?
                 @previous = result
@@ -25,6 +28,9 @@ module Navigatable
             perc *= 100
             p "looking for next (#{perc}% complete)"
             result = klass.find_by(id: pos)
+            unless result.nil?
+                result = nil if result.show.id != self.show.id
+            end
             pos += 1
             unless result.nil?
                 @next = result
