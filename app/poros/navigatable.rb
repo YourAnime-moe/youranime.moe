@@ -3,39 +3,38 @@ module Navigatable
     def previous(save=true)
         return @previous if save and !@previous.nil?
         klass = self.class
-        return nil if klass.first.id == self.id
+        first_id = klass.first.id
+        return nil if first_id.id == self.id
         pos = self.id - 1
         until false
             result = klass.find_by(id: pos)
-            unless result.nil?
-                result = nil if result.show.id != self.show.id
-            end
             pos -= 1
             unless result.nil?
+                return nil if result.show != self.show
                 @previous = result
                 return result
             end
+            return nil if first_id == pos
         end
     end
 
     def next(save=true)
         return @next if save and !@next.nil?
         klass = self.class
-        return nil if klass.last.id == self.id
+        last_id = klass.last.id
+        return nil if last_id.id == self.id
         pos = self.id + 1
         while true
             perc = pos.to_f / klass.last.id.to_f
             perc *= 100
-            p "looking for next (#{perc}% complete)"
             result = klass.find_by(id: pos)
-            unless result.nil?
-                result = nil if result.show.id != self.show.id
-            end
             pos += 1
             unless result.nil?
+                return nil if result.show != self.show
                 @next = result
                 return result
             end
+            return nil if last_id == pos
         end
     end
 
