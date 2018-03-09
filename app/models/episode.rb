@@ -130,15 +130,20 @@ class Episode < ActiveRecord::Base
         80
     end
 
-    def progress_info user
+    def progress_info user, value_only: false
         info = {
             user: user.id,
             episode: self.id,
             progress_info: nil
         }
-        return info if user.episode_progress_list.nil? || user.episode_progress_list.empty?
+        default_value = self.was_watched_by?(user) ? 97 : 0
+        return (value_only ? default_value : info) if user.episode_progress_list.nil? || user.episode_progress_list.empty?
         info[:progress_info] = user.episode_progress_list.select{|chunk| chunk[:id] == self.id}[0]
         info[:found] = !info[:progress_info].nil?
+        if value_only
+            return 0 if info[:progress_info].nil?
+            return info[:progress_info][:progress]
+        end
         info
     end
 

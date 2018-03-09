@@ -121,27 +121,26 @@ javascript:
                 }
             }
         });
+
+        videojs('episode_video').ready(function() {
+            var vjsPlayer = this;
+            vjsPlayer.on("pause", function() {
+                vjsPlayer.bigPlayButton.show();
+            });
+            vjsPlayer.on("play", function() {
+                vjsPlayer.bigPlayButton.hide();
+            });
+
+            video.onloadeddata = function(e) {
+                var currentTime = #{@episode.progress_info(current_user, value_only: true)};
+                currentTime = currentTime / 100;
+                video.currentTime = video.duration * currentTime;
+                video.play();
+            }
+        });
     });
 
-    videojs('episode_video').ready(function() {
-        var vjsPlayer = this;
-        vjsPlayer.on("pause", function() {
-            vjsPlayer.bigPlayButton.show();
-        });
-        vjsPlayer.on("play", function() {
-            vjsPlayer.bigPlayButton.hide();
-        });
-        if (episode == null) {
-        	vjsPlayer.play();
-        	return;
-        }
-        var currentTime = episode.currentTime;
-        if (currentTime > 10) {
-            currentTime -= 10;
-        }
-        video.currentTime = currentTime;
-        vjsPlayer.play();
-    });
+
 
     var videosList = localStorage.getItem('videos');
     if (videosList == null) {
