@@ -74,14 +74,16 @@ class UserTest < TanoshimuBaseTest
         assert_equal @user.get_episodes_watched, []
         episode = Episode.create
         assert @user.add_episode episode
-        assert_equal @user.get_episodes_watched, [1]
-        Episode.find(1).update_attributes published: true
+        assert_equal @user.get_episodes_watched(as_is: true), [2]
+        assert @user.add_episode Episode.create
         Episode.find(2).update_attributes published: true
+        Episode.find(3).update_attributes published: true
         assert_equal @user.get_latest_episodes.size, 2
         assert_equal @user.get_latest_episodes(limit: 1).size, 1
     end
 
     test "User has watched anything valid" do
+        assert_save Episode.new(published: true)
         assert @user.has_watched_anything?
     end
 
@@ -98,8 +100,9 @@ class UserTest < TanoshimuBaseTest
     end
 
     test "User get valid episode count string" do
+        Episode.first.update_attributes(published: true)
         assert_equal @user.get_episode_count, "You have watched one episode."
-        assert @user.add_episode Episode.create
+        assert @user.add_episode Episode.create(published: true)
         assert_equal @user.get_episode_count, "You have watched 2 episodes."
         assert_equal User.create.get_episode_count, "You have watched 0 episodes."
     end

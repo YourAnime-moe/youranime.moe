@@ -132,6 +132,7 @@ class User < ActiveRecord::Base
         p "Episodes: #{self.get_episodes_watched(as_is: false).nil?}"
         episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
         episodes.select!{|e| e.is_published?}
+        p "Episodes: #{episodes_watched}"
         return episodes if episodes.size <= limit
         episodes[0...limit]
     end
