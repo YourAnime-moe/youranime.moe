@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   get '/api/get/episode/path' => 'auth_api#episode_path'
   get '/api/get/username' => 'auth_api#get_username'
 
+  get '/api/update/user/settings' => 'auth_api#update_user_settings'
+
   # POST API
   post '/api/token' => 'api#token'
   post '/api/check' => 'api#check'
@@ -82,6 +84,7 @@ Rails.application.routes.draw do
 
   # PUT API
   put '/api/update/episode/progress' => 'auth_api#update_episode_progress'
+  put '/api/update/user/settings' => 'auth_api#update_user_settings'
 
   # Messages
   get '/messages' => 'messages#index'

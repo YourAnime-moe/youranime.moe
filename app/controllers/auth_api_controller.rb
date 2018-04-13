@@ -239,6 +239,17 @@ class AuthApiController < ApiController
 		render json: {success: success, errors: @user.errors.to_a}
 	end
 
+	def update_user_settings
+		setting_key = params[:setting_key].to_s
+		setting_value = params[:setting_value].to_s
+
+		new_settings = {}
+		new_settings[setting_key] = (setting_value.strip.downcase != "false").to_s
+
+		success = @user.update_settings new_settings, true
+		render json: {success: success, settings: @user.settings, errors: @user.errors.to_a}
+	end
+
 	private
 		def shows_params
 			params.permit(
