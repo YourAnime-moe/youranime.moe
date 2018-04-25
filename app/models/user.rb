@@ -161,6 +161,10 @@ class User < ActiveRecord::Base
         is_ok(what, get_default(what))
     end
 
+    def can_autoplay?
+        allows_setting :autoplay
+    end
+
     def is_new?
         self.id.nil?
     end
@@ -204,14 +208,15 @@ class User < ActiveRecord::Base
     end
 
     def update_settings(new_settings, save=true)
-        keys = [:watch_anime, :last_episode, :episode_tracking, :recommendations, :images]
+        keys = [:watch_anime, :last_episode, :episode_tracking, :recommendations, :images, :autoplay]
         if new_settings.nil? || new_settings.class != Hash
             new_settings = {
                 :watch_anime => true,
                 :last_episode => true,
                 episode_tracking: true,
                 recommendations: true,
-                images: true
+                images: true,
+                autoplay: true
             }
         end
         if self.settings.class != Hash
@@ -231,6 +236,37 @@ class User < ActiveRecord::Base
 
     def destroy_token
         self.update_attribute(:auth_token, nil)
+    end
+
+    def random_episode_selection(amount_watched: 5, amount_not_watched: 5, current_episode: nil)
+        episodes = []
+        total_size = amount_watched + amount_not_watched
+        return [] if total_size == 0
+
+        if amount_watched > 0
+            episodes << self.get_episodes_watched(as_is: true)
+            if episodes.size > amount_watched
+                episodes.shuffle![0..amount_watched-1]
+            elsif episodes.size < amount_watched
+                amount_not_watched += (amount_watched - episodes.size)
+            end
+        end
+        if amount_not_watched > 0
+            (0..amount_not_watched-1).each do
+                ind = rand(Episode.last.id)
+                episode = nil
+                while true
+                    episode = Episode.find_by(id: ind)
+                    break unless episode.nil? || !episode.is_published?
+                    ind = rand(Episode.last.id) + 1
+                end
+                episodes << ind
+            end
+        end
+        episodes.shuffle
+            .map{|id| Episode.find_by(id: id)}
+            .reject{|nil_ep| nil_ep.nil?}
+            .reject{|is_current| is_current == current_episode} 
     end
 
     def self.types
@@ -265,5 +301,6 @@ class User < ActiveRecord::Base
             return true if value == "episode_tracking"
             return true if value == "recommendations"
             return true if value == "images"
+            return true if value == "autoplay"
         end
 end

@@ -4,7 +4,7 @@ div.no-video.hidden
     a href="" here.
 
 div style="margin-top: 10px;"
-    video#episode_video.video-js.vjs-big-play-centered class="video-js vjs-default-skin" width="640" height="264" controls="true" data-setup='{"fluid": true}'
+    video#episode_video.video-js.vjs-big-play-centered poster="#{@episode.get_image_path(current_token)}" class="video-js vjs-default-skin" width="640" height="264" controls="true" data-setup='{"fluid": true}'
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mp4"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mkv"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/avi"
@@ -20,22 +20,54 @@ css:
         color: white;
     }
 
-ul.pager style="margin-bottom: 80px;"
+.episode-player-title
+    span.episode.player.title #{@episode.title}
+    br
+    span.episode.player.show #{@episode.show.get_title}
+
+/ul.pager style="margin-bottom: 80px;"
     - if @episode.has_previous?
         .left
-            a.btn.btn-default.previous.chg_video link="/shows/episodes?id=#{@episode.previous.id}" Episode #{@episode.previous.episode_number}
-    - else
+            - episode = @episode.previous
+            - url = '/shows/episodes?id=' + episode.id.to_s
+            - watched = "watched" if episode.was_watched_by? current_user
+            .hoverable.clickable.hasmenu class="#{watched}" onclick="window.location.href='#{url}'"
+                img.thumbnail src="#{episode.get_image_path(current_token)}" style="max-width: 100%"
+                .left.episode-info
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    br
+                    span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
+                div.episode.progressVideo.hidden id="progress_#{episode.id}"
+
+                .progress
+                    - width = episode.progress_info(current_user, value_only: true)
+                    .determinate episode_id="#{episode.id}" style="width: #{width}%"
+
+    /- else
         li.previous
             a.none None
 
     - if @episode.has_next?
         .right
-            a.btn.btn-default.next.chg_video link="/shows/episodes?id=#{@episode.next.id}"Episode #{@episode.next.episode_number}
-    - else
+            - episode = @episode.next
+            - url = '/shows/episodes?id=' + episode.id.to_s
+            - watched = "watched" if episode.was_watched_by? current_user
+            .hoverable.clickable.hasmenu class="#{watched}" onclick="window.location.href='#{url}'"
+                img.thumbnail src="#{episode.get_image_path(current_token)}" style="max-width: 100%"
+                .left.episode-info
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    br
+                    span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
+                div.episode.progressVideo.hidden id="progress_#{episode.id}"
+
+                .progress
+                    - width = episode.progress_info(current_user, value_only: true)
+                    .determinate episode_id="#{episode.id}" style="width: #{width}%"
+    /- else
         li.next
             a href="/shows" style="color: red; float: right;" Done. More?
 
-    .center
+    /.center
         button#resume_video.btn.btn-success.hidden Resume from last time
 
 
@@ -135,7 +167,9 @@ javascript:
                 var currentTime = #{@episode.progress_info(current_user, value_only: true)};
                 currentTime = currentTime / 100;
                 video.currentTime = video.duration * currentTime;
-                video.play();
+                if ($('#autoplay').is(':checked')) {
+                    video.play();
+                }
             }
         });
     });
@@ -149,7 +183,7 @@ javascript:
     
     videosList = getVideosList();
 
-    if (isCurrentEpisode(episode)) {
+    if (isCurrentEpisode(episode) && buttonResume) {
         // Then there is some history with this video
         buttonResume.classList.remove('hidden');
         buttonResume.onclick = function(e) {

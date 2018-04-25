@@ -108,6 +108,12 @@ class JsonController < ApplicationController
     end
 
     def get_next_episode_id
+        if params[:check_setting] == "true"
+            unless current_user.can_autoplay?
+                render json: {success: false, message: 'The user does not want to autoplay.'}
+                return
+            end
+        end
         episode = Episode.find_by(id: params[:id])
         if episode.nil?
             render json: {success: false}

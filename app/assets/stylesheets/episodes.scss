@@ -7,8 +7,74 @@
     font-weight: bold;
 }
 
+.watching-video {
+    width: 93%;
+    margin: 0 auto;
+}
+
 .video-section {
     width: 70%;
+}
+
+.episode-info {
+    margin: 2px 8px 3px 8px;
+}
+
+.episode-player-title {
+    font-size: 20px;
+    padding-top: 20px;
+    margin: 0 15px;
+}
+
+.episode-player-title .episode.player.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.episode-player-title .episode.player.show {
+    font-size: 17px;
+    color: grey;
+}
+
+span.episode {
+    text-align: left;
+}
+
+span.episode.number {
+    font-weight: bold;
+}
+
+span.episode.title {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+span.episode.show.title {
+    color: grey;
+}
+
+div.episode-info {
+    height: 100px;
+}
+
+div.episode-info.other {
+    float: left;
+}
+
+.episode-info .thumbnail {
+    float: left;
+}
+
+.episode-info img.thumbnail {
+    display: block;
+}
+
+.episode-info .info {
+    margin-left: 160px;
+}
+
+hr.episodes {
+    border-color: #ee6e73;
 }
 
 .well.comments {
@@ -17,6 +83,14 @@
 
 .well.watched {
     background-color: lightblue;
+}
+
+img.thumbnail {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 100px;
+    max-width: 150px;
 }
 
 .playable img {

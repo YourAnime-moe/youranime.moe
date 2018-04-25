@@ -1,4 +1,4 @@
-.container-fluid
+.container-fluid.watching-video
     br
     - @back_name = @episode.show.get_title
     - @url = '/shows?id=' + @episode.show.id.to_s
@@ -6,15 +6,14 @@
 
     .row
         .col.m9
-            br
-            span style="font-size: 200%; padding-top: 20px;" #{@episode.title}
-            span  &middot; Episode #{@episode.episode_number}
 
             #video_cont
                 = render '/episodes/video'
-                
-            = render '/episodes/comments'
+            
+            - render '/episodes/comments'
 
         .col.m3.desktop
             = render '/episodes/next'
 
+javascript:
+    var autoplay_allowed = #{current_user.can_autoplay?};

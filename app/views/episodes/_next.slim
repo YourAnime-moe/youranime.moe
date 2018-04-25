@@ -1,17 +1,65 @@
 #next_episode_container
-    h3 Next episodes...
-    .text-center
-        button#toggle_watched.hidden.btn.btn-default\
+    - if @episode.has_next?
+        .switch style="float: right"
+            label
+                input#autoplay type="checkbox"
+                span.lever
+        p.bold Up next (autoplay)
+
+        - episode = @episode.next
+        - url = '/shows/episodes?id=' + episode.id.to_s
+        - watched = "watched" if episode.was_watched_by? current_user
+        .clickable.episode-info class="#{watched}" onclick="window.location.href='#{url}'"
+            .thumbnail
+                img.thumbnail src="#{episode.get_image_path(current_token)}"
+                .progress
+                    - width = episode.progress_info(current_user, value_only: true)
+                    .determinate episode_id="#{episode.id}" style="width: #{width}%"
+
+            .info
+                .left.episode-info
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    br
+                    span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
+            div.episode.progressVideo.hidden id="progress_#{episode.id}"
+
+
+    br.episodes
+    p.bold Discover...
+
+    - current_user.random_episode_selection(current_episode: @episode).each do |episode|
+        - url = '/shows/episodes?id=' + episode.id.to_s
+        - watched = "watched" if episode.was_watched_by? current_user
+        .clickable.episode-info.other class="#{watched}" onclick="window.location.href='#{url}'"
+            .thumbnail
+                img.thumbnail src="#{episode.get_image_path(current_token)}"
+                .progress
+                    - width = episode.progress_info(current_user, value_only: true)
+                    .determinate episode_id="#{episode.id}" style="width: #{width}%"
+
+            .info
+                .left.episode-info
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    br
+                    span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
+                    br
+                    span.episode.show.title #{episode.show.get_title}
+            div.episode.progressVideo.hidden id="progress_#{episode.id}"
+
+
+
+    /   .text-center
+        button#toggle_watched.hidden.btn.btn-default
         
-    - if @episode.is_last?
+    /- if @episode.is_last?
         - if @episode.show.episodes.size > 5
             p Wow, you've aleady watched #{@episode.show.episodes.size} episodes!
         - else
             p That's it!
-    - elsif @episode.is_first?
+    /- elsif @episode.is_first?
         p This is the first episode, there's plenty more to watch!
 
-    #episodes.collection
+    /#episodes.collection
         - @episode.show.episodes(from: @episode).each do |episode|
             - next if @episode == episode
             - break if episode.id == @episode.show.episodes.first.id
@@ -27,7 +75,6 @@ javascript:
     var defaultText = 'Hide watched episodes';
     var showAllText = 'Show all episodes';
 
-
     $(document).ready(function() {
         toggleWatchedButton.html(defaultText);
         toggleWatchedButton.on('click', function(e) {
@@ -37,6 +84,29 @@ javascript:
                 showEpisodes();
             }
         });
+
+        $('#autoplay').prop('checked', autoplay_allowed);
+        $('#autoplay').on('change', function(e) {
+            $('#autoplay').attr('disabled', '');
+            var new_change = $('#autoplay').is(':checked');
+            $.ajax({
+                url: '/api/update/user/settings',
+                method: 'put',
+                data: {
+                    token: "#{current_token}",
+                    setting_key: 'autoplay',
+                    setting_value: new_change
+                },
+                success: function(e) {
+                    $('#autoplay').removeAttr('disabled');
+                    console.log(e);
+                },
+                error: function(e) {
+                    $('#autoplay').removeAttr('disabled');
+                }
+            });
+        });
+
     });
 
     function hideEpisodes() {

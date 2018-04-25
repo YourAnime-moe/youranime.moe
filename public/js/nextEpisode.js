@@ -23,7 +23,7 @@ function goToNextId(currentId) {
     console.log("Going to the next episode if any...");
     $.ajax({
         type: 'get',
-        url: '/json/get/episode/next?id=' + currentId,
+        url: '/json/get/episode/next?id=' + currentId + "&check_setting=true",
         success: function(e) {
             console.log(e);
             if (e.success) {
@@ -34,7 +34,7 @@ function goToNextId(currentId) {
                     goToEpisode(nextId);
                 }
             } else {
-                console.err("The server did not find the episode (no ID passed).");
+                console.error(e.message || "The server did not find the episode (no ID passed).");
             }
         },
         fail: function() {
@@ -50,7 +50,7 @@ function goToEpisode(id) {
     if (id) {
         console.log("Going episode id=%s", id);
         url = '/shows/episodes?id=' + id;
-        window.location.replace(url);
+        window.location.href = url;
     }
 }
 
