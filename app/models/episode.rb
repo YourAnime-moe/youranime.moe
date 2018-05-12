@@ -21,7 +21,7 @@ class Episode < ActiveRecord::Base
     def show
         return @show unless @show.nil?
         return nil if self.show_id.nil?
-        @show = Show.find(self.show_id)
+        @show = Show.find_by(id: self.show_id)
     end
 
     def is_published?

@@ -92,7 +92,12 @@ module ApplicationHelper
     end
 
     def logged_in?
-        !current_user.nil? && current_user.is_activated?
+        if maintenance_activated?
+            _logout
+            false
+        else
+            !current_user.nil? && current_user.is_activated?
+        end
     end
 
     def log_in(user)
