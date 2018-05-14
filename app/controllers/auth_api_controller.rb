@@ -65,11 +65,15 @@ class AuthApiController < ApiController
 			my_hash[:total_episodes] = results.all_episodes.size if results != {}
 			results = my_hash
 		end
-		if params[:query]
+		has_searched = !params[:query].nil?
+		if has_searched
 			results = Show.search params[:query], results
 		end
 		res = {shows: results, success: !results.empty?}
 		res[:get_host] = Config.main_host if shows_params[:get_host] == "true"
+		if has_searched
+			res["no-results"] = results.empty?
+		end
 		render json: res
 	end
 
