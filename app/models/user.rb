@@ -266,7 +266,8 @@ class User < ActiveRecord::Base
         episodes.shuffle
             .map{|id| Episode.find_by(id: id)}
             .reject{|nil_ep| nil_ep.nil?}
-            .reject{|is_current| is_current == current_episode} 
+            .reject{|is_current| is_current == current_episode}
+            .uniq
     end
 
     def self.types

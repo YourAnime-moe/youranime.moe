@@ -272,4 +272,18 @@ class Show < ActiveRecord::Base
         self.all.select{|e| e.is_published?}
     end
 
+    def self.search keyword, preset_list=nil
+        keyword = keyword.to_s.downcase
+        shows = []
+        preset_list = self.all if preset_list.nil?
+        preset_list.each do |show|
+            next unless show.is_published?
+            if show.get_title.downcase.include?(keyword) || show.title.downcase.include?(keyword)
+                shows << show
+                next
+            end
+        end
+        shows
+    end
+
 end
