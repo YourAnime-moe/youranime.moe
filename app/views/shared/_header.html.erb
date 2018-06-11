@@ -1,18 +1,18 @@
    <nav>
     <div class="nav-wrapper">
       <% if @back_url %>
-        <a href="<%= @back_url %>" class="brand-logo" title="<%= @back_title%>" style="margin-left: 25px;"><i class="material-icons desktop">undo</i>Tanoshimu</a>
+        <a href="<%= @back_url %>" class="brand-logo" title="<%= @back_title%>" style="margin-left: 25px;"><i class="material-icons desktop">undo</i><%= t('welcome.title') %></a>
         <a href=""></a>
       <% else %>
-        <a href="/" class="brand-logo" style="margin-left: 25px;">Tanoshimu</a>
+        <a href="/" class="brand-logo" style="margin-left: 25px;"><%= t('welcome.title') %></a>
       <% end %>
       <a href="#" data-activates="tanoshimu-nav" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a title="All anime" href="/shows">Anime</a></li>
-        <li><a title="All movies" href="/movies">Movies</a></li>
-        <li><a title="Search by tags" href="/tags"><i class="material-icons right">book</i>Tags</a></li>
-        <li><a title="Search for..." href="/search"><i class="material-icons">search</i></a></li>
-        <li title="Your messages (coming soon!)"><a title="Your messages" class="disabled" href="#"><i class="material-icons disabled">message</i></a></li>
+        <li><a title="All anime" href="/shows"><%= t('header.anime') %></a></li>
+        <li><a title="All movies" href="/movies"><%= t('header.movies') %></a></li>
+        <li><a title="Search by tags" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
+        <li><a title="Search for" href="/search"><i class="material-icons">search</i></a></li>
+        <!-- <li title="Your messages (coming soon!)"><a title="Your messages" class="disabled" href="#"><i class="material-icons disabled">messages</i></a></li> -->
         <li><a title="Random episode" href="/shows/episodes/random"><i class="material-icons">shuffle</i></a></li>
         <li><a title="Episode history" href="/shows/history"><i class="material-icons">restore</i></a></li>
         <li><a title="Your account settings" href="/settings"><i class="material-icons">settings</i></a></li>
@@ -20,17 +20,17 @@
         <li><a title="Logout" href="/logout"><i class="material-icons">exit_to_app</i></a></li>
       </ul>
       <ul class="side-nav" id="tanoshimu-nav">
-        <li><a style="text-decoration: underline;" href="/"><h4>Tanoshimu</h4></a></li>
-        <li><a href="/shows"><i class="material-icons">play_arrow</i>Anime</a></li>
-        <li><a href="/movies"><i class="material-icons">play_arrow</i>Movies</a></li>
-        <li><a href="/search"><i class="material-icons">search</i>Search...</a></li>
-        <li><a href="/news"><i class="material-icons">event_note</i>News</a></li>
-        <li><a href="/tags"><i class="material-icons">book</i>Tags</a></li>
-        <li><a href="/shows/episodes/random"><i class="material-icons">shuffle</i>Random</a></li>
-        <li><a href="/shows/history"><i class="material-icons">restore</i>Episode history</a></li>
-        <li><a href="/settings"><i class="material-icons">settings</i>Account Settings</a></li>
-        <li><a href="https://github.com/thedrummeraki/tanoshimu/issues" target="_blank"><i class="material-icons">bug_report</i>Known issues</a></li>
-        <li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
+        <li><a style="text-decoration: underline;" href="/"><h4><%= t('welcome.title') %></h4></a></li>
+        <li><a href="/shows"><i class="material-icons">play_arrow</i><%= t('header.anime') %></a></li>
+        <li><a href="/movies"><i class="material-icons">play_arrow</i><%= t('header.movies') %></a></li>
+        <li><a href="/search"><i class="material-icons">search</i><%= t('header.search') %></a></li>
+        <li><a href="/news"><i class="material-icons">event_note</i><%= t('header.news') %></a></li>
+        <li><a href="/tags"><i class="material-icons">book</i><%= t('header.tags') %></a></li>
+        <li><a href="/shows/episodes/random"><i class="material-icons">shuffle</i><%= t('header.random') %></a></li>
+        <li><a href="/shows/history"><i class="material-icons">restore</i><%= t('header.history') %></a></li>
+        <li><a href="/settings"><i class="material-icons">settings</i><%= t('header.settings') %></a></li>
+        <li><a href="https://github.com/thedrummeraki/tanoshimu/issues" target="_blank"><i class="material-icons">bug_report</i><%= t('header.bugs') %></a></li>
+        <li><a href="/logout"><i class="material-icons">exit_to_app</i><%= t('header.logout') %></a></li>
       </ul>
     </div>
   </nav>

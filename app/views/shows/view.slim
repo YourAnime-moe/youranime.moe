@@ -33,7 +33,7 @@ css:
   .modal-content
    .container
       .center
-          h4.title Anime with the same tag
+          h4.title #{t('anime.shows.viewing.same-tags')}
 
       .container
           - Utils.tags.keys.each do |tag|
@@ -41,13 +41,13 @@ css:
                   span #{Utils.tags[tag]}
 
       .center.hidden style="margin-top: 10px;"
-          a#reset-btn.btn.disabled Reset
+          a#reset-btn.btn.disabled #{t('anime.other.reset')}
 
       #results style="margin-top: 50px;"
 
 .container-fluid
     div.hidden style="margin-top: 20px;"
-        a.btn.btn-default href="/shows" Back to shows
+        a.btn.btn-default href="/shows" #{t('anime.shows.viewing.go-back')}
 
     .container
         .center
@@ -56,25 +56,25 @@ css:
             ul.collapsible data-collapsible="accordion"
                 - if @show.has_description?
                   li
-                      .collapsible-header Description
+                      .collapsible-header #{t('anime.shows.viewing.description')}
                       .collapsible-body
                           span #{@show.description}
                 li
                     - active = @show.has_description? ? "" : "active"
-                    .collapsible-header class="#{active}" More info...
+                    .collapsible-header class="#{active}" #{t('anime.shows.viewing.more-info')}
                     .collapsible-body 
                         span Series #{@show.show_number} - #{@show.year}
                         br
-                        span.strong style="color: green" #{@show.episodes.size} available episode(s)
+                        span.strong style="color: green" #{t('anime.shows.viewing.available-episodes', count: @show.episodes.size)}
                         br
-                        span.strong.very.small #{@show.all_episodes.size} episodes(s)
+                        span.strong.very.small #{t('anime.shows.viewing.episodes', count: @show.all_episodes.size)}
                         - if @show.discloses_average_run_time?
                             br
-                            u Average length
+                            u #{t('anime.shows.viewing.average-run-time')}
                             span #{": "}#{@show.average_run_time.to_i} mins.
                         - if @show.has_starring_info?
                             br
-                            u Featuring
+                            u #{t('anime.shows.viewing.featuring')}
                             span #{": "}#{@show.starring}
 
 - @episodes = @show.split_episodes

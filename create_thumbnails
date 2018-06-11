@@ -18,29 +18,69 @@ class ThumbnailManager
         #if File.file? path
         #    throw Exception.new "Please specify a directory path instead of a file."
         #end
+        
+        if paths.nil?
+            @testing = true
+            return self
+        end
+
         @files = []
         @verbose = verbose
         @dr = dry_run == true
         info("Verbose mode is ON!") if @verbose
         info("Running the script for a dry run...") if @dr
+        
+        if paths.instance_of? FFMPEG::Movie
+            @video = paths
+            return self
+        end
+
         paths.each do |path|
             get_files path
         end
         self
     end
 
-    def generate
+    def generate(force_generation: true)
+        if @testing
+            p "Skipping image generation..."
+            return
+        end
+        if @video
+            return generate_for @video, force_generation: force_generation
+        end
+
         log("Analyzing #{@files.size} video file(s)...")
         total = @files.size; current = 0
         @files.each do |file|
-            generate_for file
+            generate_for file, force_generation: force_generation
             current += 1
             show_progress current, total
         end
         warn "Done."
     end
 
-    def generate_for(video)
+    def has_image?(video, ext: 'jpg')
+        path = video.path
+        image_path = to_image_path path, ext: ext
+        File.exists? image_path
+    end
+
+    def generate_for(video, image_extention: 'jpg', force_generation: true)
+        if @testing
+            p "Skipping image generation..."
+            return
+        end
+
+        has_image = has_image?(video, ext: image_extention)
+
+        if !force_generation && has_image
+            p "Skipping image generation (already exists...)"
+            return
+        elsif has_image
+            p "Overwritting current video thumbnail..."
+        end
+
         log("Generating video thumbnail for #{video.path}...")
 
         duration = video.duration
@@ -48,7 +88,7 @@ class ThumbnailManager
         log("Video is #{duration} sec. long")
         log("Seeking thumbnail at #{seek_point} sec.")
 
-        new_image_path = to_image_path(video.path)
+        new_image_path = to_image_path(video.path, ext: image_extention)
         log("Thumbnail will be saved at: #{new_image_path}")
         info("The existing thumbnail will be replaced!") if File.exists? new_image_path
 
@@ -115,6 +155,10 @@ def check_invalid_flags
         warn "Invalid parameters: #{other_flags}"
         help
     end
+end
+
+if __FILE__ != $0
+    return
 end
 
 verbose = has_arg?("-v", "--verbose")[:present]

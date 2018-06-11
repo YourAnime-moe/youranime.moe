@@ -23,7 +23,7 @@ css:
 .episode-player-title
     span.episode.player.title #{@episode.title}
     br
-    span.episode.player.show #{@episode.show.get_title}
+    span.episode.player.show #{t('anime.episodes.episode-number', number: @episode.episode_number)} ・ #{@episode.show.get_title}
 
 /ul.pager style="margin-bottom: 80px;"
     - if @episode.has_previous?
@@ -167,7 +167,7 @@ javascript:
                 var currentTime = #{@episode.progress_info(current_user, value_only: true)};
                 currentTime = currentTime / 100;
                 video.currentTime = video.duration * currentTime;
-                if ($('#autoplay').is(':checked')) {
+                if (#{current_user.can_autoplay?}) {
                     video.play();
                 }
             }

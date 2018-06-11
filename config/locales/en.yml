@@ -20,4 +20,71 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  welcome:
+    title: "Tanoshimu"
+    catch-phrase: "Welcome! Please enter your username and password below."
+    login:
+      username: "Your username"
+      password: "Your password"
+      login: "Login"
+
+    left: "Where you left off..."
+    nothing-watched-yet: "Hmm... it looks like you haven't watched anything yet."
+    nothing-watched-yet-start: "Start watching anime right away!"
+    coming-soon: "Coming soon!"
+    no-coming-soon: "No new additions scheduled at the time!"
+    recommended: "We recommend..."
+    no-recommended: "No recommendations at the time!"
+    featured: "Featured shows..."
+    no-featured: "No featured shows at the time!"
+    this-season: "Currently airing (in %{name})..."
+    no-this-season: "Nothing for this season (yet). Come back later for more!"
+
+  badge:
+    alt: "Get it on Google Play"
+    src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+  header:
+    anime: "Anime"
+    movies: "Movies"
+    tags: "Tags"
+    search: "Search"
+    messages: "Messages"
+    news: "News"
+    random: "Random"
+    history: "Episode history"
+    settings: "Account settings"
+    bugs: "Known issues"
+    logout: "Logout"
+
+  anime:
+    shows:
+      view-all: "All Anime Shows"
+      coming-soon: "Coming soon!"
+      coming-on: "Coming on"
+      description: "Description"
+      viewing:
+        description: "About this anime"
+        more-info: "More info..."
+        same-tags: "Anime with the same tags"
+        go-back: "Go back to shows"
+        episodes: "Episodes"
+        available-episodes: "%{count} available episode(s)"
+        episodes: "%{count} episode(s)"
+        featuring: "Featuring:"
+        average-run-time: "Average run time"
+    
+    episodes:
+      episode-number: "Episode %{number}"
+      up-next: "Up next (auto-play)"
+      discover: "Discover..."
+      title: "You are watching: \"%{name}\""
+      go-back: "Go back to \"%{name}\"..."
+      last-episode: "Last episode!"
+
+    other:
+      more: "More..."
+      reset: "Reset"
+
+  errors:
+    internal:
+      login: "We are currently experiencing issues with our servers. Please come back soon!"

@@ -1,6 +1,6 @@
 .center
     .container
-        h4.title style="padding-bottom: 2%;" All Anime Shows
+        h4.title style="padding-bottom: 2%;" #{t('anime.shows.view-all')}
 
     .container
         - @split_shows.each do |show_group|
@@ -15,7 +15,7 @@
     - if @has_coming_soon
         hr
         .container
-            h4.title style="padding-bottom: 2%" Coming soon!
+            h4.title style="padding-bottom: 2%" #{t('anime.shows.coming-soon')}
 
         .container
             - @split_coming_soon.each do |show_group|

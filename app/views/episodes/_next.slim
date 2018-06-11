@@ -1,11 +1,10 @@
 #next_episode_container
+    .switch style="float: right"
+        label
+            input#autoplay type="checkbox"
+            span.lever
     - if @episode.has_next?
-        .switch style="float: right"
-            label
-                input#autoplay type="checkbox"
-                span.lever
-        p.bold Up next (autoplay)
-
+        p.bold #{t('anime.episodes.up-next')}
         - episode = @episode.next
         - url = '/shows/episodes?id=' + episode.id.to_s
         - watched = "watched" if episode.was_watched_by? current_user
@@ -18,14 +17,15 @@
 
             .info
                 .left.episode-info
-                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' #{t('anime.episodes.episode-number', number: episode.episode_number)}
                     br
                     span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
             div.episode.progressVideo.hidden id="progress_#{episode.id}"
-
+    - else
+        p.bold #{t('anime.episodes.last-episode')}
 
     br.episodes
-    p.bold Discover...
+    p.bold #{t('anime.episodes.discover')}
 
     - current_user.random_episode_selection(current_episode: @episode).each do |episode|
         - url = '/shows/episodes?id=' + episode.id.to_s
@@ -39,7 +39,7 @@
 
             .info
                 .left.episode-info
-                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' Episode #{episode.episode_number}
+                    span.episode.number name="#{episode.id}" id='episode_#{episode.episode_number}' #{t('anime.episodes.episode-number', number: episode.episode_number)}
                     br
                     span.episode.title name="#{episode.id}" id='episode_#{episode.title}' #{episode.title}
                     br

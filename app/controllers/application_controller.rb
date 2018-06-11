@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  before_action :redirect_if_old
   before_action :check_is_in_maintenance_mode
 
   before_action {
@@ -88,6 +89,14 @@ class ApplicationController < ActionController::Base
         end
     else
       render json: {message: "Sorry, but we don't know a \"<u>#{username}</u>\"... Try again!"}
+    end
+  end
+
+  protected
+
+  def redirect_if_old
+    if request.host == 'tanoshimu.herokuapp.com'
+      redirect_to "https://anime.akinyele.ca#{request.fullpath}", :status => :moved_permanently
     end
   end
 

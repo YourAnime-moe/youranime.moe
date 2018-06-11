@@ -1,16 +1,13 @@
 
 = render 'users/home/carousel-a'
 
-.center.hidden
-    h2 Welcome!
-
 .container
     br
-    h4 Where you left off...
+    h4 #{t('welcome.left')}
     - if @shows.empty?
         .center
-            p Hmm... it looks like you haven't watched anything yet.
-            a.btn href='/shows' Start watching anime right away!
+            p #{t('welcome.nothing-watched-yet')}
+            a.btn href='/shows' #{t('welcome.nothing-watched-yet-start')}
     - else
         .row
             = render 'users/home/last_time'
@@ -35,7 +32,7 @@
 
             a.btn style="margin-top: -100px;" Make a request!
     br
-    h4 Coming soon!
+    h4 #{t('welcome.coming-soon')}
     .row
         - if @coming_soon.size && !@coming_soon.empty?
             - @coming_soon.each do |cs|
@@ -44,10 +41,10 @@
                         img src="#{cs.get_image_path(current_token)}"
                     p.italic #{cs.get_title}
         - else
-            p.center No new additions scheduled at the time!
+            p.center #{t('welcome.')}
 
     br
-    h4 We recommend...
+    h4 #{t('welcome.recommended')}
     .row
         - if @recommended.size && !@recommended.empty?
             - @recommended.each do |rec|
@@ -56,10 +53,10 @@
                         img src="#{rec.get_image_path(current_token)}"
                     p #{rec.get_title}
         - else
-            p.center No recommendations at the time!
+            p.center #{t('welcome.no-recommended')}
 
     br
-    h4 Featured shows
+    h4 #{t('welcome.featured')}
     .row
         - if @featured.size && !@featured.empty?
             - @featured.each do |fet|
@@ -68,10 +65,10 @@
                         img src="#{fet.get_image_path(current_token)}"
                     p #{fet.get_title}
         - else
-            p.center No featured shows at the time!
+            p.center #{t('welcome.no-featured')}
 
     br
-    h4 From this season (#{Utils.current_season_string})
+    h4 #{t('welcome.this-season', name: Utils.current_season_string)}
     .row
         - if @this_season.size > 0
             - @this_season.each do |ts|
@@ -82,7 +79,7 @@
         - else
             b.center
             .center
-                p Nothing for this season (yet)! Come back later for more!
+                p #{t('welcome.no-this-season')}
 
 
 

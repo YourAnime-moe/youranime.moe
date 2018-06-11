@@ -1,0 +1,48 @@
+#!/usr/bin/ruby
+
+require './create_thumbnails'
+
+class TanoshimuThumbnailGeneratorServer
+
+    def initialize
+        @running = false
+    end
+
+    def run
+        @running = true
+    end
+
+    def stop
+        @running = false
+    end
+
+def listen_to_new_files(path)
+    unless File.directory?(path)
+        p "Skipping #{path}... (not a valid directory)"
+        return false
+    end
+
+    while @running
+        p "Getting all videos within `#{path}`..."
+        all_videos = get_all_sub_paths
+        
+        p "Trying to generation files for every file..."
+        all_videos.each do |movie|
+            manager = ThumbnailManager.new movie
+            manager.generate force_generation: false
+        end
+
+        p "Sleeping for 10 seconds..."
+        sleep 10
+    end
+end
+
+private
+
+def get_all_sub_paths path
+    paths = Dir[path].select{|file| File.file?(path)}
+    paths.select{|filename| FFMPEG::Movie.new(filename)}.select{|video| video.valid? && !video.video_stream.nil? && !video.audio_stream.nil?}
+end
+
+end
+

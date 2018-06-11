@@ -19,8 +19,8 @@ class EpisodesController < AuthenticatedController
             redirect_to '/shows'; return
         end
         @back_url = get_back_url(params, '/shows?id=' + @episode.show.id.to_s)
-        @back_title = get_back_title(params, "Go back to #{@episode.show.get_title}")
-        set_title before: "You are watching \"#{@episode.title}\"", after: @episode.show.get_title
+        @back_title = get_back_title(params, t('anime.episodes.go-back', name: @episode.show.get_title))
+        set_title before: t('anime.episodes.title', name: "#{@episode.title}"), after: @episode.show.get_title
     end
 
     def random
