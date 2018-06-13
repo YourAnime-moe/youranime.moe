@@ -1,9 +1,9 @@
 
 .container
     .center
-        h4.title Search by tags
+        h4.title #{t('tags.title')}
 
-        p Select one or more of the tags below to start filtering.
+        p #{t('tags.explanation')}
 
     .container
         - Utils.tags.keys.each do |tag|
@@ -11,7 +11,7 @@
                 span #{Utils.tags[tag]}
 
     .center style="margin-top: 10px;"
-        a#reset-btn.btn.disabled Reset
+        a#reset-btn.btn.disabled #{t('anime.other.reset')}
 
     #results style="margin-top: 50px;"
 

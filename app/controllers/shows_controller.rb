@@ -61,7 +61,7 @@ class ShowsController < AuthenticatedController
             @split_coming_soon.each {|show_group| show_group.sort_by!(&:get_title)}
             @has_coming_soon = coming_soon.size > 0
             # @split_shows = Utils.split_array(Show, sort_by: 2)
-            set_title(:before => "Shows")
+            set_title(:before => t('anime.shows.view-all'))
             render 'view_all'; return
         end
         Show.all.each do |show|
@@ -92,7 +92,7 @@ class ShowsController < AuthenticatedController
         @episodes = episodes.map{|e| Episode.find(e)}
         @episodes.select!{|e| e.is_published?}
         @episodes.reverse!
-        set_title before: "Episode history", after: "What have you watched so far?"
+        set_title before: t('header.history') #, after: "What have you watched so far?"
     end
 
     def search
@@ -100,7 +100,7 @@ class ShowsController < AuthenticatedController
     end
 
     def tags
-        
+        set_title before: t('tags.title')
     end
 
     def render_img

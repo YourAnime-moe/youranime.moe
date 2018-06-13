@@ -1,39 +1,41 @@
+require 'i18n'
+
 class Utils
 
     def self.tags
         {
-            action: "Action",
-            adventure: "Adventure",
-            budou: "Martial Arts",
-            comedy: "Comedy",
-            demons: "Demons",
-            drama: "Drama",
-            ecchi: "Ecchi/Fan Service",
-            fantasy: "Fantasy",
-            game: "Game",
-            harem: "Harem",
-            historical: "Historical",
-            horror: "Horror",
-            josei: "Josei",
-            magic: "Magic",
-            movie: "Movie",
-            mecha: "Mechanical (robots)",
-            music: "Music",
-            mystery: "Mystery",
-            non_school: "No High School",
-            parody: "Parody",
-            psychological: "Psychological",
-            romance: "Romance",
-            seinen: "Seinen",
-            slice: "Slice of Life",
-            sci_fi: "Science-Fiction",
-            sports: "Sports",
-            super: "Super Powers",
-            supernatural: "Supernatural",
-            thriller: "Thriller",
-            vampire: "Vampire",
-            yaoi: "Yaoi",
-            yuri: "Yuri"
+            action: I18n.t('tags.tags.action'),
+            adventure: I18n.t('tags.tags.adventure'),
+            budou: I18n.t('tags.tags.budou'),
+            comedy: I18n.t('tags.tags.comedy'),
+            demons: I18n.t('tags.tags.demons'),
+            drama: I18n.t('tags.tags.drama'),
+            ecchi: I18n.t('tags.tags.ecchi'),
+            fantasy: I18n.t('tags.tags.fantasy'),
+            game: I18n.t('tags.tags.game'),
+            harem: I18n.t('tags.tags.harem'),
+            historical: I18n.t('tags.tags.historical'),
+            horror: I18n.t('tags.tags.horror'),
+            josei: I18n.t('tags.tags.josei'),
+            magic: I18n.t('tags.tags.magic'),
+            movie: I18n.t('tags.tags.movie'),
+            mecha: I18n.t('tags.tags.mecha'),
+            music: I18n.t('tags.tags.music'),
+            mystery: I18n.t('tags.tags.mystery'),
+            non_school: I18n.t('tags.tags.non_school'),
+            parody: I18n.t('tags.tags.parody'),
+            psychological: I18n.t('tags.tags.psychological'),
+            romance: I18n.t('tags.tags.romance'),
+            seinen: I18n.t('tags.tags.seinen'),
+            slice: I18n.t('tags.tags.slice'),
+            sci_fi: I18n.t('tags.tags.sci_fi'),
+            sports: I18n.t('tags.tags.sports'),
+            super: I18n.t('tags.tags.super'),
+            supernatural: I18n.t('tags.tags.supernatural'),
+            thriller: I18n.t('tags.tags.thriller'),
+            vampire: I18n.t('tags.tags.vampire'),
+            yaoi: I18n.t('tags.tags.yaoi'),
+            yuri: I18n.t('tags.tags.yuri')
         }
     end
 
@@ -373,7 +375,7 @@ class Utils
         elsif d.month >= 4 && d.month < 7
             # APR -> JUN = Spring
             return 1
-        elsif d.month >= 7 && d.month <= 10
+        elsif d.month >= 7 && d.month < 10
             # JUL -> SEP = Summer
             return 2
         else
@@ -386,10 +388,10 @@ class Utils
         time = time || Time.now
         season = self.current_season(time)
         season_string = nil
-        season_string = "Winter" if season == 0
-        season_string = "Spring" if season == 1
-        season_string = "Summer" if season == 2
-        season_string = "Fall" if season == 3
+        season_string = I18n.t('time.seasons.winter') if season == 0
+        season_string = I18n.t('time.seasons.spring') if season == 1
+        season_string = I18n.t('time.seasons.summer') if season == 2
+        season_string = I18n.t('time.seasons.fall') if season == 3
         "#{season_string} #{time.year}"
     end
 

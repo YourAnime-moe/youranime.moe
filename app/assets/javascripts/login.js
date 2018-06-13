@@ -75,7 +75,7 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
 				enableForm(form_container);
 				error_container.innerHTML = e.message;
 			} else {
-				success_container.innerHTML = "Login successful! Time to watch anime!"
+				success_container.innerHTML = e.message;
 				document.location.replace(e.new_url);
 			}
 		},

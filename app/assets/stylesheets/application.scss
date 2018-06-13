@@ -84,6 +84,18 @@ main {
     float: center;
 }
 
+.lng-icon {
+    margin: 5px 10px;
+    width: 40px;
+    border-radius: 100px;
+}
+a[go-to] {
+    cursor: pointer;
+    display: inline-block;
+}
+
+img.profile-img { height: 36px; position: relative; top: 14px }
+
 .hero-image.square {
     border-radius: 0px;
 }

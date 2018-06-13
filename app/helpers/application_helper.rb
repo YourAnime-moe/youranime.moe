@@ -63,7 +63,7 @@ module ApplicationHelper
         @app_title = nil if reset
         if @app_title.nil?
             @app_title = "Private" if home == true
-            @app_title = "Have fun" if home == false
+            @app_title = t('app.name') if home == false
         end
         unless before.nil?
             @app_title = "#{before} | #{@app_title}"

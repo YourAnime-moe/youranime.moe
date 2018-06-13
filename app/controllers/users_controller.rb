@@ -4,7 +4,7 @@ class UsersController < AuthenticatedController
         if params[:username] != current_user.username
             redirect_to "/users/#{current_user.username}"
         end
-        set_title(before: "Welcome, #{current_user.get_name}")
+        set_title(before: t("user.welcome", user: current_user.get_name))
         @shows = Show.lastest(current_user)
         @episodes = current_user.get_latest_episodes(limit: 4)
         @recommended = Show.get_presence :recommended

@@ -38,6 +38,20 @@
       $(document).ready(function() {
             $(".button-collapse").sideNav();
             $('.modal').modal();
+            $(".dropdown-button").dropdown();
+
+            var current_lang = 'jp' || navigator.language || navigator.userLanguage || 'jp';
+            if (current_lang == 'ja') {
+              current_lang = 'jp';
+            }
+            switchTo(current_lang, false);
+
+            [].forEach.call(document.querySelectorAll('[locale-switcher]'), function(elem) {
+              elem.onclick = function(e) {
+                switchTo(elem.getAttribute('locale-switcher'), true);
+              }
+            });
+
             <% if logged_in? %>
                 var data = {};
                 <% if @inbox_options %>
@@ -64,6 +78,20 @@
                 <% end %>
             <% end %>
         });
+
+        function switchTo(locale, force) {
+          $.ajax({
+            url: '/set/current/locale',
+            method: 'put',
+            data: {locale: locale, set_at_first: force},
+            success: function(res) {
+              console.log(res);
+              if (res.reload) {
+                location.href = location.href;
+              }
+            }
+          })
+        }
     </script>
     <script type="text/javascript" src="/js/watched_episodes.js"></script>
 </body>

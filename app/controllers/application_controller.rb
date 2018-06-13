@@ -3,6 +3,11 @@ class ApplicationController < ActionController::Base
 
   before_action :redirect_if_old
   before_action :check_is_in_maintenance_mode
+  before_action :find_locale
+
+  def find_locale
+    I18n.locale = params[:lang] || session[:locale] || :en
+  end
 
   before_action {
     #if logged_in?
@@ -23,7 +28,7 @@ class ApplicationController < ActionController::Base
     if logged_in?
         redirect_to "/users/#{current_user.username}"
     else
-        set_title after: "Welcome", before: "Login"
+        set_title after: t("welcome.text"), before: t("welcome.login.login")
         @params = {}
         params.each do |k, v|
           next if k == "controller" || k == "action"
@@ -50,9 +55,9 @@ class ApplicationController < ActionController::Base
     controller = params[:ccontroller]
     action = params[:caction]
 
-    render json: {message: "Hey, we can't log you in if you are silent!"} if username.size == 0 && password.size == 0
-    render json: {message: "You forgot your username!"} if password.size > 0 && username.size == 0
-    render json: {message: "You forgot your password, <u>#{username}</u>!"} if username.size > 0 && password.size == 0
+    render json: {message: t('welcome.login.errors.no-username-and-password')} if username.size == 0 && password.size == 0
+    render json: {message: t('welcome.login.errors.no-username')} if password.size > 0 && username.size == 0
+    render json: {message: t('welcome.login.errors.no-password')} if username.size > 0 && password.size == 0
 
     return if username.size == 0 || password.size == 0
 
@@ -80,16 +85,40 @@ class ApplicationController < ActionController::Base
                 end
               end
               p "New url: #{new_url}"
-              render json: {new_url: new_url, success: true}
+              render json: {new_url: new_url, message: t('welcome.login.success.web-message'),  success: true}
             else
-              render json: {new_url: "/", success: true}
+              render json: {new_url: "/", message: t('welcome.login.success.web-message'), success: true}
             end
         else
-          render json: {message: "Sorry <u>#{username}</u>, but your password is wrong. Please try again!"}
+          render json: {message: t("welcome.login.errors.wrong-password", user: username.downcase)}
         end
     else
-      render json: {message: "Sorry, but we don't know a \"<u>#{username}</u>\"... Try again!"}
+      render json: {message: t("welcome.login.errors.unknown-user", attempt: username.downcase)}
     end
+  end
+
+  def get_locale
+    render json: {success: true, locale: I18n.locale}
+  end
+ 
+  def set_locale
+    session[:locale] = params[:locale]
+    I18n.locale = params[:locale]
+    render json: {success: true, new_locale: I18n.locale}
+  end
+
+  def set_locale
+    current = params[:locale]
+    old = I18n.locale
+    reload = false
+    if session[:locale].nil? || params[:set_at_first] == 'true'
+      session[:locale] = current
+      I18n.locale = current
+      reload = old.to_s != current.to_s
+    end
+    res = {success: true, reload: reload, locale: {requested: current, old: old}}
+    p "After locale is set: #{res}"
+    render json: res
   end
 
   protected

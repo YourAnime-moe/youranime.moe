@@ -8,22 +8,24 @@
       <% end %>
       <a href="#" data-activates="tanoshimu-nav" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a title="All anime" href="/shows"><%= t('header.anime') %></a></li>
-        <li><a title="All movies" href="/movies"><%= t('header.movies') %></a></li>
-        <li><a title="Search by tags" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
-        <li><a title="Search for" href="/search"><i class="material-icons">search</i></a></li>
+        <li><a title="<%= t('anime.shows.view-all') %>" href="/shows"><%= t('header.anime') %></a></li>
+        <li><a title="<%= t('header.movies') %>" href="/movies"><%= t('header.movies') %></a></li>
+        <li><a title="<%= t('header.tags') %>" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
+        <li class="hidden"><a title="<%= t('header.search') %>" href="/search"><i class="material-icons">search</i></a></li>
         <!-- <li title="Your messages (coming soon!)"><a title="Your messages" class="disabled" href="#"><i class="material-icons disabled">messages</i></a></li> -->
-        <li><a title="Random episode" href="/shows/episodes/random"><i class="material-icons">shuffle</i></a></li>
-        <li><a title="Episode history" href="/shows/history"><i class="material-icons">restore</i></a></li>
-        <li><a title="Your account settings" href="/settings"><i class="material-icons">settings</i></a></li>
-        <li><a title="Bugs & Issues (opens a new tab)" target="_blank" href="https://github.com/thedrummeraki/tanoshimu/issues"><i class="material-icons">bug_report</i></a></li>
-        <li><a title="Logout" href="/logout"><i class="material-icons">exit_to_app</i></a></li>
+        <li><a title="<%= t('header.random') %>" href="/shows/episodes/random"><i class="material-icons">shuffle</i></a></li>
+        <li><a title="<%= t('header.history') %>" href="/shows/history"><i class="material-icons">restore</i></a></li>
+        <li><a class="dropdown-button" href="#!" data-activates="languages-dropdown"><%= t('lang.lang') %><i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a title="<%= t('header.settings') %>" href="/settings"><i class="material-icons">settings</i></a></li>
+        <li><a title="<%= t('header.bugs') %>" target="_blank" href="https://github.com/thedrummeraki/tanoshimu/issues"><i class="material-icons">bug_report</i></a></li>
+        <li><a title="<%= t('header.logout') %>" href="/logout"><i class="material-icons">exit_to_app</i></a></li>
       </ul>
+
       <ul class="side-nav" id="tanoshimu-nav">
         <li><a style="text-decoration: underline;" href="/"><h4><%= t('welcome.title') %></h4></a></li>
         <li><a href="/shows"><i class="material-icons">play_arrow</i><%= t('header.anime') %></a></li>
         <li><a href="/movies"><i class="material-icons">play_arrow</i><%= t('header.movies') %></a></li>
-        <li><a href="/search"><i class="material-icons">search</i><%= t('header.search') %></a></li>
+        <li class="hidden"><a href="/search"><i class="material-icons">search</i><%= t('header.search') %></a></li>
         <li><a href="/news"><i class="material-icons">event_note</i><%= t('header.news') %></a></li>
         <li><a href="/tags"><i class="material-icons">book</i><%= t('header.tags') %></a></li>
         <li><a href="/shows/episodes/random"><i class="material-icons">shuffle</i><%= t('header.random') %></a></li>
@@ -31,6 +33,11 @@
         <li><a href="/settings"><i class="material-icons">settings</i><%= t('header.settings') %></a></li>
         <li><a href="https://github.com/thedrummeraki/tanoshimu/issues" target="_blank"><i class="material-icons">bug_report</i><%= t('header.bugs') %></a></li>
         <li><a href="/logout"><i class="material-icons">exit_to_app</i><%= t('header.logout') %></a></li>
+      </ul>
+      <ul id="languages-dropdown" class="dropdown-content">
+        <li><a locale="fr" go-to="" locale-switcher="fr"><%= t('lang.fr') %></a></li>
+        <li><a locale="en" go-to="" locale-switcher="en"><%= t('lang.en') %></a></li>
+        <li><a locale="jp" go-to="" locale-switcher="jp"><%= t('lang.jp') %></a></li>
       </ul>
     </div>
   </nav>

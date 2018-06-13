@@ -5,7 +5,7 @@
         - Show.all.to_a.select{|show| show.is_published?}.sort_by(&:get_title).each do |show|
             option value="show_#{show.id}" #{show.get_title}
 
-    h4 Episode history
+    h4 #{t('header.history')}
     br
 
     .row.center
@@ -24,10 +24,10 @@
                     .card.grey.darken-1
                         .card-content.white-text
                             span.card-title #{count}) "#{episode.title}"
-                            p Show title: #{episode.show.get_title}
+                            p #{episode.show.get_title}
                         .card-action
-                            a href="/shows/episodes?id=#{episode.id}&from=history" Go to episode
-                            a href="/shows?id=#{episode.show.id}&from=history" Go to show
+                            a href="/shows/episodes?id=#{episode.id}&from=history" #{t('anime.history.to-episode')}
+                            a href="/shows?id=#{episode.show.id}&from=history" #{t('anime.history.to-show')}
                             
                 - count += 1
 

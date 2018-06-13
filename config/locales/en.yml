@@ -20,6 +20,15 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  app:
+    name: "Have Fun"
+
+  lang:
+    lang: "English"
+    fr: "French (Français)"
+    jp: "Japanese (日本語)"
+    en: "English (current)"
+
   welcome:
     title: "Tanoshimu"
     catch-phrase: "Welcome! Please enter your username and password below."
@@ -27,7 +36,17 @@ en:
       username: "Your username"
       password: "Your password"
       login: "Login"
+      success:
+        web-message: "Login successful! Time to watch anime!"
+      errors:
+        wrong-password: "We are sorry %{user}, but your password is incorrect."
+        unknown-user: "We are sorry, but no user with username \"%{attempt}\" exists in our system."
+        no-username: "Please enter your username."
+        no-password: "Please enter your password."
+        no-username-and-password: "Please enter your username and password."
 
+    text: "Welcome"
+    user: "Welcome, %{user}!"
     left: "Where you left off..."
     nothing-watched-yet: "Hmm... it looks like you haven't watched anything yet."
     nothing-watched-yet-start: "Start watching anime right away!"
@@ -72,6 +91,19 @@ en:
         episodes: "%{count} episode(s)"
         featuring: "Featuring:"
         average-run-time: "Average run time"
+    movies:
+      view-all: "All Movies"
+
+    history:
+      to-episode: "Go to episode"
+      to-show: "Go to show"
+
+  time:
+    seasons:
+      spring: "Spring"
+      summer: "Summer"
+      fall: "Fall"
+      winter: "Winter"
     
     episodes:
       episode-number: "Episode %{number}"
@@ -84,6 +116,46 @@ en:
     other:
       more: "More..."
       reset: "Reset"
+
+  user:
+    welcome: "Welcome, %{user}"
+
+  tags:
+    title: "Search by tags"
+    explanation: "Please select one or more of the tags below to start filtering."
+    tags: 
+      action: "Action"
+      adventure: "Adventure"
+      budou: "Martial Arts"
+      comedy: "Comedy"
+      demons: "Demons"
+      drama: "Drama"
+      ecchi: "Ecchi/Fan Service"
+      fantasy: "Fantasy"
+      game: "Game"
+      harem: "Harem"
+      historical: "Historical"
+      horror: "Horror"
+      josei: "Josei"
+      magic: "Magic"
+      movie: "Movie"
+      mecha: "Mechanical (robots)"
+      music: "Music"
+      mystery: "Mystery"
+      non_school: "No High School"
+      parody: "Parody"
+      psychological: "Psychological"
+      romance: "Romance"
+      seinen: "Seinen"
+      slice: "Slice of Life"
+      sci_fi: "Science-Fiction"
+      sports: "Sports"
+      super: "Super Powers"
+      supernatural: "Supernatural"
+      thriller: "Thriller"
+      vampire: "Vampire"
+      yaoi: "Yaoi"
+      yuri: "Yuri"
 
   errors:
     internal:

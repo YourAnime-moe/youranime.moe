@@ -1,4 +1,142 @@
 fr:
+  app:
+    name: "Have Fun"
+
+  lang:
+    lang: "Français"
+    fr: "Français (sélectionné)"
+    jp: "Japonais (日本語)"
+    en: "Anglais (English)"
+
+  welcome:
+    title: "Tanoshimu"
+    catch-phrase: "Bienvenue ! Veuillez entrer votre mot de passe ci-dessous."
+    login:
+      username: "Nom d'utilisateur"
+      password: "Mot de passe"
+      login: "Se connecter"
+      success:
+        web-message: "Parfait ! Commençons à regarder des animés !"
+      errors:
+        wrong-password: "Désolé %{user}, mais votre mot de passe est incorrect."
+        unknown-user: "Aucun utilisateur nommé %{attempt} n'existe sur le système. Veuillez s'il vous plaît réessayer."
+        no-username: "Veuillez entrer votre nom d'utilisateur."
+        no-password: "Veuillez entrer votre mot de passe."
+        no-username-and-password: "Vous avez oublié d'entrer les informations requises."
+
+    text: "Bienvenue"
+    user: "Bienvenue, %{user} !"
+    left: "Vous avez récemment regardé..."
+    nothing-watched-yet: "Hmm... on aurait dit que vous n'avez encore rien regardé !"
+    nothing-watched-yet-start: "Commencer à regarder dès maintenant !"
+    coming-soon: "À venir !"
+    no-coming-soon: "Rien n'a été annoncé pour le moment !"
+    recommended: "Nous recommandons..."
+    no-recommended: "Aucune recommandation pour le moment !"
+    featured: "Les plus populaires !"
+    no-featured: "À venir !"
+    this-season: "En cours (saison %{name})..."
+    no-this-season: "Il n'y a pas d'émissions en cours en moment. Revenez plus tard !"
+
   badge:
     src: "https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png"
     alt: "Disponible sur Google Play"
+  header:
+    anime: "Animé"
+    movies: "Films"
+    tags: "Tags"
+    search: "Rechercher"
+    messages: "Messages"
+    news: "Nouvelles"
+    random: "Au hasard..."
+    history: "Historique"
+    settings: "Paramètres"
+    bugs: "Problèmes connus"
+    logout: "Se déconnecter"
+
+  anime:
+    shows:
+      view-all: "Toutes les émissions animées"
+      coming-soon: "À venir !"
+      coming-on: "Arrive le"
+      description: "Description"
+      viewing:
+        description: "À propos..."
+        more-info: "Plus d'infos..."
+        same-tags: "Animés avec les mêmes tags"
+        go-back: "Retourner aux émissions"
+        episodes: "Épisodes"
+        available-episodes: "%{count} épisode(s) à regarder"
+        episodes: "%{count} épisode(s) au total"
+        featuring: "Avec:"
+        average-run-time: "Durée moyenne d'épisode"
+
+    history:
+      to-episode: "Aller à episode"
+      to-show: "Aller à émission"
+
+    movies:
+      view-all: "Tous les films"
+    
+    episodes:
+      episode-number: "Épisode %{number}"
+      up-next: "Lecture automatique"
+      discover: "À découvrir..."
+      title: "Vous êtes en train de regarder : \"%{name}\""
+      go-back: "Retourner à \"%{name}\"..."
+      last-episode: "Dernier épisode !"
+
+    other:
+      more: "Plus..."
+      reset: "Réinitialiser"
+
+  user:
+    welcome: "Bienvenue, %{user}"
+
+  time:
+    seasons:
+      spring: "Printemps"
+      summer: "Été"
+      fall: "Automne"
+      winter: "Hiver"
+
+  tags:
+    title: "Recherche par tags"
+    explanation: "Veuillez sélectionner un ou plusieurs tags ci-dessous afin de commencer à filter vos résultats."
+    tags:
+      action: "Action"
+      adventure: "Aventure"
+      budou: "Arts martiaux"
+      comedy: "Comédie"
+      demons: "Démons"
+      drama: "Drama"
+      ecchi: "Ecchi/Fan Service"
+      fantasy: "Fantaisie"
+      game: "Jeux"
+      harem: "Harem"
+      historical: "Histoire"
+      horror: "Horreur"
+      josei: "Josei"
+      magic: "Magie"
+      movie: "Films"
+      mecha: "Mechas (robots)"
+      music: "Musique"
+      mystery: "Mystère"
+      non_school: "\"Non-High School\""
+      parody: "Parodie"
+      psychological: "Psychologique"
+      romance: "Romance"
+      seinen: "Seinen"
+      slice: "Tranche de vie"
+      sci_fi: "Science-Fiction"
+      sports: "Sports"
+      super: "Super Pouvoirs"
+      supernatural: "Supernaturel"
+      thriller: "Thriller"
+      vampire: "Vampire"
+      yaoi: "Yaoi"
+      yuri: "Yuri"
+
+  errors:
+    internal:
+      login: "Nous sommes désolés de vous annoncer que nous éprouvons des difficultés avec nos serveurs pour le moment. Veuillez réessayer plus tard."

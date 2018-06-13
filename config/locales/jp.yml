@@ -1,4 +1,143 @@
 jp:
+  app:
+    name: "タノシム"
+
+  lang:
+    lang: "日本語"
+    fr: "フランス語 (Français)"
+    jp: "日本語 (現在)"
+    en: "英語 (English)"
+
   badge:
     src: "https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png"
     alt: "Google Play で手に入れよう"
+
+  welcome:
+    title: "タノシム"
+    catch-phrase: "ようこそ、「タノシム」へ。ユーザ名とパスワードを入力してください。"
+    login:
+      username: "ユーザ名"
+      password: "パスワード"
+      login: "ログイン"
+      success:
+        web-message: "ログイン完了。アニメの時間だよ！"
+      errors:
+        wrong-password: "申し訳ありませんが、%{user}様のパスワードが正しくありません。"
+        unknown-user: "申し訳ありませんが、お客様のユーザ名「%{attempt}」が見つかりませんでした。"
+        no-username: "ユーザ名を入力してください。"
+        no-password: "パスワードを入力してください。"
+        no-username-and-password: "ユーザ名とパスワードを入力してください。"
+
+    text: "ようこそ"
+    user: "ようこそ、%{user}様！"
+    left: "最近見たのは"
+    nothing-watched-yet: "あれ？お客様はまだ何も見なかったようです。"
+    nothing-watched-yet-start: "アニメはこちらです"
+    coming-soon: "近日公開予定は？"
+    no-coming-soon: "近日公開予定のアニメや映画はまだないようです。"
+    recommended: "おすすめは？"
+    no-recommended: "おすすめはまだないようです。"
+    featured: "最人気は？"
+    no-featured: "最人気はまだないようです。"
+    this-season: "現在放映中 (%{name})"
+    no-this-season: "現在放映中のアニメや映画はまだないようです。"
+
+  header:
+    anime: "アニメ"
+    movies: "映画"
+    tags: "タグ"
+    search: "検索"
+    messages: "メッセージ"
+    news: "ニュース"
+    random: "ランダムを見る"
+    history: "履歴"
+    settings: "設定"
+    bugs: "知っているバグ等"
+    logout: "ログアウト"
+
+  anime:
+    shows:
+      view-all: "すべてのアニメ"
+      coming-soon: "近日公開予定"
+      coming-on: "近日公開予定日付は"
+      description: "概要"
+      viewing:
+        description: "このショーについて"
+        more-info: "詳細はこちら"
+        same-tags: "現在のショーと同じタグ"
+        go-back: "ショーへ戻る"
+        episodes: "エピソード"
+        available-episodes: "見えるエピソード数：%{count}"
+        episodes: "すべてのエピソード数：%{count}"
+        featuring: "声優"
+        average-run-time: "エピソードの平均時間は"
+
+    movies:
+      view-all: "すべての映画"
+
+    history:
+      to-episode: "動画を見る"
+      to-show: "ショー情報を開く"
+    
+    episodes:
+      episode-number: "エピソード %{number}"
+      up-next: "自動再生"
+      discover: "好きになるかも"
+      title: "現在は「%{name}」です"
+      go-back: "「%{name}」へ戻る..."
+      last-episode: "終わりです！"
+
+    other:
+      more: "もっと見る"
+      reset: "リセットする"
+
+  user:
+    welcome: "ようこそ、%{user}様"
+
+  time:
+    seasons:
+      spring: "春期"
+      summer: "夏期"
+      fall: "秋期"
+      winter: "春期"
+
+  tags:
+    title: "タグで検索"
+    explanation: "下記、一つずつタグを選んで、フィルターするの始まりようになります。"
+    tags:
+      action: "アクション"
+      adventure: "冒険"
+      budou: "武道"
+      comedy: "喜劇 - コメディー"
+      demons: "Demons (悪魔)"
+      drama: "ドラマ"
+      ecchi: "エッチ/ファンサービス"
+      fantasy: "ファンタジー"
+      game: "ゲーム"
+      harem: "ハーレムもの"
+      historical: "歴史"
+      horror: "ホラー/恐怖"
+      josei: "女性"
+      magic: "魔法"
+      movie: "映画"
+      mecha: "メカ"
+      music: "音楽"
+      mystery: "ミステリ"
+      non_school: "「高校以外」"
+      parody: "パロディー"
+      psychological: "サイコロジカル"
+      romance: "ロマンス"
+      seinen: "成年"
+      slice: "日常系"
+      sci_fi: "サイファイ"
+      sports: "スポーツ"
+      super: "超能力"
+      supernatural: "超自然"
+      thriller: "スリラー"
+      vampire: "吸血鬼/バンパイヤ"
+      yaoi: "ヤオイ"
+      yuri: "ユリ"
+
+  errors:
+    internal:
+      login: "申し訳ありませんが、「タノシム」のサーバーで問題が発生しましたので、あとでやり直してください。"

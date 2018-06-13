@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
         end
         @split_shows
         # @split_shows = Utils.split_array(Show, sort_by: 2)
-        set_title(:before => "Movies")
+        set_title(:before => t('anime.movies.view-all'))
         render 'view_all'
     end
 
