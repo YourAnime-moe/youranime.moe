@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :find_locale
 
   def find_locale
-    I18n.locale = params[:lang] || session[:locale] || :en
+    I18n.locale = params[:lang] || session[:locale] || :fr
   end
 
   before_action {
