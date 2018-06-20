@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
         res.reverse!
         if limit
             limit = 4 if limit < 1
-            res = res[0..limit]
+            res = res[0..limit-1]
         end
         return res
     end
