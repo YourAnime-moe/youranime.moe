@@ -116,6 +116,21 @@ class User < ActiveRecord::Base
         result
     end
 
+    # Returns a list of episodes that have "watching progress"
+    def currently_watching(limit: nil)
+        return [] if self.episode_progress_list.blank?
+        res = self.episode_progress_list.map{|progress| Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
+        self.get_latest_episodes(limit: limit).each do |episode|
+            res << episode unless res.include? episode
+        end
+        res.reverse!
+        if limit
+            limit = 4 if limit < 1
+            res = res[0..limit]
+        end
+        return res
+    end
+
     def get_episodes_watched(as_is: false)
         return nil unless self.episodes_watched.nil? || self.episodes_watched.class == Array
         return [] if self.episodes_watched.nil?

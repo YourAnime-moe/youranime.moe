@@ -8,7 +8,7 @@ div style="margin-top: 10px;"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mp4"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mkv"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/avi"
-        - if @episode.show.subbed
+        - if @episode.show.subbed && false
             track kind='captions' src="/shows/episodes/subs?id=#{@episode.id}" srclang='en' label='English' default=''
         span MP4 not supported or video not found.
 

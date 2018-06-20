@@ -6,7 +6,7 @@ class UsersController < AuthenticatedController
         end
         set_title(before: t("user.welcome", user: current_user.get_name))
         @shows = Show.lastest(current_user)
-        @episodes = current_user.get_latest_episodes(limit: 4)
+        @episodes = current_user.currently_watching(limit: 4)
         @recommended = Show.get_presence :recommended
         @featured = Show.get_presence :featured
         @this_season = Show.get_presence :season, 3, {current: true}
