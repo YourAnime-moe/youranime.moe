@@ -2,7 +2,7 @@ require 'json'
 
 class AuthApiController < ApiController
 
-	before_filter {
+	before_action {
 		token = params[:token]
 		if token.to_s.strip.empty?
 			render json: {message: "Access denied. No token was specified.", success: false}

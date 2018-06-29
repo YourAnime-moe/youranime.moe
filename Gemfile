@@ -9,7 +9,7 @@ end
 gem 'nokogiri', '~> 1.8.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.2.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
@@ -47,6 +47,9 @@ gem 'omniauth-oauth2'
 
 # Coveralls
 gem 'coveralls', require: false
+
+# AWS S3 SDK
+gem "aws-sdk-s3", require: false
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

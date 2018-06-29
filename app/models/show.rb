@@ -1,5 +1,6 @@
 class Show < ActiveRecord::Base
 
+    has_one_attached :banner
     serialize :tags
 
     include Navigatable
@@ -38,6 +39,24 @@ class Show < ActiveRecord::Base
             return show if show.show_number == self.show_number - 1
         end
         nil
+    end
+
+    def has_banner?
+        get_banner(raise_exception: false).attached?
+    end
+
+    def get_banner(raise_exception: false)
+        unless banner.attached?
+            begin
+                path = get_image_path(as_is: true)
+                return banner if path.nil? || File.directory?(path)
+                banner.attach(io: File.open(path), filename: Utils.get_filename(path))
+            rescue Errno::ENOENT => e
+                puts "Oh no!! The show banner was not found! #{e}"
+                raise e if raise_exception
+            end
+        end
+        banner
     end
 
     def sequel
@@ -127,14 +146,14 @@ class Show < ActiveRecord::Base
         !self.episodes.empty?
     end
 
-    def get_image_path(token=nil)
+    def get_image_path(token=nil, as_is: false)
         return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
-        path = Config.path self.image_path
+        path = Config.path self.image_path, as_is: as_is
         return path if token == nil
         path + "?token=" + token
     end
 
-    def get_new_image_path
+    def get_new_image_path(as_is: false)
         return nil if self.image_path.nil?
 
         filename = self.image_path.split('/')
@@ -145,7 +164,7 @@ class Show < ActiveRecord::Base
         extension = filename_parts[filename_parts.size-1]
         filename_name = filename_parts[0]
 
-        Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}"
+        Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}", as_is: as_is
     end
 
     def has_image?
@@ -235,6 +254,8 @@ class Show < ActiveRecord::Base
                 raise "Invalid season options"
             end
             next unless show.is_published?
+            next unless show.has_banner?
+
             break if found_shows.size >= limit
             if tag == :recommended
                 found_shows.push(show) if show.is_recommended?
@@ -284,6 +305,29 @@ class Show < ActiveRecord::Base
             end
         end
         shows
+    end
+
+    def self.get_random_shows(ids: true, has_banner: false, published: true, limit: 10)
+        shows = self.all
+        unless published == :all
+            shows = shows.select{|show| show.is_published? == published}
+        end
+        shows = shows.select{|show| show.has_banner?} if has_banner
+        shows = shows.map{|show| show.id} if ids
+        shows = shows.shuffle
+        if limit && limit > 0
+            shows = shows[0..limit-1]
+        end
+        shows
+    end
+
+    def self.clean_up
+        self.all.each do |show|
+            p "Cleaning banner for show id #{show.id}"
+            show.banner.purge if show.banner.attached?
+            p "Making banner for show id #{show.id}"
+            show.get_banner
+        end
     end
 
 end

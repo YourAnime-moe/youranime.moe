@@ -10,7 +10,10 @@
         - watched = "watched" if episode.was_watched_by? current_user
         .clickable.episode-info class="#{watched}" onclick="window.location.href='#{url}'"
             .thumbnail
-                img.thumbnail src="#{episode.get_image_path(current_token)}"
+                - if episode.has_thumbnail?
+                    = image_tag(episode.get_thumbnail, class: "thumbnail")
+                - else 
+                    img.thumbnail src="/img/404.jpg"
                 .progress
                     - width = episode.progress_info(current_user, value_only: true)
                     .determinate episode_id="#{episode.id}" style="width: #{width}%"
@@ -32,7 +35,10 @@
         - watched = "watched" if episode.was_watched_by? current_user
         .clickable.episode-info.other class="#{watched}" onclick="window.location.href='#{url}'"
             .thumbnail
-                img.thumbnail src="#{episode.get_image_path(current_token)}"
+                - if episode.has_thumbnail?
+                    = image_tag(episode.get_thumbnail, class: "thumbnail")
+                - else 
+                    img.thumbnail src="/img/404.jpg"
                 .progress
                     - width = episode.progress_info(current_user, value_only: true)
                     .determinate episode_id="#{episode.id}" style="width: #{width}%"

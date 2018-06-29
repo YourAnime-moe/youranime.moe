@@ -128,7 +128,8 @@ class User < ActiveRecord::Base
             limit = 4 if limit < 1
             res = res[0..limit-1]
         end
-        return res
+        res = res.select{|e| e.has_thumbnail?}
+        return res || []
     end
 
     def get_episodes_watched(as_is: false)

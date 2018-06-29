@@ -38,7 +38,7 @@
             - @coming_soon.each do |cs|
                 .col.m4
                     a href="/shows?id=#{cs.id}"
-                        img src="#{cs.get_image_path(current_token)}"
+                        = image_tag cs.get_banner
                     p.italic #{cs.get_title}
         - else
             p.center #{t('welcome.no-coming-soon')}
@@ -50,7 +50,7 @@
             - @recommended.each do |rec|
                 .col.m4
                     a href="/shows?id=#{rec.id}"
-                        img src="#{rec.get_image_path(current_token)}"
+                        = image_tag rec.get_banner
                     p #{rec.get_title}
         - else
             p.center #{t('welcome.no-recommended')}
@@ -62,7 +62,7 @@
             - @featured.each do |fet|
                 .col.m4
                     a href="/shows?id=#{fet.id}"
-                        img src="#{fet.get_image_path(current_token)}"
+                        = image_tag fet.get_banner
                     p #{fet.get_title}
         - else
             p.center #{t('welcome.no-featured')}
@@ -109,20 +109,3 @@
         ul
             li
                 u An important feature comming soon: make recommendations to easily get new content.
-
-    .well.space.fit.comments.hidden
-        h4 Quick links
-
-        ul
-            li
-              a href="/shows" Watch anime
-            - if current_user.has_watched_anything?
-                li
-                  a href="/shows/episodes?id=#{@episodes.first.id}" Go to your lastest episode
-            li
-              a href="/shows/history" Episode history
-            li
-              a href="/settings" Account settings
-            br
-            li
-              a href="/logout" Logout

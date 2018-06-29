@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
 
-    before_filter {
+    before_action {
         @inbox_options = true
     }
 

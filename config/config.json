@@ -7,9 +7,7 @@
             "env": true
         },
         "dev": {
-            "protocol": "https",
-            "sub_domain": null,
-            "domain": "REMOTE_IP",
+            "domain": "VIDEOS_ROOT",
             "env": true
         },
         "test": {

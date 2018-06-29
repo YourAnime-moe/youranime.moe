@@ -3,10 +3,10 @@ class Config
     CONFIG_PATH = "config/config.json"
     LINK_TAG_SIZE = 2
 
-    def self.main_host(path=nil)
-        return _fetch_host(path, :main) if Rails.env == "production"
-        return _fetch_host(path, :dev) if Rails.env == "development"
-        return _fetch_host(path, :test) if Rails.env == "test"
+    def self.main_host(path=nil, as_is: false)
+        return _fetch_host(path, :main, as_is: as_is) if Rails.env == "production"
+        return _fetch_host(path, :dev, as_is: as_is) if Rails.env == "development"
+        return _fetch_host(path, :test, as_is: as_is) if Rails.env == "test"
     end
 
     def self.admin_host(path=nil, *tags)
@@ -48,27 +48,30 @@ class Config
         JSONConfig.get(path)
     end
 
-    def self.path(path)
-        main = self.main_host
+    def self.path(path, as_is: false)
+        main = self.main_host(as_is: as_is)
         if !main.end_with? "/" and !path.start_with? "/"
             main << "/"
         end
-        main << path
+        main + path
     end
 
     private
-        def self._fetch_host(path, key)
+        def self._fetch_host(path, key, as_is: false)
             key = key.to_s
             return nil if key.empty?
             hosts_info = self.hosts(path)[key]
             return nil if hosts_info.nil?
             protocol = hosts_info["protocol"]
-            protocol = "http" if protocol.nil?
+            unless as_is
+                protocol = "http" if protocol.nil?
+            end
             sub_domain = hosts_info["sub_domain"]
             domain = hosts_info["domain"]
             if hosts_info["env"]
                 domain = ENV[domain]
             end
+            return domain if as_is
             raise Exception.new("Domain was not found for key #{key}.") if domain.nil?
             path = protocol + "://"
             path << sub_domain + "." unless sub_domain.nil?

@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
     @par = params
     current_controller(cont) if cont
     current_action(act) if act
-    p "Params: #{@par.to_h}"
     @body_class = "container-fluid"
   }
 
@@ -48,7 +47,6 @@ class ApplicationController < ActionController::Base
   end
 
   def login_post
-    p params.to_h
     username = params[:username].strip.downcase
     password = params[:password].strip
 

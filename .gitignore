@@ -30,3 +30,6 @@ node_modules/
 
 # Coveralls
 coverage/
+
+# Active storage
+storage

@@ -1,5 +1,8 @@
 class Episode < ActiveRecord::Base
 
+    has_one_attached :video
+    has_one_attached :thumbnail
+
     serialize :comments
 
     include Navigatable
@@ -46,9 +49,9 @@ class Episode < ActiveRecord::Base
         !self.next.nil?
     end
 
-    def get_path(token=nil)
+    def get_path(token=nil, as_is: false)
         return self.path if self.path.nil? or self.path.start_with? "http"
-        res = Config.path self.path
+        res = Config.path self.path, as_is: as_is
         return res if token.nil?
         res + '?token=' + token
     end
@@ -72,10 +75,48 @@ class Episode < ActiveRecord::Base
         Config.path "videos?show=#{show_name}&episode=#{ep_num}&format=#{ext}&video=true"
     end
 
-    def get_image_path(token=nil, ext: 'jpg')
-        video_path = self.get_path
+    def has_thumbnail?
+        get_thumbnail(raise_exception: false).attached?
+    end
+
+    def get_thumbnail(raise_exception: false)
+        unless thumbnail.attached?
+            begin
+                path = get_image_path(as_is: true)
+                return thumbnail if path.nil? || File.directory?(path)
+                thumbnail.attach(io: File.open(path), filename: "episode-#{id}")
+            rescue Errno::ENOENT => e
+                puts "Oh no!! The episode thumbnail was not found! #{e}"
+                raise e if raise_exception
+            end
+        end
+        thumbnail
+    end
+
+    def has_video?
+        get_video(raise_exception: false).attached?
+    end
+
+    def get_video(raise_exception: false)
+        unless video.attached?
+            begin
+                path = get_path(as_is: true)
+                return video if path.nil? || File.directory?(path)
+                video.attach(io: File.open(path), filename: "episode-#{id}")
+            rescue Errno::ENOENT => e
+                puts "Oh no!! The episode video was not found! #{e}"
+                raise e if raise_exception
+            end
+        end
+        video
+    end
+
+    def get_image_path(token=nil, ext: 'jpg', as_is: false)
+        video_path = self.get_path(as_is: as_is)
+        return nil if video_path.nil?
         parts = video_path.split('/')
         filename = parts[parts.size-1]
+        return nil if filename.nil?
         fs = filename.split '.'
         fs[1] = ext.to_s
         filename = fs.join '.'
@@ -192,6 +233,19 @@ class Episode < ActiveRecord::Base
 
     def self.all_published
         self.all.select{|e| e.is_published?}
+    end
+
+    def self.clean_up
+        self.all.each do |episode|
+            p "Cleaning thumbnail for episode id #{episode.id}"
+            episode.thumbnail.purge if episode.thumbnail.attached?
+            p "Making thumbnail for episode id #{episode.id}"
+            episode.get_thumbnail
+            p "Cleaning video for episode id #{episode.id}"
+            episode.video.purge if episode.video.attached?
+            p "Making video for episode id #{episode.id}"
+            episode.get_video
+        end
     end
 
 end

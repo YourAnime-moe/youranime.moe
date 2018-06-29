@@ -45,6 +45,12 @@ class Utils
 
     require 'fileutils'
 
+    def self.get_filename(filepath)
+        return nil if filepath.blank?
+        parts = filepath.split('/')
+        parts[parts.length-1]
+    end
+
     def self.get_parent_directory(filename,check=false)
         if filename.instance_of? String
             parts = filename.split("/")

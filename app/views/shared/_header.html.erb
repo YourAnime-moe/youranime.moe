@@ -10,7 +10,7 @@
       <ul class="right hide-on-med-and-down">
         <li><a title="<%= t('anime.shows.view-all') %>" href="/shows"><%= t('header.anime') %></a></li>
         <li><a title="<%= t('header.movies') %>" href="/movies"><%= t('header.movies') %></a></li>
-        <li><a title="<%= t('header.tags') %>" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
+        <li class="hidden"><a title="<%= t('header.tags') %>" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
         <li class="hidden"><a title="<%= t('header.search') %>" href="/search"><i class="material-icons">search</i></a></li>
         <!-- <li title="Your messages (coming soon!)"><a title="Your messages" class="disabled" href="#"><i class="material-icons disabled">messages</i></a></li> -->
         <li><a title="<%= t('header.random') %>" href="/shows/episodes/random"><i class="material-icons">shuffle</i></a></li>
@@ -27,7 +27,7 @@
         <li><a href="/movies"><i class="material-icons">play_arrow</i><%= t('header.movies') %></a></li>
         <li class="hidden"><a href="/search"><i class="material-icons">search</i><%= t('header.search') %></a></li>
         <li><a href="/news"><i class="material-icons">event_note</i><%= t('header.news') %></a></li>
-        <li><a href="/tags"><i class="material-icons">book</i><%= t('header.tags') %></a></li>
+        <li class="hidden"><a href="/tags"><i class="material-icons">book</i><%= t('header.tags') %></a></li>
         <li><a href="/shows/episodes/random"><i class="material-icons">shuffle</i><%= t('header.random') %></a></li>
         <li><a href="/shows/history"><i class="material-icons">restore</i><%= t('header.history') %></a></li>
         <li><a href="/settings"><i class="material-icons">settings</i><%= t('header.settings') %></a></li>
