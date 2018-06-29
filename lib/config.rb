@@ -49,7 +49,7 @@ class Config
     end
 
     def self.path(path, as_is: false)
-        main = self.main_host(as_is: as_is)
+        main = self.main_host(as_is: as_is).dup
         if !main.end_with? "/" and !path.start_with? "/"
             main << "/"
         end
