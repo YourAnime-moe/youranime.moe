@@ -48,12 +48,34 @@
 <% else %>
     <nav>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
+        <% if @back_url %>
+          <a href="<%= @back_url %>" class="brand-logo" title="<%= @back_title%>" style="margin-left: 25px;"><i class="material-icons desktop">undo</i><%= t('welcome.title') %></a>
+          <a href=""></a>
+        <% else %>
+          <a href="/" class="brand-logo" style="margin-left: 25px;"><%= t('welcome.title') %></a>
+        <% end %>
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
+          <% if current_user.is_admin? %>
+            <li><a title="<%= t('anime.shows.view-all') %>" href="/admin"><%= t('header.admin') %></a></li>
+          <% end %>
+          <li><a title="<%= t('anime.shows.view-all') %>" href="/shows"><%= t('header.anime') %></a></li>
+          <li><a title="<%= t('header.movies') %>" href="/movies"><%= t('header.movies') %></a></li>
+          <li class="hidden"><a title="<%= t('header.tags') %>" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
+          <li class="hidden"><a title="<%= t('header.search') %>" href="/search"><i class="material-icons">search</i></a></li>
+          <!-- <li title="Your messages (coming soon!)"><a title="Your messages" class="disabled" href="#"><i class="material-icons disabled">messages</i></a></li> -->
+          <li><a title="<%= t('header.random') %>" href="/shows/episodes/random"><i class="material-icons">shuffle</i></a></li>
+          <li><a title="<%= t('header.history') %>" href="/shows/history"><i class="material-icons">restore</i></a></li>
+          <li><a class="dropdown-trigger" href="#!" data-target="languages-dropdown"><%= t('lang.lang') %><i class="material-icons right">arrow_drop_down</i></a></li>
+          <li><a title="<%= t('header.settings') %>" href="/settings"><i class="material-icons">settings</i></a></li>
+          <li><a title="<%= t('header.bugs') %>" target="_blank" href="https://github.com/thedrummeraki/tanoshimu/issues"><i class="material-icons">bug_report</i></a></li>
+          <li><a title="<%= t('header.logout') %>" href="/logout"><i class="material-icons">exit_to_app</i></a></li>
         </ul>
+      <ul id="languages-dropdown" class="dropdown-content">
+        <li><a locale="fr" go-to="" locale-switcher="fr"><%= t('lang.fr') %></a></li>
+        <li><a locale="en" go-to="" locale-switcher="en"><%= t('lang.en') %></a></li>
+        <li><a locale="jp" go-to="" locale-switcher="jp"><%= t('lang.jp') %></a></li>
+      </ul>
       </div>
     </nav>
 <% end %>
