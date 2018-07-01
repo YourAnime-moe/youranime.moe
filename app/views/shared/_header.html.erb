@@ -1,4 +1,5 @@
-   <nav>
+   <% if false %>
+    <nav>
     <div class="nav-wrapper">
       <% if @back_url %>
         <a href="<%= @back_url %>" class="brand-logo" title="<%= @back_title%>" style="margin-left: 25px;"><i class="material-icons desktop">undo</i><%= t('welcome.title') %></a>
@@ -8,6 +9,9 @@
       <% end %>
       <a href="#" data-activates="tanoshimu-nav" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
+        <% if current_user.is_admin? %>
+          <li><a title="<%= t('anime.shows.view-all') %>" href="/admin"><%= t('header.admin') %></a></li>
+        <% end %>
         <li><a title="<%= t('anime.shows.view-all') %>" href="/shows"><%= t('header.anime') %></a></li>
         <li><a title="<%= t('header.movies') %>" href="/movies"><%= t('header.movies') %></a></li>
         <li class="hidden"><a title="<%= t('header.tags') %>" href="/tags"><i class="material-icons right">book</i><%= t('header.tags') %></a></li>
@@ -41,3 +45,15 @@
       </ul>
     </div>
   </nav>
+<% else %>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Logo</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="sass.html">Sass</a></li>
+          <li><a href="badges.html">Components</a></li>
+          <li><a href="collapsible.html">JavaScript</a></li>
+        </ul>
+      </div>
+    </nav>
+<% end %>

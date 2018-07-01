@@ -8,7 +8,10 @@
                 - show_group.each do |show|
                     .col.m6
                         a href="/shows?id=#{show.id}"
-                            = image_tag show.get_banner
+                            - if show.has_banner?
+                                = image_tag show.get_banner
+                            - else
+                                img src="/img/404.jpg"
                         - @show = show
                         = render 'shows/description'
 
@@ -22,7 +25,10 @@
                 .row
                     - show_group.each do |show|
                         .col.m6
-                            = image_tag show.get_banner
+                            - if show.has_banner?
+                                = image_tag show.get_banner
+                            - else
+                                img src="/img/404.jpg"
                             - @show = show
                             = render 'shows/description'
                     

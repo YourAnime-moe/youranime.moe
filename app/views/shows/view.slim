@@ -27,7 +27,10 @@ css:
 
 .row
     .col.s12.no-padding
-        = image_tag(@show.get_banner, class: "title-img")
+        - if @show.has_banner?
+          = image_tag(@show.get_banner, class: "title-img")
+        - else
+          img.title-img src="/img/404.jpg"
 
 #modal1.modal.modal-fixed-footer
   .modal-content

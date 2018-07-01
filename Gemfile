@@ -34,7 +34,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'
-gem 'materialize-sass'
+gem 'materialize-sass', '~> 1.0.0.rc2'
 gem 'material_icons'
 
 # Template Engine

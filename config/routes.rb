@@ -51,6 +51,13 @@ Rails.application.routes.draw do
   post '/json/episodes/add_comment' => 'json#episode_add_comment'
   post '/json/setWatched' => 'json#set_watched'
 
+  # Admin console
+  get '/admin' => 'admin#home'
+  namespace :admin do
+    resources :shows
+    resources :episodes
+  end
+
   # Oauth
   get '/auth/:provider/callback' => 'sso#create'
   get '/auth/failure' => 'sso#failure'

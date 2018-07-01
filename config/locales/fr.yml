@@ -42,6 +42,7 @@ fr:
     src: "https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png"
     alt: "Disponible sur Google Play"
   header:
+    admin: "Coin Admin"
     anime: "Animé"
     movies: "Films"
     tags: "Tags"
@@ -53,6 +54,9 @@ fr:
     settings: "Paramètres"
     bugs: "Problèmes connus"
     logout: "Se déconnecter"
+
+  admin:
+    home: "Console d'administration"
 
   anime:
     shows:

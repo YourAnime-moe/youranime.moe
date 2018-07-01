@@ -28,8 +28,11 @@ class Show < ActiveRecord::Base
         "Subbed"
     end
 
-    def get_title
-        return self.title if self.alternate_title.to_s.empty?
+    def get_title(html: false, default: nil)
+        if html
+            return "<i>No title</i>".html_safe if self.get_title(html: false, default: nil).blank?
+        end
+        return (self.title || default) if self.alternate_title.blank?
         self.alternate_title
     end
 
@@ -57,6 +60,12 @@ class Show < ActiveRecord::Base
             end
         end
         banner
+    end
+
+    def get_banner_url
+        banner = get_banner
+        return "/img/404.jpg" unless banner.attached?
+        get_banner.service_url
     end
 
     def sequel
@@ -237,6 +246,21 @@ class Show < ActiveRecord::Base
         self.description[0, limit] + "..."
     end
 
+    def admin_json
+        {
+            title: title,
+            alternate_title: alternate_title,
+            get_title: get_title,
+            description: description,
+            subbed: subbed,
+            dubbed: dubbed,
+            published: is_published?,
+            banner_url: get_banner_url,
+            banner_path: get_image_path,
+            videos_path: default_path
+        }
+    end
+
     def self.get(title: nil, show_number: nil)
         return nil if title.nil? || show_number.nil?
         title = title.capitalize
@@ -291,6 +315,10 @@ class Show < ActiveRecord::Base
 
     def self.all_published
         self.all.select{|e| e.is_published?}
+    end
+
+    def self.all_un_published
+        self.all.reject{|e| e.is_published?}
     end
 
     def self.search keyword, preset_list=nil

@@ -235,6 +235,10 @@ class Episode < ActiveRecord::Base
         self.all.select{|e| e.is_published?}
     end
 
+    def self.all_un_published
+        self.all.reject{|e| e.is_published?}
+    end
+
     def self.clean_up
         self.all.each do |episode|
             p "Cleaning thumbnail for episode id #{episode.id}"

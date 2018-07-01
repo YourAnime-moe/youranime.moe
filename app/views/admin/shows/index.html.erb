@@ -1,0 +1,259 @@
+<div id="progress" class="progress hide" style="margin-top: -3px;">
+	<div class="indeterminate"></div>
+</div>
+
+<ul id="slide-out" class="sidenav sidenav-fixed">
+	<div class="container-fluid center" style="padding-top: 10px;">
+		<div class="row">
+			<div class="col 4"><a href="/"><img src="/img/tanoshimu.png" style="height: 75px; object-fit: cover;" class="circle"></a></div>
+			<div class="col 8"><h4>Shows</h4></div>
+		</div>
+	</div>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader green-text">Published</a></li>
+    <% Show.all_published.each do |show| %>
+	    <div class="clickable" show-id="<%= show.id %>" title="<%= show.get_title(default: "No title") %>">
+	    	<li>
+		    	<div class="row">
+		    		<div class="col s3">
+		    			<% if show.has_banner? %>
+		    				<%= image_tag(show.get_banner, style: "height: 50px; object-fit: cover;", class: "circle") %>
+		    			<% else %>
+		    				<img src="/img/404.jpg" style="height: 50px; object-fit: cover;" class="circle">
+		    			<% end %>
+		    		</div>
+		    		<div class="col s9" style="vertical-align: middle;"><span class 	="truncate"><%= show.get_title(html: true) %></span></div>
+		    	</div>
+		    </li>
+	    </div>
+    <% end %>
+    <li><a href="#!">Second Link</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader red-text">Unpublished</a></li>
+    <% Show.all_un_published.each do |show| %>
+	    <div class="clickable" show-id="<%= show.id %>" title="<%= show.get_title %>">
+	    	<li>
+		    	<div class="row">
+		    		<div class="col s3">
+		    			<% if show.has_banner? %>
+		    				<%= image_tag(show.get_banner, style: "height: 50px; object-fit: cover;", class: "circle") %>
+		    			<% else %>
+		    				<img src="/img/404.jpg" style="height: 50px; object-fit: cover;" class="circle">
+		    			<% end %>
+		    		</div>
+		    		<div class="col s9" style="vertical-align: middle;"><span class="truncate"><%= show.get_title(html: true) %></span></div>
+		    	</div>
+		    </li>
+	    </div>
+    <% end %>
+  </ul>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+  <div class="page" style="margin-left: 300px;">
+  	<div class="container">
+  		<div class="center">
+	    	<h3 show-value="get_title" value-type="html" default-value="Loading...">Tanoshimu Show</h3>
+  		</div>
+    	<div class="row">
+    		<div class="col s6">
+    			<h5 class="bold">General info</h5>
+    			<div class="row">
+    				<div class="input-field col s6">
+			          <input show-value="title" value-type="input" placeholder="ex: Fairytail, Mitsudomoe" id="title" type="text" class="validate">
+			          <label for="title">Title</label>
+			        </div>
+			        <div class="input-field col s6">
+			          <input show-value="alternate_title" value-type="input" placeholder="ex: Fairy Tail" id="alternate_title" type="text" class="validate">
+			          <label for="alternate_title">Alternate title</label>
+			        </div>
+    			</div>
+    			<div class="row">
+			        <div class="input-field col s12">
+			          <textarea show-value="description" value-type="textarea" id="description" class="materialize-textarea"></textarea>
+			          <label for="description">Description/Summary</label>
+			        </div>
+			    </div>
+
+			    <h5 class="bold">Other info</h5>
+          <div class="row">
+              <div class="center">
+
+                  <p>A show can be an <b>anime series</b>, a <b>movie</b> or a <b>drama</b>.</p>
+                  <a show-value="show-type" id="show-type-btn" class='dropdown-trigger btn' href='#' data-target='show-type'>* Select *</a>
+                  <ul id='show-type' class='dropdown-content'>
+                      <li><a show-value="0" tanoshimu-updates="show-type-btn" href="#!">Anime Series</a></li>
+                      <li><a show-value="1" tanoshimu-updates="show-type-btn" href="#!">Movie</a></li>
+                      <li><a show-value="2" tanoshimu-updates="show-type-btn" href="#!">Drama</a></li>
+                  </ul>
+              </div>
+          </div>
+          <div class="row center">
+              <p>A show can be <b>subbed in English</b>, <b>dubbed in English</b>, or available in both formats.</p>
+              <div class="input-field col s12">
+                  <select show-type="description" value-type="select" multiple>
+                    <option data-icon="/img/icon-jp.png" value="1">Subbed</option>
+                    <option data-icon="/img/icon-en.png" value="2">Dubbed</option>
+                  </select>
+                  <label>Subbed? Dubbed?</label>
+              </div>
+          </div>
+
+          <h5 class="bold">Publishing</h5>
+          <div class="row center">
+              <p>This show is...</p>
+              <div class="switch">
+                  <label>
+                    un-published
+                    <input id="publish-switch" show-type="published" value-type="checkbox" type="checkbox">
+                    <span class="lever"></span>
+                    pubished
+                  </label>
+              </div>
+          </div>
+
+          <div id="publish-on-cont" class="row">
+            <p style="margin: 40px 0 0;">You may choose to leave this show unpublished for now and publish it at a later date.</p>
+            <div class="input-field col s12">
+              <input tanoshimu-activate-on="" id="publish-on" type="text" class="datepicker">
+              <label for="publish-on">Publish on...(optional)</label> 
+            </div>
+          </div>
+    		</div>
+        <div class="col s6">
+          <h5 class="bold">Media</h5>
+          <div class="row">
+            <p>Click on the square below to add or update the banner for this show.</p>
+            <div waiting-for="small_banner" class="progress" style="margin-bottom: 0;">
+                <div class="indeterminate"></div>
+            </div>
+            <div class="image-input clickable" style="">
+                <img id="small_banner" class="" show-value="banner_url" value-type="src" src="/img/404.jpg" style="object-fit: cover; height: 100%; width: 100%;">
+            </div>
+          </div>
+
+          <div class="row">
+            <p>Where on the file server should this banner be stored?</p>
+            <div class="input-field col s12">
+              <input show-value="banner_path" value-type="input" placeholder="ex: /videos/icons/fairy-tail.png" id="banner" type="text" class="validate">
+              <label for="banner">Banner path</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <p>Where on the file server should videos be found?</p>
+            <div class="input-field col s12">
+              <input show-value="videos_path" value-type="input" placeholder="ex: /videos/fairy-tail/" id="videos" type="text" class="validate">
+              <label for="videos">Videos folder path</label>
+            </div>
+          </div>
+        </div>
+    	</div>
+  	</div>
+  
+
+
+  </div>
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+  <a title="Add one or more episode(s)" id="add-episodes" class="btn-floating btn-large red">
+    <i class="material-icons">add</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="material-icons">insert_chart</i></a></li>
+    <li><a class="btn-floating yellow darken-1" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="material-icons">format_quote</i></a></li>
+    <li><a class="btn-floating green" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="material-icons">publish</i></a></li>
+    <li><a class="btn-floating blue" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="material-icons">attach_file</i></a></li>
+  </ul>
+</div>
+
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		var current_show = null;
+
+  		function getShow(id, callback, errorCallback) {
+        setLoading(true);
+  			$.ajax({
+  				url: "/admin/shows/" + id + ".json",
+  				success: function(res) {
+            setLoading(false);
+  					if (res.show) {
+  						callback(res.show);
+  					} else {
+  						errorCallback("No show was found.");
+  					}
+  				},
+  				error: function(e) {
+            setLoading(false);
+  					if (errorCallback !== undefined) {
+  						errorCallback("Error on the server.", e);
+  					}
+  				}
+  			});
+  		}
+
+      $('#publish-switch').on('change', function() {
+        setPublishedDateEnabled(!$(this).is(":checked"));
+      });
+
+  		$('[show-id]').on('click', function(e) {
+  			let show_id = $(this).attr('show-id');
+  			getShow(show_id, function(show) {
+          $('#publish-switch').prop('checked', show.published == true).change();
+          let properties = Object.keys(show);
+          [].forEach.call(properties, function(prop) {
+            let element = $('[show-value="' + prop + '"]');
+            //console.log(element);
+            if (element.length) {
+              let value = show[prop];
+              let element_type = element.attr('value-type');
+
+              if (element_type == 'input' || element_type == 'textarea') {
+                element.val(value);
+                if (element_type == 'textarea') {
+                  M.textareaAutoResize(element);
+                }
+              } else if (element_type == 'src') {
+                console.log('image');
+                element.attr('src', value);
+              } else if (element_type == 'html') {
+                element.html(value);
+              }
+            }
+          });
+  			});
+  		});
+
+  		$('#add-episodes').on('click', function(e) {
+
+  		});
+
+      $('#small_banner').on('load', function(e) {
+         $('[waiting-for="small_banner"]').addClass('hidden');
+         $('#small_banner').removeClass('img-loading');
+      });
+
+      $('[tanoshimu-updates]').on('click', function(e) {
+        e.preventDefault();
+        let value = $(this).html();
+        $('#' + $(this).attr('tanoshimu-updates')).html(value);
+      });
+
+      function setPublishedDateEnabled(enabled) {
+        if (enabled) {
+          $('#publish-on-cont').removeClass('hidden');
+        } else {
+          $('#publish-on-cont').addClass('hidden');
+        }
+      }
+
+      function setLoading(loading) {
+        if (loading) {
+          $('#progress').removeClass('hidden');
+          $('[waiting-for="small_banner"]').removeClass('hidden');
+          $('#small_banner').addClass('img-loading');
+        } else {
+          $('#progress').addClass('hidden');
+        }
+      }
+  	});
+  </script>

@@ -43,6 +43,7 @@ jp:
     no-this-season: "現在放映中のアニメや映画はまだないようです。"
 
   header:
+    admin: "管理画面"
     anime: "アニメ"
     movies: "映画"
     tags: "タグ"
@@ -54,6 +55,9 @@ jp:
     settings: "設定"
     bugs: "知っているバグ等"
     logout: "ログアウト"
+
+  admin:
+    home: "管理画面"
 
   anime:
     shows:

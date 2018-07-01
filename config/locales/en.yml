@@ -63,6 +63,7 @@ en:
     alt: "Get it on Google Play"
     src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
   header:
+    admin: "Admin console"
     anime: "Anime"
     movies: "Movies"
     tags: "Tags"
@@ -74,6 +75,9 @@ en:
     settings: "Account settings"
     bugs: "Known issues"
     logout: "Logout"
+
+  admin:
+    home: "Admin console"
 
   anime:
     shows:
