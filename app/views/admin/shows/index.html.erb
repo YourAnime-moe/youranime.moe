@@ -49,7 +49,7 @@
   </ul>
   <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 
-  <div class="page" style="margin-left: 300px;">
+  <div id="show-body" class="page hidden" style="margin-left: 300px;">
   	<div class="container">
   		<div class="center">
 	    	<h3 show-value="get_title" value-type="html" default-value="Loading...">Tanoshimu Show</h3>
@@ -126,9 +126,26 @@
             <div waiting-for="small_banner" class="progress" style="margin-bottom: 0;">
                 <div class="indeterminate"></div>
             </div>
-            <div class="image-input clickable" style="">
+            <div id="show-img-select" class="image-input clickable" style="">
                 <img id="small_banner" class="" show-value="banner_url" value-type="src" src="/img/404.jpg" style="object-fit: cover; height: 100%; width: 100%;">
             </div>
+            <div id="banner_preview_cont" class="hidden">
+              <p class="bold"><i>Banner preview</i></p>
+              <div class="image-preview">
+                  <img id="banner_preview" class="" src="/img/404.jpg" style="object-fit: cover; height: 100%; width: 100%;">
+              </div>
+            </div>
+            <form action="#">
+              <div class="file-field input-field hidden">
+                <div class="btn">
+                  <span>File</span>
+                  <input id="show-img-file" type="file">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text">
+                </div>
+              </div>
+            </form>
           </div>
 
           <div class="row">
@@ -155,8 +172,8 @@
   </div>
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-  <a title="Add one or more episode(s)" id="add-episodes" class="btn-floating btn-large red">
-    <i class="material-icons">add</i>
+  <a title="Add one or more episode(s)" id="upload-show" class="btn-floating btn-large red">
+    <i class="material-icons">cloud_upload</i>
   </a>
   <ul>
     <li><a class="btn-floating red" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"><i class="material-icons">insert_chart</i></a></li>
@@ -169,6 +186,8 @@
   <script type="text/javascript">
   	$(document).ready(function() {
   		var current_show = null;
+
+
 
   		function getShow(id, callback, errorCallback) {
         setLoading(true);
@@ -198,6 +217,7 @@
   		$('[show-id]').on('click', function(e) {
   			let show_id = $(this).attr('show-id');
   			getShow(show_id, function(show) {
+          $('#show-body').attr('show-id', show_id);
           $('#publish-switch').prop('checked', show.published == true).change();
           let properties = Object.keys(show);
           [].forEach.call(properties, function(prop) {
@@ -227,6 +247,19 @@
 
   		});
 
+      $('#show-img-select').on('click', function(e) {
+        $('input[type="file"]').click();
+      });
+
+      $("#show-img-file").change(function(e) {
+        var ext = $(this).val().split('.').pop().toLowerCase();
+        if($.inArray(ext, ['git','png','jpg','jpeg']) == -1) {
+            M.toast({html: "Please upload an image with a valid extension."});
+            return;
+        }
+        showBannerPreview(this);
+      });
+
       $('#small_banner').on('load', function(e) {
          $('[waiting-for="small_banner"]').addClass('hidden');
          $('#small_banner').removeClass('img-loading');
@@ -236,6 +269,24 @@
         e.preventDefault();
         let value = $(this).html();
         $('#' + $(this).attr('tanoshimu-updates')).html(value);
+      });
+
+      $('#upload-show').on('click', function(e) {
+        let show_id = $('#show-body').attr('show-id');
+        let form_data = new FormData();
+        form_data.append('banner', $('#show-img-file')[0].files[0]);
+
+        $.ajax({
+          url: '/admin/shows/' + show_id,
+          processData: false,
+          contentType: false,
+          data: form_data,
+          method: 'patch',
+          success: function(response) {
+            console.log('update response:');
+            console.log(response);
+          }
+        });
       });
 
       function setPublishedDateEnabled(enabled) {
@@ -248,11 +299,26 @@
 
       function setLoading(loading) {
         if (loading) {
+          $('#show-body').addClass('hidden');
           $('#progress').removeClass('hidden');
           $('[waiting-for="small_banner"]').removeClass('hidden');
           $('#small_banner').addClass('img-loading');
         } else {
           $('#progress').addClass('hidden');
+          $('#show-body').removeClass('hidden');
+        }
+      }
+
+      function showBannerPreview(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+            $('#banner_preview_cont').removeClass('hidden');
+            $('#banner_preview').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]);
         }
       }
   	});
