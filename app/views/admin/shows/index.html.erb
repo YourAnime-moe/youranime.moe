@@ -217,44 +217,7 @@
         setPublishedShow($(this).is(":checked"));
       });
 
-  		$('[show-id]').on('click', function(e) {
-  			let show_id = $(this).attr('show-id');
-        $('[show-id]').removeClass('current');
-        $(this).addClass('current');
-        current_show = show_id;
-
-  			getShow(show_id, function(show) {
-          $('#show-body').attr('show-id', show_id);
-          $('[show-value="link-to"]').attr('href', '/shows?id=' + show_id);
-          $('#publish-switch').prop('checked', show.published == true).change();
-          $("#show-img-file").val('');
-          $('#banner_preview_cont').addClass('hidden');
-          $('#banner_preview').removeAttr('src');
-
-          let properties = Object.keys(show);
-          [].forEach.call(properties, function(prop) {
-            let element = $('[show-value="' + prop + '"]');
-            //console.log(element);
-            if (element.length) {
-              let value = show[prop];
-              let element_type = element.attr('value-type');
-
-              if (element_type == 'input' || element_type == 'textarea') {
-                element.val(value);
-                element.addClass('active');
-                if (element_type == 'textarea') {
-                  M.textareaAutoResize(element);
-                }
-              } else if (element_type == 'src') {
-                element.attr('src', value);
-              } else if (element_type == 'html') {
-                element.html(value);
-              }
-            }
-          });
-          M.updateTextFields();
-  			});
-  		});
+  		setShowsClickable();
 
       var first_show = <%= @select_show %>;
       if (first_show >= 0) {
@@ -369,6 +332,47 @@
         }
       }
 
+      function setShowsClickable() {
+        $('[show-id]').on('click', function(e) {
+        let show_id = $(this).attr('show-id');
+        $('[show-id]').removeClass('current');
+        $(this).addClass('current');
+        current_show = show_id;
+
+        getShow(show_id, function(show) {
+          $('#show-body').attr('show-id', show_id);
+          $('[show-value="link-to"]').attr('href', '/shows?id=' + show_id);
+          $('#publish-switch').prop('checked', show.published == true).change();
+          $("#show-img-file").val('');
+          $('#banner_preview_cont').addClass('hidden');
+          $('#banner_preview').removeAttr('src');
+
+          let properties = Object.keys(show);
+          [].forEach.call(properties, function(prop) {
+            let element = $('[show-value="' + prop + '"]');
+            //console.log(element);
+            if (element.length) {
+              let value = show[prop];
+              let element_type = element.attr('value-type');
+
+              if (element_type == 'input' || element_type == 'textarea') {
+                element.val(value);
+                element.addClass('active');
+                if (element_type == 'textarea') {
+                  M.textareaAutoResize(element);
+                }
+              } else if (element_type == 'src') {
+                element.attr('src', value);
+              } else if (element_type == 'html') {
+                element.html(value);
+              }
+            }
+          });
+          M.updateTextFields();
+        });
+      });
+      }
+
       function refreshShows() {
         $.ajax({
           url: '/admin/shows.json',
@@ -379,6 +383,8 @@
 
             drawShows('#published-list', published_shows);
             drawShows('#unpublished-list', unpublished_shows);
+
+            setShowsClickable();
 
             let $go_to_element = $('div.clickable.current');
             $('#slide-out').animate({scrollTop: $go_to_element.offset().top}, 2000);
