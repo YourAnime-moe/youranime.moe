@@ -311,6 +311,7 @@
             // No need to set loading to false
             let $go_to_element = $('[show-id="' + response.id + '"]');
             $go_to_element.trigger('click');
+            refreshShows();
             M.toast({html: response.message});
           }
         });
