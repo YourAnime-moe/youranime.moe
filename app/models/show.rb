@@ -250,14 +250,15 @@ class Show < ActiveRecord::Base
         {
             title: title,
             alternate_title: alternate_title,
-            get_title: get_title,
+            get_title: get_title(default: "No title"),
             description: description,
             subbed: subbed,
             dubbed: dubbed,
             published: is_published?,
             banner_url: get_banner_url,
             image_path: image_path,
-            default_path: default_path
+            default_path: default_path,
+            id: id
         }
     end
 

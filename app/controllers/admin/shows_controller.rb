@@ -3,6 +3,20 @@ class Admin::ShowsController < AdminController
 	def index
 		@select_show = current_admin_show_id
 		set_title before: t('admin.home')
+
+		@published_shows = Show.all_published
+		@unpublished_shows = Show.all_un_published
+
+		json_published = @published_shows.map{|x| x.admin_json}
+		json_unpublished = @unpublished_shows.map{|x| x.admin_json}
+
+		json_published = json_published.map { |x| !(x[:current] = (x[:id] == @select_show)).nil? && x }
+		json_unpublished = json_unpublished.map { |x| !(x[:current] = (x[:id] == @select_show)).nil? && x }
+
+		respond_to do |format|
+			format.html
+			format.json { render json: {published: json_published, unpublished: json_unpublished} }
+		end
 	end
 
 	def show
@@ -32,7 +46,7 @@ class Admin::ShowsController < AdminController
 			message = t('admin.success.updated')
 		end
 		respond_to do |format|
-			format.json { render json: { show: show, success: success, message: message } }
+			format.json { render json: { show: show, id: params[:id], success: success, message: message } }
 		end
 	end
 

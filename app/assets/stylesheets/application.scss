@@ -521,6 +521,14 @@ body {
     background-color: #ddd;
 }
 
+.small-banner {
+    height: 50px; object-fit: cover;
+}
+
+.show-title {
+    vertical-align: middle;
+}
+
 .image-input, .image-preview {
     height: 200px;
     width: 100%;

@@ -1,4 +1,4 @@
-<div id="progress" class="progress hide" style="margin-top: -3px;">
+<div id="progress" class="progress" style="margin-top: -3px;">
 	<div class="indeterminate"></div>
 </div>
 
@@ -11,41 +11,44 @@
 	</div>
     <li><div class="divider"></div></li>
     <li><a class="subheader green-text">Published</a></li>
-    <% Show.all_published.each do |show| %>
-	    <div class="clickable plz-hover" show-id="<%= show.id %>" title="<%= show.get_title(default: "No title") %>">
-	    	<li>
-		    	<div class="row">
-		    		<div class="col s3">
-		    			<% if show.has_banner? %>
-		    				<%= image_tag(show.get_banner, style: "height: 50px; object-fit: cover;", class: "circle") %>
-		    			<% else %>
-		    				<img src="/img/404.jpg" style="height: 50px; object-fit: cover;" class="circle">
-		    			<% end %>
-		    		</div>
-		    		<div class="col s9" style="vertical-align: middle;"><span class="truncate"><%= show.get_title(html: true) %></span></div>
-		    	</div>
-		    </li>
-	    </div>
-    <% end %>
-    <li><a href="#!">Second Link</a></li>
+    <div id="published-list">
+      <% @published_shows.each do |show| %>
+  	    <div class="clickable plz-hover" show-id="<%= show.id %>" title="<%= show.get_title(default: "No title") %>">
+  	    	<li>
+  		    	<div class="row">
+  		    		<div class="col s3">
+  		    			<% if show.has_banner? %>
+  		    				<%= image_tag(show.get_banner, class: "circle small-banner") %>
+  		    			<% else %>
+  		    				<img src="/img/404.jpg" class="circle small-banner">
+  		    			<% end %>
+  		    		</div>
+  		    		<div class="col s9" style="vertical-align: middle;"><span class="truncate"><%= show.get_title(html: true) %></span></div>
+  		    	</div>
+  		    </li>
+  	    </div>
+      <% end %>
+    </div>
     <li><div class="divider"></div></li>
     <li><a class="subheader red-text">Unpublished</a></li>
-    <% Show.all_un_published.each do |show| %>
-	    <div class="clickable" show-id="<%= show.id %>" title="<%= show.get_title %>">
-	    	<li>
-		    	<div class="row">
-		    		<div class="col s3">
-		    			<% if show.has_banner? %>
-		    				<%= image_tag(show.get_banner, style: "height: 50px; object-fit: cover;", class: "circle") %>
-		    			<% else %>
-		    				<img src="/img/404.jpg" style="height: 50px; object-fit: cover;" class="circle">
-		    			<% end %>
-		    		</div>
-		    		<div class="col s9" style="vertical-align: middle;"><span class="truncate"><%= show.get_title(html: true) %></span></div>
-		    	</div>
-		    </li>
-	    </div>
-    <% end %>
+    <div id="unpublished-list">
+      <% @unpublished_shows.each do |show| %>
+  	    <div class="clickable" show-id="<%= show.id %>" title="<%= show.get_title %>">
+  	    	<li>
+  		    	<div class="row">
+  		    		<div class="col s3">
+  		    			<% if show.has_banner? %>
+  		    				<%= image_tag(show.get_banner, class: "circle small-banner") %>
+  		    			<% else %>
+  		    				<img src="/img/404.jpg" class="circle small-banner">
+  		    			<% end %>
+  		    		</div>
+  		    		<div class="col s9"><span class="truncate show-title"><%= show.get_title(html: true) %></span></div>
+  		    	</div>
+  		    </li>
+  	    </div>
+      <% end %>
+    </div>
   </ul>
   <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 
@@ -57,6 +60,27 @@
   		</div>
     	<div class="row">
     		<div class="col s6">
+          <h5 class="bold">Publishing</h5>
+          <div class="row center">
+              <p>This show is...</p>
+              <div class="switch">
+                  <label>
+                    un-published
+                    <input id="publish-switch" show-type="published" value-type="checkbox" type="checkbox">
+                    <span class="lever"></span>
+                    pubished
+                  </label>
+              </div>
+          </div>
+
+          <div id="publish-on-cont" class="row">
+            <p style="margin: 40px 0 0;">You may choose to leave this show unpublished for now and publish it at a later date.</p>
+            <div class="input-field col s12">
+              <input tanoshimu-activate-on="" id="publish-on" type="text" class="datepicker">
+              <label for="publish-on">Publish on...(optional)</label> 
+            </div>
+          </div>
+
     			<h5 class="bold">General info</h5>
     			<div class="row">
     				<div class="input-field col s6">
@@ -97,27 +121,6 @@
                   </select>
                   <label>Subbed? Dubbed?</label>
               </div>
-          </div>
-
-          <h5 class="bold">Publishing</h5>
-          <div class="row center">
-              <p>This show is...</p>
-              <div class="switch">
-                  <label>
-                    un-published
-                    <input id="publish-switch" show-type="published" value-type="checkbox" type="checkbox">
-                    <span class="lever"></span>
-                    pubished
-                  </label>
-              </div>
-          </div>
-
-          <div id="publish-on-cont" class="row">
-            <p style="margin: 40px 0 0;">You may choose to leave this show unpublished for now and publish it at a later date.</p>
-            <div class="input-field col s12">
-              <input tanoshimu-activate-on="" id="publish-on" type="text" class="datepicker">
-              <label for="publish-on">Publish on...(optional)</label> 
-            </div>
           </div>
     		</div>
         <div class="col s6">
@@ -167,9 +170,6 @@
         </div>
     	</div>
   	</div>
-  
-
-
   </div>
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -227,6 +227,10 @@
           $('#show-body').attr('show-id', show_id);
           $('[show-value="link-to"]').attr('href', '/shows?id=' + show_id);
           $('#publish-switch').prop('checked', show.published == true).change();
+          $("#show-img-file").val('');
+          $('#banner_preview_cont').addClass('hidden');
+          $('#banner_preview').removeAttr('src');
+
           let properties = Object.keys(show);
           [].forEach.call(properties, function(prop) {
             let element = $('[show-value="' + prop + '"]');
@@ -288,6 +292,7 @@
       });
 
       $('#upload-show').on('click', function(e) {
+        setLoading(true);
         let show_id = $('#show-body').attr('show-id');
         let form_data = new FormData();
         form_data.append('banner', $('#show-img-file')[0].files[0]);
@@ -303,6 +308,9 @@
           data: form_data,
           method: 'patch',
           success: function(response) {
+            // No need to set loading to false
+            let $go_to_element = $('[show-id="' + response.id + '"]');
+            $go_to_element.trigger('click');
             M.toast({html: response.message});
           }
         });
@@ -324,16 +332,20 @@
           data: {published: is_published ? true : false},
           success: function(response) {
             //M.toast({html: response.message});
-            console.log(response);
             $('#publish-switch').prop('checked', response.published).change();
-            M.toast({html: response.message});
+            if (response.success) {
+              refreshShows();
+            }
+            
           }
         });
       }
 
-      function setLoading(loading) {
+      function setLoading(loading, hide_body) {
         if (loading) {
-          $('#show-body').addClass('hidden');
+          if (hide_body) {
+            $('#show-body').addClass('hidden');
+          }
           $('#progress').removeClass('hidden');
           $('[waiting-for="small_banner"]').removeClass('hidden');
           $('#small_banner').addClass('img-loading');
@@ -354,6 +366,55 @@
 
           reader.readAsDataURL(input.files[0]);
         }
+      }
+
+      function refreshShows() {
+        $.ajax({
+          url: '/admin/shows.json',
+          method: 'get',
+          success: function(response) {
+            published_shows = response.published;
+            unpublished_shows = response.unpublished;
+
+            drawShows('#published-list', published_shows);
+            drawShows('#unpublished-list', unpublished_shows);
+
+            let $go_to_element = $('div.clickable.current');
+            $('#slide-out').animate({scrollTop: $go_to_element.offset().top}, 2000);
+          }
+        });
+      }
+
+      function drawShows(where, shows) {
+        let $shows_cont = $(where);
+        $shows_cont.html('');
+
+        [].forEach.call(shows, function(show) {
+          let $wrapper = $('<div class="clickable plz-hover"></div>');
+          $wrapper.attr('show-id', show.id);
+          $wrapper.attr('title', show.get_title);
+          if (show.current) {
+            $wrapper.addClass('current');
+          }
+
+          let $inner_wrapper = $('<li></li>');
+          let $inner_wrapper_2 = $('<div class="row"></div>');
+
+          let $cont_image = $('<div class="col s3"></div>');
+          let $image = $('<img class="circle small-banner">');
+          $image.attr('src', show.banner_url);
+          $cont_image.append($image);
+
+          let $cont_text = $('<div class="col s9"></div>');
+          let $text = $('<span class="truncate show-title"></span>').text(show.get_title);
+          $cont_text.append($text);
+
+          $inner_wrapper_2.append($cont_image, $cont_text);
+          $inner_wrapper.append($inner_wrapper_2);
+          $wrapper.append($inner_wrapper);
+
+          $shows_cont.append($wrapper);
+        });
       }
   	});
   </script>
