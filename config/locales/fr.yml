@@ -57,6 +57,10 @@ fr:
 
   admin:
     home: "Console d'administration"
+    success:
+      published: "L'émission est maintenant publiée !"
+      un-published: "L'émission n'est désormais plus publiée."
+      updated: "Cette émission a bien été bien été mise à jour."
 
   anime:
     shows:

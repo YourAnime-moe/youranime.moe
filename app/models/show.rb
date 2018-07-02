@@ -256,8 +256,8 @@ class Show < ActiveRecord::Base
             dubbed: dubbed,
             published: is_published?,
             banner_url: get_banner_url,
-            banner_path: image_path,
-            videos_path: default_path
+            image_path: image_path,
+            default_path: default_path
         }
     end
 

@@ -78,6 +78,10 @@ en:
 
   admin:
     home: "Admin console"
+    success:
+      published: "Show is now published!"
+      un-published: "Show is no longer published."
+      updated: "This show has successfully been updated!"
 
   anime:
     shows:

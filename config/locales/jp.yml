@@ -58,6 +58,10 @@ jp:
 
   admin:
     home: "管理画面"
+    success:
+      published: "ショーは公開されました。"
+      un-published: "このショーは非公開されました。"
+      updated: "このショーは変更されました。"
 
   anime:
     shows:

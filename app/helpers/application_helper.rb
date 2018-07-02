@@ -51,6 +51,30 @@ module ApplicationHelper
         @current_episode ||= Episode.find(session[:currently_watching]["episode"])
     end
 
+    def current_admin_show_id
+        return -1 unless logged_in? && current_user.is_admin?
+        @current_show_id ||= session[:current_show_id]
+        if @current_show_id.nil?
+            shows = Show.all_published
+            if !shows.blank?
+                select_show = shows[0].id;
+            else
+                select_show = Show.first.nil? ? -1 : @select_show.id
+            end
+            @current_show_id = select_show
+            current_admin_show_id = select_show
+        end
+        @current_show_id
+    end
+
+    def set_current_admin_show_id(id)
+        p "Now: #{current_admin_show_id}"
+        return false unless logged_in? && current_user.is_admin?
+        @current_show_id = id
+        session[:current_show_id] = id
+        p "After: #{current_admin_show_id}"
+    end
+
     def current_action(action=nil)
         @action ||= action
     end
@@ -124,6 +148,7 @@ module ApplicationHelper
     private
         def _logout
             session.delete(:user_id)
+            session.delete(:current_show_id)
         end
 
 end

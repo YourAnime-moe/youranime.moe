@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     resources :shows
     resources :episodes
   end
+  patch '/admin/shows/publish/:id' => 'admin/shows#publish'
 
   # Oauth
   get '/auth/:provider/callback' => 'sso#create'

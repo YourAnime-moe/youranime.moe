@@ -513,8 +513,12 @@ body {
     padding-top: 15px;
 }
 
-[show-id]:hover {
+.plz-hover:hover {
     background-color: #eee;
+}
+
+.current {
+    background-color: #ddd;
 }
 
 .image-input, .image-preview {
