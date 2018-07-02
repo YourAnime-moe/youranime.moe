@@ -38,7 +38,7 @@
             - @coming_soon.each do |cs|
                 .col.m4
                     a href="/shows?id=#{cs.id}"
-                        = image_tag cs.get_banner
+                        img src="#{cs.admin_json[:banner_url]}"
                     p.italic #{cs.get_title}
         - else
             p.center #{t('welcome.no-coming-soon')}
@@ -50,7 +50,7 @@
             - @recommended.each do |rec|
                 .col.m4
                     a href="/shows?id=#{rec.id}"
-                        = image_tag rec.get_banner
+                        img src="#{rec.admin_json[:banner_url]}"
                     p #{rec.get_title}
         - else
             p.center #{t('welcome.no-recommended')}
@@ -62,7 +62,7 @@
             - @featured.each do |fet|
                 .col.m4
                     a href="/shows?id=#{fet.id}"
-                        = image_tag fet.get_banner
+                        img src="#{fet.admin_json[:banner_url]}"
                     p #{fet.get_title}
         - else
             p.center #{t('welcome.no-featured')}
@@ -74,7 +74,7 @@
             - @this_season.each do |ts|
                 .col.m4
                     a href="/shows?id=#{ts.id}"
-                        img src="#{ts.get_image_path(current_token)}"
+                        img src="#{ts.admin_json[:banner_url]}"
                     p #{ts.get_title}
         - else
             b.center
