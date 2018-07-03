@@ -315,11 +315,11 @@ class Show < ActiveRecord::Base
     end
 
     def self.all_published
-        self.all.select{|e| e.is_published?}
+        self.all.select{|e| !e.get_title.nil? && e.is_published?}.to_a.sort_by(&:get_title)
     end
 
     def self.all_un_published
-        self.all.reject{|e| e.is_published?}
+        self.all.reject{|e| e.get_title.nil? || e.is_published?}.to_a.sort_by(&:get_title)
     end
 
     def self.search keyword, preset_list=nil
