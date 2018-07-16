@@ -1,4 +1,20 @@
 namespace :clean_up do
+	namespace :remove_all do
+		desc "Removes all shows media"
+		task :shows => :environment do
+		  puts "Cleaning up shows..."
+		  Show.remove_all_media
+		  puts "done."
+		end
+
+		desc "Removes all episode media"
+		task :episodes => :environment do
+		  puts "Cleaning up episode..."
+		  Episode.remove_all_media
+		  puts "done."
+		end
+	end
+
 	namespace :active_storage do
 		desc "Cleans up only shows"
 		task :shows => :environment do
@@ -8,7 +24,7 @@ namespace :clean_up do
 		end
 
 		desc "Cleans up only episode"
-		task :episode => :environment do
+		task :episodes => :environment do
 		  puts "Cleaning up episode..."
 		  Episode.clean_up
 		  puts "done."
@@ -26,3 +42,4 @@ namespace :clean_up do
 	  puts "done."
 	end
 end
+

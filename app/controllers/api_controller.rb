@@ -5,8 +5,6 @@ class ApiController < ApplicationController
 	# skip_before_action :vertify_authenticity_token
 	protect_from_forgery with: :null_session
 
-    before_action :check_is_in_maintenance_mode
-
 	def token
 		username = token_params[:username]
 		password = token_params[:password]
@@ -29,6 +27,11 @@ class ApiController < ApplicationController
 			render json: {token: nil, message: "Invalid username or password.", success: false}
 			return
 		end
+
+        if !user.is_admin? && maintenance_activated?(user: user)
+          render json: {message: "Sorry, this site is undergoing maintenance as we speak! Please check back later.", success: false}
+          return
+        end
         
         # If the client requests and admin account.
         if params[:admin] == "true" && !user.is_admin?

@@ -13,6 +13,8 @@ class Admin::ShowsController < AdminController
 		json_published = json_published.map { |x| !(x[:current] = (x[:id] == @select_show)).nil? && x }
 		json_unpublished = json_unpublished.map { |x| !(x[:current] = (x[:id] == @select_show)).nil? && x }
 
+		@episodes = @published_shows.first.episodes
+
 		respond_to do |format|
 			format.html
 			format.json { render json: {published: json_published, unpublished: json_unpublished} }
@@ -36,7 +38,10 @@ class Admin::ShowsController < AdminController
 		message = nil
 		if show
 			if params[:banner].class == ActionDispatch::Http::UploadedFile
-				show.banner.attach(params[:banner])
+				io = params[:banner].tempfile
+				path = show.image_path
+
+				show.banner.attach(io: io, filename: path)
 			end
 			show.update_attributes(show_params)
 			show = show.admin_json if show

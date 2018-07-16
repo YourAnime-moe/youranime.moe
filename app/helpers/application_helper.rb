@@ -141,8 +141,17 @@ module ApplicationHelper
         "You are posting as '#{current_user.username}'. Your name will not be displayed."
     end
 
-    def maintenance_activated?
+    def is_maintenance_activated?
         ENV["TANOSHIMU_MAINTENANCE"] == "true"
+    end
+
+    def maintenance_activated?(user: nil)
+        user = current_user || user
+        if !user.nil? && is_maintenance_activated?
+            !user.is_admin?
+        else
+            false
+        end
     end
 
     private

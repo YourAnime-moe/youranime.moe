@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :redirect_if_old
-  before_action :check_is_in_maintenance_mode
   before_action :find_locale
 
   def find_locale
@@ -62,6 +61,10 @@ class ApplicationController < ActionController::Base
     user = User.find_by(username: username.downcase)
     unless user.nil?
         if user.authenticate(password)
+            if !user.is_admin? && maintenance_activated?(user: user)
+              render json: {message: "Sorry, this site is undergoing maintenance as we speak! Please check back later.", success: false}
+              return
+            end
             user.regenerate_auth_token if user.auth_token.nil?
             unless user.is_activated?
               render json: {message: 'Please go to the <a href="https://my-akinyele-admin.herokuapp.com" target="_blank">admin console</a> to get started.', success: false}
@@ -129,10 +132,19 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def check_is_in_maintenance_mode
-    if maintenance_activated?
-      render 'maintenance_activated'
-    end
-  end
+  #def check_is_in_maintenance_mode
+  #  if maintenance_activated?
+  #    respond_to do |format|
+  #      format.html { render 'maintenance_activated' }
+  #      format.json {
+  #        render json: {
+  #            success: false,
+  #            message: "HaveFun (Tanoshimu) is currently in maintenance mode. We appologize for the inconvience.",
+  #            maintenance: true,
+  #        }
+  #      }
+  #    end
+  #  end
+  #end
 
 end

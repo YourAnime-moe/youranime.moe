@@ -51,6 +51,8 @@ gem 'coveralls', require: false
 # AWS S3 SDK
 gem "aws-sdk-s3", require: false
 
+gem "kaminari"
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

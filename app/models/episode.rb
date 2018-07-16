@@ -5,6 +5,8 @@ class Episode < ActiveRecord::Base
 
     serialize :comments
 
+    paginates_per 20
+
     include Navigatable
 
     before_save {
@@ -93,6 +95,12 @@ class Episode < ActiveRecord::Base
         thumbnail
     end
 
+    def get_thumbnail_url
+        thumbnail = get_thumbnail
+        return "/img/404.jpg" unless thumbnail.attached?
+        get_thumbnail.service_url
+    end
+
     def has_video?
         get_video(raise_exception: false).attached?
     end
@@ -109,6 +117,12 @@ class Episode < ActiveRecord::Base
             end
         end
         video
+    end
+
+    def get_video_url
+        video = get_video
+        return "/img/404.mp4" unless video.attached?
+        get_video.service_url
     end
 
     def get_image_path(token=nil, ext: 'jpg', as_is: false)
@@ -249,6 +263,15 @@ class Episode < ActiveRecord::Base
             episode.video.purge if episode.video.attached?
             p "Making video for episode id #{episode.id}"
             episode.get_video
+        end
+    end
+
+    def self.remove_all_media
+        self.all.each do |episode|
+            p "Cleaning thumbnail for episode id #{episode.id}"
+            episode.thumbnail.purge if episode.thumbnail.attached?
+            p "Cleaning video for episode id #{episode.id}"
+            episode.video.purge if episode.video.attached?
         end
     end
 

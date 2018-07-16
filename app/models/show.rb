@@ -359,4 +359,11 @@ class Show < ActiveRecord::Base
         end
     end
 
+    def self.remove_all_media
+        self.all.each do |show|
+            p "Cleaning banner for show id #{show.id}"
+            show.banner.purge if show.banner.attached?
+        end
+    end
+
 end

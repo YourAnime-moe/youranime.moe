@@ -28,6 +28,10 @@
     src: url('/fonts/opensans/OpenSans-Bold.ttf'); /*URL to font*/
 }
 
+nav.maintenance {
+    background-color: #d87f11 !important;
+}
+
 body {
     font-family: opensans;
     position: relative;
@@ -175,6 +179,11 @@ textarea.tanoshimu:focus {
 
 .well.space {
     margin-bottom: 20px;
+}
+img[episode-number].preview {
+    width: 75px;
+    height: 40px;
+    object-fit: cover;
 }
 
 .pager {
@@ -533,6 +542,9 @@ body {
     height: 200px;
     width: 100%;
     border: 1px solid #000;
+}
+.small.image-input {
+    height: 100px !important;
 }
 
 .image-input {
