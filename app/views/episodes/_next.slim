@@ -31,6 +31,7 @@
     p.bold #{t('anime.episodes.discover')}
 
     - current_user.random_episode_selection(current_episode: @episode).each do |episode|
+        - next if episode.show.nil?
         - url = '/shows/episodes?id=' + episode.id.to_s
         - watched = "watched" if episode.was_watched_by? current_user
         .clickable.episode-info.other class="#{watched}" onclick="window.location.href='#{url}'"
