@@ -17,11 +17,7 @@
             <li>
               <div class="row">
                 <div class="col s3">
-                  <% if show.has_banner? %>
-                    <%= image_tag(show.get_banner, class: "circle small-banner") %>
-                  <% else %>
-                    <img src="/img/404.jpg" class="circle small-banner">
-                  <% end %>
+                  <img class="circle small-banner" src="<%= show.get_banner_url %>">
                 </div>
                 <div class="col s9" style="vertical-align: middle;"><span class="truncate"><%= show.get_title(html: true) %></span></div>
               </div>
@@ -37,11 +33,7 @@
             <li>
               <div class="row">
                 <div class="col s3">
-                  <% if show.has_banner? %>
-                    <%= image_tag(show.get_banner, class: "circle small-banner") %>
-                  <% else %>
-                    <img src="/img/404.jpg" class="circle small-banner">
-                  <% end %>
+                  <img class="circle small-banner" src="<%= show.get_banner_url %>">
                 </div>
                 <div class="col s9"><span class="truncate show-title"><%= show.get_title(html: true) %></span></div>
               </div>
