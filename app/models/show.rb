@@ -97,7 +97,7 @@ class Show < ActiveRecord::Base
     end
 
     def all_episodes
-        Episode.all.select{ |e| e.show_id == self.id}
+        Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
     end
 
     def split_episodes(sort_by: 4)
