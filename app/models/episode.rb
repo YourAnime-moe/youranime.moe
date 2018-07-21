@@ -119,10 +119,10 @@ class Episode < ActiveRecord::Base
         video
     end
 
-    def get_video_url
+    def get_video_url(expires_in: 500.minutes)
         video = get_video
         return "/img/404.mp4" unless video.attached?
-        get_video.service_url
+        get_video.service_url(expires_in: expires_in)
     end
 
     def get_image_path(token=nil, ext: 'jpg', as_is: false)

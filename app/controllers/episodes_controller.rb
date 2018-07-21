@@ -93,4 +93,13 @@ class EpisodesController < AuthenticatedController
         send_data res.body, filename: episode.title
     end
 
+    def show_episode_video
+        episode = Episode.find_by(:id => params[:id])
+        if episode.nil?
+            
+        else
+            
+        end
+    end
+
 end

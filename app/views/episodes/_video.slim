@@ -4,7 +4,7 @@ div.no-video.hidden
     a href="" here.
 
 div style="margin-top: 10px;"
-    = video_tag(@episode.get_video_url, id: "episode_video", class: "video-js vjs-big-play-centered vjs-default-skin", width: "640", height: "264", controls: "true", "data-setup": '{"fluid": true}')
+    = video_tag(@episode.get_video_url(expires_in: 100.minutes), id: "episode_video", class: "video-js vjs-big-play-centered vjs-default-skin", width: "640", height: "264", controls: "true", "data-setup": '{"fluid": true}')
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mp4"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/mkv"
         source src="#{asset_path(@episode.get_path(current_token))}" type="video/avi"
