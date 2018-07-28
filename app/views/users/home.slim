@@ -4,7 +4,7 @@
 .container
     br
     h4 #{t('welcome.left')}
-    - if @shows.empty?
+    - if @episodes.empty?
         .center
             p #{t('welcome.nothing-watched-yet')}
             a.btn href='/shows' #{t('welcome.nothing-watched-yet-start')}
