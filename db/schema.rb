@@ -104,8 +104,6 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.integer "season_year"
     t.integer "season_code"
     t.string "tags"
-    t.date "publish_after"
-    t.date "published_until"
   end
 
   create_table "todos", force: :cascade do |t|

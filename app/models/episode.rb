@@ -42,7 +42,7 @@ class Episode < ActiveRecord::Base
         # Only accept the last part, don't accept multiple extensions for videos
         parts[parts.size-1]
     end
-    
+
     def has_previous?
         !self.previous.nil?
     end
@@ -97,7 +97,7 @@ class Episode < ActiveRecord::Base
 
     def get_thumbnail_url
         thumbnail = get_thumbnail
-        return "/img/404.jpg" unless thumbnail.attached?
+        return "https://anime.akinyele.ca/img/404.jpg" unless thumbnail.attached?
         get_thumbnail.service_url
     end
 
@@ -121,7 +121,7 @@ class Episode < ActiveRecord::Base
 
     def get_video_url(expires_in: 500.minutes)
         video = get_video
-        return "/img/404.mp4" unless video.attached?
+        return "https://anime.akinyele.ca/img/404.mp4" unless video.attached?
         get_video.service_url(expires_in: expires_in)
     end
 
