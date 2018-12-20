@@ -11,7 +11,7 @@ class Show < ActiveRecord::Base
             # Default to...
             self.subbed = true
         end
-        
+
         if self.show_number.nil?
             self.show_number = 1
         end
@@ -64,7 +64,7 @@ class Show < ActiveRecord::Base
 
     def get_banner_url
         banner = get_banner
-        return "/img/404.jpg" unless banner.attached?
+        return "https://anime.akinyele.ca/img/404.jpg" unless banner.attached?
         get_banner.service_url
     end
 
@@ -86,7 +86,7 @@ class Show < ActiveRecord::Base
         if from.class == Episode
             from = from.episode_number
         end
-        
+
         results = []
         @episodes.each do |episode|
             if episode.episode_number >= from
@@ -260,6 +260,10 @@ class Show < ActiveRecord::Base
             default_path: default_path,
             id: id
         }
+    end
+
+    def publish_after
+        nil
     end
 
     def self.get(title: nil, show_number: nil)

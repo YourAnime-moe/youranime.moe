@@ -57,6 +57,7 @@ class AuthApiController < ApiController
 			results = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
 			results = results.to_a.sort_by(&:get_title)
 			results.select! {|show| show.is_published? || @is_admin}
+			results = results.as_json(methods: [:get_banner_url])
 		else
 			results = Show.find_by(shows_params) || {}
 			json = results.to_json
@@ -108,6 +109,8 @@ class AuthApiController < ApiController
 					result[:subs_path] = ep.get_subtitle_path
 					result[:watched] = @user.has_watched? ep
 					result[:path] = ep.get_path
+					result[:get_thumbnail_url] = ep.get_thumbnail_url
+					result[:get_video_url] = ep.get_video_url
 					result[:progress] = ep.progress_info(@user)
 					episodes.push result
 				end
@@ -127,6 +130,8 @@ class AuthApiController < ApiController
 				result[:image_path] = episodes.get_image_path
 				result[:subs_path] = episodes.get_subtitle_path
 				result[:path] = episodes.get_path
+				result[:get_thumbnail_url] = ep.get_thumbnail_url
+				result[:get_video_url] = ep.get_video_url
 				result[:progress] = episodes.progress_info(@user)
                 episodes = result
             end
@@ -145,7 +150,7 @@ class AuthApiController < ApiController
 	def episodes_history
 		episodes = @user.get_episodes_watched(as_is: params[:as_is] == "true")
 		episodes = episodes.map{|episode_id| Episode.find_by(id: episode_id)}.reject{|episode| episode.nil?}
-		
+
 		result = []
 		episodes.each do |episode|
 			entry = JSON.parse episode.to_json
@@ -177,7 +182,7 @@ class AuthApiController < ApiController
 		episode = Episode.find_by(id: id)
 		if episode.nil?
 			render json: {success: false, reason: "episode-not-found"}
-			return			
+			return
 		end
 
 		success = user.update_episode_progress episode, progress
