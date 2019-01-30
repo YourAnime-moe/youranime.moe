@@ -276,14 +276,14 @@ class Show < ActiveRecord::Base
         [:get_title]
     end
 
-    def self.get_presence(tag, limit=3, options=nil)
+    def self.get_presence(tag, request_banner=true, limit=3, options: nil)
         found_shows = []
         self.all.each do |show|
             if options.class != Hash && tag == :season
                 raise "Invalid season options"
             end
             next unless show.is_published?
-            next unless show.has_banner?
+            #next unless request_banner && show.has_banner?
 
             break if found_shows.size >= limit
             if tag == :recommended

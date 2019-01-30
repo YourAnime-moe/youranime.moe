@@ -417,7 +417,7 @@ class ShowTest < TanoshimuBaseTest
         assert show.get_year == 566
     end
 
-    test "Show check get season code" do 
+    test "Show check get season code" do
         show = Show.new
         show.season_code = 2
         assert_save show
@@ -504,8 +504,8 @@ class ShowTest < TanoshimuBaseTest
         assert_equal Show.get_presence(:recommended).size, 2
         assert_equal Show.get_presence(:featured).size, 1
         assert_not_nil Show.get_presence(:season, 100, options: {})
-        assert_raises RuntimeError do 
-            Show.get_presence :season, 100 
+        assert_raises RuntimeError do
+            Show.get_presence :season, 100
         end
     end
 
@@ -526,8 +526,8 @@ class ShowTest < TanoshimuBaseTest
 
     test "All shows are published" do
         count = 10
-        (1..count).each do 
-            assert_save Show.new(published: true)
+        (1..count).each do |i|
+            assert_save Show.new(published: true, title: "show##{i}")
         end
         all_episodes = Show.all_published
         assert_equal all_episodes.size, count + 3

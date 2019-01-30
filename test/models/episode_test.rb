@@ -46,7 +46,7 @@ class EpisodeTest < TanoshimuBaseTest
         episode = Episode.new
         assert_save episode
         assert_not episode.is_published?
-    end 
+    end
 
     test "Episode is published" do
         episode = Episode.new show_id: @show.id
@@ -120,9 +120,7 @@ class EpisodeTest < TanoshimuBaseTest
     test "No subs if no path" do
         episode = Episode.new(show_id: @show.id)
         assert_save episode
-        assert_raises NoMethodError do
-            episode.get_subtitle_path
-        end
+        assert_nil episode.get_subtitle_path
     end
 
     test "Only subbed episodes have subs" do
@@ -183,14 +181,14 @@ class EpisodeTest < TanoshimuBaseTest
         time = Utils.get_date_from_time(Time.now)
 
         comments = [
-            {text: "one", time: time, user_id: @dummy_user.id}, 
+            {text: "one", time: time, user_id: @dummy_user.id},
             {text: "two", time: time, user_id: @dummy_user.id},
             {text: "three", time: time, user_id: @dummy_user.id},
             {text: "fake", time: time, user_id: 9999}
         ]
 
         expected = [
-            {text: "one", time: time, user_id: @dummy_user.username}, 
+            {text: "one", time: time, user_id: @dummy_user.username},
             {text: "two", time: time, user_id: @dummy_user.username},
             {text: "three", time: time, user_id: @dummy_user.username},
             {text: "fake", time: time, user_id: 'User #9999'}
@@ -198,7 +196,7 @@ class EpisodeTest < TanoshimuBaseTest
         comments.each do |comment|
             assert_equal episode.add_comment(comment), {success: true, message: "Comment was received."}
         end
-        
+
         assert_equal episode.get_comments(usernames: true), expected
     end
 
@@ -208,7 +206,7 @@ class EpisodeTest < TanoshimuBaseTest
 
     test "All episodes are published" do
         count = 10
-        (1..count).each do 
+        (1..count).each do
             assert_save Episode.new(published: true)
         end
         all_episodes = Episode.all_published

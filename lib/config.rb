@@ -1,82 +1,54 @@
-class Config
+module Config
 
-    CONFIG_PATH = "config/config.json"
-    LINK_TAG_SIZE = 2
-
-    def self.main_host(path=nil, as_is: false)
-        return _fetch_host(path, :main, as_is: as_is) if Rails.env == "production"
-        return _fetch_host(path, :dev, as_is: as_is) if Rails.env == "development"
-        return _fetch_host(path, :test, as_is: as_is) if Rails.env == "test"
+    class Error < StandardError
     end
 
-    def self.admin_host(path=nil, *tags)
-        host = Rails.env == "production" ? _fetch_host(path, :admin) : _fetch_host(path, "admin-test")
-        return host if tags.nil? or tags.empty?
-        tags = tags.each_slice(LINK_TAG_SIZE).to_a
-        tags.reject!{|t| t.empty?}
-        tags.each do |tag_array|
-            next if tag_array.size != LINK_TAG_SIZE
-            key = tag_array[0]
-            value = tag_array[1]
-            if host.include? "?"
-                host << "&"
-            else
-                host << "?"
-            end
-            host << "#{key}=#{value}"
-        end
-        host
-    end
+    mattr_accessor :protocol
+    @@protocol = nil
 
-    def self.hosts(path=nil)
-        self.all(path)["hosts"]
-    end
+    mattr_accessor :use_ssl
+    @@use_ssl = true
 
-    def self.api(path=nil)
-        self.all(path)['api']
-    end
+    mattr_accessor :sub_domain
+    @@sub_domain = nil
 
-    def self.env(key=nil, default=nil, path=nil)
-        h = self.api(path)["env"]
-        return h if key.nil? && default.nil?
-        value = h[key]
-        value ? value : default
-    end
+    mattr_accessor :domain
+    @@domain = nil
 
-    def self.all(path=nil)
-        path = CONFIG_PATH if path.nil?
-        JSONConfig.get(path)
-    end
+    mattr_accessor :port
+    @@port = nil
 
-    def self.path(path, as_is: false)
-        main = self.main_host(as_is: as_is).dup
-        if !main.end_with? "/" and !path.start_with? "/"
-            main << "/"
-        end
-        main + path
-    end
+    mattr_accessor :use_env
+    @@use_env = false
 
-    private
-        def self._fetch_host(path, key, as_is: false)
-            key = key.to_s
-            return nil if key.empty?
-            hosts_info = self.hosts(path)[key]
-            return nil if hosts_info.nil?
-            protocol = hosts_info["protocol"]
-            unless as_is
-                protocol = "http" if protocol.nil?
-            end
-            sub_domain = hosts_info["sub_domain"]
-            domain = hosts_info["domain"]
-            if hosts_info["env"]
-                domain = ENV[domain]
-            end
-            return domain if as_is
-            raise Exception.new("Domain was not found for key #{key}.") if domain.nil?
-            path = protocol + "://"
-            path << sub_domain + "." unless sub_domain.nil?
-            path << domain
+    mattr_accessor :videojs
+    @@videojs = nil
+
+    class << self
+        # <protocol>://<subdomain>.<domain>:<port>/<path>
+        def main_host(as_is: false)
+          raise Error.new('Please set the domain name.') if domain.nil?
+          _protocol = use_ssl ? 'https' : (protocol || 'http')
+          _port = use_ssl ? 443 : (port || 80)
+          host = ''
+          host = _protocol + '://' unless as_is
+          host << (sub_domain + '.') if sub_domain
+          host << domain
+          host << (":#{_port}") unless port.nil?
+          host
         end
 
+        def path(path, as_is: false)
+            main = self.main_host(as_is: as_is).dup
+            return path if main.blank?
+            if !main.end_with? "/" and !path.start_with? "/"
+                main << "/"
+            end
+            main + path
+        end
 
+        def setup
+          yield self
+        end
+    end
 end

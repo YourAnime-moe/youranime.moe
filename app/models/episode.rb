@@ -220,7 +220,9 @@ class Episode < ActiveRecord::Base
         list = []
         return list if self.comments.nil?
         self.comments.each do |comment|
-            next unless comment.instance_of? Hash
+            accepted_classes = [Hash, ActiveSupport::HashWithIndifferentAccess]
+            next unless accepted_classes.include?(comment.class)
+            p comment
             new_comment = {text: comment[:text]}
             if time
                 new_comment[:time] = Utils.get_date_from_time(Time.parse(comment[:time].to_s).getlocal)

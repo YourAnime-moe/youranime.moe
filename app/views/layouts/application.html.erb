@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
   <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <link rel="stylesheet" type="text/css" href="https://vjs.zencdn.net/<%= videojs_version %>/video-js.css">
@@ -72,7 +72,7 @@
               currentRequest = $.ajax( ajaxOpts );
           });
       };
-       
+
       // Abort method
       function abortAjaxQueue() {
           ajaxQueue.clearQueue();
@@ -88,7 +88,7 @@
             $('select').formSelect();
             $('.datepicker').datepicker();
 
-            var current_lang = 'jp' || navigator.language || navigator.userLanguage || 'jp';
+            var current_lang = navigator.language || navigator.userLanguage || 'en';
             if (current_lang == 'ja') {
               current_lang = 'jp';
             }
