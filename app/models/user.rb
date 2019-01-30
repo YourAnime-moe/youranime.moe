@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
             return nil
         end
         unless episode.class == Episode || episode.class == Integer
-            return false 
+            return false
         end
         if episode.instance_of? Integer
             episode = Episode.find_by(id: episode)
@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
             return nil
         end
         unless episode.class == Episode || episode.class == Integer
-            return false 
+            return false
         end
         if episode.instance_of? Integer
             episode = Episode.find_by(id: episode)
@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
     end
 
     # Returns a list of episodes that have "watching progress"
-    def currently_watching(limit: nil)
+    def currently_watching(limit: nil, no_thumbnails: false)
         return [] if self.episode_progress_list.blank?
         res = self.episode_progress_list.map{|progress| Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
         self.get_latest_episodes(limit: limit).each do |episode|
@@ -128,7 +128,7 @@ class User < ActiveRecord::Base
             limit = 4 if limit < 1
             res = res[0..limit-1]
         end
-        res = res.select{|e| e.has_thumbnail?}
+        res = res.select{|e| no_thumbnails || e.has_thumbnail?}
         return res || []
     end
 
@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
     end
 
     def get_latest_episodes(limit: 5)
-        limit = 5 if limit.to_s.strip.size < 0 || limit < 0
+        limit = 5 if limit.blank? || limit < 0
         p "Episodes: #{self.get_episodes_watched(as_is: false).nil?}"
         episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
         episodes.select!{|e| e.is_published?}
