@@ -3,16 +3,15 @@ cache: bundler
 deploy:
   provider: heroku
   api_key:
-    secure: SkTeDSGkF6Z9/25P81ly3S+8+adiJ8iRcwPcF6vUazIH1hIi7L8M1llUhO8Ye8DV1bPJoa06/odEE2VdHhD40UGxGBg4pzjYND34B47UYKkvHqtSg4xFhZ1BdeBR6aae/1zWfpJw3T0K2U57JTMCYgoVPZ0CTETpxg4R+Rx885EFptP4nyCt5kOrV4KsQAskgyDPa9W3CtbgX1OA/Leluz/4plGrCVMJZw+nXBtBFt2Udk8QGp4+02MLleR+8k+MLhpY/EDsHq4N5r/NjIZpK1AcDvcyXqrFecB6rwbhnZdI5TAEwE2JxuuwvUogHo17aOs9TGEoPuGoJ4WL53K9S8XBrhGwXO/Lzq6zAHVQOuNMystNllrl8M8tpQwrs/kAYM7uLmIt8WNu7VYnGmbSFYabY69bfKapZsfF0iY8WpiuXaJN4QYkB7Nmqhso4Anlon/xePl6fIFWP2rrr6Q1zFphHMd8SZn0Dacy0/e3aFTrtfZ9i6nmDn82vnlsPYSrJmktNZpkY94mnKA5hKJCBsUHXbH5T34SQ3nyT0CYqo3gULBMWN9exe347IDl7qWrevDpWDn643xNzmkacWAnd0PDH0XoOiIodDW3wJ17s+Jg2tmyDebLSrNGOLD106llh8erNYY1DE490sgNp4LR2L1RNE5A7Zpf78FVHaDW42I=
+    secure: QiSLIGhikGxHWsokG5G9vyqDNvBeK1PeqCXnHK4jVpuyul0YKMqXvWPC5ZgZZ1t3v+xIqhkx8j/JabJyUHc92S6p2xE9xRc1VI8ZXO2BuwqneqJ1morTZD73WgfZRtiaYK1/viRVK5oLBowPcbrYfugmoL6Pm7S0iSVHJz5oIbO3TMdF7RUN3/2zKLY7UQqZRv/nzT00oZXhzEAgZg8rMCCMALtoiMQjG8hE8Y0DTWnBZ6mHY2kKY1zHz5FVEJF9e0kaOICLl4ODI3X5GClM4SBfJyZdYeMwRAHC8LJZg8JwxGwENV2kKldf3hThLdk8Mt/W6naQx9Pj8o2qShddupkAj+LkZf1IMfRmSZQIgFUvhQEQQ508EExEE5H2qeT6gBYNs5cYfDXVJPke5Ept+Lj/K8vjdb1IK7qt0fjMrCEndYFrNts7F71kK9k2aCF2nqJrQkVnHBtV0A4m6n+qy7lEVeSs6ErNr0WL9NZU/edKKF/GM8wp1a1FgLoRBEI+8kb25MdWBmjfIAFh6A2foMHkXFTZxcS39osCwRaLZHmjMQC5wlbsg1mewga3MhRG2SxAWFCs8UzwXoaLCVcDdwtJKtILRoIxZQltNhBFZaeWazLVtApO3Lfuhmn40bcmGY2PjkKQ/guihOpZ1y/LBtLuRx/ePeGniCvs47u26kg=
   app: tanoshimu
   on:
     repo: thedrummeraki/tanoshimu
     branch: heroku
   run:
-    - "bundle exec rake db:migrate"
-    - "bundle exec rake assets:precompile"
+  - bundle exec rake db:migrate
+  - bundle exec rake assets:precompile
 branches:
   only:
-    - heroku
-env:
-  TEST_HOST=0.0.0.0
+  - heroku
+env: TEST_HOST=0.0.0.0
