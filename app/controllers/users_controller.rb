@@ -9,8 +9,8 @@ class UsersController < AuthenticatedController
         @episodes = current_user.currently_watching(limit: 4)
         @recommended = Show.get_presence :recommended
         @featured = Show.get_presence :featured
-        @this_season = Show.get_presence :season, 3, {current: true}
-        @last_season = Show.get_presence :season, 3, {previous: true}
+        @this_season = Show.get_presence :season, 3, options: {current: true}
+        @last_season = Show.get_presence :season, 3, options: {previous: true}
         @coming_soon = Show.coming_soon limit: 4
         #@body_class = nil
     end
