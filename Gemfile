@@ -5,8 +5,12 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Suggested nokogiri update
-gem 'nokogiri', '~> 1.8.1'
+# Suggested updates
+gem 'nokogiri', '~> 1.8.5'
+gem "activestorage", ">= 5.2.1.1"
+gem "rack", ">= 2.0.6"
+gem "loofah", ">= 2.2.3"
+gem "activejob", ">= 5.2.1.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
