@@ -3,6 +3,23 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  namespace :api do
+    namespace :v1 do
+      resources :shows, only: [:index, :show] do
+        resources :episodes, only: [:index]
+        get :search, on: :collection
+      end
+
+      resources :episodes, only: [:show] do
+        get :watched, on: :collection
+      end
+
+      namespace :users do
+        get :current
+      end
+    end
+  end
+
   root 'application#root'
   get '/get/current/locale' => 'application#get_locale'
   put '/set/current/locale' => 'application#set_locale'
@@ -44,7 +61,7 @@ Rails.application.routes.draw do
   # JSON controllers (GET)
   get '/json/search' => 'json#search'
   get '/json/get/users' => 'json#all_users'
-  get '/json/shows/latest' => 'users#latest_shows'
+  get '/json/shows/latest' => 'users/api#latest_shows'
   get '/json/find_show' => 'json#find_show'
   get '/json/episodes/get_comments' => 'json#episode_get_comments'
   get '/json/get/episode/next' => 'json#get_next_episode_id'
@@ -64,37 +81,37 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sso#failure'
 
   # GET API
-  get '/api/check' => 'api#check'
-  get '/api/get/user' => 'auth_api#user'
-  get '/api/get/shows' => 'auth_api#shows'
-  get '/api/get/shows/latest' => 'auth_api#latest_shows'
-  get '/api/get/news' => 'auth_api#news'
-  get '/api/get/episodes' => 'auth_api#episodes'
-  get '/api/set/episodes/watched' => 'auth_api#add_episode'
-  get '/api/get/episodes/history' => 'auth_api#episodes_history'
-  get '/api/get/episode/path' => 'auth_api#episode_path'
-  get '/api/get/username' => 'auth_api#get_username'
+  # get '/api/check' => 'api#check'
+  # get '/api/get/user' => 'auth_api#user'
+  # get '/api/get/shows' => 'auth_api#shows'
+  # get '/api/get/shows/latest' => 'auth_api#latest_shows'
+  # get '/api/get/news' => 'auth_api#news'
+  # get '/api/get/episodes' => 'auth_api#episodes'
+  # get '/api/set/episodes/watched' => 'auth_api#add_episode'
+  # get '/api/get/episodes/history' => 'auth_api#episodes_history'
+  # get '/api/get/episode/path' => 'auth_api#episode_path'
+  # get '/api/get/username' => 'auth_api#get_username'
 
-  get '/api/update/user/settings' => 'auth_api#update_user_settings'
+  # get '/api/update/user/settings' => 'auth_api#update_user_settings'
 
   # POST API
-  post '/api/token' => 'api#token'
-  post '/api/check' => 'api#check'
-  post '/api/token/destroy' => 'auth_api#destroy_token' # todo: make delete
-  post '/api/get/user' => 'auth_api#user'
-  post '/api/get/shows' => 'auth_api#shows'
-  post '/api/get/shows/latest' => 'auth_api#latest_shows'
-  post '/api/get/news' => 'auth_api#news'
-  post '/api/get/episodes' => 'auth_api#episodes'
-  post '/api/set/episodes/watched' => 'auth_api#add_episode'
-  post '/api/get/episode/path' => 'auth_api#episode_path'
-  post '/api/get/username' => 'auth_api#get_username'
-  post '/api/update/episode/progress' => 'auth_api#update_episode_progress'
-  post '/api/update/user' => 'auth_api#update_user'
+  # post '/api/token' => 'api#token'
+  # post '/api/check' => 'api#check'
+  # post '/api/token/destroy' => 'auth_api#destroy_token' # todo: make delete
+  # post '/api/get/user' => 'auth_api#user'
+  # post '/api/get/shows' => 'auth_api#shows'
+  # post '/api/get/shows/latest' => 'auth_api#latest_shows'
+  # post '/api/get/news' => 'auth_api#news'
+  # post '/api/get/episodes' => 'auth_api#episodes'
+  # post '/api/set/episodes/watched' => 'auth_api#add_episode'
+  # post '/api/get/episode/path' => 'auth_api#episode_path'
+  # post '/api/get/username' => 'auth_api#get_username'
+  # post '/api/update/episode/progress' => 'auth_api#update_episode_progress'
+  # post '/api/update/user' => 'auth_api#update_user'
 
   # PUT API
-  put '/api/update/episode/progress' => 'auth_api#update_episode_progress'
-  put '/api/update/user/settings' => 'auth_api#update_user_settings'
+  # put '/api/update/episode/progress' => 'auth_api#update_episode_progress'
+  # put '/api/update/user/settings' => 'auth_api#update_user_settings'
 
   # Messages
   get '/messages' => 'messages#index'

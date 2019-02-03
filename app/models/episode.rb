@@ -9,6 +9,11 @@ class Episode < ActiveRecord::Base
 
     include Navigatable
 
+    scope :published, -> {
+      list = order(episode_number: :desc).to_a.select{|e| e.is_published?}
+      where(id: list.map{|e| e.id})
+    }
+
     before_save {
         !self.show_id.nil?
     }
@@ -241,6 +246,17 @@ class Episode < ActiveRecord::Base
             list.push new_comment
         end
         list
+    end
+
+    def as_json(options={})
+      {
+        id: id,
+        title: title,
+        published: is_published?,
+        show_id: show_id,
+        thumbnail: get_thumbnail_url,
+        video: get_video_url
+      }
     end
 
     def self.instances

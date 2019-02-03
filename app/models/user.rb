@@ -4,20 +4,13 @@ class User < ActiveRecord::Base
     serialize :episode_progress_list
     serialize :settings
 
+    DEFAULT_DEMO_NAME = "Demo Account"
+    DEFAULT_DEMO_USERNAME = "demo"
+    DEFAULT_DEMO_TOKEN = "demo"
+
     before_save {
         self.episodes_watched = [] if self.episodes_watched.nil?
         self.episode_progress_list = [] if self.episode_progress_list.nil?
-
-        if self.username.nil? or self.username.strip.empty?
-            self.errors.add "username", "cannot be empty"
-            throw :abort
-        end
-
-        found_user = User.find_by(username: self.username)
-        unless found_user.nil? || found_user.id == self.id
-            self.errors.add "username", "\"#{self.username}\" already exists"
-            throw :abort
-        end
 
         if self.is_demo_account?
             found_user = User.find_by(demo: true)
@@ -25,6 +18,17 @@ class User < ActiveRecord::Base
                 self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
                 throw :abort
             end
+        else
+          if self.username.nil? or self.username.strip.empty?
+              self.errors.add "username", "cannot be empty"
+              throw :abort
+          end
+
+          found_user = User.find_by(username: self.username)
+          unless found_user.nil? || found_user.id == self.id
+              self.errors.add "username", "\"#{self.username}\" already exists"
+              throw :abort
+          end
         end
     }
 
@@ -32,18 +36,18 @@ class User < ActiveRecord::Base
     has_secure_token :auth_token
 
     def auth_token
-        return self[:auth_token] unless self.is_demo_account?
-        "demo"
+        return DEFAULT_DEMO_TOKEN if self.is_demo_account?
+        self[:auth_token]
     end
 
     def username
-        return self[:username] unless self.is_demo_account?
-        "demo"
+        return DEFAULT_DEMO_USERNAME if self.is_demo_account?
+        return self[:username]
     end
 
     def name
-        return self[:name] unless self.is_demo_account?
-        "Demo Account"
+        return DEFAULT_DEMO_NAME if self.is_demo_account?
+        self[:name]
     end
 
     def get_name
@@ -114,6 +118,16 @@ class User < ActiveRecord::Base
             end
         end
         result
+    end
+
+    # All episodes this user is able to view
+    def episodes_data(show)
+      show.episodes.map do |episode|
+        progress = episode.progress_info(self)
+        episode.as_json.merge({
+          progress: progress[:progress_info]
+        })
+      end
     end
 
     # Returns a list of episodes that have "watching progress"
@@ -191,8 +205,7 @@ class User < ActiveRecord::Base
     end
 
     def is_demo_account?
-        return false if self.demo.nil?
-        self.demo
+        !!self.demo
     end
 
     def set_demo

@@ -4,10 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :redirect_if_old
   before_action :find_locale
 
-  def find_locale
-    I18n.locale = params[:lang] || session[:locale] || :fr
-  end
-
   before_action {
     #if logged_in?
     #  logout
@@ -85,7 +81,6 @@ class ApplicationController < ActionController::Base
                   new_url += "#{k}=#{v}&"
                 end
               end
-              p "New url: #{new_url}"
               render json: {new_url: new_url, message: t('welcome.login.success.web-message'),  success: true}
             else
               render json: {new_url: "/", message: t('welcome.login.success.web-message'), success: true}
@@ -101,7 +96,7 @@ class ApplicationController < ActionController::Base
   def get_locale
     render json: {success: true, locale: I18n.locale}
   end
- 
+
   def set_locale
     session[:locale] = params[:locale]
     I18n.locale = params[:locale]
@@ -131,6 +126,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def find_locale
+    I18n.locale = params[:lang] || session[:locale] || :fr
+  end
 
   #def check_is_in_maintenance_mode
   #  if maintenance_activated?

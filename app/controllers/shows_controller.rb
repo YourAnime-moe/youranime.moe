@@ -73,7 +73,6 @@ class ShowsController < AuthenticatedController
             flash[:danger] = "Sorry, no show using the given parameters was not found. Please try again."
             redirect_to '/'; return
         end
-        p @show
     end
 
     def view_all
@@ -105,7 +104,7 @@ class ShowsController < AuthenticatedController
 
     def render_img
         id = params[:id]
-        if id.to_s.empty?
+        if id.blank?
             render text: "No show id was provided."
             return
         end
@@ -122,7 +121,7 @@ class ShowsController < AuthenticatedController
         res = Net::HTTP.start(url.host, url.port) {|http|
           http.request(req)
         }
-        
+
         send_data res.body, filename: "#{show.get_title}"
     end
 

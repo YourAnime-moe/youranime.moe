@@ -5,6 +5,10 @@ class Show < ActiveRecord::Base
 
     include Navigatable
 
+    scope :published, -> {
+      where(id: all_published.map{|e| e.id})
+    }
+
     before_save {
         # Make the show is at least one of dubbed or subbed.
         if self.dubbed.nil? and self.subbed.nil?
@@ -250,7 +254,7 @@ class Show < ActiveRecord::Base
         {
             title: title,
             alternate_title: alternate_title,
-            get_title: get_title(default: "No title"),
+            get_title: get_title(default: "<No title>"),
             description: description,
             subbed: subbed,
             dubbed: dubbed,
@@ -260,6 +264,22 @@ class Show < ActiveRecord::Base
             default_path: default_path,
             id: id
         }
+    end
+
+    def as_json(options={})
+      {
+        title: get_title(default: "<No title>"),
+        description: description,
+        subbed: subbed,
+        dubbed: dubbed,
+        published: is_published?,
+        banner: get_banner_url,
+        tags: get_tags,
+        episodes_count: {
+          published: episodes.size,
+          all: all_episodes.size
+        }
+      }
     end
 
     def publish_after
@@ -298,6 +318,10 @@ class Show < ActiveRecord::Base
     end
 
     def self.lastest(current_user, limit: 5)
+      self.latest current_user, limit: limit
+    end
+
+    def self.latest(current_user, limit: 5)
         episodes = current_user.get_episodes_watched
         episodes = episodes.map{|e| Episode.find e}.reverse
         shows = []
@@ -328,16 +352,10 @@ class Show < ActiveRecord::Base
 
     def self.search keyword, preset_list=nil
         keyword = keyword.to_s.downcase
-        shows = []
-        preset_list = self.all if preset_list.nil?
-        preset_list.each do |show|
-            next unless show.is_published?
-            if show.get_title.downcase.include?(keyword) || show.title.downcase.include?(keyword)
-                shows << show
-                next
-            end
+        preset_list = self.published if preset_list.class != Array
+        preset_list.select do |show|
+          show.get_title.downcase.include?(keyword) || show.title.downcase.include?(keyword)
         end
-        shows
     end
 
     def self.get_random_shows(ids: true, has_banner: false, published: true, limit: 10)

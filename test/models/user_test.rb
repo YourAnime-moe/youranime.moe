@@ -209,6 +209,7 @@ class UserTest < TanoshimuBaseTest
 
   test "User currently watching" do
     user = users(:test)
+    scared_user = users(:scared_user)
     assert_equal [], user.currently_watching
 
     # Create 10 episodes
@@ -220,7 +221,10 @@ class UserTest < TanoshimuBaseTest
       }
 
     # Add them as progress to user
-    (last_id..(last_id+10)).each {|id| assert user.update_episode_progress(Episode.find(id), 99)}
+    (last_id..(last_id+10)).each {|id|
+      assert user.update_episode_progress(Episode.find(id), 99)
+      assert_not scared_user.update_episode_progress(Episode.find(id), 99)
+    }
     assert user.currently_watching(no_thumbnails: true).size > 0
   end
 
@@ -232,8 +236,20 @@ class UserTest < TanoshimuBaseTest
     user = users(:demo)
     user.password = 'demo_password'
     assert user.is_demo_account?
+    assert_equal User::DEFAULT_DEMO_NAME, user.name
+    assert_equal User::DEFAULT_DEMO_USERNAME, user.username
     assert user.unset_demo
     assert_not user.is_demo_account?
+  end
+
+  test "cannot create more than on demo account" do
+    user = User.new({
+      username: 'my tests',
+      password: 'password',
+      password_confirmation: 'password',
+      demo: true
+    })
+    assert_not_save user
   end
 
 end
