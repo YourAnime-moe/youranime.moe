@@ -8,14 +8,14 @@ module Api
 
     protected
 
-    def token_exists?
+    def find_token!
       # Get the token
       token = params[:token]
   		raise Api::MissingTokenError.new if token.to_s.strip.empty?
     end
 
     def ensure_token
-      token_exists?
+      token = find_token!
 
       # Check if the token is valid
       @user = User.find_by_token(token)

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  namespace :api do
+  namespace :api, defaults: {format: :json} do
     get '/', to: "v#{Config.api_version}/default_action#home"
     namespace "v#{Config.api_version}" do
       resources :session, only: [:create, :show, :destroy], param: :token

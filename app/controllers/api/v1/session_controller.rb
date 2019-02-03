@@ -1,7 +1,7 @@
 module Api
   module V1
     class SessionController < ApplicationController
-      before_action :token_exists?
+      before_action :find_token!
       before_action :ensure_token, only: [:destroy]
 
       def create
