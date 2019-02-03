@@ -8,6 +8,25 @@ module Api
 
     protected
 
+    def token_exists?
+      # Get the token
+      token = params[:token]
+  		raise Api::MissingTokenError.new if token.to_s.strip.empty?
+    end
+
+    def ensure_token
+      token_exists?
+
+      # Check if the token is valid
+      @user = User.find_by_token(token)
+      raise Api::InvalidTokenError.new if @user.nil?
+
+      # Check if the user is an admin as per the request
+  		is_admin = params[:admin] == "true"
+      raise Api::NotAdminError.new unless !is_admin || @user.is_admin?
+  		@is_admin = params[:admin] == "true"
+    end
+
     def validate_id!(id)
       return if id.class == Integer
 

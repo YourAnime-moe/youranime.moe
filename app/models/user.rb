@@ -307,6 +307,25 @@ class User < ActiveRecord::Base
         ]
     end
 
+    def as_json(options={})
+      ignore = [
+        'password',
+        'password_digest',
+        'episodes_watched',
+        'settings',
+        'auth_token',
+        'is_activated',
+        'episode_progress_list',
+        'admin',
+        'demo'
+      ]
+      super(except: ignore).tap do |hash|
+        hash[:active] = is_activated?
+        hash[:admin] = is_admin?
+        hash[:demo] = is_demo_account?
+      end
+    end
+
     def self.find_by_token token
         user = self.find_by auth_token: token
         return user unless user.nil?

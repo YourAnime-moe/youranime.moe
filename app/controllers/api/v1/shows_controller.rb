@@ -30,6 +30,18 @@ module Api
         end
       end
 
+      def latest
+        # Convert the string into an integer. Any invalid
+        # integer will be 0. Should this happen, the default
+        # value (5) will be used.
+        limit = params[:limit].to_i
+        limit = 5 if limit < 1
+
+        respond_to do |format|
+          format.json { render json: Show.latest(@user, limit: limit) }
+        end
+      end
+
     end
   end
 end

@@ -24,6 +24,9 @@ module Config
     mattr_accessor :videojs
     @@videojs = nil
 
+    mattr_accessor :api_version
+    @@api_version = nil
+
     class << self
         # <protocol>://<subdomain>.<domain>:<port>/<path>
         def main_host(as_is: false)

@@ -1,7 +1,7 @@
 module Api
   class ApiError < StandardError
     def as_json(options={})
-      {success: false, status: http_status, type: self.class}.merge(additional_parameters)
+      {success: false, status: http_status, type: self.class.to_s}.merge(additional_parameters)
     end
 
     def additional_parameters

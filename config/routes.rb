@@ -4,20 +4,22 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :api do
-    namespace :v1 do
+    get '/', to: "v#{Config.api_version}/default_action#home"
+    namespace "v#{Config.api_version}" do
+      resources :session, only: [:create, :show, :destroy], param: :token
       resources :shows, only: [:index, :show] do
         resources :episodes, only: [:index]
         get :search, on: :collection
+        get :latest, on: :collection
       end
 
       resources :episodes, only: [:show] do
         get :watched, on: :collection
       end
 
-      namespace :users do
-        get :current
-      end
+      resources :users, only: [:show]
     end
+    match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, :constraints => { :all => /.*/ }
   end
 
   root 'application#root'
