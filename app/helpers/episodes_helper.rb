@@ -1,7 +1,7 @@
 module EpisodesHelper
 
-    def videojs_version
-        Config.videojs
-    end
+  def videojs_version
+    Config.videojs
+  end
 
 end
