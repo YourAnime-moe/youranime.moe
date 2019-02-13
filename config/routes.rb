@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         get :watched, on: :collection
       end
 
-      resources :users, only: [:show]
+      resources :users, only: [:index]
     end
     match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, :constraints => { :all => /.*/ }
   end
@@ -73,10 +73,11 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
-    resources :shows
+    resources :shows do
+      patch :publish, on: :member
+    end
     resources :episodes
   end
-  patch '/admin/shows/publish/:id' => 'admin/shows#publish'
 
   # Oauth
   get '/auth/:provider/callback' => 'sso#create'

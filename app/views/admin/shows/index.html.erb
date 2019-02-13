@@ -70,7 +70,7 @@
             <p style="margin: 40px 0 0;">You may choose to leave this show unpublished for now and publish it at a later date.</p>
             <div class="input-field col s12">
               <input tanoshimu-activate-on="" id="publish-on" type="text" class="datepicker">
-              <label for="publish-on">Publish on...(optional)</label> 
+              <label for="publish-on">Publish on...(optional)</label>
             </div>
           </div>
 
@@ -182,7 +182,7 @@
           </tr>
         </thead>
         <tbody id="episodes-body">
-        
+
         </tbody>
       </table>
     </div>
@@ -563,7 +563,7 @@
 
         [].forEach.call(episode_data, function(episode) {
           // make sure the episode is an image OR a video, NOT both.
-          processed = (episode.image || episode.video) 
+          processed = (episode.image || episode.video)
             && ((!episode.video && episode.image) || (episode.video && !episode.image));
           if (!processed) {
             return;
@@ -726,7 +726,7 @@
       function setPublishedShow(is_published) {
         let show_id = $(this).attr('show-id');
         $.ajax({
-          url: "/admin/shows/publish/" + current_show,
+          url: "/admin/shows/" + current_show + "/publish",
           method: 'patch',
           data: {published: is_published ? true : false},
           success: function(response) {
@@ -881,7 +881,7 @@
           $title_input.val(episode.title);
           $title_td.append($title_input);
           $wrapper.append($title_td);
-      
+
           let $published_td = $('<td>');
           let published_html = [
             '<div class="switch">',
