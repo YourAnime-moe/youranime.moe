@@ -1,7 +1,7 @@
 module Api
   module V1
     class SessionController < ApplicationController
-      before_action :find_token!
+      before_action :find_token!, except: [:create]
       before_action :ensure_token, only: [:destroy]
 
       def create
@@ -9,7 +9,7 @@ module Api
         username = credentials[:username]
         password = credentials[:password]
 
-        user = ensure_user_exists! username
+        user = ensure_user_exists! username, password
         ensure_maintenance! user
 
         # If the client requests and admin account.
@@ -58,10 +58,10 @@ module Api
       private
 
       def get_username_password
-        username = token_params[:username]
-    		password = token_params[:password]
+        username = token_params[:username].to_s
+    		password = token_params[:password].to_s
 
-    		if username.to_s.strip.empty? or password.to_s.strip.empty?
+    		if username.empty? || password.empty?
     			raise Api::MissingCredentialsError.new
     		end
 
@@ -71,12 +71,15 @@ module Api
         rescue ArgumentError
           raise Api::InvalidCredentialsError.new
         end
-        {username: username, password: password}
+        {
+          username: username.to_s.strip.downcase,
+          password: password.to_s.strip.downcase
+        }
       end
 
-      def ensure_user_exists!(username)
+      def ensure_user_exists!(username, password)
         user = User.find_by(username: username)
-    		if user.nil? or !user.authenticate password
+    		if user.nil? || !user.authenticate(password)
           raise Api::UserNotFoundError.new
     		end
         user
