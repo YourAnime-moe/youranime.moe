@@ -3,6 +3,8 @@ module Api
 
   class ApplicationController < ::ApplicationController
 
+    protect_from_forgery with: :null_session
+
     rescue_from Api::ApiError, with: :render_api_error
     rescue_from ActiveRecord::RecordNotFound, with: :render_record_not_found
 
