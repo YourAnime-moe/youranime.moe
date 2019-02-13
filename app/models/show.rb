@@ -268,6 +268,7 @@ class Show < ActiveRecord::Base
 
   def as_json(options={})
     {
+      id: id,
       title: get_title(default: "<No title>"),
       description: description,
       subbed: subbed,
