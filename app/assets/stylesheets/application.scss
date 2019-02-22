@@ -15,7 +15,7 @@
  *= require jquery-ui
  */
 
-@import "materialize";
+@import "bootstrap";
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
 @font-face {
@@ -316,7 +316,7 @@ img {
     margin: 5% 0 2%;
 }
 
-/* input[type="text"], 
+/* input[type="text"],
 input[type="password"] {
     width: 50%;
     height: 30px;
@@ -598,7 +598,7 @@ img.img-loading {
         font-size: 70%;
     }
 
-    input[type="text"], 
+    input[type="text"],
     input[type="password"] {
         width: 80%;
     }

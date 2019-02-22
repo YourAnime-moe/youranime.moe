@@ -11,11 +11,11 @@
 // about supported directives.
 //
 //= require jquery
-//= require materialize
+//= require bootstrap
 //= require jquery_ujs
 //= require jquery-ui/widgets/autocomplete
 //= require turbolinks
-//= require materialize-sprockets
+//= require bootstrap-sprockets
 //= require_tree .
 
 function retreiveMessages(container) {
@@ -36,7 +36,7 @@ function retreiveMessages(container) {
         method: 'get',
         url: '/messages/all/json',
         success: function(e) {
-            
+
         },
         failure: errorFunction,
         error: errorFunction
