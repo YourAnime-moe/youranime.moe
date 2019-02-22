@@ -15,6 +15,12 @@
  *= require jquery-ui
  */
 
+ $theme-colors: (
+   primary: #6dccc0,
+   danger: #CC6D79, // complements primary,
+   warning: #CCC06D
+ );
+
 @import "bootstrap";
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
@@ -32,532 +38,63 @@ nav.maintenance {
     background-color: #d87f11 !important;
 }
 
-body {
-    font-family: opensans;
-    position: relative;
-    margin: 0;
-    padding-bottom: 6rem;
-    min-height: 100%;
-}
-
-main {
-    padding-left: 300px;
-}
-
-.google-play img {
-    width: 175px;
-}
-
-.navbar {
-    margin: 0;
-}
-
-.large {
-    font-size: 120%;
-}
-
-.x-large {
-    font-size: 160%;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.no-padding {
-    padding: 0;
-}
-
-.no-margin {
-    margin: 0;
-}
-
-.current {
-    background: lightgrey;
-}
-
-.back-icon {
-    background-image: url(/img/back.png);
-    background-repeat: no-repeat;
-}
-
-.hero-image {
-    height: 175px;
-    margin: 20px;
-    border-radius: 200px;
-    float: center;
-}
-
-.lng-icon {
-    margin: 5px 10px;
-    width: 40px;
-    border-radius: 100px;
-}
-a[go-to] {
-    cursor: pointer;
-    display: inline-block;
-}
-
-img.profile-img { height: 36px; position: relative; top: 14px }
-
-.hero-image.square {
-    border-radius: 0px;
-}
-
-.hero-image.fit {
-    object-fit: cover;
-}
-
-.hero-image.small {
-    height: 75px;
-}
-
-p.small, span.small {
-    size: 50%;
-}
-
-p.very.small, span.very.small {
-    size: 25%;
-}
-
-.back.hero-image {
-    /* background: rgba(99,99,139,1); */
-}
-
-.tiny.hero-image {
-    height: 60px;
-}
-
-.wrapper {
-          position: absolute;
-          display: table;
-          width: 100%;
-}
 .vertical-center {
-   min-height: 90vh;
-   display: flex;
-   align-items: center;
- }
-
-#login-form input, button {
-    margin: 5px;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
 }
 
-#login-form .input, .login, .tanoshimu {
-    height: 40px;
-    outline: none;
-    border: white;
-    padding: 5px 15px;
-    /* background: rgba(99,99,139,0.9); */
-    border-radius: 10px;
-    border: 1px solid #aaa;
-}
-
-input.tanoshimu {
-    height: 35px;
-}
-
-textarea.tanoshimu {
-    height: auto;
-    outline: none;
-    padding: 10px 15px;
-}
-
-textarea.tanoshimu:focus {
-    outline: none;
-}
-
-.btn {
-    border-radius: 20px;
-}
-
-.well {
-    border-radius: 0;
-    margin: 0;
-    border: 1px solid #eee;
-}
-
-.well.space {
-    margin-bottom: 20px;
-}
-img[episode-number].preview {
-    width: 75px;
-    height: 40px;
-    object-fit: cover;
-}
-
-.pager {
-  padding-left: 0;
-  margin: 20px 0;
-  text-align: center;
-  list-style: none;
-}
-.pager li {
-  display: inline;
-}
-.pager li a,
-.pager li span {
-  display: inline-block;
-  padding: 5px 14px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-}
-.pager li > a:hover,
-.pager li > a:focus {
-  text-decoration: none;
-  background-color: #eee;
-}
-.pager .next > a,
-.pager .next > span {
-  float: right;
-}
-.pager .previous > a,
-.pager .previous > span {
-  float: left;
-}
-.pager .disabled > a,
-.pager .disabled > a:hover,
-.pager .disabled > a:focus,
-.pager .disabled > span {
-  color: #777;
-  cursor: not-allowed;
-  background-color: #fff;
-}
-
-.previous, .next {
-  color: #337ab7;
-}
-
-
-
-
-.login-register-error, .message-error {
-    color: #990000;
-    font-weight: bold;
-}
-
-.login-register-waiting, .message-waiting {
-    color: #b3b300;
-    font-weight: bold;
-}
-
-.login-register-success, .message-success {
-    color: #004d00;
-    font-weight: bold;
-}
-
-.message-success {
-    color: green;
-    font-weight: bold;
-    margin: 0 auto;
-}
-
-button, input[type="submit"] {
-    background: rgba(35, 144, 35, 1);
-    border: none;
-    color: white;
-    outline-color: white;
-    outline-width: thin;
-}
-
-.login-register-error {
-    color: #990000;
-    font-weight: bold;
-}
-
-
-
-
-
-
-.mobile {
-    display: none;
-}
-.bootstrap-mobile {
-    display: none;
-}
 .wrapper {
-    position: absolute;
-    display: table;
-    width: 100%; /* This could be ANY width */
-    height: 100%; /* This could be ANY height */
-}
-.inner {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-.content {
-    display: inline-block;
-    padding: 30px;
-    width: 60%;
-}
-
-h1.show-title {
-    text-align: center;
-}
-
-.body-content {
-    position: relative;
-    margin: 0 5% 5% 5%;
-}
-
-p.login-form {
-    font-size: 250%;
-}
-
-img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.title {
-    margin: 5% 0 2%;
-}
-
-/* input[type="text"],
-input[type="password"] {
-    width: 50%;
-    height: 30px;
-    font-size: 15px;
-    padding-left: 10px;
-}
-
-input[type="text"]:focus,
-input[type="text"].focus,
-input[type="email"].focus,
-input[type="password"]:focus,
-input[type="password"].focus,
-input[type="email"]:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border: solid 1px #707070;
-}
-
-input[type="checkbox"] {
-    margin: 0 10px;
-}
-
-input[type="button"],
-input[type="submit"].login {
-    width: 30%;
-    height: 35px;
-    font-size: 15px;
-}
-
-input[type="submit"].edit {
-    margin: 2px;
-}
-
-input[type="button"].focus,
-input[type="submit"].focus,
-input[type="button"]:focus,
-input[type="submit"]:focus {
-    outline: none;
-    box-shadow: 0 0 5px 1px #969696;
-} */
-
-p.welcome-message {
-    font-weight: bold;
-}
-
-a.go-back {
-    text-decoration: none;
-    color: black;
-}
-
-a.go-back:hover {
-    text-decoration: underline;
-}
-
-.disabled {
-    pointer-events: none;
-    cursor: default;
-    font-style: italic;
-    color: grey;
-}
-
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-div.form {
-    label, input[type="submit"] {
-        padding: 50px;
-    }
-}
-
-.error {
-    margin: 0 auto;
-    width: auto;
-    max-width: 60%;
-    background: #ffc1c1;
-    border: 0.5px solid #e58989;
-    padding: 10px;
-    border-radius: 5px;
-    color: red;
-}
-
-.btn-option {
-    width: 70%;
-    margin: 2px;
-}
-
-.hidden {
-    display: none;
-}
-
-#mobile {
-    display: none;
-}
-
-.right {
-    float: right;
-}
-
-.strong {
-    font-weight: bold;
-}
-
-.italic {
-    font-style: italic;
-}
-
-.underline {
-    text-decoration: underline;
-}
-
-.very.strong {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-#result_box {
-    position: absolute;
-    top: 29px;
-    left: 0px;
-    width: 17%;
-    padding: 5px;
-    color: #fff;
-    background: #353535;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
-    font-size: 13px;
-    -webkit-border-bottom-right-radius: 6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -moz-border-radius-bottomright: 6px;
-    -moz-border-radius-bottomleft: 6px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    z-index: 99;
-    text-align: left;
-}
-
-span.warning {
-    color: orange;
-}
-
-span.danger {
-    color: red;
-}
-
-/**
- * Demo Styles
- */
-
-html {
-  height: 100%;
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-body {
-  position: relative;
-  margin: 0;
-  padding-bottom: 6rem;
-  min-height: 100%;
-}
-
-.anime-bod {
-  margin: 0 auto;
-  padding-top: 64px;
-  max-width: 640px;
-  width: 94%;
-}
-
-/**
- * Footer Styles
- */
-
-.footer {
-  margin-top: 30px;
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-  font-size: 90%;
+  display: table;
+  width: 100%;
 }
 
-.description {
-    margin-bottom: 5%;
-}
+.tanoshimu-login {
+  img.logo {
+    margin-bottom: 30px;
+    width: 150px;
+    height: 150px;
+  }
 
-.clickable {
-    cursor: pointer;
-}
+  .form-signin {
+    width: 90%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+  }
 
-[show-id] {
-    padding-top: 15px;
-}
+  .login-messages {
+    font-weight: bold;
+  }
 
-.plz-hover:hover {
-    background-color: #eee;
-}
+  .card {
+    width: 95%;
+    max-width: 500px;
+    padding: 40px;
+    margin: 0 auto;
+  }
 
-.current {
-    background-color: #ddd;
-}
-
-.small-banner {
-    height: 50px; object-fit: cover;
-}
-
-.show-title {
-    vertical-align: middle;
-}
-
-.image-input, .image-preview {
-    height: 200px;
-    width: 100%;
-    border: 1px solid #000;
-}
-.small.image-input {
-    height: 100px !important;
-}
-
-.image-input {
-    transition: opacity 0.3s;
-    -webkit-transition: opacity 0.3s;
-}
-
-.image-input:hover {
-    opacity: 0.7;
-}
-
-img.img-loading {
-    opacity: 0.4;
+  .form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+  .form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
 @media (max-width: 992px) {
@@ -576,10 +113,15 @@ img.img-loading {
     }
 }
 @media (max-width: 480px) {
-    .vertical-center {
-        min-height: 100%;
-        min-height: 85vh;
+
+
+  .tanoshimu-login {
+    img.logo {
+      margin-bottom: 30px;
+      width: 80px;
+      height: 80px;
     }
+  }
 
     .hero-image {
         height: 130px;
@@ -596,11 +138,6 @@ img.img-loading {
 
     p.welcome-message {
         font-size: 70%;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 80%;
     }
 
     input[type="button"],
