@@ -14,5 +14,6 @@ module HaveFun
     config.autoload_paths << Rails.root.join("app/lib")
     config.autoload_paths << Rails.root.join("app/poros")
     config.force_ssl = Rails.env == "production"
+    config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 end

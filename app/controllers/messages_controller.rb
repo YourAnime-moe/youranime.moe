@@ -1,9 +1,9 @@
 class MessagesController < ApplicationController
 
-    before_action {
-        @inbox_options = true
-    }
+  before_action {
+    @inbox_options = true
+  }
 
-    def index
-    end
+  def index
+  end
 end
