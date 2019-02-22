@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Suggested updates
-gem 'nokogiri', '~> 1.8.5'
+gem 'nokogiri'
 gem "activestorage", ">= 5.2.1.1"
 gem "rack", ">= 2.0.6"
 gem "loofah", ">= 2.2.3"
@@ -76,6 +76,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  gem 'pry'
+  gem 'pry-rails'
 end
 
 group :test do
