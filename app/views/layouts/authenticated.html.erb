@@ -13,9 +13,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://vjs.zencdn.net/<%= videojs_version %>/video-js.css">
+    <script type="text/javascript" src="/js/config.js"></script>
   </head>
 
+  <header>
+      <%= render 'shared/header' %>
+      <%= render 'shared/inbox-options' %>
+  </header>
+
   <body>
-      <%= yield %>
+      <div class="logged-in">
+        <div class="row main">
+          <%= render 'shared/sidebar' %>
+          <main class="col-md-9 ml-lg-auto col-lg-10 px-4" role="main">
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+      <script type="text/javascript" src="/js/watched_episodes.js"></script>
   </body>
+  <footer>
+     <% render 'shared/footer' %>
+  </footer>
 </html>

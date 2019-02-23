@@ -10,6 +10,11 @@ module ApplicationHelper
       }
     }
   end
+  
+  # Return the padded class if the user is logged
+  def pad_if_logged_in!
+    ('logged-in' if logged_in?).to_s
+  end
 
   def get_back_url(params, default=nil)
     _get_back params, :from, default

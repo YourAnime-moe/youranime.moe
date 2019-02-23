@@ -18,6 +18,7 @@
  $theme-colors: (
    primary: #6dccc0,
    danger: #CC6D79, // complements primary,
+   secondary: #417a73,
    warning: #CCC06D
  );
 
@@ -34,6 +35,15 @@
     src: url('/fonts/opensans/OpenSans-Bold.ttf'); /*URL to font*/
 }
 
+@font-face {
+  font-family: "Ikaros";
+  src: url('/fonts/ikaros/Ikaros-Regular.otf') format("truetype");
+}
+
+html {
+  font-family: "Ikaros"
+}
+
 nav.maintenance {
     background-color: #d87f11 !important;
 }
@@ -42,6 +52,10 @@ nav.maintenance {
   min-height: 90vh;
   display: flex;
   align-items: center;
+}
+
+.btn {
+  border-radius: 40px;
 }
 
 .wrapper {
@@ -95,6 +109,10 @@ nav.maintenance {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+}
+
+.padded {
+  padding: 40px;
 }
 
 @media (max-width: 992px) {

@@ -1,4 +1,7 @@
 class UsersController < AuthenticatedController
+
+  include UsersHelper
+
   # Home page
   def home
     if params[:username] != current_user.username
@@ -6,12 +9,16 @@ class UsersController < AuthenticatedController
     end
     set_title(before: t("user.welcome", user: current_user.get_name))
     @shows = Show.latest(current_user)
-    @episodes = current_user.currently_watching(limit: 4)
-    @recommended = Show.get_presence :recommended
     @featured = Show.get_presence :featured
     @this_season = Show.get_presence :season, 3, options: {current: true}
     @last_season = Show.get_presence :season, 3, options: {previous: true}
     @coming_soon = Show.coming_soon limit: 4
+
+    @trending = force_array_to(6, Show.published)
+    @episodes = force_array_to(6, current_user.currently_watching(limit: 6))
+    @recent = force_array_to(6, Show.published)
+    @random = force_array_to(6, Show.get_random_shows(limit: 6).map{|id| Show.find(id)})
+    @recommended = force_array_to(6, Show.get_presence(:recommended))
   end
 
   # Going to settings

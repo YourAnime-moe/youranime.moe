@@ -11,12 +11,60 @@
     }
 }
 
+.logged-in {
+    margin-top: 56px;
+    .row.main {
+      margin-left: 0;
+      margin-right: 0;
+    }
+}
+
+.hf-section {
+  margin: 10px 0 30px 0;
+  border-bottom: 0.5px solid #e5e5e5;
+
+  .thumbs-section {
+    padding-top: 5px;
+    padding-bottom: 50px;
+  }
+}
+
+.hf-thumb-info {
+  padding: 5px 7px;
+}
+
+.tanoshimu-list-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .item {
     img {
         height: auto;
         object-fit: cover;
     }
 }
+
+.shows {
+  .img-thumbnail {
+    border-radius: 0;
+  }
+  .col, .col-md-2 {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+
+[role="main"] {
+  //padding-top: 133px; /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 48px; /* Space for fixed navbar */
+  }
+}
+
 
 p.username-info {
     color: green;
