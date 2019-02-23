@@ -75,6 +75,7 @@ en:
     settings: "Account settings"
     bugs: "Known issues"
     logout: "Logout"
+    signed-in: "Signed in <strong class='css-truncate-target'>%{username}</strong>"
 
   admin:
     home: "Admin console"
@@ -112,7 +113,7 @@ en:
       summer: "Summer"
       fall: "Fall"
       winter: "Winter"
-    
+
     episodes:
       episode-number: "Episode %{number}"
       up-next: "Up next (auto-play)"
@@ -131,7 +132,7 @@ en:
   tags:
     title: "Search by tags"
     explanation: "Please select one or more of the tags below to start filtering."
-    tags: 
+    tags:
       action: "Action"
       adventure: "Adventure"
       budou: "Martial Arts"

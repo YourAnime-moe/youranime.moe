@@ -54,6 +54,7 @@ fr:
     settings: "Paramètres"
     bugs: "Problèmes connus"
     logout: "Se déconnecter"
+    signed-in: "Connecté en tant que <strong class='css-truncate-target'>%{username}</strong>"
 
   admin:
     home: "Console d'administration"
@@ -85,7 +86,7 @@ fr:
 
     movies:
       view-all: "Tous les films"
-    
+
     episodes:
       episode-number: "Épisode %{number}"
       up-next: "Lecture automatique"

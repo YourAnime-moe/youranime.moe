@@ -1,13 +1,2 @@
-<div class="thumbs-section">
-  <div class="row shows" style="margin-top: 15px;">
-    <% @recommended[:cut].each_with_index do |show, index| %>
-      <% rule = thumb_class_for(show, index) %>
-      <div class="<%= rule[:class] %>">
-        <img class="img-thumbnail <%= rule[:display] %>" src="https://anime.akinyele.ca/img/404.jpg" alt="404 not found" class="img-thumbnail">
-        <div class="hf-thumb-info <%= rule[:display] %>">
-          <%= show.title unless show.nil? %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
+<% @_models = @recommended %>
+<%= render 'users/partial/_thumbs' %>

@@ -89,12 +89,18 @@ function abortAjaxQueue() {
     }
 }
 
+window.fadeIn = function(obj) {
+  $(obj).fadeIn(1000);
+}
+
 $(document).ready(function() {
       //$(".button-collapse").sidenav();
       //$('.modal').modal();
       //$(".dropdown-trigger").dropdown();
       //$('select').formSelect();
       //$('.datepicker').datepicker();
+
+      $('.dropdown-toggle').dropdown();
 
       var current_lang = navigator.language || navigator.userLanguage || 'en';
       if (current_lang == 'ja') {

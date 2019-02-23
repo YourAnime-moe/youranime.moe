@@ -1,5 +1,20 @@
 <nav class="navbar navbar-light fixed-top bg-secondary">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="/">
     <%= image_tag 'tanoshimu', width: '30px', height: '30px' %>
   </a>
+  <div class="my-2 my-lg-0">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= current_user.get_name %>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <a class="no-underline user-profile-link px-3 pt-2 pb-2 mb-n2 mt-n1 d-block" href="#" data-ga-click="Header, go to profile, text:Signed in as">
+          <%= t('header.signed-in', username: current_user.username).html_safe %>
+        </a>
+        <div class="dropdown-divider"></div>
+        <%= link_to(t('header.settings'), settings_path, class: 'dropdown-item') %>
+        <%= link_to(t('header.logout'), logout_path, class: 'dropdown-item') %>
+      </div>
+    </div>
+  </div>
 </nav>
