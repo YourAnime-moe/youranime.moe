@@ -16,5 +16,6 @@ module HaveFun
     config.force_ssl = Rails.env == "production"
     config.active_record.sqlite3.represent_boolean_as_integer = true
     config.generators.javascript_engine = :js
+    config.action_controller.default_protect_from_forgery = true
   end
 end
