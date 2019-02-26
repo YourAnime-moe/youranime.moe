@@ -33,3 +33,6 @@ coverage/
 
 # Active storage
 storage
+
+/config/master.key
+/config/credentials*
