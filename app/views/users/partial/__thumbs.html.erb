@@ -1,13 +1,18 @@
 <div class="thumbs-section">
-  <div class="row shows" style="margin-top: 15px;">
+  <div class="row no-margin shows" style="margin-top: 15px;">
     <% @_models[:cut].each_with_index do |model, index| %>
       <% rule = thumb_class_for(model, index) %>
-      <div class="<%= rule[:class] %>">
-        <%= image_for(model, class: "img-thumbnail #{rule[:display]}", onload: 'fadeIn(this)', style: 'display: none;') %>
-        <div class="hf-thumb-info <%= rule[:display] %>">
-          <% unless model.nil? %>
-            <%= model.respond_to?(:get_title) ? model.get_title : model.title %>
-          <% end %>
+
+      <div class="clickable no-overflow <%= rule[:class] %>">
+        <div class="card shadow-sm borderless d-flex align-items-stretch">
+          <div class="image-card-container focusable">
+            <%= image_for(model, class: "card-img-top #{rule[:display]}", onload: 'fadeIn(this)', style: 'display: none;') %>
+            <div class="hf-thumb-info <%= rule[:display] %> description">
+              <% unless model.nil? %>
+                <%= model.respond_to?(:get_title) ? model.get_title : model.title %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>

@@ -2,6 +2,7 @@
   <div class="hf-section">
     <h3><%= t('header.settings') %></h3>
   </div>
+
   <div class="row">
     <div class="col-8">
       <%= form_for(current_user, url: "/users/update/#{current_user.id}") do |f| %>

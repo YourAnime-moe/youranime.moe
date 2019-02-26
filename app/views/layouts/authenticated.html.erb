@@ -19,23 +19,21 @@
   </head>
 
   <header>
-      <%= render 'shared/header' %>
       <%= render 'shared/inbox-options' %>
   </header>
 
   <body>
-      <div class="logged-in">
-        <div class="row main">
-          <%= render 'shared/sidebar' %>
-          <main class="col-md-9 ml-lg-auto col-lg-10 px-4">
-            <% flash.each do |key, value| %>
-              <div class="alert alert-<%= key %>"><%= value %></div>
-            <% end %>
-            <div role="main">
-              <%= yield %>
-            </div>
-          </main>
-        </div>
+      <div class="row no-margin">
+        <%= render 'shared/sidebar' %>
+        <main class="col-md-9 ml-lg-auto col-lg-10 px-4 logged-in">
+          <% flash.each do |key, value| %>
+            <div class="alert alert-<%= key %>"><%= value %></div>
+          <% end %>
+          <div role="main">
+            <%= render 'shared/header' %>
+            <%= yield %>
+          </div>
+        </main>
       </div>
       <script type="text/javascript" src="/js/watched_episodes.js"></script>
   </body>
