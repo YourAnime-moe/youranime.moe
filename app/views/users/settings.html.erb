@@ -3,42 +3,44 @@
     <h3><%= t('header.settings') %></h3>
   </div>
 
-  <div class="row">
-    <div class="col-8">
-      <%= form_for(current_user, url: "/users/update/#{current_user.id}") do |f| %>
-        <p><strong>Basic settings</strong></p>
-        <div class="form-group">
-          <%= f.label :name, 'Your name' %>
-          <%= f.text_field :name, class: 'form-control', placeholder: 'How should we call you?', autocomplete: 'off' %>
-          <small class="form-text text-muted">This can be your real name, your nickname, anything. This is not public.</small>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password, 'Change your password' %>
-          <div class="input-group">
-            <%= f.password_field :password, class: 'form-control', placeholder: 'Enter new password' %>
-            <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm new password' %>
+    <%= form_for(current_user, url: "/users/update/#{current_user.id}") do |f| %>
+      <div class="row">
+        <div class="col-8">
+          <p><strong>Basic settings</strong></p>
+          <div class="form-group">
+            <%= f.label :name, 'Your name' %>
+            <%= f.text_field :name, class: 'form-control', placeholder: 'How should we call you?', autocomplete: 'off' %>
+            <small class="form-text text-muted">This can be your real name, your nickname, anything. This is not public.</small>
           </div>
-        </div>
 
-        <p><strong>Advanced settings</strong></p>
-        <small class="form-text text-muted">Coming soon!</small>
-        <div class="form-group">
-          <%= f.label :settings, 'Personnal settings' %>
-          <%= f.text_area :settings, class: 'form-control', disabled: true, placeholder: 'Example: {key1: true, key2: false}', autocomplete: 'off' %>
-          <small class="form-text text-muted">We only accept JSON for this. <span class="text-danger">Deleting everything will delete your settings.</span></small>
-        </div>
+          <div class="form-group">
+            <%= f.label :password, 'Change your password' %>
+            <div class="input-group">
+              <%= f.password_field :password, class: 'form-control', placeholder: 'Enter new password' %>
+              <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm new password' %>
+            </div>
+          </div>
 
-        <div style="width: 60%; margin: 45px auto;">
-          <button type="submit" class="btn btn-block btn-primary">Submit</button>
+          <p><strong>Advanced settings</strong></p>
+          <small class="form-text text-muted">Coming soon!</small>
+          <div class="form-group">
+            <%= f.label :settings, 'Personnal settings' %>
+            <%= f.text_area :settings, class: 'form-control', disabled: true, placeholder: 'Example: {key1: true, key2: false}', autocomplete: 'off' %>
+            <small class="form-text text-muted">We only accept JSON for this. <span class="text-danger">Deleting everything will delete your settings.</span></small>
+          </div>
+
+          <div style="width: 60%; margin: 45px auto;">
+            <button type="submit" class="btn btn-block btn-primary">Submit</button>
+          </div>
+      </div>
+      <div class="col-4 d-inline-block">
+        <strong>Profile picture</strong>
+        <div class="edit-thumb thumbnail">
+          <p class="text-muted">Your current profile picture</p>
+          <%= avatar_tag(size: 200) %>
+          <%= f.file_field :avatar %>
         </div>
-      <% end %>
-    </div>
-    <div class="col-4 d-inline-block">
-      <strong>Profile picture</strong>
-      <div class="edit-thumb thumbnail">
-        test
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

@@ -36,4 +36,14 @@ module UsersHelper
     image_tag(image, *args, **options)
   end
 
+  def avatar_tag(size: 200)
+    return nil unless logged_in?
+    if current_user.avatar.attached?
+      image_tag current_user.avatar.variant(resize_to_limit: [size, size])
+    else
+      url = "https://api.adorable.io/avatars/#{size}/#{current_user.username}.png"
+      image_tag url, alt: current_user.get_name, size: size
+    end
+  end
+
 end

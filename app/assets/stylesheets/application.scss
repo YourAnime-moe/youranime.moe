@@ -74,6 +74,11 @@ nav.maintenance {
                                   supported by Chrome and Opera */
 }
 
+.no-caret::before,
+.no-caret::after {
+    content: none;
+}
+
 .truncate {
     display: block;
     white-space: nowrap;

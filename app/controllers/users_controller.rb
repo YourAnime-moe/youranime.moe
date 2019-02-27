@@ -42,8 +42,8 @@ class UsersController < AuthenticatedController
         return
       end
       if user.update_attributes(user_params)
+        user.thumbnail.attach(params[:avatar]) if params[:avatar].class == ActionDispatch::Http::UploadedFile
         flash[:success] = "Update successful!"
-        p user.settings
       else
         flash[:danger] = "Sorry, we can't seem to be able to update \"#{user.get_name}\"."
       end
@@ -62,7 +62,8 @@ class UsersController < AuthenticatedController
       :name,
       :admin,
       :password,
-      :password_confirmation
+      :password_confirmation,
+      :avatar
     )
   end
 

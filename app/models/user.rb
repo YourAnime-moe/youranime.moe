@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   serialize :episode_progress_list
   serialize :settings
 
+  has_one_attached :avatar
+
   DEFAULT_DEMO_NAME = "Demo Account"
   DEFAULT_DEMO_USERNAME = "demo"
   DEFAULT_DEMO_TOKEN = "demo"
