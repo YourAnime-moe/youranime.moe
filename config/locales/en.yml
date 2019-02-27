@@ -59,6 +59,20 @@ en:
     this-season: "Currently airing (in %{name})..."
     no-this-season: "Nothing for this season (yet). Come back later for more!"
 
+  issues:
+    title: Open a new issue
+    all: My tickets
+    empty: No tickets have been opened yet. You can open a new one <a href="%{link}">here</a>.
+    notice: Please note this feature is experimental. Users are allowed to open one issue ticket per day.
+    description: Anything not working well with the website? Open an issue right here!
+    issue:
+      title: Issue title
+      description: What happened?
+      submit: Submit
+      submission:
+        success: Your issue has been submited!
+        failure: Sorry, we were not able to open this ticket for you.
+
   badge:
     alt: "Get it on Google Play"
     src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"

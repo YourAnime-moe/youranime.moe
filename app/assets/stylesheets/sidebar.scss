@@ -12,7 +12,15 @@
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
   .nav-link, .nav-brand {
+    color: #B4C3C1 !important;
+  }
+
+  .nav-link.active, .nav-brand.active {
     color: #e1f4f2 !important;
+  }
+
+  .nav-link:hover, .nav-brand:hover {
+    color: #F0F9F8 !important;
   }
 
   .nav-brand {

@@ -16,32 +16,26 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="#">
-          <span data-feather="home"></span>
+        <a class="nav-link active" href="/">
+          <i class="material-icons">home</i>
           Home page <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span data-feather="file"></span>
+        <a class="nav-link" href="/search">
+          <i class="material-icons">search</i>
           Browse
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span data-feather="shopping-cart"></span>
-          Anime
+        <a class="nav-link" href="/shows">
+          <i class="material-icons">play_arrow</i>
+          Anime & Movies
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span data-feather="users"></span>
-          Movies
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span data-feather="bar-chart-2"></span>
+        <a class="nav-link" href="/random">
+          <i class="material-icons">shuffle</i>
           Feel adventurous?
         </a>
       </li>
@@ -56,19 +50,22 @@
 
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/recommendations">
+          <i class="material-icons" style="margin-right: 2px;">thumb_up</i>
           Recommendations
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/history">
+          <i class="material-icons">history</i>
           Episode history
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <%= link_to settings_path, class: 'nav-link' do %>
+          <i class="material-icons">settings</i>
           Account settings
-        </a>
+        <% end %>
       </li>
     </ul>
 
@@ -81,12 +78,14 @@
 
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <%= link_to new_issue_path, class: 'nav-link' do %>
+          <i class="material-icons">bug_report</i>
           Any issues?
-        </a>
+        <% end %>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a target="_blank" class="nav-link" href="https://www.akinyele.ca">
+          <i class="material-icons">help</i>
           About the developer
         </a>
       </li>

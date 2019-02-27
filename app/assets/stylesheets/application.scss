@@ -51,7 +51,7 @@ body {
 }
 
 nav.maintenance {
-    background-color: #d87f11 !important;
+  background-color: #d87f11 !important;
 }
 
 .vertical-center {
@@ -74,6 +74,13 @@ nav.maintenance {
                                   supported by Chrome and Opera */
 }
 
+.truncate {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .borderless {
   border: none !important;
 }
@@ -82,17 +89,35 @@ nav.maintenance {
   overflow: hidden !important;
 }
 
+.no-padding {
+  padding: 0 !important;
+}
+
 .clickable {
   cursor: pointer;
+}
+
+.darken::after {
+  display: block;
+  position: relative;
+
+  background-image: linear-gradient(to bottom, rgba(255,0,0,0), black);
+  margin-top: -150px;
+  height: 150px;
+  width: 100%;
+  content: '';
 }
 
 .image-card-container {
   color: white;
   position: relative;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 
   .description {
     position: absolute;
-    bottom: 8px;
+    bottom: 5px;
     left: 10px;
   }
 
@@ -104,8 +129,8 @@ nav.maintenance {
       -webkit-transition: all 0.3s;
       transition: all 0.3s;
     }
-    .card-img-top:hover {
-      opacity: 0;
+    .card-img-top.descriptive {
+      background-image: linear-gradient(to bottom, rgba(255,0,0,0), black); /* Standard syntax (must be last) */
     }
   }
 }
