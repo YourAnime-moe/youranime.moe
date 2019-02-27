@@ -22,6 +22,12 @@ Rails.application.routes.draw do
     match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, :constraints => { :all => /.*/ }
   end
 
+  # Issues
+  resources :issues, only: [:index, :new] do
+    delete :close
+    post :open, on: :collection
+  end
+
   root 'application#root'
   get '/get/current/locale' => 'application#get_locale'
   put '/set/current/locale' => 'application#set_locale'

@@ -2,21 +2,24 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_24_124336) do
+ActiveRecord::Schema.define(version: 2019_02_26_191042) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -33,7 +36,17 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "episodes", force: :cascade do |t|
+  create_table "attachments", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "allowed_users"
+    t.string "path"
+    t.boolean "visible"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "episodes", id: :serial, force: :cascade do |t|
     t.integer "show_id"
     t.string "op"
     t.string "ed"
@@ -48,7 +61,18 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.string "comments"
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "issues", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.boolean "resolved"
+    t.boolean "open"
+    t.string "page_url"
+    t.text "screenshots"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "messages", id: :serial, force: :cascade do |t|
     t.string "subject"
     t.integer "from_id"
     t.integer "to_id"
@@ -61,14 +85,14 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "news", force: :cascade do |t|
+  create_table "news", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "recommendations", force: :cascade do |t|
+  create_table "recommendations", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.text "plot"
@@ -80,7 +104,7 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.integer "from_user"
   end
 
-  create_table "shows", force: :cascade do |t|
+  create_table "shows", id: :serial, force: :cascade do |t|
     t.integer "show_type"
     t.boolean "dubbed"
     t.boolean "subbed"
@@ -104,16 +128,18 @@ ActiveRecord::Schema.define(version: 2018_06_24_124336) do
     t.integer "season_year"
     t.integer "season_code"
     t.string "tags"
+    t.date "publish_after"
+    t.date "published_until"
   end
 
-  create_table "todos", force: :cascade do |t|
+  create_table "todos", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "username"
     t.string "password"
     t.string "password_digest"
