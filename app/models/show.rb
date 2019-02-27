@@ -5,9 +5,7 @@ class Show < ActiveRecord::Base
 
   include Navigatable
 
-  scope :published, -> {
-    where(id: all_published.map{|e| e.id})
-  }
+  scope :published, -> { where('published', true) }
 
   before_save {
     # Make the show is at least one of dubbed or subbed.

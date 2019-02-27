@@ -10,8 +10,8 @@ class Episode < ActiveRecord::Base
   include Navigatable
 
   scope :published, -> {
-    list = order(episode_number: :desc).to_a.select{|e| e.is_published?}
-    where(id: list.map{|e| e.id})
+    show_ids = Show.published.map(&:id)
+    Episode.where(published: true, show_id: show_ids)
   }
 
   before_save {

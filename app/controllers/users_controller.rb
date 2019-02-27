@@ -8,11 +8,11 @@ class UsersController < AuthenticatedController
       redirect_to "/users/#{current_user.username}"
     end
     set_title(before: t("user.welcome", user: current_user.get_name))
-    @shows = Show.latest(current_user)
-    @featured = Show.get_presence :featured
-    @this_season = Show.get_presence :season, 3, options: {current: true}
-    @last_season = Show.get_presence :season, 3, options: {previous: true}
-    @coming_soon = Show.coming_soon limit: 4
+    # @shows = Show.latest(current_user)
+    # @featured = Show.get_presence :featured
+    # @this_season = Show.get_presence :season, 3, options: {current: true}
+    # @last_season = Show.get_presence :season, 3, options: {previous: true}
+    # @coming_soon = Show.coming_soon limit: 4
 
     @trending = force_array_to(6, Show.published)
     @episodes = force_array_to(6, current_user.currently_watching(limit: 6))

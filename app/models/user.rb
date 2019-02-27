@@ -132,6 +132,8 @@ class User < ActiveRecord::Base
 
     # Returns a list of episodes that have "watching progress"
     def currently_watching(limit: nil, no_thumbnails: false)
+      Episode.published#.select{|e| no_thumbnails || e.has_thumbnail?}
+=begin
       return [] if self.episode_progress_list.blank?
       res = self.episode_progress_list.map{|progress| Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
       self.get_latest_episodes(limit: limit).each do |episode|
@@ -144,6 +146,7 @@ class User < ActiveRecord::Base
       end
       res = res.select{|e| no_thumbnails || e.has_thumbnail?}
       return res || []
+=end
     end
 
     def get_episodes_watched(as_is: false)
@@ -151,9 +154,7 @@ class User < ActiveRecord::Base
       return [] if self.episodes_watched.nil?
       res = self.episodes_watched
       return res if as_is
-      res.reject! { |episode_id| Episode.find_by(id: episode_id).nil? }
-      res.select! { |episode_id| Episode.find(episode_id).is_published? }
-      res
+      Episode.published.order("idx(array[#{res.join(',')}], id)").map(&:id)
       # self.update_attribute(:episodes_watched, res) ? res : nil
     end
 
