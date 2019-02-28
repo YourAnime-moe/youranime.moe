@@ -4,9 +4,9 @@
   </a>
   <div class="my-2 my-lg-0">
     <div class="dropdown">
-      <button class="btn dropdown-toggle no-caret user-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn dropdown-toggle no-caret user-dropdown no-outline" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span style="padding-right: 10px;"><%= current_user.get_name %></span>
-        <%= avatar_tag(size: 30) %>
+        <%= avatar_tag(size: 30, style: 'border-radius: 20px;') %>
       </button>
       <div class="dropdown-menu dropdown-menu-right hf-dropdown" aria-labelledby="dropdownMenuButton">
         <a class="no-underline user-profile-link px-3 pt-2 pb-2 mb-n2 mt-n1 d-block" href="#" data-ga-click="Header, go to profile, text:Signed in as">

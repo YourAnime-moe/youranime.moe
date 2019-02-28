@@ -1,28 +1,16 @@
 <div class="thumbs-section">
   <div class="row no-margin shows" style="margin-top: 15px;">
     <% @_models[:cut].each_with_index do |model, index| %>
-      <% rule = thumb_class_for(model, index) %>
-      <% thumb_info = {} %>
+      <% @_rule = thumb_class_for(model, index) %>
+      <% @_thumb_info = {} %>
       <% if model %>
         <% key = :show_value if model.class == Show %>
         <% key = :ep_value if model.class == Episode %>
-        <% thumb_info[key] = model.id %>
+        <% @_thumb_info[key] = model.id %>
       <% end %>
 
-      <%= content_tag :div, role: "have-fun", episode: thumb_info[:ep_value], show: thumb_info[:show_value], class: "clickable no-overflow #{rule[:class]}" do %>
-        <div class="card shadow-sm borderless d-flex align-items-stretch">
-          <div class="image-card-container focusable">
-            <div class="darken">
-              <%= image_for(model, class: "card-img-top descriptive #{rule[:display]}", onload: 'fadeIn(this)', style: 'display: none;') %>
-            </div>
-            <div class="hf-thumb-info <%= rule[:display] %> description" style="width: 95%;">
-              <% unless model.nil? %>
-                <span class="truncate"><%= model.respond_to?(:get_title) ? model.get_title : model.title %></span>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      <% end %>
+      <% @model = model %>
+      <%= render 'shows/partial/_thumbs' %>
     <% end %>
   </div>
 </div>

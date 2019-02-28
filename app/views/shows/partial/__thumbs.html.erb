@@ -1,0 +1,16 @@
+
+
+<%= content_tag :div, role: "have-fun", episode: @_thumb_info[:ep_value], show: @_thumb_info[:show_value], class: "no-overflow #{@_rule[:class]}" do %>
+  <div class="card shadow-sm borderless d-flex align-items-stretch">
+    <div class="image-card-container focusable">
+      <div class="darken">
+        <%= image_for(@model, class: "card-img-top descriptive #{@_rule[:display]}", onload: 'fadeIn(this)', style: 'display: none;') %>
+      </div>
+      <div class="hf-thumb-info <%= @_rule[:display] %> description" style="width: 95%;">
+        <% unless @model.nil? %>
+          <span class="truncate"><%= @model.respond_to?(:get_title) ? @model.get_title : @model.title %></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

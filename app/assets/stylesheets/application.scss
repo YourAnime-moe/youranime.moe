@@ -98,6 +98,11 @@ nav.maintenance {
   padding: 0 !important;
 }
 
+.no-outline:focus, .no-outline:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -107,8 +112,9 @@ nav.maintenance {
   position: relative;
 
   background-image: linear-gradient(to bottom, rgba(255,0,0,0), black);
-  margin-top: -150px;
-  height: 150px;
+  opacity: 0.5;
+  margin-top: -50px;
+  height: 50px;
   width: 100%;
   content: '';
 }

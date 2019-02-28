@@ -78,6 +78,10 @@ class ShowsController < AuthenticatedController
     end
   end
 
+  def index
+    @shows_parts = Show.all.each_slice(3).to_a
+  end
+
   def view_all
     @anime_current = "current"
     @shows = Show.all

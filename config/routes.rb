@@ -28,6 +28,12 @@ Rails.application.routes.draw do
     post :open, on: :collection
   end
 
+  # Shows
+  resources :shows, only: [:index, :show] do
+    get :history, on: :collection
+    get :movies, on: :collection
+  end
+
   root 'application#root'
   get '/get/current/locale' => 'application#get_locale'
   put '/set/current/locale' => 'application#set_locale'
@@ -43,12 +49,6 @@ Rails.application.routes.draw do
   get '/users/:username' => 'users#home'
   get '/news' => 'users#news'
   patch '/users/update/:id' => 'users#update'
-
-  # Shows
-  get '/shows' => 'shows#view'
-  get '/shows/history' => 'shows#history'
-  get '/shows/img' => 'shows#render_img'
-  get '/search' => 'shows#search' # This not really for shows, but will probably be used mostly for shows
 
   # Movies
   get '/movies' => 'movies#view'
