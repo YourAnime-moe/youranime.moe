@@ -85,18 +85,16 @@ class Show < ActiveRecord::Base
   end
 
   def episodes(from: nil)
-    return @episodes unless @episodes.nil? || !from.nil?
     return nil if self.id.nil?
-    results = Show::Episode.all.select{ |e| e.show_id == self.id && e.is_published? }
-    @episodes = results.sort_by(&:episode_number)
-    return @episodes if from.nil?
+    results = Show::Episode.published.where(show_id: self.id).order(:episode_number)
+    return results if from.nil?
 
     if from.class == Show::Episode
       from = from.episode_number
     end
 
     results = []
-    @episodes.each do |episode|
+    results.each do |episode|
       if episode.episode_number >= from
         results << episode
       end
