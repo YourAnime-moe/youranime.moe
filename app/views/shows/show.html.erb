@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  $(window).load(function() {
+  $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
     $('.show-body').fadeIn(2000);
@@ -46,6 +46,8 @@
       <div class="container">
         <% @episodes_parts.each do |episodes| %>
           <div class="row">
+            <%= request.remote_ip %>
+            <%= request.ip %>
             <% episodes.each_with_index do |episode| %>
               <div class="col-md-4" style="margin-top: 20px;">
                 <% @_rule = {class: nil} %>
