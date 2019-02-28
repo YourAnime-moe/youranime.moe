@@ -5,7 +5,13 @@ class Show < ActiveRecord::Base
 
   include Navigatable
 
-  scope :published, -> { where('published', true) }
+  scope :valid, -> {
+    title_query = "(title is not null and title != '')"
+    atitle_query = "(alternate_title is not null and alternate_title != '')"
+
+    where("#{title_query} and #{atitle_query}")
+  }
+  scope :published, -> { valid.where(published: true) }
 
   before_save {
     # Make the show is at least one of dubbed or subbed.
@@ -81,11 +87,11 @@ class Show < ActiveRecord::Base
   def episodes(from: nil)
     return @episodes unless @episodes.nil? || !from.nil?
     return nil if self.id.nil?
-    results = Episode.all.select{ |e| e.show_id == self.id && e.is_published? }
+    results = Show::Episode.all.select{ |e| e.show_id == self.id && e.is_published? }
     @episodes = results.sort_by(&:episode_number)
     return @episodes if from.nil?
 
-    if from.class == Episode
+    if from.class == Show::Episode
       from = from.episode_number
     end
 
@@ -99,7 +105,7 @@ class Show < ActiveRecord::Base
   end
 
   def all_episodes
-    Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
+    Show::Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
   end
 
   def split_episodes(sort_by: 4)
@@ -322,7 +328,7 @@ class Show < ActiveRecord::Base
 
   def self.latest(current_user, limit: 5)
     episodes = current_user.get_episodes_watched
-    episodes = episodes.map{|e| Episode.find e}.reverse
+    episodes = episodes.map{|e| Show::Episode.find e}.reverse
     shows = []
     episodes.each do |ep|
       next unless ep.is_published?

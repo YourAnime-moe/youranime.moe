@@ -16,7 +16,7 @@ module Api
         id = params[:id]
         validate_id! id
 
-        episode = Episode.find(id)
+        episode = Show::Show::Episode.find(id)
         respond_to do |format|
           format.json { render json: episode }
         end

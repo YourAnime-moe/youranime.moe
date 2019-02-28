@@ -111,7 +111,7 @@ en:
         more-info: "More info..."
         same-tags: "Anime with the same tags"
         go-back: "Go back to shows"
-        episodes: "Episodes"
+        episodes-list: "Episodes"
         available-episodes: "%{count} available episode(s)"
         episodes: "%{count} episode(s)"
         featuring: "Featuring:"

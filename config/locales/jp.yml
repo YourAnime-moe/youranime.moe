@@ -74,7 +74,7 @@ jp:
         more-info: "詳細はこちら"
         same-tags: "現在のショーと同じタグ"
         go-back: "ショーへ戻る"
-        episodes: "エピソード"
+        episodes-list: "エピソード"
         available-episodes: "見えるエピソード数：%{count}"
         episodes: "すべてのエピソード数：%{count}"
         featuring: "声優"
@@ -86,7 +86,7 @@ jp:
     history:
       to-episode: "動画を見る"
       to-show: "ショー情報を開く"
-    
+
     episodes:
       episode-number: "エピソード %{number}"
       up-next: "自動再生"

@@ -1,13 +1,13 @@
 class Admin::EpisodesController < AdminController
 
 	def create
-		episode = Episode.find_by(episode_number: params[:episode_number], show_id: params[:show_id])
+		episode = Show::Episode.find_by(episode_number: params[:episode_number], show_id: params[:show_id])
 		if episode
 			success = episode.update_attributes(
 				title: params[:title]
 			)
 		else
-			episode = Episode.new(episodes_params)
+			episode = Show::Episode.new(episodes_params)
 			success = episode.save
 		end
 		if success
@@ -29,7 +29,7 @@ class Admin::EpisodesController < AdminController
 	end
 
 	def update
-		episode = Episode.find_by(id: params[:id])
+		episode = Show::Episode.find_by(id: params[:id])
 		success = false
 		unless episode.nil?
 			episode.update_attributes(episodes_params)

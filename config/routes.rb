@@ -34,6 +34,11 @@ Rails.application.routes.draw do
     get :movies, on: :collection
   end
 
+  # Episodes
+  namespace :show do
+    resources :episodes, only: [:index, :show]
+  end
+
   root 'application#root'
   get '/get/current/locale' => 'application#get_locale'
   put '/set/current/locale' => 'application#set_locale'
@@ -54,10 +59,10 @@ Rails.application.routes.draw do
   get '/movies' => 'movies#view'
 
   # Episodes
-  get '/shows/episodes' => 'episodes#view'
-  get '/shows/episodes/random' => 'episodes#random'
-  get '/shows/episodes/subs' => 'episodes#get_subs'
-  get '/shows/episodes/render' => 'episodes#render_type'
+  #get '/shows/episodes' => 'episodes#view'
+  #get '/shows/episodes/random' => 'episodes#random'
+  #get '/shows/episodes/subs' => 'episodes#get_subs'
+  #get '/shows/episodes/render' => 'episodes#render_type'
 
   # Tags
   get '/tags' => 'shows#tags'

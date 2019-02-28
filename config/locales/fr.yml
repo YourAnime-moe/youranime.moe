@@ -90,7 +90,7 @@ fr:
         more-info: "Plus d'infos..."
         same-tags: "Animés avec les mêmes tags"
         go-back: "Retourner aux émissions"
-        episodes: "Épisodes"
+        episodes-list: "Épisodes"
         available-episodes: "%{count} épisode(s) à regarder"
         episodes: "%{count} épisode(s) au total"
         featuring: "Avec:"

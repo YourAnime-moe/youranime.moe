@@ -10,7 +10,7 @@ namespace :clean_up do
 		desc "Removes all episode media"
 		task :episodes => :environment do
 		  puts "Cleaning up episode..."
-		  Episode.remove_all_media
+		  Show::Episode.remove_all_media
 		  puts "done."
 		end
 	end
@@ -26,7 +26,7 @@ namespace :clean_up do
 		desc "Cleans up only episode"
 		task :episodes => :environment do
 		  puts "Cleaning up episode..."
-		  Episode.clean_up
+		  Show::Episode.clean_up
 		  puts "done."
 		end
 	end
@@ -37,7 +37,7 @@ namespace :clean_up do
 	  Show.clean_up
 
 	  puts "Cleaning up episodes..."
-	  Episode.clean_up
+	  Show::Episode.clean_up
 	  
 	  puts "done."
 	end

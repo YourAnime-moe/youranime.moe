@@ -53,7 +53,7 @@ module ApplicationHelper
 
   def current_episode
     return nil if session[:currently_watching].nil?
-    @current_episode ||= Episode.find(session[:currently_watching]["episode"])
+    @current_episode ||= Show::Episode.find(session[:currently_watching]["episode"])
   end
 
   def current_admin_show_id

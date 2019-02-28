@@ -13,7 +13,7 @@ div style="margin-top: 10px;"
         span MP4 not supported or video not found.
 
 script src="https://vjs.zencdn.net/#{videojs_version}/video.js"
-script src="/js/nextEpisode.js"
+script src="/js/nextShow::Episode.js"
 
 css:
     .previous, .next {
@@ -202,7 +202,7 @@ javascript:
         var index = -1;
         for(var i = 0; i < videosList.length; i++) {
             foundEpisode = videosList[i];
-            if (foundEpisode.userId != userId || foundEpisode.videoId != videoId) {
+            if (foundShow::Episode.userId != userId || foundShow::Episode.videoId != videoId) {
                 continue;
             }
             index = i;
@@ -265,7 +265,7 @@ javascript:
         }
         for(var i = 0; i < videosList.length; i++) {
             foundEpisode = videosList[i];
-            if (foundEpisode.userId == givenUserId && foundEpisode.videoId == videoId) {
+            if (foundShow::Episode.userId == givenUserId && foundShow::Episode.videoId == videoId) {
                 return foundEpisode;
             }
         }

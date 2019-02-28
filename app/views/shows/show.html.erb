@@ -1,0 +1,62 @@
+<script type="text/javascript">
+  $(window).load(function() {
+    url = $('div[target]').attr('target');
+    $('div[target]').css('background-image', "url(" + url + ")");
+    $('.show-body').fadeIn(2000);
+  });
+</script>
+
+<style>
+  .head {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 20%;
+    z-index: 0;
+    position: relative;
+    height: 450px;
+    padding: 0;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: -webkit-linear-gradient(top,rgba(23,23,23,.2) 0,#fff);
+    background: linear-gradient(180deg,rgba(23,23,23,.2) 0,#fff);
+    z-index: 0;
+  }
+</style>
+
+<div class="show-body" style="display: none;">
+  <div class="head" target="<%= @show.get_banner_url %>">
+    <div class="overlay">
+      <div class="content">
+        <div class="ui container grid">
+          <h1 class="show-title">Asobi Asobase</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hf-section">
+    <div class="row no-padding no-margin">
+      <div class="container">
+        <% @episodes_parts.each do |episodes| %>
+          <div class="row">
+            <% episodes.each_with_index do |episode| %>
+              <div class="col-md-4" style="margin-top: 20px;">
+                <% @_rule = {class: nil} %>
+                <% @_thumb_info = {} %>
+                <% @model = episode %>
+                <%= render 'shows/partial/_thumbs' %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

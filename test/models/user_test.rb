@@ -8,7 +8,7 @@ class UserTest < TanoshimuBaseTest
     @scared_user = users(:scared_user)
     @scared_user.password = "user"
     @user.password = "test_password"
-    @episode = Episode.create
+    @episode = Show::Episode.create
   end
 
   test "User properly saved" do
@@ -46,7 +46,7 @@ class UserTest < TanoshimuBaseTest
 
   test "User add episode fails due to settings" do
     assert @user.update_settings({episode_tracking: false})
-    assert_not @user.add_episode Episode.create
+    assert_not @user.add_episode Show::Episode.create
   end
 
   test "User add episode returns false if episode does not exist" do
@@ -56,7 +56,7 @@ class UserTest < TanoshimuBaseTest
 
   test "User add episode already exists valid" do
     # TODO fix here
-    episode = Episode.create
+    episode = Show::Episode.create
     assert @user.add_episode episode.id
   end
 
@@ -72,18 +72,18 @@ class UserTest < TanoshimuBaseTest
   test "User get latest episodes valid" do
     assert_equal @user.get_episodes_watched(as_is: true), [1, 2, 3]
     assert_equal @user.get_episodes_watched, []
-    episode = Episode.create
+    episode = Show::Episode.create
     assert @user.add_episode episode
     assert_equal @user.get_episodes_watched(as_is: true), [2]
-    assert @user.add_episode Episode.create
-    Episode.find(2).update_attributes published: true
-    Episode.find(3).update_attributes published: true
+    assert @user.add_episode Show::Episode.create
+    Show::Episode.find(2).update_attributes published: true
+    Show::Episode.find(3).update_attributes published: true
     assert_equal @user.get_latest_episodes.size, 2
     assert_equal @user.get_latest_episodes(limit: 1).size, 1
   end
 
   test "User has watched anything valid" do
-    assert_save Episode.new(published: true)
+    assert_save Show::Episode.new(published: true)
     assert @user.has_watched_anything?
   end
 
@@ -100,9 +100,9 @@ class UserTest < TanoshimuBaseTest
   end
 
   test "User get valid episode count string" do
-    Episode.first.update_attributes(published: true)
+    Show::Episode.first.update_attributes(published: true)
     assert_equal @user.get_episode_count, "You have watched one episode."
-    assert @user.add_episode Episode.create(published: true)
+    assert @user.add_episode Show::Episode.create(published: true)
     assert_equal @user.get_episode_count, "You have watched 2 episodes."
     assert_equal User.create.get_episode_count, "You have watched 0 episodes."
   end
@@ -213,17 +213,17 @@ class UserTest < TanoshimuBaseTest
     assert_equal [], user.currently_watching
 
     # Create 10 episodes
-    last_id = Episode.last.nil? ? 1 : Episode.last.id + 1
+    last_id = Show::Episode.last.nil? ? 1 : Show::Episode.last.id + 1
     (last_id..(last_id+10))
       .map{|id| {id: id, title: "Episode #{id}", published: true, show_id: Show.first.id}}
       .each {|data|
-        assert_save Episode.new(data)
+        assert_save Show::Episode.new(data)
       }
 
     # Add them as progress to user
     (last_id..(last_id+10)).each {|id|
-      assert user.update_episode_progress(Episode.find(id), 99)
-      assert_not scared_user.update_episode_progress(Episode.find(id), 99)
+      assert user.update_episode_progress(Show::Episode.find(id), 99)
+      assert_not scared_user.update_episode_progress(Show::Episode.find(id), 99)
     }
     assert user.currently_watching(no_thumbnails: true).size > 0
   end

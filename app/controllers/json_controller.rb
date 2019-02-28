@@ -69,10 +69,10 @@ class JsonController < ApplicationController
     id = params[:id]
     if id.nil?
       render json: {err: 'Episode id was not specified.'}
-    elsif Episode.find_by(id: id).nil?
+    elsif Show::Episode.find_by(id: id).nil?
       render json: {err: 'Episode was not found.'}
     else
-      episode = Episode.find(id)
+      episode = Show::Episode.find(id)
       if params[:usernames]
         usernames = params[:usernames].strip.downcase == 'true'
       else
@@ -87,10 +87,10 @@ class JsonController < ApplicationController
     id = params[:id]
     if id.nil?
       render json: {err: 'Episode id was not specified.'}
-    elsif Episode.find_by(id: id).nil?
+    elsif Show::Episode.find_by(id: id).nil?
       render json: {err: 'Episode was not found.'}
     else
-      e = Episode.find(id)
+      e = Show::Episode.find(id)
       if params[:comments].to_s.strip.size == 0
         render json: {err: 'No text was received.'}
       else
@@ -103,7 +103,7 @@ class JsonController < ApplicationController
   end
 
   def set_watched
-    @episode = Episode.find(params[:id])
+    @episode = Show::Episode.find(params[:id])
     render json: {message: "sucess", success: current_user.add_episode(@episode)}
   end
 
@@ -114,7 +114,7 @@ class JsonController < ApplicationController
         return
       end
     end
-    episode = Episode.find_by(id: params[:id])
+    episode = Show::Episode.find_by(id: params[:id])
     if episode.nil?
       render json: {success: false}
     else

@@ -90,7 +90,8 @@ function abortAjaxQueue() {
 }
 
 window.fadeIn = function(obj) {
-  $(obj).fadeIn(1000);
+  $(obj).show();
+  $(obj).parents('[role="have-fun"]').fadeIn(1000);
 }
 
 $(document).ready(function() {
@@ -114,7 +115,7 @@ $(document).ready(function() {
         }
       });
 
-      $('[role="have-fun"]').on('click', function(e) {
+      /* $('[role="have-fun"]').on('click', function(e) {
         console.log('click!');
         if ($(this).attr('show')) {
           window.location.href = "/shows?id=" + $(this).attr('show');
@@ -122,7 +123,7 @@ $(document).ready(function() {
         if ($(this).attr('episode')) {
           window.location.href = "/shows/episodes?id=" + $(this).attr('episode');
         }
-      });
+      }); */
   });
 
   function switchTo(locale, force) {

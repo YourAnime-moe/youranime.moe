@@ -92,7 +92,7 @@ class AuthApiController < ApiController
 
 	def episodes
 		if episodes_params.empty?
-			episodes = Episode.all
+			episodes = Show::Episode.all
 		elsif episodes_params.keys.include? "show_id"
 			episodes = []
 			show = Show.find_by(id: episodes_params[:show_id])
@@ -116,7 +116,7 @@ class AuthApiController < ApiController
 				end
 			end
 		else
-			episodes = Episode.find_by(episodes_params)
+			episodes = Show::Episode.find_by(episodes_params)
             if episodes.nil?
                 episodes = {}
             else
@@ -136,7 +136,7 @@ class AuthApiController < ApiController
                 episodes = result
             end
 		end
-		unless episodes.class == Episode or episodes.class == Hash
+		unless episodes.class == Show::Episode or episodes.class == Hash
 			episodes = episodes.to_a
 			begin
 				episodes.select! {|episode| episode.is_published? || @is_admin}
@@ -149,7 +149,7 @@ class AuthApiController < ApiController
 
 	def episodes_history
 		episodes = @user.get_episodes_watched(as_is: params[:as_is] == "true")
-		episodes = episodes.map{|episode_id| Episode.find_by(id: episode_id)}.reject{|episode| episode.nil?}
+		episodes = episodes.map{|episode_id| Show::Episode.find_by(id: episode_id)}.reject{|episode| episode.nil?}
 
 		result = []
 		episodes.each do |episode|
@@ -179,7 +179,7 @@ class AuthApiController < ApiController
 			return
 		end
 
-		episode = Episode.find_by(id: id)
+		episode = Show::Episode.find_by(id: id)
 		if episode.nil?
 			render json: {success: false, reason: "episode-not-found"}
 			return
@@ -196,7 +196,7 @@ class AuthApiController < ApiController
 
 	def add_episode
 		id = episodes_params[:id]
-		episode = Episode.find_by(id: id)
+		episode = Show::Episode.find_by(id: id)
 		if episode
 			render json: {success: @user.add_episode(episode, save: true)}
 		else
@@ -206,7 +206,7 @@ class AuthApiController < ApiController
 
 	def episode_path
 		id = params[:id]
-		episode = Episode.find_by(id: id)
+		episode = Show::Episode.find_by(id: id)
 		if episode.nil?
 			render json: {path: nil, message: "No ID was specified.", success: false}
 		else

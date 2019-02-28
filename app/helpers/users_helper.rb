@@ -31,15 +31,15 @@ module UsersHelper
   end
 
   def image_for(model, *args, **options)
-    return nil unless [Episode, Show].include?(model.class)
-    image = model.class == Episode ? model.get_thumbnail_url : model.get_banner_url
+    return nil unless [Show::Episode, Show].include?(model.class)
+    image = model.class == Show::Episode ? model.get_thumbnail_url : model.get_banner_url
     image_tag(image, *args, **options)
   end
 
   def avatar_tag(size: 200, **options)
     return nil unless logged_in?
     if current_user.avatar.attached?
-      image_tag current_user.avatar.variant(resize_to_limit: [size, size])
+      image_tag(current_user.avatar.variant(resize_to_limit: [size, size]), **options)
     else
       url = "https://api.adorable.io/avatars/#{size}/#{current_user.username}.png"
       image_tag(url, alt: current_user.get_name, size: size, **options)
