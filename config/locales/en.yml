@@ -100,6 +100,8 @@ en:
 
   anime:
     shows:
+      empty: >
+        Nothing has been added yet! Please come back a bit later.
       view-all: "All Anime Shows"
       coming-soon: "Coming soon!"
       coming-on: "Coming on"

@@ -79,7 +79,9 @@ class ShowsController < AuthenticatedController
   end
 
   def index
-    @shows_parts = Show.all.each_slice(3).to_a
+    @shows = Show.published
+    @additional_main_class = 'no-margin no-padding' if @shows.blank?
+    @shows_parts = @shows.each_slice(3).to_a
   end
 
   def view_all

@@ -79,6 +79,8 @@ fr:
 
   anime:
     shows:
+      empty: >
+        Rien n'est encore disponible ! Venez-y jeter un coup d'œil plus tard.
       view-all: "Toutes les émissions animées"
       coming-soon: "À venir !"
       coming-on: "Arrive le"
