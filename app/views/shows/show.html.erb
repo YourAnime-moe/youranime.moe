@@ -46,8 +46,6 @@
       <div class="container">
         <% @episodes_parts.each do |episodes| %>
           <div class="row">
-            <%= request.remote_ip %>
-            <%= request.ip %>
             <% episodes.each_with_index do |episode| %>
               <div class="col-md-4" style="margin-top: 20px;">
                 <% @_rule = {class: nil} %>
