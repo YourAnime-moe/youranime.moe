@@ -12,6 +12,7 @@ class Show < ActiveRecord::Base
     where("#{title_query} and #{atitle_query}")
   }
   scope :published, -> { valid.where(published: true) }
+  scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
 
   before_save {
     # Make the show is at least one of dubbed or subbed.

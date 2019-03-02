@@ -9,6 +9,7 @@
   left: 0;
   z-index: 100; /* Behind the navbar */
   z-index: 1031;
+  font-size: .9rem;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
   .nav-link, .nav-brand {
@@ -30,6 +31,22 @@
   .logo {
     margin-bottom: 20px;
   }
+}
+
+.sidebar-width {
+  flex: 0 0 13%;
+  max-width: 13%;
+  position: relative;
+  width: 100%;
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+.main-width {
+  flex: 0 0 86.7%;
+  max-width: 86.7%;
+  position: relative;
+  width: 100%;
 }
 
 .sidebar-sticky {

@@ -1,5 +1,7 @@
 class ShowsController < AuthenticatedController
 
+  include ShowsHelper
+
   def view
     @anime_current = "current"
     if params[:view] == 'all'

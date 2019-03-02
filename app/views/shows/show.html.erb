@@ -35,14 +35,17 @@
     <div class="overlay">
       <div class="content">
         <div class="ui container grid">
-          <h1 class="show-title"><%= @show.get_title %></h1>
+          <div class="show-title">
+            <h1><%= @show.get_title %></h1>
+            <%= show_tags(@show) %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="hf-section">
-    <div class="row no-padding no-margin">
+  <div class="hf-section padded">
+    <div class="row no-margin">
       <div class="container">
         <% @episodes_parts.each do |episodes| %>
           <div class="row">

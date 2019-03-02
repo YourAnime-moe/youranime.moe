@@ -7,24 +7,26 @@
     </div>
   </div>
 <% else %>
-  <div class="container">
-    <div class="hf-section">
-      <h3><%= t('anime.shows.view-all') %></h3>
-    </div>
-  </div>
-
-  <div class="container">
-    <% @shows_parts.each do |shows| %>
-      <div class="row">
-        <% shows.each_with_index do |show| %>
-          <div class="col-md-4" style="margin-top: 20px;">
-            <% @_rule = {class: nil} %>
-            <% @_thumb_info = {} %>
-            <% @model = show %>
-            <%= render 'shows/partial/_thumbs' %>
-          </div>
-        <% end %>
+  <div style="padding-bottom: 55px;">
+    <div class="container">
+      <div class="hf-section">
+        <h3><%= t('anime.shows.view-all') %></h3>
       </div>
-    <% end %>
+    </div>
+
+    <div class="container">
+      <% @shows_parts.each do |shows| %>
+        <div class="row">
+          <% shows.each_with_index do |show| %>
+            <div class="col-md-4" style="margin-top: 20px;">
+              <% @_rule = {class: nil} %>
+              <% @_thumb_info = {} %>
+              <% @model = show %>
+              <%= render 'shows/partial/_thumbs' %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>

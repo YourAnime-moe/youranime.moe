@@ -25,7 +25,7 @@
   <body>
       <div class="row no-margin">
         <%= render 'shared/sidebar' %>
-        <main class="col-md-9 ml-lg-auto col-lg-10 px-4 logged-in <%= @additional_main_class %>">
+        <main class="main-width ml-lg-auto px-4 logged-in <%= @additional_main_class %>">
           <% flash.each do |key, value| %>
             <div class="alert alert-<%= key %>"><%= value %></div>
           <% end %>
