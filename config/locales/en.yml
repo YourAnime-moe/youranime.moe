@@ -91,6 +91,21 @@ en:
     logout: "Logout"
     signed-in: "Signed in <strong class='css-truncate-target'>%{username}</strong>"
 
+  sidebar:
+    home-page: Home page
+    browse: Browse
+    anime-movies: Anime & Movies
+    feel-adventure: Feel Adventurous?
+    for-you:
+      title: For you
+      recommendations: Recommendations
+      episode-history: Episode history
+      account-settings: Account settings
+    other:
+      title: Other
+      any-issues: Any issues?
+      about: About the developer
+
   admin:
     home: "Admin console"
     success:

@@ -70,6 +70,21 @@ fr:
     logout: "Se déconnecter"
     signed-in: "Connecté en tant que <strong class='css-truncate-target'>%{username}</strong>"
 
+  sidebar:
+    home-page: Page principale
+    browse: Naviguer
+    anime-movies: Anime et Films
+    feel-adventure: Surprenez-moi !
+    for-you:
+      title: Pour vous
+      recommendations: Recommandations
+      episode-history: Historique
+      account-settings: Paramètres
+    other:
+      title: Autres
+      any-issues: Des problèmes ?
+      about: A propos du développeur
+
   admin:
     home: "Console d'administration"
     success:

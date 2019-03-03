@@ -97,9 +97,22 @@ class ApplicationController < ActionController::Base
     render json: {success: true, locale: I18n.locale}
   end
 
+  def authorized_locales
+    %w(en fr ja jp)
+  end
+
   def set_locale
     session[:locale] = params[:locale]
-    I18n.locale = params[:locale]
+    locale = params[:locale].to_s
+    found_locale = false
+    authorized_locales.each do |auth_locale|
+      if locale.include?(auth)
+        locale = auth_locale
+        found_locale = true
+        next
+      end
+    end
+    I18n.locale = locale if found_locale
     render json: {success: true, new_locale: I18n.locale}
   end
 
