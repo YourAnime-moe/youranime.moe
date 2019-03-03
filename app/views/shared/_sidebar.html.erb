@@ -24,25 +24,25 @@
       <li class="nav-item">
         <a class="nav-link" href="/search">
           <i class="material-icons">search</i>
-          Browse
+          <%= t('sidebar.browse') %>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/shows">
           <i class="material-icons">play_arrow</i>
-          Anime & Movies
+          <%= t('sidebar.anime-movies') %>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/random">
           <i class="material-icons">shuffle</i>
-          Feel adventurous?
+          <%= t('sidebar.feel-adventure') %>
         </a>
       </li>
     </ul>
 
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>For you</span>
+      <span><%= t('sidebar.for-you.title') %></span>
       <a class="d-flex align-items-center text-muted" href="#">
         <span data-feather="plus-circle"></span>
       </a>
@@ -52,25 +52,25 @@
       <li class="nav-item">
         <a class="nav-link" href="/recommendations">
           <i class="material-icons" style="margin-right: 2px;">thumb_up</i>
-          Recommendations
+          <%= t('sidebar.for-you.recommendations') %>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/history">
           <i class="material-icons">history</i>
-          Episode history
+          <%= t('sidebar.for-you.episode-history') %>
         </a>
       </li>
       <li class="nav-item">
         <%= link_to settings_path, class: 'nav-link' do %>
           <i class="material-icons">settings</i>
-          Account settings
+          <%= t('sidebar.for-you.account-settings') %>
         <% end %>
       </li>
     </ul>
 
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>Other</span>
+      <span><%= t('sidebar.other.title') %></span>
       <a class="d-flex align-items-center text-muted" href="#">
         <span data-feather="plus-circle"></span>
       </a>
@@ -80,13 +80,13 @@
       <li class="nav-item">
         <%= link_to new_issue_path, class: 'nav-link' do %>
           <i class="material-icons">bug_report</i>
-          Any issues?
+          <%= t('sidebar.other.any-issues') %>
         <% end %>
       </li>
       <li class="nav-item">
         <a target="_blank" class="nav-link" href="https://www.akinyele.ca">
           <i class="material-icons">help</i>
-          About the developer
+          <%= t('sidebar.other.about') %>
         </a>
       </li>
     </ul>

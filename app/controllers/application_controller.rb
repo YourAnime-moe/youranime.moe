@@ -108,10 +108,12 @@ class ApplicationController < ActionController::Base
     authorized_locales.each do |auth_locale|
       if locale.include?(auth)
         locale = auth_locale
+        p "Set locale #{auth_locale}"
         found_locale = true
         next
       end
     end
+    p "Set locale #{locale}"
     I18n.locale = locale if found_locale
     render json: {success: true, new_locale: I18n.locale}
   end
@@ -122,7 +124,18 @@ class ApplicationController < ActionController::Base
     reload = false
     if session[:locale].nil? || params[:set_at_first] == 'true'
       session[:locale] = current
-      I18n.locale = current
+      found_locale = false
+      authorized_locales.each do |auth_locale|
+        if current.include?(auth_locale)
+          current = auth_locale
+          p "Set locale #{auth_locale}"
+          found_locale = true
+          next
+        end
+      end
+      p "Set locale #{current}"
+      I18n.locale = current if found_locale
+      session[:locale] = I18n.locale
       reload = old.to_s != current.to_s
     end
     res = {success: true, reload: reload, locale: {requested: current, old: old}}
@@ -141,7 +154,13 @@ class ApplicationController < ActionController::Base
   private
 
   def find_locale
-    I18n.locale = params[:lang] || session[:locale] || :fr
+    try_to_set = params[:lang] || session[:locale]
+    begin
+      I18n.locale = try_to_set || :fr
+    rescue I18n::InvalidLocale
+      p "Invalid locale #{try_to_set}. Defaulting to :fr..."
+      I18n.locale = :fr
+    end
   end
 
   #def check_is_in_maintenance_mode
