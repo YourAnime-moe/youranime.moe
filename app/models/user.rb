@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   serialize :settings
 
   has_one_attached :avatar
+  has_many :user_watch_progresses
 
   DEFAULT_DEMO_NAME = "Demo Account"
   DEFAULT_DEMO_USERNAME = "demo"
@@ -134,7 +135,7 @@ class User < ActiveRecord::Base
 
     # Returns a list of episodes that have "watching progress"
     def currently_watching(limit: nil, no_thumbnails: false)
-      Show::Episode.published#.select{|e| no_thumbnails || e.has_thumbnail?}
+      history#.select{|e| no_thumbnails || e.has_thumbnail?}
 =begin
       return [] if self.episode_progress_list.blank?
       res = self.episode_progress_list.map{|progress| Show::Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
@@ -149,6 +150,10 @@ class User < ActiveRecord::Base
       res = res.select{|e| no_thumbnails || e.has_thumbnail?}
       return res || []
 =end
+    end
+
+    def history
+      Show::Episode.find_by_sql(["select users.*, episodes.* from episodes cross join users inner join user_watch_progresses progress on episodes.id = progress.episode_id and progress.user_id = users.id where users.id = ?;", self.id])
     end
 
     def get_episodes_watched(as_is: false)

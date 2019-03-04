@@ -5,6 +5,7 @@ class Show
 
     has_one_attached :video
     has_one_attached :thumbnail
+    has_many :user_watch_progresses
 
     serialize :comments
 
