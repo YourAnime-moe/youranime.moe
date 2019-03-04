@@ -11,30 +11,7 @@ class User < ActiveRecord::Base
   DEFAULT_DEMO_USERNAME = "demo"
   DEFAULT_DEMO_TOKEN = "demo"
 
-  before_save {
-    self.episodes_watched = [] if self.episodes_watched.nil?
-    self.episode_progress_list = [] if self.episode_progress_list.nil?
-
-    if self.is_demo_account?
-      found_user = User.find_by(demo: true)
-      unless found_user.nil? || found_user.id == self.id
-        self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
-        throw :abort
-      end
-    else
-      if self.username.nil? or self.username.strip.empty?
-        self.errors.add "username", "cannot be empty"
-        throw :abort
-      end
-
-      found_user = User.find_by(username: self.username)
-      unless found_user.nil? || found_user.id == self.id
-        self.errors.add "username", "\"#{self.username}\" already exists"
-        throw :abort
-      end
-    end
-  }
-
+  before_save :check_user
   has_secure_password
   has_secure_token :auth_token
 
@@ -135,25 +112,21 @@ class User < ActiveRecord::Base
 
     # Returns a list of episodes that have "watching progress"
     def currently_watching(limit: nil, no_thumbnails: false)
-      history#.select{|e| no_thumbnails || e.has_thumbnail?}
-=begin
-      return [] if self.episode_progress_list.blank?
-      res = self.episode_progress_list.map{|progress| Show::Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
-      self.get_latest_episodes(limit: limit).each do |episode|
-        res << episode unless res.include? episode
-      end
-      res.reverse!
-      if limit
-        limit = 4 if limit < 1
-        res = res[0..limit-1]
-      end
-      res = res.select{|e| no_thumbnails || e.has_thumbnail?}
-      return res || []
-=end
+      history(limit: limit)
     end
 
-    def history
-      Show::Episode.find_by_sql(["select users.*, episodes.* from episodes cross join users inner join user_watch_progresses progress on episodes.id = progress.episode_id and progress.user_id = users.id where users.id = ?;", self.id])
+    def history(limit: nil)
+      sql = <<-SQL
+        select users.*, episodes.*
+        from episodes
+        cross join users
+        inner join user_watch_progresses progress
+        on episodes.id = progress.episode_id and progress.user_id = users.id
+        where users.id = ?
+        limit ?;
+      SQL
+      limit = limit.nil? ? 5 : limit.to_i
+      Show::Episode.find_by_sql([sql, self.id, limit])
     end
 
     def get_episodes_watched(as_is: false)
@@ -344,6 +317,31 @@ class User < ActiveRecord::Base
     end
 
     private
+
+    def check_user
+      self.episodes_watched = [] if self.episodes_watched.nil?
+      self.episode_progress_list = [] if self.episode_progress_list.nil?
+
+      if self.is_demo_account?
+        found_user = User.find_by(demo: true)
+        unless found_user.nil? || found_user.id == self.id
+          self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
+          throw :abort
+        end
+      else
+        if self.username.nil? or self.username.strip.empty?
+          self.errors.add "username", "cannot be empty"
+          throw :abort
+        end
+
+        found_user = User.find_by(username: self.username)
+        unless found_user.nil? || found_user.id == self.id
+          self.errors.add "username", "\"#{self.username}\" already exists"
+          throw :abort
+        end
+      end
+    end
+
     def is_ok(value, default)
       res = self.settings[value]
       res = self.settings[value.to_s] if res.nil?
