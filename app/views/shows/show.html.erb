@@ -36,7 +36,9 @@
       <div class="content">
         <div class="ui container grid">
           <div class="show-title">
-            <h1 style="font-weight: bold;"><%= @show.get_title %></h1>
+            <h1 style="font-weight: bold;">
+              <%= @show.get_title %>
+            </h1>
             <%= show_tags(@show) %>
           </div>
         </div>
@@ -45,7 +47,10 @@
   </div>
 
   <div class="container" style="padding-top: 10px;">
-    <small><%= @show.description %></small>
+    <small>
+      <span style="margin-right: 10px;"><%= show_sub_dub(@show) %></span>
+      <%= @show.description %>
+    </small>
   </div>
 
   <div class="hf-section padded">

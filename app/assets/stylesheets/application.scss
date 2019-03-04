@@ -107,16 +107,39 @@ nav.maintenance {
   cursor: pointer;
 }
 
-.darken::after {
-  display: block;
+.holder {
   position: relative;
+  padding: 0 0 56.5%;
+  overflow: hidden;
 
-  background-image: linear-gradient(to bottom, rgba(255,0,0,0), black);
-  opacity: 0.5;
-  margin-top: -50px;
-  height: 50px;
+  .overlay {
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  .overlay.darken::after {
+    display: block;
+    position: absolute;
+    background: -webkit-linear-gradient(top,rgba(0,0,0,.5) 0,rgba(0,0,0,.05) 50%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.5) 100%);
+    background: linear-gradient(to bottom,rgba(0,0,0,.5) 0,rgba(0,0,0,.05) 50%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.5) 100%);
+    height: 100%;
+    width: 100%;
+    content: '';
+  }
+
+  img {
+    z-index: 0;
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+  }
+}
+
+.thumb-overlay {
   width: 100%;
-  content: '';
+  height: 100%;
 }
 
 .image-card-container {

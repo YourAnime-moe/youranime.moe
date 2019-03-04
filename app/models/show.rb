@@ -37,6 +37,14 @@ class Show < ActiveRecord::Base
     "Subbed"
   end
 
+  def only_subbed?
+    !!subbed && !dubbed
+  end
+
+  def only_dubbed?
+    !!dubbed && !subbed
+  end
+
   def get_title(html: false, default: nil)
     if html
       return "<i>No title</i>".html_safe if self.get_title(html: false, default: nil).blank?
