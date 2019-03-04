@@ -10,12 +10,12 @@ default: &default
   timeout: 5000
 
 development:
-  #<<: *default
-  #database: db/development.sqlite3
-  adapter: pg
-  pool: 5
-  timeout: 5000
-  url: postgres://tkoobcvgnassiw:2-IRGl3nKQaHCoi8e5S2-yDo-R@ec2-54-243-187-133.compute-1.amazonaws.com:5432/dcj9sbpbe3c415
+  <<: *default
+  database: db/development.sqlite3
+  #adapter: pg
+  #pool: 5
+  #timeout: 5000
+  #url: postgres://tkoobcvgnassiw:2-IRGl3nKQaHCoi8e5S2-yDo-R@ec2-54-243-187-133.compute-1.amazonaws.com:5432/dcj9sbpbe3c415
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

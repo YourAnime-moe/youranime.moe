@@ -60,6 +60,14 @@ class Show < ActiveRecord::Base
     result
   end
 
+  def description
+    result = self['description'] if I18n.locale == :en
+    result = self['fr_description'] if I18n.locale == :fr
+    result = self['jp_description'] if I18n.locale == :jp
+    return self['description'] if result.blank?
+    result
+  end
+
   def prequel
     return nil if self.show_number.nil? || self.show_number < 1
     Show.all.select { |e| e.title == self.title }.each do |show|
