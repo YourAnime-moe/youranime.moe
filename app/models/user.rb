@@ -112,19 +112,21 @@ class User < ActiveRecord::Base
 
     # Returns a list of episodes that have "watching progress"
     def currently_watching(limit: nil, no_thumbnails: false)
-      history.limit(limit)
+      history(limit: limit)
     end
 
-    def history
+    def history(limit: nil)
       sql = <<-SQL
-        select users.*, episodes.* 
-        from episodes 
-        cross join users 
-        inner join user_watch_progresses progress 
-        on episodes.id = progress.episode_id and progress.user_id = users.id 
-        where users.id = ?;
-SQL
-      Show::Episode.find_by_sql([sql, self.id])
+        select users.*, episodes.*
+        from episodes
+        cross join users
+        inner join user_watch_progresses progress
+        on episodes.id = progress.episode_id and progress.user_id = users.id
+        where users.id = ?
+        limit ?;
+      SQL
+      limit = limit.nil? ? 5 : limit.to_i
+      Show::Episode.find_by_sql([sql, self.id, limit])
     end
 
     def get_episodes_watched(as_is: false)
@@ -315,7 +317,7 @@ SQL
     end
 
     private
-  
+
     def check_user
       self.episodes_watched = [] if self.episodes_watched.nil?
       self.episode_progress_list = [] if self.episode_progress_list.nil?
@@ -339,7 +341,7 @@ SQL
         end
       end
     end
-  
+
     def is_ok(value, default)
       res = self.settings[value]
       res = self.settings[value.to_s] if res.nil?
