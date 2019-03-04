@@ -49,8 +49,15 @@ class Show < ActiveRecord::Base
     if html
       return "<i>No title</i>".html_safe if self.get_title(html: false, default: nil).blank?
     end
-    return (self.title || default) if self.alternate_title.blank?
-    self.alternate_title
+    (title || default || alternate_title)
+  end
+
+  def title
+    result = self['title'] if I18n.locale == :en
+    result = self['fr_title'] if I18n.locale == :fr
+    result = self['jp_title'] if I18n.locale == :jp
+    return self['title'] if result.nil?
+    result
   end
 
   def prequel
