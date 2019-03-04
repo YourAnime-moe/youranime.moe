@@ -30,7 +30,7 @@ module Config
   class << self
     # <protocol>://<subdomain>.<domain>:<port>/<path>
     def main_host(as_is: false)
-      raise Error.new('Please set the domain name.') if domain.nil?
+      return if domain.nil?
       _protocol = use_ssl ? 'https' : (protocol || 'http')
       _port = use_ssl ? 443 : (port || 80)
       host = ''
