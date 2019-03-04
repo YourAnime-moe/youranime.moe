@@ -10,13 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_27_160247) do
+ActiveRecord::Schema.define(version: 2019_03_04_000149) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "intarray"
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -33,7 +37,17 @@ ActiveRecord::Schema.define(version: 2019_02_27_160247) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "episodes", force: :cascade do |t|
+  create_table "attachments", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "allowed_users"
+    t.string "path"
+    t.boolean "visible"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "episodes", id: :serial, force: :cascade do |t|
     t.integer "show_id"
     t.string "op"
     t.string "ed"
@@ -59,7 +73,7 @@ ActiveRecord::Schema.define(version: 2019_02_27_160247) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "messages", id: :serial, force: :cascade do |t|
     t.string "subject"
     t.integer "from_id"
     t.integer "to_id"
@@ -72,14 +86,14 @@ ActiveRecord::Schema.define(version: 2019_02_27_160247) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "news", force: :cascade do |t|
+  create_table "news", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "recommendations", force: :cascade do |t|
+  create_table "recommendations", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.text "plot"
@@ -91,7 +105,7 @@ ActiveRecord::Schema.define(version: 2019_02_27_160247) do
     t.integer "from_user"
   end
 
-  create_table "shows", force: :cascade do |t|
+  create_table "shows", id: :serial, force: :cascade do |t|
     t.integer "show_type"
     t.boolean "dubbed"
     t.boolean "subbed"
@@ -117,16 +131,43 @@ ActiveRecord::Schema.define(version: 2019_02_27_160247) do
     t.string "tags"
     t.date "publish_after"
     t.date "published_until"
+    t.string "jp_title"
+    t.string "fr_title"
+    t.string "roman_title"
+    t.text "jp_description"
+    t.text "fr_description"
   end
 
-  create_table "todos", force: :cascade do |t|
+  create_table "todos", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "user_favorites", force: :cascade do |t|
+    t.integer "show_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_queues", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "show_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_watch_progresses", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "episode_id"
+    t.float "progress"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "username"
     t.string "password"
     t.string "password_digest"
