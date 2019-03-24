@@ -1,59 +1,84 @@
-<div style="padding-bottom: 55px;">
-  <div class="container-fluid">
-    <div class="hf-section">
-      <h3><%= @show.get_title %></h3>
+<script type="text/javascript">
+  $(document).ready(function() {
+    url = $('div[target]').attr('target');
+    $('div[target]').css('background-image', "url(" + url + ")");
+    $('.show-body').fadeIn(2000);
+  });
+</script>
+
+<div class="show-body" style="display: none;">
+  <div class="head" target="<%= @show.get_banner_url %>">
+    <div class="overlay">
+      <div class="content">
+        <div class="ui container-fluid grid">
+          <div class="show-title">
+            <h1 style="font-weight: bold;">
+              <%= @show.get_title %>
+            </h1>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="container-fluid">
-    <%= form_for(@show, url: admin_show_path(@show)) do |f| %>
-    <div class="row">
-      <div class="col-7">
-        <p><strong>Basic</strong></p>
-        <div class="form-group">
-          <%= f.label :title, 'Title' %>
-          <%= f.text_field :title, class: 'form-control', placeholder: 'Title', autocomplete: 'off' %>
-          <small class="form-text text-muted"><b>Important</b>: This will only be updated for your current locale.</small>
-        </div>
-        <div class="form-group">
-          <%= f.label :description, 'Description' %>
-          <%= f.text_area :description, class: 'form-control', placeholder: 'Title', autocomplete: 'off', rows: 6 %>
-          <small class="form-text text-muted"><b>Important</b>: This will only be updated for your current locale.</small>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :tags %>
-          <%= f.text_field :tags, class: 'form-control', placeholder: 'Enter tags, press Enter after each tag.' %>
-          <small class="form-text text-muted">Each tag must be separated with  a space (" ") character.</small>
-        </div>
-
-        <br />
-        <p><strong>Dub, Sub settings</strong></p>
-        <div class="row">
-          <div class="col-md-6">
-            <%= f.label :dubbed %>
-            <%= f.check_box :dubbed %>
+  <div style="padding-bottom: 55px;">
+    <div class="container-fluid">
+      <%= form_for(@show, url: admin_show_path(@show)) do |f| %>
+      <div class="row">
+        <div class="col-7">
+          <p><strong>Basic</strong></p>
+          <div class="form-group">
+            <%= f.label :title, 'Title', class: 'text-muted' %>
+            <%= f.text_field :title, class: 'form-control', placeholder: 'Title', autocomplete: 'off' %>
+            <small class="form-text text-muted text-right"><b>Important</b>: This will only be updated for your current locale.</small>
           </div>
-          <div class="col-md-6">
-            <%= f.label :subbed %>
-            <%= f.check_box :subbed %>
+          <div class="form-group">
+            <%= f.label :description, 'Description', class: 'text-muted' %>
+            <%= f.text_area :description, class: 'form-control', placeholder: 'Title', autocomplete: 'off', rows: 6 %>
+            <small class="form-text text-muted text-right"><b>Important</b>: This will only be updated for your current locale.</small>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :tags, class: 'text-muted' %>
+            <%= f.text_field :tags, class: 'form-control', placeholder: 'Enter tags, press Enter after each tag.' %>
+            <small class="form-text text-muted text-right">Each tag must be separated with  a space (" ") character.</small>
+          </div>
+
+          <br />
+          <p><strong>Dub, Sub settings</strong></p>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.label :dubbed %>
+              <%= f.check_box :dubbed %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :subbed %>
+              <%= f.check_box :subbed %>
+            </div>
+          </div>
+
+
+          <div style="width: 60%; margin: 45px auto;">
+            <button type="submit" class="btn btn-block btn-primary">Submit</button>
           </div>
         </div>
-
-
-        <div style="width: 60%; margin: 45px auto;">
-          <button type="submit" class="btn btn-block btn-primary">Submit</button>
+        <div class="col-5 d-inline-block">
+          <fieldset style="border: 1px solid #6dccc0; padding: 15px; border-radius: 6px;">
+            <legend class="text-muted" style="text-align: right; width: auto; font-size: 17px; font-weight: bold;">Banner</legend>
+            <div class="container">
+              <%= image_for @show, style: "max-width: 100%" %>
+              <%= f.file_field :banner, multiple: false %>
+            </div>
+          </fieldset>
         </div>
       </div>
-      <div class="col-5 d-inline-block">
-        <fieldset style="border: 1px solid #6dccc0  ; padding: 15px; border-radius: 6px;">
-          <legend class="text-muted" style="text-align: right; width: auto; font-size: 17px; font-weight: bold;">Banner</legend>
-          <div class="container">
-            <%= image_for @show, style: "max-width: 100%" %>
-          </div>
-        </fieldset>
-      </div>
+      <% end %>
     </div>
-    <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    
+  });
+</script>

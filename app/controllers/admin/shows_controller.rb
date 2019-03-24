@@ -15,19 +15,13 @@ class Admin::ShowsController < AdminController
     end
 	end
 
-	def show
-		show = Show.find_by(id: params[:id])
-		unless show.nil?
-			set_current_admin_show_id(show.id)
-			show = show.admin_json
-		end
-		respond_to do |format|
-			format.json { render json: {show: show} }
-		end
-	end
-
 	def edit
 		@show = Show.find_by(id: params[:id])
+    if @show
+      set_title before: @show.get_title
+    else
+      redirect_to admin_shows_path
+    end
 	end
 
 	def update
@@ -89,7 +83,8 @@ class Admin::ShowsController < AdminController
 		params.require(:show).permit(
 			:published,
 			:image_path,
-      :dubbed, :subbed
+      :dubbed, :subbed,
+      :banner
 		)
 	end
 
