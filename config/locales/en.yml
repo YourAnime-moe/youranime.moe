@@ -105,6 +105,11 @@ en:
       title: Other
       any-issues: Any issues?
       about: About the developer
+    admin:
+      title: Admin options
+      manage:
+        shows: Manage shows
+        episodes: Manage episodes
 
   admin:
     home: "Admin console"

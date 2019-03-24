@@ -10,7 +10,9 @@
       <% end %>
 
       <% @model = model %>
-      <%= render 'shows/partial/_thumbs' %>
+      <%= link_to(model, class: 'col') do %>
+        <%= show_thumb(@model, rules: @_rule) %>
+      <% end %>
     <% end %>
   </div>
 </div>

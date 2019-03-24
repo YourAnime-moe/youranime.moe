@@ -19,13 +19,9 @@ class Admin::EpisodesController < AdminController
 	end
 
 	def index
-		@show = Show.find_by(id: params[:show_id])
-		episodes = nil
-		if @show
-			episodes = @show.all_episodes
-			episodes = episodes.map{|e| JSON.parse(e.to_json(methods: [:get_thumbnail_url, :has_video?, :get_video_url]))}
-		end
-		render json: { success: !@show.nil?, episodes: episodes }
+    @episodes = Show::Episode.all.order('id desc')
+    @episodes = @episodes.paginate(page: params[:page])
+    set_title before: 'Manage episodes'
 	end
 
 	def update

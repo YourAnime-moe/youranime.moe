@@ -2,6 +2,7 @@ class Show
   class Episode < ActiveRecord::Base
 
     self.table_name = 'episodes'
+    self.per_page = 20
 
     has_one_attached :video
     has_one_attached :thumbnail
@@ -52,8 +53,22 @@ class Show
       parts[parts.size-1]
     end
 
+    def previous
+      Episode.where(published: true, show_id: show_id)
+        .order('episode_number desc')
+        .where(["episode_number < ?", episode_number])
+        .limit(1).first
+    end
+
     def has_previous?
       !self.previous.nil?
+    end
+
+    def next
+      Episode.where(published: true, show_id: show_id)
+        .order('episode_number asc')
+        .where(["episode_number > ?", episode_number])
+        .limit(1).first
     end
 
     def has_next?

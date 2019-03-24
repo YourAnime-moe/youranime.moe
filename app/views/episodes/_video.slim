@@ -1,6 +1,6 @@
-div.no-video.hidden
-    span Sorry, it appears this video is broken. Please contact the administrator of the website. 
-    span If you have admin rights, please login 
+div.no-video.d-none
+    span Sorry, it appears this video is broken. Please contact the administrator of the website.
+    span If you have admin rights, please login
     a href="" here.
 
 div style="margin-top: 10px;"
@@ -13,7 +13,7 @@ div style="margin-top: 10px;"
         span MP4 not supported or video not found.
 
 script src="https://vjs.zencdn.net/#{videojs_version}/video.js"
-script src="/js/nextShow::Episode.js"
+script src="/js/nextEpisode.js"
 
 css:
     .previous, .next {
@@ -112,7 +112,7 @@ javascript:
         if (currentTime > 10) {
             update(videoInfo);
         }
-        
+
         if (currentTime % 8 != 0) {
             return;
         }
@@ -180,7 +180,7 @@ javascript:
     if (videosList == null) {
         localStorage.setItem('videos', "[]");
     }
-    
+
     videosList = getVideosList();
 
     if (isCurrentEpisode(episode) && buttonResume) {

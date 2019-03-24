@@ -84,6 +84,11 @@ fr:
       title: Autres
       any-issues: Des problèmes ?
       about: A propos
+    admin:
+      title: Options d'admin
+      manage:
+        shows: Gérer les séries
+        episodes: Gérer les épisodes
 
   admin:
     home: "Console d'administration"

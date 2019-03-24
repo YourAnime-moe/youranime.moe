@@ -35,8 +35,8 @@ Rails.application.routes.draw do
   end
 
   # Episodes
-  namespace :show do
-    resources :episodes, only: [:index, :show]
+  namespace :show, path: "show" do
+    resources :episodes, only: [:show]
   end
 
   root 'application#root'
@@ -84,9 +84,7 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
-    resources :shows do
-      patch :publish, on: :member
-    end
+    resources :shows, only: [:index, :edit, :update]
     resources :episodes
   end
 
