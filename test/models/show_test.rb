@@ -29,7 +29,7 @@ class ShowTest < TanoshimuBaseTest
         assert show.subbed
 
         (1..10).each do |e|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             assert episode.has_subs?
         end
@@ -44,7 +44,7 @@ class ShowTest < TanoshimuBaseTest
         assert show.dubbed
 
         (1..10).each do |e|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             assert_not episode.has_subs?
         end
@@ -136,7 +136,7 @@ class ShowTest < TanoshimuBaseTest
         show.published = true
         assert_save show
         (1..10).each do |episode_number|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             episode.published = true
             assert_save episode
@@ -148,7 +148,7 @@ class ShowTest < TanoshimuBaseTest
         show = Show.new
         assert_save show
         (1..10).each do |episode_number|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             episode.published = true
             assert_save episode
@@ -161,7 +161,7 @@ class ShowTest < TanoshimuBaseTest
         assert_save show
         count = 5
         (1..10).each do |episode_number|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.title = "Episode #{episode_number}"
             episode.episode_number = episode_number
             episode.show_id = show.id
@@ -179,7 +179,7 @@ class ShowTest < TanoshimuBaseTest
         assert_save show
         count = 200
         (1..count).each do |episode_number|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             assert_save episode
         end
@@ -191,7 +191,7 @@ class ShowTest < TanoshimuBaseTest
         assert_save show
         count = 200
         (1..count).each do |episode_number|
-            episode = Show::Episode.new(published: true, show_id: show.id, episode_number: episode_number)
+            episode = Episode.new(published: true, show_id: show.id, episode_number: episode_number)
             assert_save episode
         end
         show.episodes(from: 150).each do |episode|
@@ -205,7 +205,7 @@ class ShowTest < TanoshimuBaseTest
         count = 200
         episode_from = nil
         (1..count).each do |episode_number|
-            episode = Show::Episode.new(published: true, show_id: show.id, episode_number: episode_number)
+            episode = Episode.new(published: true, show_id: show.id, episode_number: episode_number)
             episode_from = episode if episode_number == 150
             assert_save episode
         end
@@ -219,7 +219,7 @@ class ShowTest < TanoshimuBaseTest
         assert_save show
         count = 200
         (1..count).each do
-            episode = Show::Episode.new(show_id: show.id, published: true)
+            episode = Episode.new(show_id: show.id, published: true)
             assert_save episode
         end
         assert_equal show.split_episodes(sort_by: 4).size, 50 # 200/4 = 50
@@ -306,7 +306,7 @@ class ShowTest < TanoshimuBaseTest
         show.published = true
         assert_save show
         (1..5).each do |episode_number|
-            episode = Show::Episode.new
+            episode = Episode.new
             episode.show_id = show.id
             episode.published = true
             assert_save episode
@@ -511,11 +511,11 @@ class ShowTest < TanoshimuBaseTest
 
     test "Show utils self latest" do
         user = users(:five_episodes_watched)
-        assert_save Show::Episode.new(episode_number: 1, show_id: @show_one_subbed.id, published: true)
-        assert_save Show::Episode.new(episode_number: 2, show_id: @show_one_subbed.id, published: true)
-        assert_save Show::Episode.new(episode_number: 1, show_id: @show_two_subbed.id, published: true)
-        assert_save Show::Episode.new(episode_number: 1, show_id: @show_unpublished.id, published: true)
-        assert_save Show::Episode.new(episode_number: 2, show_id: @show_two_subbed.id)
+        assert_save Episode.new(episode_number: 1, show_id: @show_one_subbed.id, published: true)
+        assert_save Episode.new(episode_number: 2, show_id: @show_one_subbed.id, published: true)
+        assert_save Episode.new(episode_number: 1, show_id: @show_two_subbed.id, published: true)
+        assert_save Episode.new(episode_number: 1, show_id: @show_unpublished.id, published: true)
+        assert_save Episode.new(episode_number: 2, show_id: @show_two_subbed.id)
 
         latest_shows = Show.lastest(user)
 

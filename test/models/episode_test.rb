@@ -9,27 +9,27 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "Episode number 1 if first" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert episode.number == 1
     end
 
     test "Episode valid number" do
-        assert_save Show::Episode.new
-        assert_save Show::Episode.new
-        episode = Show::Episode.new
+        assert_save Episode.new
+        assert_save Episode.new
+        episode = Episode.new
         assert_save episode
         assert episode.number == 3
     end
 
     test "New episode has no show" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_nil episode.show
     end
 
     test "Episode has valid show" do
-        episode = Show::Episode.new
+        episode = Episode.new
         episode.show_id = @show.id
         assert_save episode
 
@@ -37,26 +37,26 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "New episode is not published" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_not episode.is_published?
     end
 
     test "Episode cannot have published status without a show" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_not episode.is_published?
     end
 
     test "Episode is published" do
-        episode = Show::Episode.new show_id: @show.id
+        episode = Episode.new show_id: @show.id
         episode.published = true
         assert_save episode
         assert episode.is_published?
     end
 
     test "Episode has valid path extension" do
-        episode = Show::Episode.new
+        episode = Episode.new
         episode.path = "/videos/show/ep01.mp4"
         assert_save episode
         assert episode.get_path_extension == "mp4"
@@ -66,16 +66,16 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "New episode has no previous or next episodes" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_nil episode.previous
         assert_nil episode.next
     end
 
     test "Episode has valid previous episode" do
-        previous_episode = Show::Episode.new(show_id: @show.id)
-        episode = Show::Episode.new(show_id: @show.id)
-        assert_save_models [Show::Episode.create(show_id: @show.id), Show::Episode.create(show_id: @show.id)]
+        previous_episode = Episode.new(show_id: @show.id)
+        episode = Episode.new(show_id: @show.id)
+        assert_save_models [Episode.create(show_id: @show.id), Episode.create(show_id: @show.id)]
         assert_save_models [previous_episode, episode]
 
         assert episode.has_previous?
@@ -83,9 +83,9 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "Episode has valid next episode" do
-        next_episode = Show::Episode.new(show_id: @show.id)
-        episode = Show::Episode.new(show_id: @show.id)
-        assert_save_models [Show::Episode.create(show_id: @show.id), Show::Episode.create(show_id: @show.id)]
+        next_episode = Episode.new(show_id: @show.id)
+        episode = Episode.new(show_id: @show.id)
+        assert_save_models [Episode.create(show_id: @show.id), Episode.create(show_id: @show.id)]
         assert_save_models [episode, next_episode]
 
         assert episode.has_next?
@@ -93,89 +93,89 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "Episode has valid path" do
-        episode = Show::Episode.new(path: "/valid/path.mp4")
+        episode = Episode.new(path: "/valid/path.mp4")
         assert_save episode
         assert_equal episode.get_path, Config.main_host + "/valid/path.mp4"
     end
 
     test "Episode has valid new path" do
-        episode = Show::Episode.new(path: "/videos/show/ep8014.mp4")
+        episode = Episode.new(path: "/videos/show/ep8014.mp4")
         assert_save episode
         assert_equal episode.get_new_path, Config.path("/videos?show=show&episode=8014&format=mp4&video=true")
     end
 
     test "Episode has valid image path" do
-        episode = Show::Episode.new(path: "/ouhlala/show/ep8014.test_ext")
+        episode = Episode.new(path: "/ouhlala/show/ep8014.test_ext")
         assert_save episode
         assert_equal episode.get_image_path(ext: "test_ext"), Config.main_host + "/ouhlala/show/ep8014.test_ext"
     end
 
     test "Episode has valid new image path" do
-        episode = Show::Episode.new(path: "/videos/show/ep8014.test_ext")
+        episode = Episode.new(path: "/videos/show/ep8014.test_ext")
         assert_save episode
         assert_equal episode.get_new_image_path(ext: "test_ext"), Config.main_host + "/videos?show=show&episode=8014&format=test_ext"
 
     end
 
     test "No subs if no path" do
-        episode = Show::Episode.new(show_id: @show.id)
+        episode = Episode.new(show_id: @show.id)
         assert_save episode
         assert_nil episode.get_subtitle_path
     end
 
     test "Only subbed episodes have subs" do
-        dubbed_episode = Show::Episode.new(show_id: @dubbed_show.id, path: "/videos/dub_show/ep8014.video")
-        subbed_episode = Show::Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
+        dubbed_episode = Episode.new(show_id: @dubbed_show.id, path: "/videos/dub_show/ep8014.video")
+        subbed_episode = Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
         assert_save_models [subbed_episode, dubbed_episode]
         assert_nil dubbed_episode.get_subtitle_path
         assert_not_nil subbed_episode.get_subtitle_path
     end
 
     test "Episode has valid subs path" do
-        episode = Show::Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
+        episode = Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
         assert_save episode
         assert_equal episode.get_subtitle_path, Config.path("/videos/show/ep8014.vtt")
     end
 
     test "Episode has valid new subs path" do
-        episode = Show::Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
+        episode = Episode.new(show_id: @show.id, path: "/videos/show/ep8014.video")
         assert_save episode
         assert_equal episode.get_new_subtitle_path, Config.path("/videos?show=show&episode=8014&format=vtt&subtitles=true")
     end
 
     test "Episode was not watched by user" do
-        Show::Episode.create;Show::Episode.create;Show::Episode.create;Show::Episode.create;
-        episode = Show::Episode.new
+        Episode.create;Episode.create;Episode.create;Episode.create;
+        episode = Episode.new
         assert_save episode
         episode.was_watched_by? @dummy_user
     end
 
     test "Episode was watched by user" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         episode.was_watched_by? @dummy_user
     end
 
     test "Episode has watched mark" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert episode.has_watched_mark?
     end
 
     test "Episode comment not accepted if not hash" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_equal episode.add_comment(1), {success: false, message: "Invalid data was received."}
     end
 
     test "Episode adds new comment" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
         assert_equal episode.add_comment({}), {success: true, message: "Comment was received."}
     end
 
     test "Episode gets all comments" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
 
         time = Utils.get_date_from_time(Time.now)
@@ -201,18 +201,18 @@ class EpisodeTest < TanoshimuBaseTest
     end
 
     test "Episode has instances" do
-        assert Show::Episode.instances.size > 0
+        assert Episode.instances.size > 0
     end
 
     test "All episodes are published" do
         count = 10
         (1..count).each do
-            assert_save Show::Episode.new(published: true)
+            assert_save Episode.new(published: true)
         end
-        all_episodes = Show::Episode.all_published
+        all_episodes = Episode.all_published
         assert_equal all_episodes.size, count
         i = 0
-        Show::Episode.all.select{|e| e.is_published?}.each do |episode|
+        Episode.all.select{|e| e.is_published?}.each do |episode|
             all_episodes.include? episode
             i += 1
         end

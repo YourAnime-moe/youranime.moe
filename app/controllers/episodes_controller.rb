@@ -9,7 +9,7 @@ class EpisodesController < AuthenticatedController
       flash[:danger] = 'Oops, it looks like an fake episode is with us...'
       redirect_to '/shows'; return
     end
-    @episode = Show::Episode.find_by(id: id)
+    @episode = Episode.find_by(id: id)
     if @episode.nil?
       flash[:warning] = 'Sorry, it looks like this episode was deleted or does not exit yet. Please try again.'
       redirect_to '/shows'; return
@@ -24,12 +24,12 @@ class EpisodesController < AuthenticatedController
   end
 
   def random
-    ind = rand(Show::Episode.last.id)
+    ind = rand(Episode.last.id)
     episode = nil
     while true
-      episode = Show::Episode.find_by(id: ind)
+      episode = Episode.find_by(id: ind)
       break unless episode.nil?
-      ind = rand(Show::Episode.last.id) + 1
+      ind = rand(Episode.last.id) + 1
     end
     if episode.is_published?
       redirect_to "/shows/episodes?id=#{ind}"
@@ -44,7 +44,7 @@ class EpisodesController < AuthenticatedController
       render text: "No episode id was provided."
       return
     end
-    episode = Show::Episode.find_by(id: id)
+    episode = Episode.find_by(id: id)
     if episode.nil?
       render text: "Episode number #{id} does not exist."
       return
@@ -68,7 +68,7 @@ class EpisodesController < AuthenticatedController
       render text: "No episode id was provided."
       return
     end
-    episode = Show::Episode.find_by(id: id)
+    episode = Episode.find_by(id: id)
     if episode.nil?
       render text: "Episode number #{id} does not exist."
       return
@@ -94,7 +94,7 @@ class EpisodesController < AuthenticatedController
   end
 
   def show_episode_video
-    episode = Show::Episode.find_by(:id => params[:id])
+    episode = Episode.find_by(:id => params[:id])
     if episode.nil?
 
     else

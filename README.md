@@ -98,7 +98,7 @@ rails c
 ... and type:
 ```ruby
 users = User.all 			# Gets all saved User instances
-episodes = Show::Episode.all  	# Gets all saved Episode instances
+episodes = Episode.all  	# Gets all saved Episode instances
 shows = Show.all 			# Gets all saved Show instances
 ...etc...
 ```

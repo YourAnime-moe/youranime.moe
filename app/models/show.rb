@@ -110,10 +110,10 @@ class Show < ActiveRecord::Base
 
   def episodes(from: nil)
     return nil if self.id.nil?
-    results = Show::Episode.published.where(show_id: self.id).order(:episode_number)
+    results = Episode.published.where(show_id: self.id).order(:episode_number)
     return results if from.nil?
 
-    if from.class == Show::Episode
+    if from.class == Episode
       from = from.episode_number
     end
 
@@ -127,7 +127,7 @@ class Show < ActiveRecord::Base
   end
 
   def all_episodes
-    Show::Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
+    Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
   end
 
   def split_episodes(sort_by: 4)
@@ -350,7 +350,7 @@ class Show < ActiveRecord::Base
 
   def self.latest(current_user, limit: 5)
     episodes = current_user.get_episodes_watched
-    episodes = episodes.map{|e| Show::Episode.find e}.reverse
+    episodes = episodes.map{|e| Episode.find e}.reverse
     shows = []
     episodes.each do |ep|
       next unless ep.is_published?

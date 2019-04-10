@@ -3,25 +3,25 @@ require 'models/tanoshimu_base_test'
 class NavigatableTest < TanoshimuBaseTest
 
     test "New instance has no previous instance" do
-        instance = Show::Episode.new
+        instance = Episode.new
         assert_save instance
         assert_nil instance.previous
     end
 
     test "New instance has no next instance" do
-        instance = Show::Episode.new
+        instance = Episode.new
         assert_save instance
         assert_nil instance.next
     end
 
     test "Instance has valid previous instance" do
-        previous_instance = Show::Episode.new
+        previous_instance = Episode.new
         assert_save previous_instance
         
-        instance = Show::Episode.new
+        instance = Episode.new
         assert_save instance
 
-        following_instance = Show::Episode.new
+        following_instance = Episode.new
         assert_save following_instance
 
         assert instance.previous == previous_instance
@@ -29,13 +29,13 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Instance has valid next instance" do
-        instance = Show::Episode.new
+        instance = Episode.new
         assert_save instance
 
-        next_instance = Show::Episode.new
+        next_instance = Episode.new
         assert_save next_instance
 
-        following_instance = Show::Episode.new
+        following_instance = Episode.new
         assert_save following_instance
 
         assert instance.next == next_instance
@@ -43,18 +43,18 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "First instance is first and last" do
-        instance = Show::Episode.new
+        instance = Episode.new
         assert_save instance
         assert instance.is_first?
         assert instance.is_last?
     end
 
     test "Valid first and last instances" do
-        first_instance = Show::Episode.new
+        first_instance = Episode.new
         assert_save first_instance
-        second_instance = Show::Episode.new
+        second_instance = Episode.new
         assert_save second_instance
-        last_instance = Show::Episode.new
+        last_instance = Episode.new
         assert_save last_instance
 
         assert first_instance.is_first?
@@ -66,7 +66,7 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Valid plus instance" do
-        episode_1 = Show::Episode.new; episode_2 = Show::Episode.new
+        episode_1 = Episode.new; episode_2 = Episode.new
         assert_save_models [episode_1, episode_2]
 
         assert episode_1 + 0 == episode_1
@@ -74,15 +74,15 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Valid plus negative instance" do
-        episode_1 = Show::Episode.new; episode_2 = Show::Episode.new
+        episode_1 = Episode.new; episode_2 = Episode.new
         assert_save_models [episode_1, episode_2]
 
         assert episode_2 + -1 == episode_1
     end
 
     test "Valid plus 3 instances" do
-        episode_1 = Show::Episode.new; episode_4 = Show::Episode.new
-        assert_save_models [episode_1, Show::Episode.new, Show::Episode.new, episode_4]
+        episode_1 = Episode.new; episode_4 = Episode.new
+        assert_save_models [episode_1, Episode.new, Episode.new, episode_4]
         
         assert episode_1 + 3 == episode_4
         assert_not episode_1 + 1 == episode_4
@@ -90,7 +90,7 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Valid minus instance" do
-        episode_1 = Show::Episode.new; episode_2 = Show::Episode.new
+        episode_1 = Episode.new; episode_2 = Episode.new
         assert_save_models [episode_1, episode_2]
 
         assert episode_1 - 0 == episode_1
@@ -98,15 +98,15 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Valid minus negative instance" do
-        episode_1 = Show::Episode.new; episode_2 = Show::Episode.new
+        episode_1 = Episode.new; episode_2 = Episode.new
         assert_save_models [episode_1, episode_2]
 
         assert episode_1 - -1 == episode_2
     end
 
     test "Valid minus 3 instances" do
-        episode_1 = Show::Episode.new; episode_4 = Show::Episode.new
-        assert_save_models [episode_1, Show::Episode.new, Show::Episode.new, episode_4]
+        episode_1 = Episode.new; episode_4 = Episode.new
+        assert_save_models [episode_1, Episode.new, Episode.new, episode_4]
         
         assert episode_4 - 3 == episode_1
         assert_not episode_4 - 1 == episode_1
@@ -114,9 +114,9 @@ class NavigatableTest < TanoshimuBaseTest
     end
 
     test "Overflow" do
-        episode = Show::Episode.new
+        episode = Episode.new
         assert_save episode
-        assert_save Show::Episode.new
+        assert_save Episode.new
 
         assert_raises(Exception) { episode - 1 }
         assert_raises(Exception) { episode + 2 }

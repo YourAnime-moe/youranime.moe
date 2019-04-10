@@ -40,11 +40,11 @@ class User < ActiveRecord::Base
       p "Not adding episode because user settings deny this action"
       return nil
     end
-    unless episode.class == Show::Episode || episode.class == Integer
+    unless episode.class == Episode || episode.class == Integer
       return false
     end
     if episode.instance_of? Integer
-      episode = Show::Episode.find_by(id: episode)
+      episode = Episode.find_by(id: episode)
       return false if episode.nil?
     end
     if self.episodes_watched.include? episode.id
@@ -64,11 +64,11 @@ class User < ActiveRecord::Base
       p "Not adding episode because user settings deny this action"
       return nil
     end
-    unless episode.class == Show::Episode || episode.class == Integer
+    unless episode.class == Episode || episode.class == Integer
       return false
     end
     if episode.instance_of? Integer
-      episode = Show::Episode.find_by(id: episode)
+      episode = Episode.find_by(id: episode)
       return false if episode.nil?
     end
     if progress == 0
@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
         limit ?;
       SQL
       limit = limit.nil? ? 5 : limit.to_i
-      Show::Episode.find_by_sql([sql, self.id, limit])
+      Episode.find_by_sql([sql, self.id, limit])
     end
 
     def get_episodes_watched(as_is: false)
@@ -134,14 +134,14 @@ class User < ActiveRecord::Base
       return [] if self.episodes_watched.nil?
       res = self.episodes_watched
       return res if as_is
-      Show::Episode.published.order("idx(array[#{res.join(',')}], id)").map(&:id)
+      Episode.published.order("idx(array[#{res.join(',')}], id)").map(&:id)
       # self.update_attribute(:episodes_watched, res) ? res : nil
     end
 
     def get_latest_episodes(limit: 5)
       limit = 5 if limit.blank? || limit < 0
       p "Episodes: #{self.get_episodes_watched(as_is: false).nil?}"
-      episodes = self.get_episodes_watched.map{|e| Show::Episode.find(e)}.reverse
+      episodes = self.get_episodes_watched.map{|e| Episode.find(e)}.reverse
       episodes.select!{|e| e.is_published?}
       p "Episodes: #{episodes_watched}"
       return episodes if episodes.size <= limit
@@ -154,7 +154,7 @@ class User < ActiveRecord::Base
 
     def has_watched?(episode)
       if episode.class == Integer
-        episode = Show::Episode.find_by id: episode
+        episode = Episode.find_by id: episode
       end
       return nil if episode.nil?
       self.get_episodes_watched(:as_is => true).include? episode.id
@@ -263,18 +263,18 @@ class User < ActiveRecord::Base
       end
       if amount_not_watched > 0
         (0..amount_not_watched-1).each do
-          ind = rand(Show::Episode.last.id)
+          ind = rand(Episode.last.id)
           episode = nil
           while true
-            episode = Show::Episode.find_by(id: ind)
+            episode = Episode.find_by(id: ind)
             break unless episode.nil? || !episode.is_published?
-            ind = rand(Show::Episode.last.id) + 1
+            ind = rand(Episode.last.id) + 1
           end
           episodes << ind
         end
       end
       episodes.shuffle
-      .map{|id| Show::Episode.find_by(id: id)}
+      .map{|id| Episode.find_by(id: id)}
       .reject{|nil_ep| nil_ep.nil?}
       .reject{|episode| episode.show.nil?}
       .reject{|is_current| is_current == current_episode}

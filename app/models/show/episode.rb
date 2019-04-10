@@ -15,7 +15,7 @@ class Show
 
     scope :published, -> {
       show_ids = Show.published.map(&:id)
-      Show::Episode.where(published: true, show_id: show_ids)
+      Episode.where(published: true, show_id: show_ids)
     }
 
     before_save {

@@ -31,8 +31,8 @@ module UsersHelper
   end
 
   def image_for(model, *args, **options)
-    return nil unless [Show::Episode, Show].include?(model.class)
-    image = model.class == Show::Episode ? model.get_thumbnail_url : model.get_banner_url
+    return nil unless [Episode, Show].include?(model.class)
+    image = model.class == Episode ? model.get_thumbnail_url : model.get_banner_url
     image_tag(image, *args, **options)
   end
 

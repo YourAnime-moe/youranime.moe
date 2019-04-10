@@ -5,7 +5,7 @@
       <% @_thumb_info = {} %>
       <% if model %>
         <% key = :show_value if model.class == Show %>
-        <% key = :ep_value if model.class == Show::Episode %>
+        <% key = :ep_value if model.class == Episode %>
         <% @_thumb_info[key] = model.id %>
       <% end %>
 

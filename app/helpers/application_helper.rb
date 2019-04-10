@@ -10,7 +10,7 @@ module ApplicationHelper
       }
     }
   end
-  
+
   # Return the padded class if the user is logged
   def pad_if_logged_in!
     ('logged-in' if logged_in?).to_s
@@ -53,7 +53,7 @@ module ApplicationHelper
 
   def current_episode
     return nil if session[:currently_watching].nil?
-    @current_episode ||= Show::Episode.find(session[:currently_watching]["episode"])
+    @current_episode ||= Episode.find(session[:currently_watching]["episode"])
   end
 
   def current_admin_show_id
