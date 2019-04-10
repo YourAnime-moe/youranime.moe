@@ -5,6 +5,7 @@ class Episode < ActiveRecord::Base
   has_one_attached :video
   has_one_attached :thumbnail
   has_many :user_watch_progresses
+  belongs_to :show
 
   serialize :comments
 
@@ -29,12 +30,6 @@ class Episode < ActiveRecord::Base
       result += 1
     end
     result
-  end
-
-  def show
-    return @show unless @show.nil?
-    return nil if self.show_id.nil?
-    @show = Show.find_by(id: self.show_id)
   end
 
   def is_published?
@@ -210,47 +205,6 @@ class Episode < ActiveRecord::Base
     info
   end
 
-  def add_comment(comment)
-    unless comment.instance_of? Hash
-      return {success: false, message: "Invalid data was received."}
-    else
-      if self.comments.nil?
-        self.comments = []
-      end
-      self.comments.push comment
-      save = self.save
-      message = save ? 'Comment was received.' : 'There was an error while saving the comment.'
-      return {success: save, message: message}
-    end
-  end
-
-  def get_comments(time: true, usernames: false)
-    list = []
-    return list if self.comments.nil?
-    self.comments.each do |comment|
-      accepted_classes = [Hash, ActiveSupport::HashWithIndifferentAccess]
-      next unless accepted_classes.include?(comment.class)
-      p comment
-      new_comment = {text: comment[:text]}
-      if time
-        new_comment[:time] = Utils.get_date_from_time(Time.parse(comment[:time].to_s).getlocal)
-      end
-      if usernames
-        user = User.find_by(id: comment[:user_id])
-        if user.nil?
-          username = "User ##{comment[:user_id]}"
-        else
-          username = user.username
-        end
-        new_comment[:user_id] = username
-      end
-      new_comment[:time] = comment[:time] if new_comment[:time].nil?
-      new_comment[:user_id] = comment[:user_id] if new_comment[:user_id].nil?
-      list.push new_comment
-    end
-    list
-  end
-
   def as_json(options={})
     {
       id: id,
@@ -260,18 +214,6 @@ class Episode < ActiveRecord::Base
       thumbnail: get_thumbnail_url,
       video: get_video_url
     }
-  end
-
-  def self.instances
-    [:title, :episode_number]
-  end
-
-  def self.all_published
-    self.all.select{|e| e.is_published?}.to_a.sort_by(&:episode_number)
-  end
-
-  def self.all_un_published
-    self.all.reject{|e| e.is_published?}.to_a.sort_by(&:episode_number)
   end
 
   def self.clean_up

@@ -41,7 +41,7 @@
       </li>
     </ul>
 
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
       <span><%= t('sidebar.for-you.title') %></span>
       <a class="d-flex align-items-center text-muted" href="#">
         <span data-feather="plus-circle"></span>
@@ -69,7 +69,31 @@
       </li>
     </ul>
 
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <% if current_user.admin? %>
+
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
+        <span><%= t('sidebar.admin.title') %></span>
+        <a class="d-flex align-items-center text-muted" href="#">
+          <span data-feather="plus-circle"></span>
+        </a>
+      </h6>
+
+      <ul class="nav flex-column mb-2">
+        <li class="nav-item">
+          <%= link_to admin_shows_path, class: 'nav-link' do %>
+            <%= t('sidebar.admin.manage.shows') %>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to admin_episodes_path, class: 'nav-link' do %>
+            <%= t('sidebar.admin.manage.episodes') %>
+          <% end %>
+        </li>
+      </ul>
+
+    <% end %>
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
       <span><%= t('sidebar.other.title') %></span>
       <a class="d-flex align-items-center text-muted" href="#">
         <span data-feather="plus-circle"></span>

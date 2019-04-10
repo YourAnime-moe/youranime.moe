@@ -14,6 +14,9 @@ gem "rack"
 gem "loofah"
 gem "activejob"
 
+# Rollbar
+gem 'rollbar'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', git: "https://github.com/rails/rails"
 # Use Puma as the app server
@@ -35,6 +38,7 @@ gem 'jbuilder'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+gem 'coffee-rails'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'
@@ -55,7 +59,11 @@ gem 'coveralls', require: false
 # AWS S3 SDK
 gem "aws-sdk-s3", require: false
 
+# Pagination
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 gem "kaminari"
+gem 'bootstrap4-kaminari-views'
 
 # Image processing
 gem 'image_processing', '~> 1.2'

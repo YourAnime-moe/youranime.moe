@@ -36,3 +36,5 @@ storage
 
 /config/master.key
 /config/credentials*
+
+.idea

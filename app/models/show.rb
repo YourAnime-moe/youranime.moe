@@ -1,5 +1,7 @@
 class Show < ActiveRecord::Base
 
+  self.per_page = 24
+
   has_one_attached :banner
   serialize :tags
 
@@ -38,7 +40,7 @@ class Show < ActiveRecord::Base
   end
 
   def only_subbed?
-    !!subbed && !dubbed
+    (!!subbed && !!dubbed) || !!subbed && !dubbed
   end
 
   def only_dubbed?
@@ -60,12 +62,24 @@ class Show < ActiveRecord::Base
     result
   end
 
+  def title=(value)
+    return (self['fr_title'] = value) if I18n.locale == :fr
+    return (self['jp_title'] = value) if I18n.locale == :jp
+    self['title'] = value
+  end
+
   def description
     result = self['description'] if I18n.locale == :en
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
     return self['description'] if result.blank?
     result
+  end
+
+  def description=(value)
+    return (self['fr_description'] = value) if I18n.locale == :fr
+    return (self['jp_description'] = value) if I18n.locale == :jp
+    self['description'] = value
   end
 
   def prequel

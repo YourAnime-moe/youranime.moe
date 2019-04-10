@@ -1,0 +1,13 @@
+<% @shows_parts.each do |shows| %>
+  <div class="row">
+    <% shows.each_with_index do |show| %>
+      <div class="col-md-3" style="margin-top: 20px;" id="shows">
+        <% @_rule = {class: nil} %>
+        <% @_thumb_info = {} %>
+        <%= link_to edit_admin_show_path(show) do %>
+          <%= show_thumb(show, rules: @_rule) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

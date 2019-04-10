@@ -19,23 +19,7 @@ module Navigatable
   end
 
   def next(save=true)
-    return @next if save and !@next.nil?
-    klass = self.class
-    last_id = klass.last.id
-    return nil if last_id == self.id
-    pos = self.id + 1
-    while true
-      perc = pos.to_f / klass.last.id.to_f
-      perc *= 100
-      result = klass.find_by(id: pos)
-      pos += 1
-      unless result.nil?
-        return nil if result.show != self.show
-        @next = result
-        return result
-      end
-      return nil if last_id == pos
-    end
+    raise "Please implement this method (next)"
   end
 
   def is_first?
