@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   def root
     if logged_in?
-      redirect_to "/users/#{current_user.username}"
+      redirect_to "/users/home"
     else
       set_title after: t("welcome.text"), before: t("welcome.login.login")
       @params = {}
@@ -30,6 +30,30 @@ class ApplicationController < ActionController::Base
       end
       render 'login'
     end
+  end
+
+  def google_auth
+    access_token = request.env["omniauth.auth"]
+    user = User.from_omniauth(access_token)
+    p user
+    p user.errors_string
+    p user.persisted?
+
+    log_in(user)
+
+    refresh_token = access_token.credentials.refresh_token
+    user.update(
+        google_token: access_token.credentials.token,
+        google_refresh_token: (refresh_token if refresh_token.present?)
+    )
+
+    begin
+      I18n.locale = access_token.locale
+    rescue
+      p "Invalid locale provided by Google: #{access_token.info.locale}"
+    end
+
+    redirect_to '/', notice: t('welcome.login.success.web-message')
   end
 
   def login

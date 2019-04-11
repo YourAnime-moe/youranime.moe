@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   serialize :episodes_watched
   serialize :episode_progress_list
@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   DEFAULT_DEMO_TOKEN = "demo"
 
   before_save :check_user
-  has_secure_password
+  before_save :check_password
   has_secure_token :auth_token
 
   def auth_token
@@ -316,6 +316,15 @@ class User < ActiveRecord::Base
       nil
     end
 
+    def self.from_omniauth(auth)
+      where(username: auth.info.email).first_or_create! do |user|
+        user.name = auth.info.name
+        user.username = auth.info.email
+        user.limited = true
+        user.google_user = true
+      end
+    end
+
     private
 
     def check_user
@@ -340,6 +349,10 @@ class User < ActiveRecord::Base
           throw :abort
         end
       end
+    end
+
+    def check_password
+
     end
 
     def is_ok(value, default)

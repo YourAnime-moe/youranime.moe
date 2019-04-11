@@ -50,6 +50,10 @@ module Config
       main + path
     end
 
+    def google_client_id
+      ENV["GOOGLE_OAUTH_CLIENT_ID"]
+    end
+
     def setup
       yield self
     end

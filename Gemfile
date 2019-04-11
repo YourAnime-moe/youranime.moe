@@ -52,6 +52,7 @@ gem "slim-rails"
 # Single Sign on
 gem 'omniauth'
 gem 'omniauth-oauth2'
+gem 'omniauth-google-oauth2'
 
 # Coveralls
 gem 'coveralls', require: false

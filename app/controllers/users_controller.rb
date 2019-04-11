@@ -4,9 +4,6 @@ class UsersController < AuthenticatedController
 
   # Home page
   def home
-    if params[:username] != current_user.username
-      redirect_to "/users/#{current_user.username}"
-    end
     set_title(before: t("user.welcome", user: current_user.get_name))
     # @shows = Show.latest(current_user)
     # @featured = Show.get_presence :featured

@@ -41,9 +41,21 @@
               <button class="btn btn-primary btn-block" type="submit">Sign in</button>
             </div>
 
+            <div class="text-center" style="margin-top: 20px;">
+              <p>- Or -</p>
+              <div>
+                <%= link_to '/auth/google_oauth2', class: 'google-btn' do %>
+                  <img width="20px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
+                  Sign in with Google
+                <% end %>
+              </div>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+

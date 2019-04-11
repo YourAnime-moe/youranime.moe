@@ -51,12 +51,14 @@ Rails.application.routes.draw do
   # User links
   get '/settings' => 'users#short_settings'
   get '/users/settings' => 'users#settings'
-  get '/users/:username' => 'users#home'
+  get '/users/home' => 'users#home'
   get '/news' => 'users#news'
   patch '/users/update/:id' => 'users#update'
 
   # Movies
   get '/movies' => 'movies#view'
+
+  get '/auth/google_oauth2/callback' => 'application#google_auth'
 
   # Episodes
   #get '/shows/episodes' => 'episodes#view'
@@ -89,7 +91,6 @@ Rails.application.routes.draw do
   end
 
   # Oauth
-  get '/auth/:provider/callback' => 'sso#create'
   get '/auth/failure' => 'sso#failure'
 
   # GET API

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_141836) do
+ActiveRecord::Schema.define(version: 2019_04_11_190811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "intarray"
@@ -182,6 +182,10 @@ ActiveRecord::Schema.define(version: 2019_04_11_141836) do
     t.boolean "demo"
     t.string "episode_progress_list"
     t.string "avatar"
+    t.boolean "limited", default: true, null: false
+    t.string "google_token"
+    t.string "google_refresh_token"
+    t.boolean "google_user", default: false, null: false
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
   end
 
