@@ -1,4 +1,4 @@
-class Show < ActiveRecord::Base
+class Show < ApplicationRecord
 
   self.per_page = 24
 
@@ -8,13 +8,17 @@ class Show < ActiveRecord::Base
   include Navigatable
 
   scope :valid, -> {
-    title_query = "(title is not null and title != '')"
-    atitle_query = "(alternate_title is not null and alternate_title != '')"
-
-    where("#{title_query} and #{atitle_query}")
+    roman_title_query = "(roman_title is not null and roman_title != '')"
+    en_title_query = "(en_title is not null and en_title != '')"
+    fr_title_query = "(fr_title is not null and fr_title != '')"
+    jp_title_query = "(jp_title is not null and jp_title != '')"
+    where("#{roman_title_query} and (#{en_title_query} or #{fr_title_query} or #{jp_title_query})")
   }
   scope :published, -> { valid.where(published: true) }
   scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
+  validates :roman_title, presence: true
+  validate :title_present
+  validate :description_present
 
   before_save {
     # Make the show is at least one of dubbed or subbed.
@@ -55,31 +59,14 @@ class Show < ActiveRecord::Base
   end
 
   def title
-    result = self['title'] if I18n.locale == :en
-    result = self['fr_title'] if I18n.locale == :fr
-    result = self['jp_title'] if I18n.locale == :jp
-    return self['title'] if result.nil?
-    result
-  end
-
-  def title=(value)
-    return (self['fr_title'] = value) if I18n.locale == :fr
-    return (self['jp_title'] = value) if I18n.locale == :jp
-    self['title'] = value
+    en_title || jp_title || roman_title || fr_title
   end
 
   def description
-    result = self['description'] if I18n.locale == :en
+    result = self['en_description'] if I18n.locale == :en
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
-    return self['description'] if result.blank?
     result
-  end
-
-  def description=(value)
-    return (self['fr_description'] = value) if I18n.locale == :fr
-    return (self['jp_description'] = value) if I18n.locale == :jp
-    self['description'] = value
   end
 
   def prequel
@@ -156,7 +143,7 @@ class Show < ActiveRecord::Base
       self.tags = []
       self.save
     end
-    self.tags
+    self.tags.class == String ? self.tags.split(' ') : self.tags
   end
 
   def has_tags?(tags=nil)
@@ -426,6 +413,20 @@ class Show < ActiveRecord::Base
     self.all.each do |show|
       p "Cleaning banner for show id #{show.id}"
       show.banner.purge if show.banner.attached?
+    end
+  end
+
+  private
+
+  def title_present
+    if en_title.blank? && jp_title.blank? && fr_title.blank?
+      errors.add(:title, 'must be present')
+    end
+  end
+
+  def description_present
+    if en_description.blank? && jp_description.blank? && fr_description.blank?
+      errors.add(:description, 'must be present')
     end
   end
 

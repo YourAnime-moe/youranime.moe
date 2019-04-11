@@ -26,16 +26,40 @@
       <%= form_for(@show, url: admin_show_path(@show)) do |f| %>
       <div class="row">
         <div class="col-7">
-          <p><strong>Basic</strong></p>
+          <p><strong>Title settings</strong></p>
           <div class="form-group">
-            <%= f.label :title, 'Title', class: 'text-muted' %>
-            <%= f.text_field :title, class: 'form-control', placeholder: 'Title', autocomplete: 'off' %>
-            <small class="form-text text-muted text-right"><b>Important</b>: This will only be updated for your current locale.</small>
+            <%= f.label :en_title, 'English title', class: 'text-muted' %>
+            <%= f.text_field :en_title, class: 'form-control', placeholder: 'My title', autocomplete: 'off' %>
           </div>
           <div class="form-group">
-            <%= f.label :description, 'Description', class: 'text-muted' %>
-            <%= f.text_area :description, class: 'form-control', placeholder: 'Title', autocomplete: 'off', rows: 6 %>
-            <small class="form-text text-muted text-right"><b>Important</b>: This will only be updated for your current locale.</small>
+            <%= f.label :jp_title, 'Japanese title', class: 'text-muted' %>
+            <%= f.text_field :jp_title, class: 'form-control', placeholder: 'マイタイトル', autocomplete: 'off' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :roman_title, 'Romanized title', class: 'text-muted' %>
+            <%= f.text_field :roman_title, class: 'form-control', placeholder: 'mai taitoru', autocomplete: 'off' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :fr_title, 'French title', class: 'text-muted' %>
+            <%= f.text_field :fr_title, class: 'form-control', placeholder: 'Mon titre', autocomplete: 'off' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :alternate_title, 'Alternate Title', class: 'text-muted' %>
+            <%= f.text_field :alternate_title, class: 'form-control', placeholder: 'Alternate title', autocomplete: 'off' %>
+          </div>
+
+          <p><strong>Description settings</strong></p>
+          <div class="form-group">
+            <%= f.label :en_description, 'English description', class: 'text-muted' %>
+            <%= f.text_area :en_description, class: 'form-control', placeholder: 'Summary or synopsis', autocomplete: 'off', rows: 6 %>
+          </div>
+          <div class="form-group">
+            <%= f.label :jp_description, 'Japanese description', class: 'text-muted' %>
+            <%= f.text_area :jp_description, class: 'form-control', placeholder: '概要やあらすじ', autocomplete: 'off', rows: 6 %>
+          </div>
+          <div class="form-group">
+            <%= f.label :fr_description, 'French description', class: 'text-muted' %>
+            <%= f.text_area :fr_description, class: 'form-control', placeholder: 'Sommaire ou synopsis', autocomplete: 'off', rows: 6 %>
           </div>
 
           <div class="form-group">
@@ -47,11 +71,11 @@
           <br />
           <p><strong>Dub, Sub settings</strong></p>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
               <%= f.label :dubbed %>
               <%= f.check_box :dubbed %>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
               <%= f.label :subbed %>
               <%= f.check_box :subbed %>
             </div>

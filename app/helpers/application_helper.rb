@@ -159,6 +159,10 @@ module ApplicationHelper
     end
   end
 
+  def episode_path(*args, **options)
+    show_episode_path(*args, **options)
+  end
+
   private
   def _logout
     session.delete(:user_id)

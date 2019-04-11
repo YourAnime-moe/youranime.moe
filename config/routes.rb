@@ -84,7 +84,7 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
-    resources :shows, only: [:index, :edit, :update]
+    resources :shows
     resources :episodes
   end
 

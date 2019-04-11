@@ -1,0 +1,90 @@
+<%= form_for(@show, url: admin_shows_path) do |f| %>
+
+  <div class="hf-section justify-content-between w-100 d-flex">
+    <h3>Create a new show</h3>
+    <div><%= f.submit('Save and submit', class: 'btn btn-sm btn-primary') %></div>
+  </div>
+
+  <div class="container">
+    <p><strong>Title settings</strong></p>
+    <div class="row">
+      <div class="col-7">
+        <div class="form-group">
+          <%= f.label :en_title, 'English title', class: 'text-muted' %>
+          <%= f.text_field :en_title, class: 'form-control', placeholder: 'My title', autocomplete: 'off' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :jp_title, 'Japanese title', class: 'text-muted' %>
+          <%= f.text_field :jp_title, class: 'form-control', placeholder: 'マイタイトル', autocomplete: 'off' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :roman_title, 'Romanized title', class: 'text-muted' %>
+          <%= f.text_field :roman_title, class: 'form-control', placeholder: 'mai taitoru', autocomplete: 'off' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :fr_title, 'French title', class: 'text-muted' %>
+          <%= f.text_field :fr_title, class: 'form-control', placeholder: 'Mon titre', autocomplete: 'off' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :alternate_title, 'Alternate Title', class: 'text-muted' %>
+          <%= f.text_field :alternate_title, class: 'form-control', placeholder: 'Alternate title', autocomplete: 'off' %>
+        </div>
+
+        <p><strong>Description settings</strong></p>
+        <div class="form-group">
+          <%= f.label :en_description, 'English description', class: 'text-muted' %>
+          <%= f.text_area :en_description, class: 'form-control', placeholder: 'Summary or synopsis', autocomplete: 'off', rows: 6 %>
+        </div>
+        <div class="form-group">
+          <%= f.label :jp_description, 'Japanese description', class: 'text-muted' %>
+          <%= f.text_area :jp_description, class: 'form-control', placeholder: '概要やあらすじ', autocomplete: 'off', rows: 6 %>
+        </div>
+        <div class="form-group">
+          <%= f.label :fr_description, 'French description', class: 'text-muted' %>
+          <%= f.text_area :fr_description, class: 'form-control', placeholder: 'Sommaire ou synopsis', autocomplete: 'off', rows: 6 %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :tags, class: 'text-muted' %>
+          <%= f.text_field :tags, class: 'form-control', placeholder: 'Enter tags, press Enter after each tag.' %>
+          <small class="form-text text-muted text-right">Each tag must be separated with  a space (" ") character.</small>
+        </div>
+
+        <br />
+        <p><strong>Dub, Sub settings</strong></p>
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <%= f.label :dubbed %>
+            <%= f.check_box :dubbed %>
+          </div>
+          <div class="col-md-6 text-center">
+            <%= f.label :subbed %>
+            <%= f.check_box :subbed %>
+          </div>
+        </div>
+
+        <div style="width: 60%; margin: 45px auto;">
+          <%= f.submit('Save and submit', class: 'btn btn-primary') %>
+        </div>
+      </div>
+      <div class="col-5 d-inline-block">
+        <fieldset style="border: 1px solid #6dccc0; padding: 15px; border-radius: 6px;">
+          <legend class="text-muted" style="text-align: right; width: auto; font-size: 17px; font-weight: bold;">Banner</legend>
+          <div class="container">
+            <div id="show-img-select">
+              <%= image_for @show, style: "max-width: 100%", id: 'banner_preview' %>
+              <small class="form-text text-muted">Click above to edit me!</small>
+            </div>
+
+            <div class="d-none">
+              <%= f.file_field :banner, multiple: false, id: 'show-img-file' %>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+<% end %>
+

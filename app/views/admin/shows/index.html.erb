@@ -10,7 +10,10 @@
   <div style="padding-bottom: 55px;">
     <div class="container-fluid">
       <div class="hf-section">
-        <h3><%= t('anime.shows.view-all') %></h3>
+        <div class="justify-content-between d-flex w-100">
+          <h3><%= t('anime.shows.view-all') %></h3>
+          <div><%= link_to('New show', new_admin_show_path, class: 'btn btn-secondary btn-sm') %></div>
+        </div>
       </div>
     </div>
 
