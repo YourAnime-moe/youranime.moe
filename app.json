@@ -1,0 +1,75 @@
+{
+  "addons": [
+    "heroku-postgresql",
+    "heroku-postgresql",
+    "scheduler"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "description": "",
+  "env": {
+    "HEROKU_POSTGRESQL_GRAY_URL": {
+      "required": true
+    },
+    "HEROKU_POSTGRESQL_MAUVE_URL": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "MAIN_HOST": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "SLACK_API_TOKEN": {
+      "required": true
+    },
+    "TANOSHIMU_CLIENT_ID": {
+      "required": true
+    },
+    "TANOSHIMU_CLIENT_SECRET": {
+      "required": true
+    },
+    "TANOSHIMU_MAINTENANCE": {
+      "required": true
+    },
+    "TANOSHIMU_SPACE_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "TANOSHIMU_SPACE_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "TZ": {
+      "required": true
+    },
+    "UPDATE": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "tanoshimu",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
