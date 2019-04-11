@@ -14,8 +14,7 @@ class Episode < ActiveRecord::Base
   include Navigatable
 
   scope :published, -> {
-    show_ids = Show.published.map(&:id)
-    Episode.where(published: true, show_id: show_ids)
+    joins(:show).where("shows.published")
   }
 
   before_save {

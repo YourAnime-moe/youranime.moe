@@ -54,6 +54,11 @@ nav.maintenance {
   background-color: #d87f11 !important;
 }
 
+.loading {
+  background-position: center center;
+  background-image: asset_url("thumb-loading-40.gif");
+}
+
 .vertical-center {
   min-height: 90vh;
   display: flex;

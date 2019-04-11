@@ -5,7 +5,7 @@ module UsersHelper
       {id: 0, class: 'col', display: ''},
       {id: 1, class: 'col', display: ''},
       {id: 2, class: 'col', display: ''},
-      {id: 3, class: 'col d-none d-md-blocks', display: ''},
+      {id: 3, class: 'col d-md-blocks', display: ''},
       {id: 4, class: 'col d-none d-xl-block', display: ''},
       {id: 5, class: 'col d-none d-xl-block', display: ''}
     ]

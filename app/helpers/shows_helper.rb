@@ -95,7 +95,7 @@ module ShowsHelper
     content_tag :div, class: 'overlay darken' do
       sub_dub_holder(show) +
       check_episode_broken(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', style: 'display: none;', class: "card-img-top descriptive #{rules[:display]}") +
+      (content_tag(:div, class: 'loading') {image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}")}) +
       show_thumb_description(show)
     end
   end

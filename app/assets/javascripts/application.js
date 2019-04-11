@@ -90,9 +90,9 @@ function abortAjaxQueue() {
 }
 
 window.fadeIn = function(obj) {
-  $(obj).show();
+  $(obj).removeClass('loading');
   $(obj).parents('[role="have-fun"]').fadeIn(1000);
-}
+};
 
 $(document).ready(function() {
       //$(".button-collapse").sidenav();
