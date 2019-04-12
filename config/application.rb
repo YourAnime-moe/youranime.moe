@@ -17,5 +17,7 @@ module HaveFun
     config.active_record.sqlite3.represent_boolean_as_integer = true
     config.generators.javascript_engine = :js
     config.action_controller.default_protect_from_forgery = true
+    config.hosts << "tanoshimu-thedrummeraki.c9users.io"
+    config.hosts << "anime.akinyele.ca"
   end
 end

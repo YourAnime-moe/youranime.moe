@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   get '/movies' => 'movies#view'
 
   get '/auth/google_oauth2/callback' => 'application#google_auth'
+  post '/welcome/google/user' => 'application#google_register'
 
   # Episodes
   #get '/shows/episodes' => 'episodes#view'
