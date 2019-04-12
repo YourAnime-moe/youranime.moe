@@ -87,4 +87,11 @@ Rails.application.configure do
 
   # Store files on our space
   config.active_storage.service = :amazon
+  
+  # Authorized hosts
+  config.hosts << "beta-tanoshimu.herokuapp.com"
+  config.hosts << "anime.akinyele.ca"
+  if ENV["RAILS_HOST"]
+    config.hosts << ENV["RAILS_HOST"]
+  end
 end
