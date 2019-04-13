@@ -12,8 +12,8 @@ class User < ApplicationRecord
   DEFAULT_DEMO_TOKEN = "demo"
 
   before_save :check_user
-  before_save :check_password
   has_secure_token :auth_token
+  has_secure_password
 
   def auth_token
     return DEFAULT_DEMO_TOKEN if self.is_demo_account?
@@ -317,11 +317,9 @@ class User < ApplicationRecord
     end
 
     def self.from_omniauth(auth)
-      where(username: auth.info.email).first_or_create! do |user|
+      where(username: auth.info.email).first_or_initialize do |user|
         user.name = auth.info.name
         user.username = auth.info.email
-        user.limited = true
-        user.google_user = true
       end
     end
 
@@ -349,10 +347,6 @@ class User < ApplicationRecord
           throw :abort
         end
       end
-    end
-
-    def check_password
-
     end
 
     def is_ok(value, default)

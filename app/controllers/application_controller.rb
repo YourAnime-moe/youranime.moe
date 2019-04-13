@@ -34,27 +34,45 @@ class ApplicationController < ActionController::Base
 
   def google_auth
     access_token = request.env["omniauth.auth"]
-    user = User.from_omniauth(access_token)
-    p user
-    p user.errors_string
-    p user.persisted?
-
-    log_in(user)
+    @user = User.from_omniauth(access_token)
+    
+    # Check if the user has been registered
+    if @user.persisted? && @user.google_user
+      log_in(@user)
+      redirect_to "/",  notice: t('welcome.login.success.web-message')
+      return
+    elsif @user.persisted?
+      redirect_to "/",  "Please login with your username and password."
+      return
+    end
 
     refresh_token = access_token.credentials.refresh_token
-    user.update(
-        google_token: access_token.credentials.token,
-        google_refresh_token: (refresh_token if refresh_token.present?)
-    )
-
+    @user.google_token = access_token.credentials.token
+    @user.google_refresh_token = refresh_token if refresh_token.present?
+    
     begin
       I18n.locale = access_token.locale
     rescue
       p "Invalid locale provided by Google: #{access_token.info.locale}"
     end
-
-    redirect_to '/', notice: t('welcome.login.success.web-message')
+  
+    render 'welcome_google'
   end
+  
+  def google_register
+    @user = User.new(google_user_params)
+    @user.limited = true
+    @user.google_user = true
+    if @user.save
+      log_in(@user)
+      redirect_to '/', notice: t('welcome.login.success.web-message')
+    else
+      p @user.errors_string
+      render 'welcome_google', alert: @user.errors_string
+    end
+  end
+  
+  def 
 
   def login
     redirect_to "/"
@@ -185,6 +203,17 @@ class ApplicationController < ActionController::Base
       p "Invalid locale #{try_to_set}. Defaulting to :fr..."
       I18n.locale = :fr
     end
+  end
+  
+  def google_user_params
+    params.require(:user).permit(
+      :name,
+      :username,
+      :password,
+      :password_confirmation,
+      :google_refresh_token,
+      :google_token
+    )
   end
 
   #def check_is_in_maintenance_mode

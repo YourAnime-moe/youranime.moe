@@ -54,4 +54,7 @@ Rails.application.configure do
 
   # Store files on our disk
   config.active_storage.service = :amazon
+  
+  # Authorized hosts
+  config.hosts << "tanoshimu-thedrummeraki.c9users.io"
 end
