@@ -28,12 +28,12 @@ module ShowsHelper
 
   def show_sub_dub(show)
     return '' unless show.class == Show
-    if show.only_subbed?
-      sub_tag
+    if show.subbed_and_dubbed?
+      sub_tag + dub_tag
     elsif show.only_dubbed?
       dub_tag
     else
-      sub_tag + dub_tag
+      sub_tag
     end
   end
 
@@ -63,7 +63,7 @@ module ShowsHelper
   end
 
   def show_thumb_description(show, hide_title: false, rules: nil)
-    return '' if show.class != Show
+    return '' unless valid_thumbable_class?(show)
     rules ||= {}
     return '' if show.nil? || hide_title
     content_tag :div, class: "hf-thumb-info description #{rules[:display]}", style: 'width: 95%' do
@@ -74,7 +74,7 @@ module ShowsHelper
   end
 
   def show_thumb(show, rules: nil)
-    return '' if show.class != Show
+    return '' unless valid_thumbable_class?(show)
     rules ||= {}
     content_tag :div, class: "no-overflow #{rules[:class]}" do
       content_tag :div, role: 'have-fun', style: 'display: none;' do
@@ -90,14 +90,20 @@ module ShowsHelper
   end
 
   def show_thumb_body(show, rules: nil)
-    return '' if show.class != Show
+    return '' unless valid_thumbable_class?(show)
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
-      sub_dub_holder(show) +
+      (sub_dub_holder(show) +
       check_episode_broken(show) +
-      (content_tag(:div, class: 'loading') {image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}")}) +
-      show_thumb_description(show)
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}") +
+      show_thumb_description(show)).html_safe
     end
+  end
+
+  private
+
+  def valid_thumbable_class?(model)
+    model.class == Show || model.class == Episode
   end
 
 end

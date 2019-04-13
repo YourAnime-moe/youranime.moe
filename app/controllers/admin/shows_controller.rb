@@ -53,7 +53,7 @@ class Admin::ShowsController < AdminController
 		tags.each {|tag| show.add_tag(tag)}
 
 		if show.update(show_params)
-			redirect_to(edit_admin_show_path(show), notice: 'The show was successfully updated!')
+			redirect_to(edit_admin_show_path(show), notice: 'The show was successfully updated!!')
 		else
 			redirect_to(edit_admin_show_path(show), alert: show.errors_string('There was an error while updating the show'))
 		end

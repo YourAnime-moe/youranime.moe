@@ -25,7 +25,7 @@
     <div class="container-fluid">
       <%= form_for(@show, url: admin_show_path(@show)) do |f| %>
       <div class="row">
-        <div class="col-7">
+        <div class="col-6">
           <p><strong>Title settings</strong></p>
           <div class="form-group">
             <%= f.label :en_title, 'English title', class: 'text-muted' %>
@@ -86,7 +86,7 @@
             <button type="submit" class="btn btn-block btn-primary">Submit</button>
           </div>
         </div>
-        <div class="col-5 d-inline-block">
+        <div class="col-6 d-inline-block">
           <fieldset style="border: 1px solid #6dccc0; padding: 15px; border-radius: 6px;">
             <legend class="text-muted" style="text-align: right; width: auto; font-size: 17px; font-weight: bold;">Banner</legend>
             <div class="container">
@@ -94,6 +94,8 @@
               <%= f.file_field :banner, multiple: false %>
             </div>
           </fieldset>
+          <br>
+          <%= render partial: 'edit_episodes', locals: { all_episodes: @show.episodes, slice: 3 } %>
         </div>
       </div>
       <% end %>

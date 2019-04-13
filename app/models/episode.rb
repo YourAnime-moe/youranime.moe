@@ -1,4 +1,5 @@
 class Episode < ActiveRecord::Base
+  include Navigatable
 
   self.table_name = 'episodes'
 
@@ -6,29 +7,14 @@ class Episode < ActiveRecord::Base
   has_one_attached :thumbnail
   has_many :user_watch_progresses
   belongs_to :show
-
   serialize :comments
-
   paginates_per 20
+  validates :episode_number, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  scope :published, -> { joins(:show).where("shows.published") }
 
-  include Navigatable
-
-  scope :published, -> {
-    joins(:show).where("shows.published")
-  }
-
-  before_save {
-    !self.show_id.nil?
-  }
-
-  def number
-    return 1 if self.class.first.id == self.id
-    result = 1
-    self.class.all.each do |ep|
-      break if ep.id == self.id
-      result += 1
-    end
-    result
+  def get_title
+    return title unless title.blank?
+    "Episode #{episode_number}"
   end
 
   def is_published?
@@ -207,7 +193,7 @@ class Episode < ActiveRecord::Base
   def as_json(options={})
     {
       id: id,
-      title: title,
+      title: get_title,
       published: is_published?,
       show_id: show_id,
       thumbnail: get_thumbnail_url,

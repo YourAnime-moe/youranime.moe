@@ -90,7 +90,7 @@ function abortAjaxQueue() {
 }
 
 window.fadeIn = function(obj) {
-  $(obj).removeClass('loading');
+  $(obj).show();
   $(obj).parents('[role="have-fun"]').fadeIn(1000);
 };
 

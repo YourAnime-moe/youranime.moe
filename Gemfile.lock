@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails
-  revision: 713f62430a42294dcb156cc8f38b41509a60d7a6
+  revision: 8a5bd78ebf3a6beedd16b53580cf6048397dc2a1
   specs:
     actioncable (6.0.0.beta3)
       actionpack (= 6.0.0.beta3)
@@ -298,7 +298,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    slack-ruby-client (0.14.1)
+    slack-ruby-client (0.14.2)
       activesupport
       faraday (>= 0.9)
       faraday_middleware

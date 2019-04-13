@@ -55,11 +55,15 @@ class Show < ApplicationRecord
   }
 
   def only_subbed?
-    (!!subbed && !!dubbed) || !!subbed && !dubbed
+    (!subbed && !dubbed) || !!subbed && !dubbed
   end
 
   def only_dubbed?
     !!dubbed && !subbed
+  end
+
+  def subbed_and_dubbed?
+    !!subbed && !!dubbed
   end
 
   def get_title(html: false, default: nil)

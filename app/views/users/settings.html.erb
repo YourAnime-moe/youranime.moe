@@ -19,13 +19,15 @@
               <p class="text-muted">
                 <img width="45px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/><br>
                 Hey there! It looks like you registered here with a Google account.<br>
-                <small class="text-muted">This is <strong>not</strong> the same as your Google account's password.</small>
               </p>
             <% end %>
             <div class="input-group">
               <%= f.password_field :password, class: 'form-control', placeholder: 'Enter new password' %>
               <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm new password' %>
             </div>
+            <% if current_user.google_user %>
+              <small class="text-muted">This password is <strong>not</strong> the same as your Google account's password.</small>
+            <% end %>
           </div>
 
           <p><strong>Advanced settings</strong></p>
