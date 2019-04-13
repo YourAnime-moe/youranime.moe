@@ -132,6 +132,7 @@ module ApplicationHelper
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.now
+    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN IN] User #{user.username}-#{user.id} at #{Time.now}!")
   end
 
   def log_out
@@ -165,8 +166,10 @@ module ApplicationHelper
 
   private
   def _logout
+    user = current_user
     session.delete(:user_id)
     session.delete(:current_show_id)
+    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.now}.")
   end
 
 end

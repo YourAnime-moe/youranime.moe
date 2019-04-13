@@ -41,6 +41,11 @@ module Config
       host
     end
 
+    def slack_client
+      return @slack_client unless @slack_client.nil?
+      @slack_client = Slack::Web::Client.new
+    end
+
     def path(path, as_is: false)
       main = self.main_host(as_is: as_is).dup
       return path if main.blank?
