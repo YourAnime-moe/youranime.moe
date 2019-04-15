@@ -32,10 +32,8 @@ Rails.application.routes.draw do
   resources :shows, only: [:index, :show] do
     get :history, on: :collection
     get :movies, on: :collection
-  end
 
-  # Episodes
-  namespace :show, path: "show" do
+    # Episodes
     resources :episodes, only: [:show]
   end
 

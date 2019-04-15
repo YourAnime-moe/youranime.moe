@@ -160,8 +160,8 @@ module ApplicationHelper
     end
   end
 
-  def episode_path(*args, **options)
-    show_episode_path(*args, **options)
+  def episode_path(episode, *args, **options)
+    "/shows/#{episode.show.id}/episodes/#{episode.id}"
   end
 
   private

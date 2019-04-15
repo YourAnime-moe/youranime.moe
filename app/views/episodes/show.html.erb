@@ -1,0 +1,21 @@
+
+<style media="screen">
+  video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    background-color: #000 !important;
+  }
+
+  div.video {
+    background-color: #000 !important;
+  }
+</style>
+
+<div class="video">
+  <%= video_tag @episode.get_video_url, controls: true %>
+</div>

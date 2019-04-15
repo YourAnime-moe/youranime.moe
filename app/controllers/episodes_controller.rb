@@ -1,6 +1,23 @@
 class EpisodesController < AuthenticatedController
 
+  layout 'videos'
+
   require 'net/http'
+
+  def show
+    show = Show.published.find_by(id: params[:show_id])
+    if show.nil?
+      flash[:warning] = "Sorry but this show is not available at the moment."
+      redirect_to shows_path
+      return
+    end
+    @episode = show.episodes.find_by(id: params[:id])
+    if @episode.nil?
+      flash[:warning] = "Sorry, this episode is not available at the moment."
+      redirect_to show_path(show)
+      return
+    end
+  end
 
   def view
     @anime_current = "current"

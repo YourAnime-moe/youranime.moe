@@ -14,10 +14,10 @@ class Show < ApplicationRecord
   scope :latest, -> (current_user, limit: 5) {
     limit = 1 if limit < 1
     sql = <<-SQL
-      select distinct shows.* 
+      select distinct shows.*
       from shows inner join (
-        select ep.* from user_watch_progresses as up 
-        inner join episodes ep on up.episode_id = ep.id 
+        select ep.* from user_watch_progresses as up
+        inner join episodes ep on up.episode_id = ep.id
         where up.user_id = ?
       ) as we on we.show_id = shows.id limit ?;
     SQL
