@@ -39,6 +39,9 @@
     </div>
   </div>
   <div class="video">
-    <%= video_tag @episode.get_video_url, controls: false, autoplay: true %>
+    <%= video_tag @episode.get_video_url,
+        controls: false,
+        autoplay: true,
+        id: 'video-obj' %>
   </div>
 </div>
