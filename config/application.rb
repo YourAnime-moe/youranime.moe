@@ -14,6 +14,7 @@ module HaveFun
     config.autoload_paths << Rails.root.join("app/lib")
     config.autoload_paths << Rails.root.join("app/poros")
     config.force_ssl = Rails.env == "production"
+    config.assets.precompile += %w( '.svg' )
     config.active_record.sqlite3.represent_boolean_as_integer = true
     config.generators.javascript_engine = :js
     config.action_controller.default_protect_from_forgery = true

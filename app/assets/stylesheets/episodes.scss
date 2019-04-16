@@ -2,6 +2,141 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.video-body {
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+
+  video {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+  }
+}
+
+.controls-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+
+  .back-button {
+    top: 0;
+    position: absolute;
+    margin: 2.5em;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .controls-bottom {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    margin: 5px;
+    height: 10%;
+
+    .hf-progress {
+      padding-left: 2em;
+      padding-right: 2em;
+      display: flex;
+
+      .progress-bar-mgmt {
+        display: flex;
+        width: 100%;
+        margin: 0 1.5em 0 0;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -moz-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        touch-action: none;
+
+        .progress-bar-cont {
+          flex-grow: 1;
+          flex-shrink: 0;
+          width: auto;
+          position: relative;
+
+          .progress-bar {
+            width: 100%;
+            height: .3em;
+            background: #ababab61;
+            position: relative;
+            -webkit-transition: height .2s ease;
+            -o-transition: height .2s ease;
+            -moz-transition: height .2s ease;
+            transition: height .2s ease;
+            will-change: height;
+          }
+
+          .progress-bar:hover {
+            height: .6em;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .progress-elapsed {
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        -webkit-box-align: end;
+        align-items: flex-end;
+
+        time.remaining {
+          color: #ababab;
+          font-size: 0.8em;
+        }
+      }
+    }
+  }
+
+  .controls-center {
+    opacity: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 4em;
+
+    .pause-icon {
+
+    }
+  }
+
+  .controls-center.active {
+    opacity: 1;
+  }
+}
+
+.gradient.top {
+  top: 0;
+  position: absolute;
+  background-image: linear-gradient(to bottom,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 100%);
+  height: 20%;
+  width: 100%;
+}
+.gradient.bottom {
+  bottom: 0;
+  position: absolute;
+  background-image: linear-gradient(to top,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 100%);
+  height: 20%;
+  width: 100%;
+}
+
 .no-video {
     color: red;
     font-weight: bold;

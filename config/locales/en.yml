@@ -148,13 +148,6 @@ en:
       to-episode: "Go to episode"
       to-show: "Go to show"
 
-  time:
-    seasons:
-      spring: "Spring"
-      summer: "Summer"
-      fall: "Fall"
-      winter: "Winter"
-
     episodes:
       episode-number: "Episode %{number}"
       up-next: "Up next (auto-play)"
@@ -162,6 +155,13 @@ en:
       title: "You are watching: \"%{name}\""
       go-back: "Go back to \"%{name}\"..."
       last-episode: "Last episode!"
+
+  time:
+    seasons:
+      spring: "Spring"
+      summer: "Summer"
+      fall: "Fall"
+      winter: "Winter"
 
     other:
       more: "More..."

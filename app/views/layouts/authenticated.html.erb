@@ -14,7 +14,7 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="/js/config.js"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
   </head>
@@ -22,7 +22,7 @@
   <body>
       <div class="row no-margin">
         <%= render 'shared/sidebar' %>
-        <main class="main-width ml-lg-auto px-4 logged-in <%= @additional_main_class %>">
+        <main class="main-width px-4 logged-in <%= @additional_main_class %>">
           <% flash.each do |key, value| %>
             <div class="alert alert-<%= key %>"><%= value %></div>
           <% end %>

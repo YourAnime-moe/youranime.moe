@@ -164,6 +164,12 @@ module ApplicationHelper
     "/shows/#{episode.show.id}/episodes/#{episode.id}"
   end
 
+  def svg_tag(icon, css_class: "")
+    content_tag(:svg, class: "icon icon_#{icon} #{css_class}") do
+        content_tag(:use, nil, 'xlink:href' => "#icon_#{icon}")
+    end
+  end
+
   private
   def _logout
     user = current_user
