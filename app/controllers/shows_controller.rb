@@ -1,80 +1,23 @@
 class ShowsController < AuthenticatedController
 
-  def view
-    @anime_current = "current"
-    if params[:view] == 'all'
-      view_all
-      return
-    end
+  include ShowsHelper
+  
+  def index
+    set_title(before: t('anime.shows.view-all'))
+    @shows = Show.published
+    @additional_main_class = 'no-margin no-padding' if @shows.blank?
+    @shows_parts = @shows.each_slice(3).to_a
+  end
 
-    if params[:id]
-      @show = Show.find_by(id: params[:id])
-      if @show && @show.is_published?
-        set_title(:before => @show.get_title)
-        @back_url = get_back_url(params, @show.is_movie? ? "/movies" : "/shows")
-        @back_title = get_back_title(params, "Go back to " + (@show.is_movie? ? "movies" : "shows"))
-        render 'view'
-      elsif @show && !@show.is_published?
-        flash[:warning] = "This show is not available yet. Please try again later."
-        redirect_to '/shows'
-      else
-        flash[:danger] = "This show was not found. Please try again."
-        redirect_to '/shows'
-      end
-      return
-    end
-
-    title = params[:title]
-    show_number = params[:showNumber]
-    if show_number.nil?
-      show_number = params[:show_number]
-    end
-
-    if title.nil? || show_number.nil?
-      @shows = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
-      @shows = @shows.to_a.sort_by(&:get_title)
-      @shows.select! {|s| s.is_published?}
-      shows = @shows.each_slice(2).to_a
-      @split_shows = []
-      shows.each do |show_group|
-        new_group = []
-        if show_group.size == 1
-          new_group.push show_group[0]
-        else
-          first = show_group[0]
-          second = show_group[1]
-          if first.get_title > second.get_title
-            tmp = first
-            first = second
-            second = tmp
-          end
-          new_group.push first
-          new_group.push second
-        end
-        @split_shows.push new_group
-      end
-      @split_shows
-
-      coming_soon = Show.coming_soon
-        .reject{|show| show.get_title.nil?}
-        .select{|show| show.is_anime? }
-        .to_a.sort_by!(&:get_title)
-
-      @split_coming_soon = coming_soon.each_slice(2).to_a
-      @split_coming_soon.each {|show_group| show_group.sort_by!(&:get_title)}
-      @has_coming_soon = coming_soon.size > 0
-      # @split_shows = Utils.split_array(Show, sort_by: 2)
-      set_title(:before => t('anime.shows.view-all'))
-      render 'view_all'; return
-    end
-    Show.all.each do |show|
-      if show.title = title and show.show_number.to_s == show_number
-        @show = show; break
-      end
-    end
-    if @show.nil?
-      flash[:danger] = "Sorry, no show using the given parameters was not found. Please try again."
-      redirect_to '/'; return
+  def show
+    @show = Show.find_by(id: params[:id].to_i)
+    if @show.nil? || !@show.published?
+      flash[:warning] = "This show is not available yet. Please try again later."
+      redirect_to shows_path
+    else
+      set_title(:before => @show.get_title)
+      @episodes_parts = @show.episodes.each_slice(3).to_a
+      @additional_main_class = 'no-margin no-padding'
     end
   end
 

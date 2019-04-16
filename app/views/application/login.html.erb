@@ -4,71 +4,58 @@
 <% wait_cont_id = 'waiting-message' %>
 <% succ_cont_id = 'success-message' %>
 
-<div class="vertical-center">
-    <div class="wrapper">
-        <div id="login-container" class="center">
-            <img src="/img/tanoshimu.png" class="hero-image back"/>
-            <h4 title='Means "to have fun" (楽しむ) in Japanese.' ><%= t('welcome.title') %></h4>
-            <p>
-                <%= t('welcome.catch-phrase') %>
-            </p>
 
-            <div class="container">
-                <div class="container">
-                    <div id="login-messages" class="center">
-                        <div class="login-register-error">
-                            <span id="error-message"></span>
-                        </div>
-                        <div class="login-register-waiting">
-                            <span id="waiting-message"></span>
-                        </div>
-                        <div class="login-register-success">
-                            <span id="success-message"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <form id="login-form" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'), '<%= @params.to_json %>')">
-                            <div class="row">
-                                <div class="input-field col s12 m6">
-                                  <input id="username" type="text" class="validate">
-                                  <label for="username"><%= t('welcome.login.username') %></label>
-                                </div>
-                                <div class="input-field col s12 m6">
-                                  <input id="password" type="password" class="validate">
-                                  <label for="password"><%= t('welcome.login.password') %></label>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <button class="btn" value="<%= t('welcome.login.login') %>" id=""><%= t('welcome.login.login') %></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="languages">
-                <a locale-switcher="fr" title="<%= t('lang.fr') %>" go-to="">
-                    <img id="icon-fr" class="lng-icon disabled animation-target" src="/img/icon-fr.png">
-                </a>
-                <a locale-switcher="en" title="<%= t('lang.en') %>" go-to="">
-                    <img id="icon-en" class="lng-icon disabled animation-target" src="/img/icon-en.png">
-                </a>
-                <a locale-switcher="jp" title="<%= t('lang.jp') %>" go-to="">
-                    <img id="icon-jp" class="lng-icon disabled animation-target" src="/img/icon-jp.png">
-                </a>
-            </div>
-
-            <!--<div class="google-play">
-                <a href='https://play.google.com/store/apps/details?id=ca.akinyele.ntanoshimu&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='<%= t("badge.alt") %>' src='<%= t("badge.src") %>'/></a>
-            </div>-->
-
-            <div class="hidden login-register-error">
-                <p id="error-message">
-                    <%= t('errors.internal.login') %>
-                </p>
-            </div>
-
+<div class="text-center">
+  <div class="vertical-center">
+    <div class="wrapper tanoshimu-login">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="text-center">
+          <%= image_tag 'tanoshimu', class: 'logo' %>
         </div>
+        <h4 title='Means "to have fun" (楽しむ) in Japanese.'>
+          <%= t('welcome.title') %>
+        </h4>
+
+        <p class="text-muted"><%= t('welcome.catch-phrase') %></p>
+
+        <div class="container">
+          <div id="login-messages" class="center login-messages small">
+            <div class="text-danger">
+              <span id="error-message"></span>
+            </div>
+            <div class="text-warning">
+              <span id="waiting-message"></span>
+            </div>
+            <div class="text-success">
+              <span id="success-message"></span>
+            </div>
+          </div>
+
+          <form id="login-form" class="form-signin" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'), '<%= @params.to_json %>')">
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" class="validate form-control" placeholder="Username" autofocus>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" class="validate form-control" placeholder="Password">
+
+            <div style="margin-top: 10px;">
+              <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+            </div>
+
+            <div class="text-center" style="margin-top: 20px;">
+              <p>- Or -</p>
+              <div>
+                <%= link_to '/auth/google_oauth2', class: 'google-btn' do %>
+                  <img width="20px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
+                  Sign in with Google
+                <% end %>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+

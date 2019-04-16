@@ -1,39 +1,19 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   serialize :episodes_watched
   serialize :episode_progress_list
   serialize :settings
 
+  has_one_attached :avatar
+  has_many :user_watch_progresses
+
   DEFAULT_DEMO_NAME = "Demo Account"
   DEFAULT_DEMO_USERNAME = "demo"
   DEFAULT_DEMO_TOKEN = "demo"
 
-  before_save {
-    self.episodes_watched = [] if self.episodes_watched.nil?
-    self.episode_progress_list = [] if self.episode_progress_list.nil?
-
-    if self.is_demo_account?
-      found_user = User.find_by(demo: true)
-      unless found_user.nil? || found_user.id == self.id
-        self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
-        throw :abort
-      end
-    else
-      if self.username.nil? or self.username.strip.empty?
-        self.errors.add "username", "cannot be empty"
-        throw :abort
-      end
-
-      found_user = User.find_by(username: self.username)
-      unless found_user.nil? || found_user.id == self.id
-        self.errors.add "username", "\"#{self.username}\" already exists"
-        throw :abort
-      end
-    end
-  }
-
-  has_secure_password
+  before_save :check_user
   has_secure_token :auth_token
+  has_secure_password
 
   def auth_token
     return DEFAULT_DEMO_TOKEN if self.is_demo_account?
@@ -132,18 +112,21 @@ class User < ActiveRecord::Base
 
     # Returns a list of episodes that have "watching progress"
     def currently_watching(limit: nil, no_thumbnails: false)
-      return [] if self.episode_progress_list.blank?
-      res = self.episode_progress_list.map{|progress| Episode.find_by(id: progress[:id])}.reject{|episode| episode.nil?}
-      self.get_latest_episodes(limit: limit).each do |episode|
-        res << episode unless res.include? episode
-      end
-      res.reverse!
-      if limit
-        limit = 4 if limit < 1
-        res = res[0..limit-1]
-      end
-      res = res.select{|e| no_thumbnails || e.has_thumbnail?}
-      return res || []
+      history(limit: limit)
+    end
+
+    def history(limit: nil)
+      sql = <<-SQL
+        select users.*, episodes.*
+        from episodes
+        cross join users
+        inner join user_watch_progresses progress
+        on episodes.id = progress.episode_id and progress.user_id = users.id
+        where users.id = ?
+        limit ?;
+      SQL
+      limit = limit.nil? ? 5 : limit.to_i
+      Episode.find_by_sql([sql, self.id, limit])
     end
 
     def get_episodes_watched(as_is: false)
@@ -151,9 +134,7 @@ class User < ActiveRecord::Base
       return [] if self.episodes_watched.nil?
       res = self.episodes_watched
       return res if as_is
-      res.reject! { |episode_id| Episode.find_by(id: episode_id).nil? }
-      res.select! { |episode_id| Episode.find(episode_id).is_published? }
-      res
+      Episode.published.order("idx(array[#{res.join(',')}], id)").map(&:id)
       # self.update_attribute(:episodes_watched, res) ? res : nil
     end
 
@@ -335,7 +316,39 @@ class User < ActiveRecord::Base
       nil
     end
 
+    def self.from_omniauth(auth)
+      where(username: auth.info.email).first_or_initialize do |user|
+        user.name = auth.info.name
+        user.username = auth.info.email
+      end
+    end
+
     private
+
+    def check_user
+      self.episodes_watched = [] if self.episodes_watched.nil?
+      self.episode_progress_list = [] if self.episode_progress_list.nil?
+
+      if self.is_demo_account?
+        found_user = User.find_by(demo: true)
+        unless found_user.nil? || found_user.id == self.id
+          self.errors.add "username", "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."
+          throw :abort
+        end
+      else
+        if self.username.nil? or self.username.strip.empty?
+          self.errors.add "username", "cannot be empty"
+          throw :abort
+        end
+
+        found_user = User.find_by(username: self.username)
+        unless found_user.nil? || found_user.id == self.id
+          self.errors.add "username", "\"#{self.username}\" already exists"
+          throw :abort
+        end
+      end
+    end
+
     def is_ok(value, default)
       res = self.settings[value]
       res = self.settings[value.to_s] if res.nil?

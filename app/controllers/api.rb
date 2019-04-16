@@ -13,7 +13,8 @@ module Api
     def find_token!
       # Get the token
       token = params[:token]
-  		raise Api::MissingTokenError.new if token.to_s.strip.empty?
+  		raise Api::MissingTokenError.new if token.blank?
+      token
     end
 
     def ensure_token

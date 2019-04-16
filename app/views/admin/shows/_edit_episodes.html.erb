@@ -1,0 +1,14 @@
+<p><strong>Episodes (<%= all_episodes.count %>)</strong></p>
+
+<% all_episodes.each_slice(slice).each do |episodes| %>
+  <div class="row">
+    <% episodes.each do |episode| %>
+      <div class="col-md-<%= (12/slice).to_i %>" style="margin-top: 20px;">
+        <% @_rule = {class: nil} %>
+        <% @_thumb_info = {} %>
+        <% @model = episode %>
+        <%= render 'shows/partial/_thumbs' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

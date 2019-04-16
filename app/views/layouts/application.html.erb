@@ -1,160 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title><%= app_title %></title>
+  <head>
+    <title><%= app_title %></title>
 
-  <script type="text/javascript">
-    var enableInbox = "<%= @inbox_options %>" === "true";
-  </script>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <meta name="theme-color" content="<%= app_colour %>" />
+    <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <meta name="theme-color" content="<%= app_colour %>" />
-  <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
-  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="google-signin-client_id" content="<%= Config.google_client_id %>.apps.googleusercontent.com">
 
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-  <link rel="stylesheet" type="text/css" href="https://vjs.zencdn.net/<%= videojs_version %>/video-js.css">
-  <script type="text/javascript" src="/js/config.js"></script>
-</head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
 
-<% if logged_in? %>
-    <header>
-        <%= render 'shared/header' %>
-        <%= render 'shared/inbox-options' %>
-    </header>
-<% end %>
-
-<body>
-    <div id="global-container">
+  <body>
       <%= yield %>
-    </div>
-
-    <script type="text/javascript">
-      function humanFileSize(bytes, si) {
-          si = si === undefined ? true : false;
-          var thresh = si ? 1000 : 1024;
-          if(Math.abs(bytes) < thresh) {
-              return bytes + ' B';
-          }
-          var units = si
-              ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
-              : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-          var u = -1;
-          do {
-              bytes /= thresh;
-              ++u;
-          } while(Math.abs(bytes) >= thresh && u < units.length - 1);
-          return bytes.toFixed(1)+' '+units[u];
-      }
-
-      var ajaxQueue = $({});
-      var currentRequest = null;
-      $.ajaxQueue = function( ajaxOpts ) {
-          // Hold the original complete function.
-          var oldComplete = ajaxOpts.complete;
-          // Queue our ajax request.
-          ajaxQueue.queue(function( next ) {
-              // Create a complete callback to fire the next event in the queue.
-              ajaxOpts.complete = function() {
-                  // Fire the original complete if it was there.
-                  if ( oldComplete ) {
-                      oldComplete.apply( this, arguments );
-                  }
-                  // Run the next query in the queue.
-                  next();
-              };
-              // Run the query.
-              currentRequest = $.ajax( ajaxOpts );
-          });
-      };
-
-      // Abort method
-      function abortAjaxQueue() {
-          ajaxQueue.clearQueue();
-          if (currentRequest) {
-              currentRequest.abort();
-          }
-      }
-
-      $(document).ready(function() {
-            $(".button-collapse").sidenav();
-            $('.modal').modal();
-            $(".dropdown-trigger").dropdown();
-            $('select').formSelect();
-            $('.datepicker').datepicker();
-
-            var current_lang = navigator.language || navigator.userLanguage || 'en';
-            if (current_lang == 'ja') {
-              current_lang = 'jp';
-            }
-            switchTo(current_lang, false);
-
-            [].forEach.call(document.querySelectorAll('[locale-switcher]'), function(elem) {
-              elem.onclick = function(e) {
-                switchTo(elem.getAttribute('locale-switcher'), true);
-              }
-            });
-
-            <% if logged_in? %>
-                var data = {};
-                <% if @inbox_options %>
-                  $.ajax({
-                    method: 'get',
-                    url: '/json/get/users',
-                    success: function(e) {
-                      $('input.autocomplete').autocomplete({
-                        data: e.data,
-                        limit: 20,
-                        onAutocomplete: function(val) {
-                          var pos = -1;
-                          for (var i = 0; i < val.length; i++) {
-                            if (val[i] == "|") {
-                              pos = i + 2;
-                            }
-                          }
-                          username = val.substring(pos, val.length);
-                        },
-                        minLength: 1,
-                      });
-                    }
-                  });
-                <% end %>
-            <% end %>
-        });
-
-        function switchTo(locale, force) {
-          $.ajax({
-            url: '/set/current/locale.json',
-            method: 'put',
-            data: {locale: locale, set_at_first: force},
-            success: function(res) {
-              console.log(res);
-              if (res.reload) {
-                location.href = location.href;
-              }
-            }
-          })
-        }
-    </script>
-    <script type="text/javascript" src="/js/watched_episodes.js"></script>
-</body>
-
-<% if logged_in? %>
-  <footer>
-     <% render 'shared/footer' %>
-  </footer>
-<% end %>
-<% unless flash.empty? %>
-    <script>
-      <% flash.each do |f| %>
-      <% type=f[0].to_s.gsub('alert', 'red').gsub('warning', 'orange').gsub('success', 'green') %>
-      Materialize.toast('<%= f[1] %>', 4000, '<%= type %>')
-      <% end %>
-    </script>
-<% end %>
+  </body>
 </html>

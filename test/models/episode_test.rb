@@ -200,10 +200,6 @@ class EpisodeTest < TanoshimuBaseTest
         assert_equal episode.get_comments(usernames: true), expected
     end
 
-    test "Episode has instances" do
-        assert Episode.instances.size > 0
-    end
-
     test "All episodes are published" do
         count = 10
         (1..count).each do

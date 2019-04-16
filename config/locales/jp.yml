@@ -27,6 +27,11 @@ jp:
         no-username: "ユーザ名を入力してください。"
         no-password: "パスワードを入力してください。"
         no-username-and-password: "ユーザ名とパスワードを入力してください。"
+    google:
+      register: やったー！新規登録を完成するには次をご記入ください。
+      warning: お客様はGoogleで新規登録をするとアカウントにはアクセスの制限することとなります。それでよろしいでしょうか？
+      terms: 利用規約とプライバシーポリシー (英語)
+      register-action: 同意して登録する
 
     text: "ようこそ"
     user: "ようこそ、%{user}様！"
@@ -55,6 +60,24 @@ jp:
     settings: "設定"
     bugs: "知っているバグ等"
     logout: "ログアウト"
+    signed-in: >
+      <strong class='css-truncate-target'>%{username}</strong>
+      としてログイン中
+
+  sidebar:
+    home-page: トップページ
+    browse: 詳細検索
+    anime-movies: アニメや映画
+    feel-adventure: おまかせ
+    for-you:
+      title: あなたのみ
+      recommendations: オススメ
+      episode-history: 視聴履歴
+      account-settings: アカウント設定
+    other:
+      title: その他
+      any-issues: お困りですか？
+      about: 開発者について
 
   admin:
     home: "管理画面"
@@ -74,7 +97,7 @@ jp:
         more-info: "詳細はこちら"
         same-tags: "現在のショーと同じタグ"
         go-back: "ショーへ戻る"
-        episodes: "エピソード"
+        episodes-list: "エピソード"
         available-episodes: "見えるエピソード数：%{count}"
         episodes: "すべてのエピソード数：%{count}"
         featuring: "声優"
@@ -86,7 +109,7 @@ jp:
     history:
       to-episode: "動画を見る"
       to-show: "ショー情報を開く"
-    
+
     episodes:
       episode-number: "エピソード %{number}"
       up-next: "自動再生"

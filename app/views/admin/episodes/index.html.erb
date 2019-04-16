@@ -1,0 +1,50 @@
+<div class="hf-section">
+  <h2><%= t('sidebar.admin.manage.episodes') %></h2>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Show</th>
+      <th>Duration</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @episodes.each do |episode| %>
+      <% show = episode.show %>
+      <tr>
+        <td><%= episode.id %></td>
+        <td><%= episode.title %></td>
+        <% if show.nil? %>
+          <td>N/A</td>
+          <td>N/A</td>
+        <% else %>
+          <td><%= link_to(show.get_title, edit_admin_show_path(show)) %></td>
+          <td><%= episode.show.average_run_time %></td>
+        <% end %>
+        <td>
+          <% @_rule = {class: nil} %>
+          <% @_thumb_info = {} %>
+          <% @model = episode %>
+          <% @hide_title = true %>
+          <%= render '/shows/partial/_thumbs' %>
+        </td>
+      </tr>
+      <% end %>
+  </tbody>
+</table>
+
+<%= paginate @episodes, theme: 'twitter-bootstrap-4' %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('table').DataTable({
+      "paging":   false,
+      "search":   false,
+      "order": [[ 0, "desc" ]]
+    });
+  });
+</script>

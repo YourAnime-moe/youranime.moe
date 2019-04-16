@@ -2,6 +2,223 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.video-body.muchuu {
+  cursor: none !important;
+}
+
+.video-body {
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+
+  video {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+  }
+}
+
+.controls-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  color: #ababab;
+
+  .button {
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .back {
+    top: 0;
+    position: absolute;
+    margin: 2.5em;
+  }
+
+  .controls-bottom {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    margin: 5px;
+
+    .hf-progress {
+      padding-left: 2em;
+      padding-right: 2em;
+      display: flex;
+
+      .progress-bar-mgmt {
+        display: flex;
+        width: 100%;
+        margin: 0 1.5em 0 0;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -moz-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: relative;
+        touch-action: none;
+
+        .progress-bar-cont {
+          flex-grow: 1;
+          flex-shrink: 0;
+          width: auto;
+          position: relative;
+          display: flex;
+
+          .progress-bar {
+            width: 100%;
+            height: .3em;
+            background: #ababab61;
+            position: relative;
+            -webkit-transition: height .2s ease;
+            -o-transition: height .2s ease;
+            -moz-transition: height .2s ease;
+            transition: height .2s ease;
+            will-change: height;
+            display: flex;
+
+            .progress-filled {
+              flex: 0;
+              flex-basis: 100%;
+              width: 0%;
+              background: #6dccc0;
+            }
+          }
+
+          .progress-bar:hover {
+            height: .6em;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .progress-elapsed {
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        -webkit-box-align: end;
+        align-items: flex-end;
+
+        time.remaining {
+          font-size: 0.8em;
+          font-family: FiraMono, "Lucida Console", Monaco, monospace;
+          .hours {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .hf-controls {
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -moz-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      -moz-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+
+      .playing, .paused {
+        display: none !important;
+      }
+      .playing.active, .paused.active {
+        display: flex !important;
+      }
+
+      .button {
+        box-sizing: border-box;
+        border: 3px solid transparent;
+        -webkit-border-radius: .3em;
+        -moz-border-radius: .3em;
+        border-radius: .3em;
+        width: 2em;
+        height: 1.6em;
+        padding: 0 0 .3em 0;
+        font-size: 2.8em;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 1 auto;
+        -moz-box-flex: 0;
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+
+        img {
+          margin: 0 auto;
+        }
+      }
+
+      .title {
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -moz-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0 1.5em;
+        overflow: hidden;
+        padding: 0 0 .4em 0;
+
+        h5 {
+          display: inline;
+        }
+
+        .show {
+          color: #fff;
+          padding-right: 10px;
+        }
+      }
+    }
+  }
+
+  .controls-center.active {
+    opacity: 1;
+  }
+}
+
+.gradient.top {
+  top: 0;
+  position: absolute;
+  background-image: linear-gradient(to bottom,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 100%);
+  height: 20%;
+  width: 100%;
+}
+.video-clickable-zone {
+  height: 85%;
+  width: 100%;
+  top: 0;
+  position: absolute;
+}
+.gradient.bottom {
+  bottom: 0;
+  position: absolute;
+  background-image: linear-gradient(to top,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 100%);
+  height: 20%;
+  width: 100%;
+}
+
 .no-video {
     color: red;
     font-weight: bold;
