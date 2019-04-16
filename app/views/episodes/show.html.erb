@@ -19,7 +19,10 @@
           </div>
         </div>
         <div class="hf-controls">
-          <div class="button" hf-action="toggle-play-pause">
+          <div class="button playing" hf-action="toggle-play-pause">
+            <%= image_tag("baseline-pause-24px", width: "35px") %>
+          </div>
+          <div class="button paused active" hf-action="toggle-play-pause">
             <%= image_tag("baseline-play_arrow-24px", width: "35px") %>
           </div>
           <div class="title">

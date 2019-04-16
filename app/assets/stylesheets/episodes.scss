@@ -118,6 +118,13 @@
       -ms-flex-pack: justify;
       justify-content: space-between;
 
+      .playing, .paused {
+        display: none !important;
+      }
+      .playing.active, .paused.active {
+        display: flex !important;
+      }
+
       .button {
         box-sizing: border-box;
         border: 3px solid transparent;
