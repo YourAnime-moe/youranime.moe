@@ -11,6 +11,11 @@ module ApplicationHelper
     }
   end
 
+  # Return the padded class if the user is logged
+  def pad_if_logged_in!
+    ('logged-in' if logged_in?).to_s
+  end
+
   def get_back_url(params, default=nil)
     _get_back params, :from, default
   end
@@ -127,6 +132,7 @@ module ApplicationHelper
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.now
+    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN IN] User #{user.username}-#{user.id} at #{Time.now}!")
   end
 
   def log_out
@@ -154,10 +160,22 @@ module ApplicationHelper
     end
   end
 
+  def episode_path(episode, *args, **options)
+    "/shows/#{episode.show.id}/episodes/#{episode.id}"
+  end
+
+  def svg_tag(icon, css_class: "")
+    content_tag(:svg, class: "icon icon_#{icon} #{css_class}") do
+        content_tag(:use, nil, 'xlink:href' => "#icon_#{icon}")
+    end
+  end
+
   private
   def _logout
+    user = current_user
     session.delete(:user_id)
     session.delete(:current_show_id)
+    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.now}.")
   end
 
 end

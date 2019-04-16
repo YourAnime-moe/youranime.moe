@@ -70,6 +70,7 @@
   },
   "name": "tanoshimu",
   "scripts": {
+     "postdeploy": "bundle exec rails db:schema:load"
   },
   "stack": "heroku-18"
 }

@@ -1,7 +1,0 @@
-<% if @show.has_tags? %>
-    <div style="margin: 20px;">
-        <% @show.get_tags.each do |tag| %>
-            <div value="<%= tag %>" class="current-show tag chip"><%= Utils.tags[tag] %></div>
-        <% end %>
-    </div>
-<% end %>

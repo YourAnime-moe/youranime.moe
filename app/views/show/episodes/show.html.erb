@@ -1,0 +1,10 @@
+<% url = @episode.get_video_url(expires_in: 100.minutes) %>
+<div class="h-100 w-100">
+  <video oncontextmenu="return false;" id='my-video' class="hf-video">
+    <source src='<%= url %>' type='video/mp4'>
+    <source src='<%= url %>' type='video/mkv'>
+    <source src='<%= url %>' type='video/avi'>
+  </video>
+</div>
+
+<script src='https://vjs.zencdn.net/7.4.1/video.js'></script>

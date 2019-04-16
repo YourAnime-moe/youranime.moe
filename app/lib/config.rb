@@ -30,7 +30,7 @@ module Config
   class << self
     # <protocol>://<subdomain>.<domain>:<port>/<path>
     def main_host(as_is: false)
-      raise Error.new('Please set the domain name.') if domain.nil?
+      return if domain.nil?
       _protocol = use_ssl ? 'https' : (protocol || 'http')
       _port = use_ssl ? 443 : (port || 80)
       host = ''
@@ -41,6 +41,11 @@ module Config
       host
     end
 
+    def slack_client
+      return @slack_client unless @slack_client.nil?
+      @slack_client = Slack::Web::Client.new
+    end
+
     def path(path, as_is: false)
       main = self.main_host(as_is: as_is).dup
       return path if main.blank?
@@ -48,6 +53,10 @@ module Config
         main << "/"
       end
       main + path
+    end
+
+    def google_client_id
+      ENV["GOOGLE_OAUTH_CLIENT_ID"]
     end
 
     def setup

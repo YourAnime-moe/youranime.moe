@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= app_title %></title>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <meta name="theme-color" content="<%= app_colour %>" />
+    <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="/js/config.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+  </head>
+
+  <body style="background-color: #000;">
+      <div class="row no-margin">
+        <main class="main-width <%= @additional_main_class %>">
+          <% flash.each do |key, value| %>
+            <div class="alert alert-<%= key %>"><%= value %></div>
+          <% end %>
+          <div role="main">
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+  </body>
+  <footer>
+     <% render 'shared/footer' %>
+  </footer>
+</html>

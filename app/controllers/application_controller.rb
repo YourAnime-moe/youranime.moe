@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   def root
     if logged_in?
-      redirect_to "/users/#{current_user.username}"
+      redirect_to "/users/home"
     else
       set_title after: t("welcome.text"), before: t("welcome.login.login")
       @params = {}
@@ -31,6 +31,48 @@ class ApplicationController < ActionController::Base
       render 'login'
     end
   end
+
+  def google_auth
+    access_token = request.env["omniauth.auth"]
+    @user = User.from_omniauth(access_token)
+    
+    # Check if the user has been registered
+    if @user.persisted? && @user.google_user
+      log_in(@user)
+      redirect_to "/",  notice: t('welcome.login.success.web-message')
+      return
+    elsif @user.persisted?
+      redirect_to "/",  "Please login with your username and password."
+      return
+    end
+
+    refresh_token = access_token.credentials.refresh_token
+    @user.google_token = access_token.credentials.token
+    @user.google_refresh_token = refresh_token if refresh_token.present?
+    
+    begin
+      I18n.locale = access_token.locale
+    rescue
+      p "Invalid locale provided by Google: #{access_token.info.locale}"
+    end
+  
+    render 'welcome_google'
+  end
+  
+  def google_register
+    @user = User.new(google_user_params)
+    @user.limited = true
+    @user.google_user = true
+    if @user.save
+      log_in(@user)
+      redirect_to '/', notice: t('welcome.login.success.web-message')
+    else
+      p @user.errors_string
+      render 'welcome_google', alert: @user.errors_string
+    end
+  end
+  
+  def 
 
   def login
     redirect_to "/"
@@ -97,9 +139,24 @@ class ApplicationController < ActionController::Base
     render json: {success: true, locale: I18n.locale}
   end
 
+  def authorized_locales
+    %w(en fr ja jp)
+  end
+
   def set_locale
     session[:locale] = params[:locale]
-    I18n.locale = params[:locale]
+    locale = params[:locale].to_s
+    found_locale = false
+    authorized_locales.each do |auth_locale|
+      if locale.include?(auth)
+        locale = auth_locale
+        p "Set locale #{auth_locale}"
+        found_locale = true
+        next
+      end
+    end
+    p "Set locale #{locale}"
+    I18n.locale = locale if found_locale
     render json: {success: true, new_locale: I18n.locale}
   end
 
@@ -109,7 +166,18 @@ class ApplicationController < ActionController::Base
     reload = false
     if session[:locale].nil? || params[:set_at_first] == 'true'
       session[:locale] = current
-      I18n.locale = current
+      found_locale = false
+      authorized_locales.each do |auth_locale|
+        if current.include?(auth_locale)
+          current = auth_locale
+          p "Set locale #{auth_locale}"
+          found_locale = true
+          next
+        end
+      end
+      p "Set locale #{current}"
+      I18n.locale = current if found_locale
+      session[:locale] = I18n.locale
       reload = old.to_s != current.to_s
     end
     res = {success: true, reload: reload, locale: {requested: current, old: old}}
@@ -128,7 +196,24 @@ class ApplicationController < ActionController::Base
   private
 
   def find_locale
-    I18n.locale = params[:lang] || session[:locale] || :fr
+    try_to_set = params[:lang] || session[:locale]
+    begin
+      I18n.locale = try_to_set || :fr
+    rescue I18n::InvalidLocale
+      p "Invalid locale #{try_to_set}. Defaulting to :fr..."
+      I18n.locale = :fr
+    end
+  end
+  
+  def google_user_params
+    params.require(:user).permit(
+      :name,
+      :username,
+      :password,
+      :password_confirmation,
+      :google_refresh_token,
+      :google_token
+    )
   end
 
   #def check_is_in_maintenance_mode

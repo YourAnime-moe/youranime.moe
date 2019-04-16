@@ -8,6 +8,20 @@ fr:
     jp: "Japonais (日本語)"
     en: "Anglais (English)"
 
+  issues:
+    title: Ouvrir un ticket support
+    all: Mes tickets
+    empty: Aucun ticket n'a encore été ouvert. Vous pouvez en ouvrir un nouveau <a href="%{link}">ici</a>.
+    notice: Veuillez noter que cette fonctionnalité est encore expérimentale. Vous n'êtes autorisé(e)s qu'à créer un ticket par jour.
+    description: Quelque chose vous perturbe-t'il ? Dîtes-le nous en ouvrant un ticket ici!
+    issue:
+      title: Title du problème
+      description: Que ce passe t-il?
+      submit: Soumettre
+      submission:
+        success: Merci ! Nous y jeterons un coup d'oeil le plus vite possible.
+        failure: Nous sommes désolés, mais impossible de créer un ticket à ce moment.
+
   welcome:
     title: "Tanoshimu"
     catch-phrase: "Bienvenue ! Veuillez entrer votre mot de passe ci-dessous."
@@ -23,6 +37,11 @@ fr:
         no-username: "Veuillez entrer votre nom d'utilisateur."
         no-password: "Veuillez entrer votre mot de passe."
         no-username-and-password: "Vous avez oublié d'entrer les informations requises."
+    google:
+      register: Super! Nous avons presque terminé avec votre inscription.
+      warning: Veuillez noter que vous avez choisi vous inscrire avec votre compte Google. Vous aurez donc une accès limité aux ressources de ce système. Etes-vous d'accord ?
+      terms: Conditions et polique de vie privée (en Anglais)
+      register-action: Accepter et continuer
 
     text: "Bienvenue"
     user: "Bienvenue, %{user} !"
@@ -54,6 +73,27 @@ fr:
     settings: "Paramètres"
     bugs: "Problèmes connus"
     logout: "Se déconnecter"
+    signed-in: "Connecté en tant que <strong class='css-truncate-target'>%{username}</strong>"
+
+  sidebar:
+    home-page: Page principale
+    browse: Naviguer
+    anime-movies: Anime et Films
+    feel-adventure: Surprenez-moi !
+    for-you:
+      title: Pour vous
+      recommendations: Recommandations
+      episode-history: Historique
+      account-settings: Paramètres
+    other:
+      title: Autres
+      any-issues: Des problèmes ?
+      about: A propos
+    admin:
+      title: Options d'admin
+      manage:
+        shows: Gérer les séries
+        episodes: Gérer les épisodes
 
   admin:
     home: "Console d'administration"
@@ -64,6 +104,8 @@ fr:
 
   anime:
     shows:
+      empty: >
+        Rien n'est encore disponible ! Venez-y jeter un coup d'œil plus tard.
       view-all: "Toutes les émissions animées"
       coming-soon: "À venir !"
       coming-on: "Arrive le"
@@ -73,7 +115,7 @@ fr:
         more-info: "Plus d'infos..."
         same-tags: "Animés avec les mêmes tags"
         go-back: "Retourner aux émissions"
-        episodes: "Épisodes"
+        episodes-list: "Épisodes"
         available-episodes: "%{count} épisode(s) à regarder"
         episodes: "%{count} épisode(s) au total"
         featuring: "Avec:"
@@ -85,7 +127,7 @@ fr:
 
     movies:
       view-all: "Tous les films"
-    
+
     episodes:
       episode-number: "Épisode %{number}"
       up-next: "Lecture automatique"

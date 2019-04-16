@@ -1,0 +1,30 @@
+<div class="container-fluid">
+
+  <% if @episodes[:actual].size > 0 %>
+    <div class="hf-section">
+      <span class="tanoshimu-list-title">Continue watching...</span>
+      <%= render 'users/partial/continue' %>
+    </div>
+  <% end %>
+
+  <div class="hf-section">
+    <span class="tanoshimu-list-title">Trending</span>
+    <%= render 'users/partial/trending' %>
+  </div>
+
+  <div class="hf-section">
+    <span class="tanoshimu-list-title">Recently added</span>
+    <%= render 'users/partial/recent' %>
+  </div>
+
+  <div class="hf-section">
+    <span class="tanoshimu-list-title">Recommendations</span>
+    <%= render 'users/partial/recommendations' %>
+  </div>
+
+  <div class="hf-section">
+    <span class="tanoshimu-list-title">Tanoshimu Time!</span>
+    <%= render 'users/partial/random' %>
+  </div>
+
+</div>

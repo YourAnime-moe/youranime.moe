@@ -1,0 +1,13 @@
+<% if @issues.blank? %>
+
+  <div class="text-center">
+    <div class="vertical-center">
+      <div class="wrapper">
+        <h4 class="text-muted"><%= t('issues.empty', link: new_issue_path).html_safe %></h4>
+      </div>
+    </div>
+  </div>
+
+<% else %>
+
+<% end %>

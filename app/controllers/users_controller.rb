@@ -1,17 +1,21 @@
 class UsersController < AuthenticatedController
+
+  include UsersHelper
+
   # Home page
   def home
-    if params[:username] != current_user.username
-      redirect_to "/users/#{current_user.username}"
-    end
     set_title(before: t("user.welcome", user: current_user.get_name))
-    @shows = Show.latest(current_user)
-    @episodes = current_user.currently_watching(limit: 4)
-    @recommended = Show.get_presence :recommended
-    @featured = Show.get_presence :featured
-    @this_season = Show.get_presence :season, 3, options: {current: true}
-    @last_season = Show.get_presence :season, 3, options: {previous: true}
-    @coming_soon = Show.coming_soon limit: 4
+    # @shows = Show.latest(current_user)
+    # @featured = Show.get_presence :featured
+    # @this_season = Show.get_presence :season, 3, options: {current: true}
+    # @last_season = Show.get_presence :season, 3, options: {previous: true}
+    # @coming_soon = Show.coming_soon limit: 4
+
+    @trending = force_array_to(6, Show.published)
+    @episodes = force_array_to(6, current_user.currently_watching(limit: 6))
+    @recent = force_array_to(6, Show.published)
+    @random = force_array_to(6, Show.get_random_shows(limit: 6).map{|id| Show.find(id)})
+    @recommended = force_array_to(6, Show.get_presence(:recommended))
   end
 
   # Going to settings
@@ -35,8 +39,8 @@ class UsersController < AuthenticatedController
         return
       end
       if user.update_attributes(user_params)
+        user.thumbnail.attach(params[:avatar]) if params[:avatar].class == ActionDispatch::Http::UploadedFile
         flash[:success] = "Update successful!"
-        p user.settings
       else
         flash[:danger] = "Sorry, we can't seem to be able to update \"#{user.get_name}\"."
       end
@@ -55,7 +59,8 @@ class UsersController < AuthenticatedController
       :name,
       :admin,
       :password,
-      :password_confirmation
+      :password_confirmation,
+      :avatar
     )
   end
 

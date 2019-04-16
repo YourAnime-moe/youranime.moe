@@ -1,0 +1,5 @@
+<% model_id = @model.class.to_s.downcase + "-#{@model.id.to_s}" if @model %>
+<%= link_to(@model) do %>
+  <%= show_thumb(@model, rules: @_rule) %>
+
+<% end %>

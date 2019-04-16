@@ -1,0 +1,18 @@
+<div class="thumbs-section">
+  <div class="row no-margin shows" style="margin-top: 15px;">
+    <% @_models[:cut].each_with_index do |model, index| %>
+      <% @_rule = thumb_class_for(model, index) %>
+      <% @_thumb_info = {} %>
+      <% if model %>
+        <% key = :show_value if model.class == Show %>
+        <% key = :ep_value if model.class == Episode %>
+        <% @_thumb_info[key] = model.id %>
+      <% end %>
+
+      <% @model = model %>
+      <%= link_to(model, class: 'col') do %>
+        <%= show_thumb(@model, rules: @_rule) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -22,6 +22,21 @@ Rails.application.routes.draw do
     match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, :constraints => { :all => /.*/ }
   end
 
+  # Issues
+  resources :issues, only: [:index, :new] do
+    delete :close
+    post :open, on: :collection
+  end
+
+  # Shows
+  resources :shows, only: [:index, :show] do
+    get :history, on: :collection
+    get :movies, on: :collection
+
+    # Episodes
+    resources :episodes, only: [:show]
+  end
+
   root 'application#root'
   get '/get/current/locale' => 'application#get_locale'
   put '/set/current/locale' => 'application#set_locale'
@@ -34,24 +49,21 @@ Rails.application.routes.draw do
   # User links
   get '/settings' => 'users#short_settings'
   get '/users/settings' => 'users#settings'
-  get '/users/:username' => 'users#home'
+  get '/users/home' => 'users#home'
   get '/news' => 'users#news'
   patch '/users/update/:id' => 'users#update'
-
-  # Shows
-  get '/shows' => 'shows#view'
-  get '/shows/history' => 'shows#history'
-  get '/shows/img' => 'shows#render_img'
-  get '/search' => 'shows#search' # This not really for shows, but will probably be used mostly for shows
 
   # Movies
   get '/movies' => 'movies#view'
 
+  get '/auth/google_oauth2/callback' => 'application#google_auth'
+  post '/welcome/google/user' => 'application#google_register'
+
   # Episodes
-  get '/shows/episodes' => 'episodes#view'
-  get '/shows/episodes/random' => 'episodes#random'
-  get '/shows/episodes/subs' => 'episodes#get_subs'
-  get '/shows/episodes/render' => 'episodes#render_type'
+  #get '/shows/episodes' => 'episodes#view'
+  #get '/shows/episodes/random' => 'episodes#random'
+  #get '/shows/episodes/subs' => 'episodes#get_subs'
+  #get '/shows/episodes/render' => 'episodes#render_type'
 
   # Tags
   get '/tags' => 'shows#tags'
@@ -73,14 +85,11 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
-    resources :shows do
-      patch :publish, on: :member
-    end
+    resources :shows
     resources :episodes
   end
 
   # Oauth
-  get '/auth/:provider/callback' => 'sso#create'
   get '/auth/failure' => 'sso#failure'
 
   # GET API
