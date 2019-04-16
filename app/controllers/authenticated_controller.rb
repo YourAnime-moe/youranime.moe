@@ -1,5 +1,7 @@
 class AuthenticatedController < ApplicationController
 
+  layout 'authenticated'
+
   include EpisodesHelper
 
   before_action {

@@ -23,7 +23,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -87,4 +87,11 @@ Rails.application.configure do
 
   # Store files on our space
   config.active_storage.service = :amazon
+  
+  # Authorized hosts
+  config.hosts << "beta-tanoshimu.herokuapp.com"
+  config.hosts << "anime.akinyele.ca"
+  if ENV["RAILS_HOST"]
+    config.hosts << ENV["RAILS_HOST"]
+  end
 end

@@ -44,6 +44,11 @@ en:
         no-username: "Please enter your username."
         no-password: "Please enter your password."
         no-username-and-password: "Please enter your username and password."
+    google:
+      register: Awesome! You're almost done.
+      warning: Please note that choosing to register with a Google account means that you'll have limited access to our application. Is this okay?
+      terms: Privacy Policy terms for our website
+      register-action: Agree & continue
 
     text: "Welcome"
     user: "Welcome, %{user}!"
@@ -58,6 +63,20 @@ en:
     no-featured: "No featured shows at the time!"
     this-season: "Currently airing (in %{name})..."
     no-this-season: "Nothing for this season (yet). Come back later for more!"
+
+  issues:
+    title: Open a new issue
+    all: My tickets
+    empty: No tickets have been opened yet. You can open a new one <a href="%{link}">here</a>.
+    notice: Please note this feature is experimental. Users are allowed to open one issue ticket per day.
+    description: Anything not working well with the website? Open an issue right here!
+    issue:
+      title: Issue title
+      description: What happened?
+      submit: Submit
+      submission:
+        success: Your issue has been submited!
+        failure: Sorry, we were not able to open this ticket for you.
 
   badge:
     alt: "Get it on Google Play"
@@ -75,6 +94,27 @@ en:
     settings: "Account settings"
     bugs: "Known issues"
     logout: "Logout"
+    signed-in: "Signed in <strong class='css-truncate-target'>%{username}</strong>"
+
+  sidebar:
+    home-page: Home page
+    browse: Browse
+    anime-movies: Anime & Movies
+    feel-adventure: Feel Adventurous?
+    for-you:
+      title: For you
+      recommendations: Recommendations
+      episode-history: Episode history
+      account-settings: Account settings
+    other:
+      title: Other
+      any-issues: Any issues?
+      about: About the developer
+    admin:
+      title: Admin options
+      manage:
+        shows: Manage shows
+        episodes: Manage episodes
 
   admin:
     home: "Admin console"
@@ -85,6 +125,8 @@ en:
 
   anime:
     shows:
+      empty: >
+        Nothing has been added yet! Please come back a bit later.
       view-all: "All Anime Shows"
       coming-soon: "Coming soon!"
       coming-on: "Coming on"
@@ -94,7 +136,7 @@ en:
         more-info: "More info..."
         same-tags: "Anime with the same tags"
         go-back: "Go back to shows"
-        episodes: "Episodes"
+        episodes-list: "Episodes"
         available-episodes: "%{count} available episode(s)"
         episodes: "%{count} episode(s)"
         featuring: "Featuring:"
@@ -106,13 +148,6 @@ en:
       to-episode: "Go to episode"
       to-show: "Go to show"
 
-  time:
-    seasons:
-      spring: "Spring"
-      summer: "Summer"
-      fall: "Fall"
-      winter: "Winter"
-    
     episodes:
       episode-number: "Episode %{number}"
       up-next: "Up next (auto-play)"
@@ -120,6 +155,13 @@ en:
       title: "You are watching: \"%{name}\""
       go-back: "Go back to \"%{name}\"..."
       last-episode: "Last episode!"
+
+  time:
+    seasons:
+      spring: "Spring"
+      summer: "Summer"
+      fall: "Fall"
+      winter: "Winter"
 
     other:
       more: "More..."
@@ -131,7 +173,7 @@ en:
   tags:
     title: "Search by tags"
     explanation: "Please select one or more of the tags below to start filtering."
-    tags: 
+    tags:
       action: "Action"
       adventure: "Adventure"
       budou: "Martial Arts"

@@ -5,14 +5,14 @@ anime_one_subbed:
   starring: The Drummer Aki
   average_run_time: 23
   show_number: 1
-  title: Thedrummeraki
+  en_title: Thedrummeraki
   alternate_title: About The Drummer Aki - Season 1
   plot: This show talks about Drummer Aki and his testing adventures...!
   year: 2017
   published: true
   default_path: /videos/drummeraki
   image_path: /videos/tanoshimu/drummeraki.png
-  description: Same as the plot...!
+  en_description: Same as the plot...!
   featured: true
   recommended: true
   season_year: 2017
@@ -25,14 +25,14 @@ anime_one_dubbed:
   starring: The Drummer Aki
   average_run_time: 23
   show_number: 1
-  title: Thedrummeraki
+  en_title: Thedrummeraki
   alternate_title: About The Drummer Aki - Season 1
   plot: This show talks about Drummer Aki and his testing adventures - in English...!
   year: 2017
   published: true
   default_path: /videos/drummeraki
   image_path: /videos/tanoshimu/drummeraki.png
-  description: Same as the plot...!
+  en_description: Same as the plot...!
   featured: false
   recommended: false
   season_year: 2017
@@ -45,14 +45,14 @@ anime_two_subbed:
   starring: The Drummer Aki
   average_run_time: 23
   show_number: 2
-  title: Thedrummeraki
+  en_title: Thedrummeraki
   alternate_title: About The Drummer Aki - Season 2
   plot: This show talks more about Drummer Aki and his testing adventures...!
   year: 2018
   published: true
   default_path: /videos/drummeraki
   image_path: /videos/tanoshimu/drummeraki.png
-  description: Same as the plot...!
+  en_description: Same as the plot...!
   featured: false
   recommended: true
   season_year: 2018
@@ -65,14 +65,14 @@ unpublished:
   starring: The Drummer Aki
   average_run_time: 23
   show_number: 3
-  title: Thedrummeraki
+  en_title: Thedrummeraki
   alternate_title: About The Drummer Aki - Season 1
   plot: This show talks about Drummer Aki and his testing adventures...!
   year: 2017
   published: false
   default_path: /videos/drummeraki
   image_path: /videos/tanoshimu/drummeraki.png
-  description: Same as the plot...!
+  en_description: Same as the plot...!
   featured: true
   recommended: true
   season_year: 2017

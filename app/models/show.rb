@@ -1,13 +1,41 @@
-class Show < ActiveRecord::Base
-
-  has_one_attached :banner
-  serialize :tags
+class Show < ApplicationRecord
 
   include Navigatable
 
-  scope :published, -> {
-    where(id: all_published.map{|e| e.id})
+  self.per_page = 24
+
+  has_many :episodes, -> { published.order(:episode_number) }
+  has_many :all_episodes, -> { order(:episode_number) }, class_name: 'Episode'
+  has_one_attached :banner
+
+  scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
+  scope :coming_soon, -> { where("publish_after is not null and publish_after > '#{Date.current}' ") }
+  scope :published, -> { valid.where(published: true) }
+  scope :latest, -> (current_user, limit: 5) {
+    limit = 1 if limit < 1
+    sql = <<-SQL
+      select distinct shows.*
+      from shows inner join (
+        select ep.* from user_watch_progresses as up
+        inner join episodes ep on up.episode_id = ep.id
+        where up.user_id = ?
+      ) as we on we.show_id = shows.id limit ?;
+    SQL
+    find_by_sql([sql, current_user.id, limit])
   }
+  scope :valid, -> {
+    roman_title_query = "(roman_title is not null and roman_title != '')"
+    en_title_query = "(en_title is not null and en_title != '')"
+    fr_title_query = "(fr_title is not null and fr_title != '')"
+    jp_title_query = "(jp_title is not null and jp_title != '')"
+    where("#{roman_title_query} and (#{en_title_query} or #{fr_title_query} or #{jp_title_query})")
+  }
+
+  serialize :tags
+
+  validate :title_present
+  validate :description_present
+  validates :roman_title, presence: true
 
   before_save {
     # Make the show is at least one of dubbed or subbed.
@@ -26,26 +54,34 @@ class Show < ActiveRecord::Base
     end
   }
 
-  def dub_sub_info
-    return "Dubbed and Subbed" if self.dubbed and self.subbed;
-    return "Dubbed" if self.dubbed
-    "Subbed"
+  def only_subbed?
+    (!subbed && !dubbed) || !!subbed && !dubbed
+  end
+
+  def only_dubbed?
+    !!dubbed && !subbed
+  end
+
+  def subbed_and_dubbed?
+    !!subbed && !!dubbed
   end
 
   def get_title(html: false, default: nil)
     if html
       return "<i>No title</i>".html_safe if self.get_title(html: false, default: nil).blank?
     end
-    return (self.title || default) if self.alternate_title.blank?
-    self.alternate_title
+    (title || default || alternate_title)
   end
 
-  def prequel
-    return nil if self.show_number.nil? || self.show_number < 1
-    Show.all.select { |e| e.title == self.title }.each do |show|
-      return show if show.show_number == self.show_number - 1
-    end
-    nil
+  def title
+    en_title || jp_title || roman_title || fr_title
+  end
+
+  def description
+    result = self['en_description'] if I18n.locale == :en
+    result = self['fr_description'] if I18n.locale == :fr
+    result = self['jp_description'] if I18n.locale == :jp
+    result
   end
 
   def has_banner?
@@ -72,51 +108,12 @@ class Show < ActiveRecord::Base
     get_banner.service_url
   end
 
-  def sequel
-    return nil if self.show_number.nil? || self.show_number < 1
-    Show.all.select { |e| e.title == self.title }.each do |show|
-      return show if show.show_number == self.show_number + 1
-    end
-    nil
-  end
-
-  def episodes(from: nil)
-    return @episodes unless @episodes.nil? || !from.nil?
-    return nil if self.id.nil?
-    results = Episode.all.select{ |e| e.show_id == self.id && e.is_published? }
-    @episodes = results.sort_by(&:episode_number)
-    return @episodes if from.nil?
-
-    if from.class == Episode
-      from = from.episode_number
-    end
-
-    results = []
-    @episodes.each do |episode|
-      if episode.episode_number >= from
-        results << episode
-      end
-    end
-    results
-  end
-
-  def all_episodes
-    Episode.all.select{ |e| e.show_id == self.id}.sort_by(&:episode_number)
-  end
-
-  def split_episodes(sort_by: 4)
-    episodes = self.episodes
-    return nil if episodes.nil?
-    episodes = episodes.to_a unless episodes.instance_of? Array
-    episodes.each_slice(sort_by).to_a
-  end
-
   def get_tags
     if self.tags.nil?
       self.tags = []
       self.save
     end
-    self.tags
+    self.tags.class == String ? self.tags.split(' ') : self.tags
   end
 
   def has_tags?(tags=nil)
@@ -147,16 +144,7 @@ class Show < ActiveRecord::Base
   end
 
   def is_published?
-    return false if self.published.nil?
-    self.published
-  end
-
-  def is_coming_soon?
-    !self.publish_after.nil? && !self.is_published? && self.publish_after > Date.new
-  end
-
-  def has_episodes?
-    !self.episodes.empty?
+    !!self.published
   end
 
   def get_image_path(token=nil, as_is: false)
@@ -180,14 +168,6 @@ class Show < ActiveRecord::Base
     Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}", as_is: as_is
   end
 
-  def has_image?
-    self.image_path.to_s.strip.size > 0
-  end
-
-  def has_description?
-    self.description.to_s.strip.size > 0
-  end
-
   def is_featured?
     return false if self.featured.nil?
     self.featured
@@ -196,31 +176,6 @@ class Show < ActiveRecord::Base
   def is_recommended?
     return false if self.recommended.nil?
     self.recommended
-  end
-
-  def is_new_addition?
-
-  end
-
-  def is_anime?
-    self.show_type.to_s.size == 0 || self.show_type == 0
-  end
-
-  def is_drama?
-    self.show_type == 1
-  end
-
-  def is_movie?
-    self.show_type == 2
-  end
-
-  def is_new?
-    self.id.nil?
-  end
-
-  def get_year
-    return 0.years.ago.year if self.is_new?
-    self.year
   end
 
   def get_season_code
@@ -241,31 +196,6 @@ class Show < ActiveRecord::Base
     get_season_code == season_id && get_season_year == year
   end
 
-  def get_description(limit=50)
-    return nil unless self.has_description?
-    return self.description if limit.nil?
-    if limit > self.description.size
-      limit = self.description.size
-    end
-    self.description[0, limit] + "..."
-  end
-
-  def admin_json
-    {
-      title: title,
-      alternate_title: alternate_title,
-      get_title: get_title(default: "<No title>"),
-      description: description,
-      subbed: subbed,
-      dubbed: dubbed,
-      published: is_published?,
-      banner_url: get_banner_url,
-      image_path: image_path,
-      default_path: default_path,
-      id: id
-    }
-  end
-
   def as_json(options={})
     {
       id: id,
@@ -281,20 +211,6 @@ class Show < ActiveRecord::Base
         all: all_episodes.size
       }
     }
-  end
-
-  def publish_after
-    nil
-  end
-
-  def self.get(title: nil, show_number: nil)
-    return nil if title.nil? || show_number.nil?
-    title = title.capitalize
-    self.find_by(title: title, show_number: show_number)
-  end
-
-  def self.instances
-    [:get_title]
   end
 
   def self.get_presence(tag, request_banner=true, limit=3, options: nil)
@@ -316,39 +232,6 @@ class Show < ActiveRecord::Base
       end
     end
     found_shows
-  end
-
-  def self.lastest(current_user, limit: 5)
-    self.latest current_user, limit: limit
-  end
-
-  def self.latest(current_user, limit: 5)
-    episodes = current_user.get_episodes_watched
-    episodes = episodes.map{|e| Episode.find e}.reverse
-    shows = []
-    episodes.each do |ep|
-      next unless ep.is_published?
-      show = ep.show
-      next unless show.is_published?
-      next unless show.has_image?
-      shows.push show unless shows.include? show
-      break if shows.size >= limit
-    end
-    shows
-  end
-
-  def self.coming_soon limit: nil
-    shows = Show.all.select {|show| show.is_coming_soon?}
-    return shows if limit.nil? || limit < 1
-    shows[0...limit]
-  end
-
-  def self.all_published
-    self.all.select{|e| !e.get_title.nil? && e.is_published?}.to_a.sort_by(&:get_title)
-  end
-
-  def self.all_un_published
-    self.all.reject{|e| e.get_title.nil? || e.is_published?}.to_a.sort_by(&:get_title)
   end
 
   def self.search keyword, preset_list=nil
@@ -386,6 +269,20 @@ class Show < ActiveRecord::Base
     self.all.each do |show|
       p "Cleaning banner for show id #{show.id}"
       show.banner.purge if show.banner.attached?
+    end
+  end
+
+  private
+
+  def title_present
+    if en_title.blank? && jp_title.blank? && fr_title.blank?
+      errors.add(:title, 'must be present')
+    end
+  end
+
+  def description_present
+    if en_description.blank? && jp_description.blank? && fr_description.blank?
+      errors.add(:description, 'must be present')
     end
   end
 
