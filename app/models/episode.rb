@@ -39,6 +39,11 @@ class Episode < ActiveRecord::Base
     !self.next.nil?
   end
 
+  def next
+    return nil unless show
+    show.episodes.where(['episode_number > ?', episode_number]).first
+  end
+
   def get_path(token=nil, as_is: false)
     return self.path if self.path.nil? or self.path.start_with? "http"
     res = Config.path self.path, as_is: as_is
