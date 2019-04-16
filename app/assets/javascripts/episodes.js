@@ -19,8 +19,10 @@ $(document).on('turbolinks:load', function() {
 
     $video = $('#video-obj');
     $video.on('play', onPlay);
+    $video.on('timeupdate', onProgress);
     $video.on('pause', onPause);
     $video.on('ended', onEnded);
+    $video.on('loadedmetadata', setVideoDuration);
 
     document.addEventListener("mousemove", cancelFadeOutInControls, false);
     document.addEventListener("mousedown", cancelFadeOutInControls, false);
@@ -66,8 +68,39 @@ $(document).on('turbolinks:load', function() {
       }
     }
 
+    function setVideoDuration() {
+      var hours = parseInt($video.get(0).duration / 60 / 10, 10);
+      var minutes = parseInt($video.get(0).duration / 60, 10);
+		  var seconds = parseInt($video.get(0).duration % 60);
+
+      min_sec = stringifyInts(minutes) + ':' + stringifyInts(seconds);
+      if (hours > 0) {
+        hours = stringifyInts(hours) + ':'
+        $('time').children('.hours').show().text(hours);
+      } else {
+        $('time').children('.hours').hide();
+      }
+      $('time').children('.duration').text(min_sec);
+    }
+
+    function stringifyInts(value) {
+      if (value < 10) {
+        value = '0' + value;
+      } else {
+        value = '' + value
+      }
+      return value;
+    }
+
     function play(callback) {
       $video.get(0).play().then(callback);
+    }
+
+    function onProgress(e) {
+      var start = this.currentTime;
+      var total = this.duration;
+      var loadPercentage = (start/total)*100;
+
     }
 
     function onPlay(e) {

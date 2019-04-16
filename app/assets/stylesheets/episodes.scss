@@ -101,6 +101,9 @@
 
         time.remaining {
           font-size: 0.8em;
+          .hours {
+            display: none;
+          }
         }
       }
     }
