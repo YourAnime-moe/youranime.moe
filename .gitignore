@@ -38,3 +38,4 @@ storage
 /config/credentials*
 
 .idea
+.DS_Store
