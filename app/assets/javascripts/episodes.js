@@ -69,7 +69,7 @@ $(document).on('turbolinks:load', function() {
     }
 
     function setVideoDuration() {
-      var hours = parseInt($video.get(0).duration / 60 / 10, 10);
+      var hours = parseInt($video.get(0).duration / 60 / 60, 10);
       var minutes = parseInt($video.get(0).duration / 60, 10);
 		  var seconds = parseInt($video.get(0).duration % 60);
 
