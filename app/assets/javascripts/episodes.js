@@ -2,6 +2,8 @@ $(document).on('turbolinks:load', function() {
   // Global variables
   var goingToShow = false;
   var goingToEpisode = false;
+  var inactivityTime = 5000;
+  var timeoutId;
 
   var $video = null;
   var $playing_btn = null;
@@ -18,6 +20,14 @@ $(document).on('turbolinks:load', function() {
     $video = $('#video-obj');
     $video.on('play', onPlay);
     $video.on('pause', onPause);
+    $video.on('ended', onEnded);
+
+    document.addEventListener("mousemove", cancelFadeOutInControls, false);
+    document.addEventListener("mousedown", cancelFadeOutInControls, false);
+    document.addEventListener("keypress", cancelFadeOutInControls, false);
+    document.addEventListener("touchmove", cancelFadeOutInControls, false);
+
+    setFadeOutInControls();
 
     function goToShow(e) {
       if (goingToShow) {
@@ -70,6 +80,10 @@ $(document).on('turbolinks:load', function() {
       $paused_btn.addClass('active');
     }
 
+    function onEnded() {
+      cancelFadeOutInControls(true);
+    }
+
     function pause(callback) {
       $video.get(0).pause();
       if (typeof(callback) === 'function') {
@@ -83,6 +97,31 @@ $(document).on('turbolinks:load', function() {
 
     function isPaused() {
       return $video.get(0).paused;
+    }
+
+    function setFadeOutInControls() {
+      showControls();
+      timeoutId = timeoutId = setTimeout(hideControls, inactivityTime);
+    }
+
+    function cancelFadeOutInControls(stop) {
+      clearTimeout(timeoutId);
+      if (stop !== undefined && stop === true) {
+        showControls();
+      } else {
+        setFadeOutInControls();
+      }
+    }
+
+    function hideControls() {
+      $('.controls-container').fadeOut(function() {
+        $('.video-body').addClass('muchuu');
+      });
+    }
+
+    function showControls() {
+      $('.video-body').removeClass('muchuu');
+      $('.controls-container').fadeIn();
     }
   }
 });
