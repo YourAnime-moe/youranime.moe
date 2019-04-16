@@ -3,6 +3,7 @@
   <div class="controls-container">
     <div class="gradient top"></div>
     <div class="gradient bottom"></div>
+    <div class="video-clickable-zone"></div>
     <div class="controls-zone">
       <div class="back button" go-to-show="<%= @episode.show.id %>">
         <%= image_tag("baseline-arrow_back-24px", width: "35px") %>
@@ -11,7 +12,9 @@
         <div class="hf-progress">
           <div class="progress-bar-mgmt">
             <div class="progress-bar-cont">
-              <div class="progress-bar"></div>
+              <div class="progress-bar">
+                <div class="progress-filled"></div>
+              </div>
             </div>
           </div>
           <div class="progress-elapsed">

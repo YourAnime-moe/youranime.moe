@@ -71,6 +71,7 @@
           flex-shrink: 0;
           width: auto;
           position: relative;
+          display: flex;
 
           .progress-bar {
             width: 100%;
@@ -82,6 +83,14 @@
             -moz-transition: height .2s ease;
             transition: height .2s ease;
             will-change: height;
+            display: flex;
+
+            .progress-filled {
+              flex: 0;
+              flex-basis: 100%;
+              width: 0%;
+              background: #6dccc0;
+            }
           }
 
           .progress-bar:hover {
@@ -101,6 +110,7 @@
 
         time.remaining {
           font-size: 0.8em;
+          font-family: "Lucida Console", Monaco, monospace;
           .hours {
             display: none;
           }
@@ -194,6 +204,12 @@
   background-image: linear-gradient(to bottom,rgba(0,0,0,.7) 0,rgba(0,0,0,0) 100%);
   height: 20%;
   width: 100%;
+}
+.video-clickable-zone {
+  height: 85%;
+  width: 100%;
+  top: 0;
+  position: absolute;
 }
 .gradient.bottom {
   bottom: 0;
