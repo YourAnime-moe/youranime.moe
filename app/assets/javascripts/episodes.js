@@ -118,7 +118,8 @@ $(document).on('turbolinks:load', function() {
       var currentTime = this.currentTime;
       var duration = this.duration;
       var loadPercentage = (currentTime / duration) * 100;
-      $progress.css({width: `${loadPercentage}%`})
+      var width = loadPercentage + '%';
+      $progress.css({width: width})
 
       var timeleft = duration - currentTime;
       var hours = parseInt(timeleft / 60 / 60, 10);
