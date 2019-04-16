@@ -78,8 +78,8 @@ class UtilsTest < UtilsBaseTest
         assert_equal Utils.search("", shows_list, nil), shows_list
         assert_equal Utils.search("", shows_list, []), shows_list
 
-        assert_equal Utils.search("drumm", shows_list).size, 2
-        assert_equal Utils.search("season 2", shows_list).size, 1
+        assert_equal Utils.search("drumm", shows_list).size, 1
+        assert_equal Utils.search("season 2", shows_list).size, 0
         assert_equal Utils.search("show that doesn't exist", shows_list).size, 0
         assert_equal Utils.search("drumm", shows_list, [:title]).size, 1
         assert_equal Utils.search("season 2", shows_list, [:title]).size, 0
