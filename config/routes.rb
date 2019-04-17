@@ -85,8 +85,9 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
-    resources :shows
-    resources :episodes
+    resources :shows do
+      resources :episodes, except: [:edit, :new]
+    end
   end
 
   # Oauth

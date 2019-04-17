@@ -19,9 +19,9 @@ class Admin::EpisodesController < AdminController
 	end
 
 	def index
-    @episodes = Episode.all.order('id desc')
-    @episodes = @episodes.paginate(page: params[:page])
-    set_title before: 'Manage episodes'
+    @show = Show.find(params[:show_id])
+    @episodes = @show.episodes.order('id desc')
+    set_title before: t('sidebar.admin.manage.episodes')
 	end
 
 	def update

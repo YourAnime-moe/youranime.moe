@@ -43,6 +43,15 @@ function retreiveMessages(container) {
     });
 }
 
+function stringifyInts(value) {
+  if (value < 10) {
+    value = '0' + value;
+  } else {
+    value = '' + value
+  }
+  return value;
+}
+
 function humanFileSize(bytes, si) {
     si = si === undefined ? true : false;
     var thresh = si ? 1000 : 1024;
