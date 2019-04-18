@@ -63,11 +63,17 @@
     var last_recorded_ep_num = 0;
 
     $select_episodes.on('click', function() {
-      $(this).addClass('disabled').attr('disabled', true);
       $('#select-episode').click();
     });
 
-    episodes_input.addEventListener('change', function(e) {
+    episodes_input.addEventListener('change', selectFiles);
+    episodes_input.addEventListener('blur', selectFiles);
+
+    function selectFiles(e) {
+      if ($(this).val().length < 1) {
+        return;
+      }
+      $select_episodes.addClass('disabled').attr('disabled', true);
       files = [];
       for (var i = 0; i < this.files.length; i++) {
         files.push(this.files[i]);
@@ -76,7 +82,7 @@
       drawEpisodes(episodes, function() {
         $select_episodes.removeClass('disabled').removeAttr('disabled');
       });
-    });
+    }
 
     function rearrangeData(files) {
       var episode_files_info = {};
