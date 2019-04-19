@@ -15,13 +15,12 @@ class Admin::EpisodesController < AdminController
 			episode.thumbnail.attach(params[:episode][:thumbnail]) if params[:episode][:thumbnail].class == ActionDispatch::Http::UploadedFile
 			episode.video.attach(params[:episode][:video]) if params[:episode][:video].class == ActionDispatch::Http::UploadedFile
 		end
-
-		render json: { success: success, number: episode_params[:episode_number] }
+		render json: { success: true, number: episode_params[:episode_number] }
 	end
 
 	def index
     @show = Show.find(params[:show_id])
-    @episodes = @show.episodes.order('id desc')
+    @episodes = @show.all_episodes.order('id desc')
     set_title before: t('sidebar.admin.manage.episodes')
 	end
 

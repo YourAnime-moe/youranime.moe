@@ -4,19 +4,19 @@
     <div class="dropdown">
       <%= link_to('Add episode', '#', id: 'add-episodes', class: 'btn btn-secondary btn-sm dropdown-toggle', "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false") %>
       <div class="dropdown-menu  dropdown-menu-right hf-dropdown" aria-labelledby="add-episodes">
-        <a class="dropdown-item" href="#">From files...</a>
-        <a class="dropdown-item" href="#">Manually...</a>
+        <a class="dropdown-item" add-option="from-files" href="#">From files...</a>
+        <a class="dropdown-item" add-option="manually" href="#">Manually (coming soon)...</a>
       </div>
     </div>
   </div>
   <h6 class="text-muted"><%= @show.get_title %></h6>
 </div>
 
-<div id="from-files">
+<div id="from-files" class="d-none">
   <%= render partial: 'from_files' %>
 </div>
 
-<table class="table d-none">
+<table id="current-episodes" class="table">
   <thead>
     <tr>
       <th>ID</th>
@@ -57,6 +57,14 @@
       "paging":   false,
       "search":   false,
       "order": [[ 0, "desc" ]]
+    });
+
+    $('[add-option]').on('click', function(e) {
+      e.preventDefault();
+      if ($(this).attr('add-option') === 'from-files') {
+        $('#current-episodes').addClass('d-none');
+        $('#from-files').removeClass('d-none');
+      }
     });
 
     function addEpisode(episode) {

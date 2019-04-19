@@ -307,9 +307,11 @@
 
         execEpisodeAjaxCreate(episode_formdata, function(result) {
           console.log(result);
-          $('[status-for="' + result.episode_number + '"]').text('').append('<i class="material-icons">done</i>');
+          $('[status-for="' + result.number + '"]').text('').append('<i class="material-icons">done</i>');
+          if (i == episode.length - 1) { location.href = location.href; }
         }, function(e) {
           console.error(e);
+          if (i == episode.length - 1) { location.href = location.href; }
         });
       } else {
         $('[status-for="' + episode.number + '"]').text('').append('<i class="material-icons">close</i>');
