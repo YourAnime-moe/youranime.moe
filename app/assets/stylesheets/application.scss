@@ -71,6 +71,10 @@ nav.maintenance {
   text-decoration: none !important;
 }
 
+.material-icons.scale {
+  font-size: 100%;
+}
+
 .loading {
   background-position: center center;
   background-image: asset_url("thumb-loading-40.gif");

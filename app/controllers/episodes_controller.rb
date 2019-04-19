@@ -3,7 +3,8 @@ class EpisodesController < AuthenticatedController
   layout 'videos'
 
   def show
-    show = Show.published.find_by(id: params[:show_id])
+    shows_list = current_user.admin? ? Show.all : Show.published
+    show = shows_list.find_by(id: params[:show_id])
     if show.nil?
       flash[:warning] = "Sorry but this show is not available at the moment."
       redirect_to shows_path

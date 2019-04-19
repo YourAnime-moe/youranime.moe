@@ -1,4 +1,4 @@
-<p><strong>Episodes (<%= all_episodes.count %>)</strong></p>
+<p><strong>Episodes (<%= all_episodes.count %>)</strong> - <%= link_to(t('sidebar.admin.manage.episodes'), admin_show_episodes_path(@show)) %></p>
 
 <% all_episodes.each_slice(slice).each do |episodes| %>
   <div class="row">

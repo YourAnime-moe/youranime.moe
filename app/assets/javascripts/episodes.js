@@ -101,15 +101,6 @@ $(document).on('turbolinks:load', function() {
       videoLoaded = true;
     }
 
-    function stringifyInts(value) {
-      if (value < 10) {
-        value = '0' + value;
-      } else {
-        value = '' + value
-      }
-      return value;
-    }
-
     function play(callback) {
       $video.get(0).play().then(callback);
     }

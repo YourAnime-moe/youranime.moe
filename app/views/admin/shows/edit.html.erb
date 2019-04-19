@@ -81,6 +81,14 @@
             </div>
           </div>
 
+          <p><strong>This show is...</strong></p>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <%= f.label :published %>
+              <%= f.check_box :published %>
+            </div>
+          </div>
+
 
           <div style="width: 60%; margin: 45px auto;">
             <button type="submit" class="btn btn-block btn-primary">Submit</button>
@@ -95,7 +103,7 @@
             </div>
           </fieldset>
           <br>
-          <%= render partial: 'edit_episodes', locals: { all_episodes: @show.episodes, slice: 3 } %>
+          <%= render partial: 'edit_episodes', locals: { all_episodes: @show.all_episodes, slice: 3 } %>
         </div>
       </div>
       <% end %>
@@ -105,6 +113,6 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    
+
   });
 </script>
