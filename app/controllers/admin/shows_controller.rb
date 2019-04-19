@@ -11,13 +11,14 @@ class Admin::ShowsController < AdminController
         .order("#{title_column} asc")
     @shows_parts = @shows.each_slice(4)
     respond_to do |format|
-      format.html
+      format.html { set_title(before: t('sidebar.admin.manage.shows')) }
       format.js
     end
 	end
 
 	def new
 		@show = Show.new(published: true)
+		set_title before: 'New show'
 	end
 
 	def create
@@ -26,7 +27,8 @@ class Admin::ShowsController < AdminController
 			redirect_to edit_admin_show_path(@show), notice: "This show was successfully created!"
 		else
 			p @show.errors_string('There was an error while updating the show')
-			render 'new', alert: @show.errors_string('There was an error while updating the show')
+			set_title before: 'New show', after: 'There was an error while creating the show'
+			render 'new', alert: @show.errors_string('There was an error while creating the show')
 		end
 	end
 
