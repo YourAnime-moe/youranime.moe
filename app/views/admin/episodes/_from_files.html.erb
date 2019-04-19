@@ -1,0 +1,322 @@
+<p>
+  Please note that when uploading episode files, videos must be included. Any
+  thumbnail that is not associated with a video file will be ignored.
+  <br />
+  <span class="small text-muted">
+    We apologize for the inconvenience, but <i>drag-and-drop</i> is a neat feature
+    that is coming soon! However, you can still...
+  </span>
+</p>
+
+<div class="padded">
+  <div class="container">
+    <button id="select-episode-btn" class="btn btn-primary btn-block btn-lg">
+      Select videos and thumbnails from your computer
+    </button>
+    <div class="d-none">
+      <input id="select-episode" type="file" multiple>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Episode #</th>
+      <th>Title</th>
+      <th>Duration</th>
+      <th>Filename</th>
+      <th>Size</th>
+      <th>Thumbnail</th>
+      <th class="d-none" role="status-column">Status</th>
+    </tr>
+  </thead>
+  <tbody role="episodes_preview"></tbody>
+</table>
+
+<div class="container d-none">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card confirm-episodes">
+        <img src="https://anime.akinyele.ca/img/404.jpg" class="card-img-top" alt="Episode 1">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <span class="badge badge-success"><i class="material-icons scale">done</i>video</span>
+          </div>
+          <div class="col-md-6">
+            <span class="badge badge-danger"><i class="material-icons scale">close</i>thumb</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <input class="form-control" value="Episode 1" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var episodes = [];
+  $(document).ready(function() {
+    var $select_episodes = $('#select-episode-btn');
+    var episodes_input = document.getElementById('select-episode');
+    var files = [];
+    var last_recorded_ep_num = 0;
+
+    $select_episodes.on('click', function() {
+      $('#select-episode').click();
+    });
+
+    episodes_input.addEventListener('change', selectFiles);
+    episodes_input.addEventListener('blur', selectFiles);
+
+    function selectFiles(e) {
+      if ($(this).val().length < 1) {
+        return;
+      }
+      $select_episodes.addClass('disabled').attr('disabled', true);
+      files = [];
+      for (var i = 0; i < this.files.length; i++) {
+        files.push(this.files[i]);
+      }
+      episodes = rearrangeData(files);
+      drawEpisodes(episodes, function() {
+        $select_episodes.removeClass('disabled').removeAttr('disabled');
+      });
+    }
+
+    function rearrangeData(files) {
+      var episode_files_info = {};
+      var episodes_list = [];
+      // parse the episode info.
+      for (var i = 0; i < files.length; i++) {
+        let file = files[i];
+        var episode = analyzeEpisodeFile(file);
+        if (episode) {
+          var key = episode.number;
+          if (!episode_files_info[key]) {
+            episode_files_info[key] = []
+          }
+          if (episode.image) {
+            episode_files_info[key][0] = episode;
+          } else if (episode.video) {
+            episode_files_info[key][1] = episode;
+          }
+        }
+      }
+      // make sure video is always present for each episode
+      Object.keys(episode_files_info).forEach(key => {
+        let parsed_episode = episode_files_info[key];
+        if (parsed_episode.length > 1) {
+          let episode_info = {
+            number: parsed_episode[1].number,
+            video: parsed_episode[1],
+            image: parsed_episode[0]
+          };
+          episodes_list.push(episode_info);
+        }
+      });
+      return episodes_list;
+    }
+
+    function analyzeEpisodeFile(episode_file, info) {
+      let regex = /ep(0?\d*)\.((\w)+)/g;
+      let filename = episode_file.name;
+      let type = episode_file.type;
+      let episode_key = filename.split('.')[0];
+      if (!filename || !type) {
+        return null;
+      }
+      var match = regex.exec(filename);
+      var episode_number = null;
+      let default_title = null;
+      if (match) {
+        episode_number = parseInt(match[1]);
+        if (episode_number > last_recorded_ep_num) {
+          last_recorded_ep_num = episode_number;
+        }
+        default_title = "Episode ".concat(episode_number < 10 ? "0"+episode_number : episode_number);
+      } else {
+        episode_number = ++last_recorded_ep_num;
+        default_title = filename.split('.')[0];
+      }
+      var episode = {
+        number: episode_number,
+        name: filename,
+        type: type,
+        file: episode_file,
+        size: humanFileSize(episode_file.size),
+        default_title: default_title,
+        image: /^image/.test(type),
+        video: /^video/.test(type),
+      };
+      return episode;
+    }
+  });
+
+  function drawEpisodes(episodes, callback) {
+    console.log(episodes);
+    var general_wrapper = $('[role="episodes_preview"]').text('');
+    for (var i = 0; i < episodes.length; i++) {
+      var episode = episodes[i];
+      var wrapper = $('<tr></tr>').attr('episode', episode.number);
+
+      // set the input
+      var $input = $('<input />')
+        .addClass('form-control')
+        .val(episode.video.default_title);
+      var $input_wrapper = $('<td></td>').attr('role', 'title').append($input);
+
+      // set the episode number
+      var $number = $('<td></td>').attr('role', 'number').text(
+        episode.video.number
+      );
+
+      // set the duration
+      var $duration = $('<td></td>').attr('role', 'duration').text('--:--');
+      setDuration($duration, episode);
+
+      // set filename
+      var $filename = $('<td></td>').attr('role', 'filename').text(
+        episode.video.name
+      );
+
+      // set the file size
+      var $size = $('<td></td>').attr('role', 'size').text(
+        episode.video.size
+      );
+
+      // if there is a thumbnail, set it
+      var $thumbnail = $('<td></td>').attr('role', 'preview');
+      var $preview = $('<img />').css({width: '150px', height: '75px'});
+      $thumbnail.append($preview);
+      if (episode.image) {
+        setImage($preview, episode);
+      } else {
+        $preview.attr('src', '/img/404.jpg');
+      }
+
+      // the status GIF
+      var $loading_gif = $('<img />').attr('src', '<%= asset_url("thumb-loading-40") %>');
+      var $status = $('<td></td>').attr('status-for', episode.number)
+        .addClass('d-none')
+        .append($loading_gif);
+
+      // and add it all to the wrapper
+      wrapper.append([
+        $number,
+        $input_wrapper,
+        $duration,
+        $filename,
+        $size,
+        $thumbnail,
+        $status
+      ]);
+
+      // finally, append it all to the table
+      general_wrapper.append(wrapper);
+    }
+
+    if (typeof(callback) === 'function') {
+      callback();
+    }
+  }
+
+  function setDuration(element, episode) {
+    if (!episode.video) {
+      return;
+    }
+
+    var video = document.createElement('video');
+    video.preload = 'metadata';
+    video.addEventListener('loadedmetadata', function() {
+      window.URL.revokeObjectURL(video.src);
+      var duration = video.duration;
+      var hours = parseInt(duration / 60 / 60, 10);
+      var minutes = parseInt(duration / 60, 10);
+      var seconds = parseInt(duration % 60);
+      var fun_duration = '';
+
+      min_sec = stringifyInts(minutes) + ':' + stringifyInts(seconds);
+      if (hours > 0) {
+        hours = stringifyInts(hours) + ':'
+        fun_duration = hours;
+      }
+      fun_duration = fun_duration + min_sec;
+      episode.duration = fun_duration;
+      element.text(fun_duration);
+    });
+    video.src = URL.createObjectURL(episode.video.file);
+  }
+
+  function setImage(element, episode) {
+    if (!episode.image) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      element.attr('src', e.target.result);
+    }
+    reader.readAsDataURL(episode.image.file);
+  }
+
+  function makeEpisodeForm(episode) {
+    let title = $('[episode="' + episode.number + '"]')
+      .children('[role="title"]')
+      .children('input')
+      .val();
+
+    var form_data = new FormData();
+
+    form_data.append('episode[title]', title);
+    form_data.append('episode[episode_number]', episode.number);
+    if (episode.image) {
+      form_data.append('episode[thumbnail]', episode.image.file, episode.image.name);
+    }
+    form_data.append('episode[video]', episode.video.file, episode.video.name);
+    form_data.append('episode[show_id]', "<%= @show.id %>");
+    form_data.append('episode[published]', "true");
+
+    return form_data;
+  }
+
+  function execEpisodeAjaxCreate(form_data, callback, errorCallback) {
+    $.ajaxQueue({
+        type: "POST",
+        url: '<%= admin_show_episodes_path(@show, format: :json) %>',
+        data: form_data,
+        async: true,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: callback,
+        error: errorCallback
+    });
+  }
+
+  function uploadEpisodes() {
+    $('[role="status-column"]').removeClass('d-none');
+    $('[status-for]').removeClass('d-none');
+    for (var i = 0; i < episodes.length; i++) {
+      let episode = episodes[i];
+
+      if (episode.duration) {
+        let episode_formdata = makeEpisodeForm(episode);
+
+        execEpisodeAjaxCreate(episode_formdata, function(result) {
+          console.log(result);
+          $('[status-for="' + result.number + '"]').text('').append('<i class="material-icons">done</i>');
+          if (i == episode.length - 1) { location.href = location.href; }
+        }, function(e) {
+          console.error(e);
+          if (i == episode.length - 1) { location.href = location.href; }
+        });
+      } else {
+        $('[status-for="' + episode.number + '"]').text('').append('<i class="material-icons">close</i>');
+      }
+    }
+  }
+
+</script>

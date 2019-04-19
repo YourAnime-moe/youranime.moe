@@ -1,8 +1,22 @@
 <div class="hf-section">
-  <h2><%= t('sidebar.admin.manage.episodes') %></h2>
+  <div class="justify-content-between w-100 d-flex">
+    <h2><%= t('sidebar.admin.manage.episodes') %></h2>
+    <div class="dropdown">
+      <%= link_to('Add episode', '#', id: 'add-episodes', class: 'btn btn-secondary btn-sm dropdown-toggle', "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false") %>
+      <div class="dropdown-menu  dropdown-menu-right hf-dropdown" aria-labelledby="add-episodes">
+        <a class="dropdown-item" add-option="from-files" href="#">From files...</a>
+        <a class="dropdown-item" add-option="manually" href="#">Manually (coming soon)...</a>
+      </div>
+    </div>
+  </div>
+  <h6 class="text-muted"><%= @show.get_title %></h6>
 </div>
 
-<table class="table">
+<div id="from-files" class="d-none">
+  <%= render partial: 'from_files' %>
+</div>
+
+<table id="current-episodes" class="table">
   <thead>
     <tr>
       <th>ID</th>
@@ -37,14 +51,30 @@
   </tbody>
 </table>
 
-<%= paginate @episodes, theme: 'twitter-bootstrap-4' %>
-
 <script type="text/javascript">
   $(document).ready(function() {
-    $('table').DataTable({
+    $('tables').DataTable({
       "paging":   false,
       "search":   false,
       "order": [[ 0, "desc" ]]
     });
+
+    $('[add-option]').on('click', function(e) {
+      e.preventDefault();
+      if ($(this).attr('add-option') === 'from-files') {
+        $('#current-episodes').addClass('d-none');
+        $('#from-files').removeClass('d-none');
+      }
+    });
+
+    function addEpisode(episode) {
+      if (!episode) {
+        return;
+      }
+      var id = episode.id;
+      var title = episode.title;
+      var show = "<%= @show.get_title %>";
+      var duration = episode.duration;
+    }
   });
 </script>

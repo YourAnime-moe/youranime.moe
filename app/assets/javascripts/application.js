@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require popper
 //= require bootstrap
 //= require jquery_ujs
 //= require jquery-ui/widgets/autocomplete
@@ -41,6 +42,15 @@ function retreiveMessages(container) {
         failure: errorFunction,
         error: errorFunction
     });
+}
+
+function stringifyInts(value) {
+  if (value < 10) {
+    value = '0' + value;
+  } else {
+    value = '' + value
+  }
+  return value;
 }
 
 function humanFileSize(bytes, si) {

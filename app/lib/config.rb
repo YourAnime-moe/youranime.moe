@@ -44,6 +44,12 @@ module Config
     def slack_client
       return @slack_client unless @slack_client.nil?
       @slack_client = Slack::Web::Client.new
+      begin
+        @slack_client.auth_test
+      rescue Slack::Web::Api::Errors::SlackError => e
+        warn "Could not auth to Slack. Are you connected?"
+        @slack_client = nil
+      end
     end
 
     def path(path, as_is: false)
