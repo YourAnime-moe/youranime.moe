@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_190811) do
+ActiveRecord::Schema.define(version: 2019_04_19_155902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "intarray"
@@ -136,6 +136,16 @@ ActiveRecord::Schema.define(version: 2019_04_11_190811) do
     t.text "jp_description"
     t.text "fr_description"
     t.string "en_title"
+  end
+
+  create_table "subtitles", force: :cascade do |t|
+    t.integer "episode_id"
+    t.string "name"
+    t.string "lang"
+    t.boolean "default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["episode_id", "lang"], name: "index_subtitles_on_episode_id_and_lang"
   end
 
   create_table "todos", id: :serial, force: :cascade do |t|
