@@ -24,6 +24,10 @@ class Admin::EpisodesController < AdminController
     set_title before: t('sidebar.admin.manage.episodes')
 	end
 
+	def edit
+		
+	end
+
 	def update
 		episode = Episode.find_by(id: params[:id])
 		success = false

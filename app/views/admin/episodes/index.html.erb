@@ -19,10 +19,11 @@
 <table id="current-episodes" class="table">
   <thead>
     <tr>
+      <th>Action</th>
       <th>ID</th>
       <th>Title</th>
       <th>Show</th>
-      <th>Duration</th>
+      <th>Subtitles</th>
       <th>Status</th>
     </tr>
   </thead>
@@ -30,6 +31,9 @@
     <% @episodes.each do |episode| %>
       <% show = episode.show %>
       <tr>
+        <td>
+          <%= link_to('Edit', edit_admin_show_episode_path(episode.show, episode), class: 'btn btn-info') %>
+        </td>
         <td><%= episode.id %></td>
         <td><%= episode.title %></td>
         <% if show.nil? %>
@@ -37,7 +41,7 @@
           <td>N/A</td>
         <% else %>
           <td><%= link_to(show.get_title, edit_admin_show_path(show)) %></td>
-          <td><%= episode.show.average_run_time %></td>
+          <td><%= episode.subtitles.empty? ? '- none -' : episode.subtitles.map{|s| s.name}.join(', ') %></td>
         <% end %>
         <td>
           <% @_rule = {class: nil} %>
@@ -67,14 +71,6 @@
       }
     });
 
-    function addEpisode(episode) {
-      if (!episode) {
-        return;
-      }
-      var id = episode.id;
-      var title = episode.title;
-      var show = "<%= @show.get_title %>";
-      var duration = episode.duration;
-    }
+
   });
 </script>

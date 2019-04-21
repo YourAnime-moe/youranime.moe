@@ -289,18 +289,13 @@ class User < ApplicationRecord
     end
 
     def as_json(options={})
-      ignore = [
-        'password',
-        'password_digest',
-        'episodes_watched',
-        'settings',
-        'auth_token',
-        'is_activated',
-        'episode_progress_list',
-        'admin',
-        'demo'
+      keys = [
+        :username,
+        :name,
+        :limited,
+        :google_user
       ]
-      super(except: ignore).tap do |hash|
+      super(only: keys).tap do |hash|
         hash[:active] = is_activated?
         hash[:admin] = is_admin?
         hash[:demo] = is_demo_account?
