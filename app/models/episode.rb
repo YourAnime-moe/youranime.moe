@@ -40,6 +40,10 @@ class Episode < ApplicationRecord
     !self.next.nil?
   end
 
+  def has_valid_subtitles?
+    subtitles.select{|subtitle| subtitle.src.attached?}.size > 0
+  end
+
   def next
     return nil unless show
     show.episodes.where(['episode_number > ?', episode_number]).first
