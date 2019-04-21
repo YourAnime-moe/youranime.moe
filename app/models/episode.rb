@@ -1,4 +1,4 @@
-class Episode < ActiveRecord::Base
+class Episode < ApplicationRecord
   include Navigatable
 
   self.table_name = 'episodes'
@@ -11,7 +11,7 @@ class Episode < ActiveRecord::Base
   serialize :comments
   paginates_per 20
   validates :episode_number, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  scope :published, -> { joins(:show).where("shows.published") }
+  scope :published, -> { joins(:show).where("shows.published = 't'") }
 
   def get_title
     return title unless title.blank?

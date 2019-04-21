@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <h6 class="text-muted"><%= @show.get_title %></h6>
+  <h6 class="text-muted"><%= link_to(@show.get_title, edit_admin_show_path(@show)) %></h6>
 </div>
 
 <div id="from-files" class="d-none">
@@ -24,7 +24,7 @@
       <th>Title</th>
       <th>Show</th>
       <th>Subtitles</th>
-      <th>Status</th>
+      <th>View <i class="material-icons">open_in_new</i></th>
     </tr>
   </thead>
   <tbody>
@@ -48,6 +48,7 @@
           <% @_thumb_info = {} %>
           <% @model = episode %>
           <% @hide_title = true %>
+          <% @_new_tab = true %>
           <%= render '/shows/partial/_thumbs' %>
         </td>
       </tr>
