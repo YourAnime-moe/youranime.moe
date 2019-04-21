@@ -1,4 +1,4 @@
-class Episode < ActiveRecord::Base
+class Episode < ApplicationRecord
   include Navigatable
 
   self.table_name = 'episodes'

@@ -1,4 +1,4 @@
-<%= form_for(@episode, url: admin_show_episode_path(@episode)) do |f| %>
+<%= form_for(@episode, url: admin_show_episode_path(@episode.show, @episode)) do |f| %>
   <div class="hf-section">
     <div class="justify-content-between w-100 d-flex">
       <h2>Editing <i><%= @episode.get_title %></i> (#<%= @episode.id %>)</h2>
@@ -46,12 +46,23 @@
       </a>
       <% @episode.subtitles.each do |subtitle| %>
         <a href="#" edit-sub="<%= subtitle.id %>" class="list-group-item list-group-item-action">
-          <div class="justify-content-between w-100 d-flex">
-            <%= subtitle.name %>
-            <% if subtitle.default %>
-              <%= badge(type: :success, content: :default) %>
-            <% end %>
-            <%= subtitle.lang %>
+          <div class="row">
+            <div class="col-md-4 text-left">
+              <span><%= subtitle.name %></span>
+            </div>
+            <div class="col-md-4 text-center">
+              <% if subtitle.src.attached? %>
+                <%= badge(type: :success, content: 'ok') %>
+              <% else %>
+                <%= badge(type: :danger, content: 'broken') %>
+              <% end %>
+              <% if subtitle.default %>
+                <%= badge(type: :info, content: 'default') %>
+              <% end %>
+            </div>
+            <div class="col-md-4 text-right">
+              <span style="font-family: FiraMono"><%= subtitle.lang %></span>
+            </div>
           </div>
         </a>
       <% end %>
