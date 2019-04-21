@@ -1,5 +1,6 @@
 <% model_id = @model.class.to_s.downcase + "-#{@model.id.to_s}" if @model %>
-<%= link_to(@model) do %>
+<% options = {} %>
+<% options[:target] = '_blank' if @_new_tab %>
+<%= link_to(@_url || @model, **options) do %>
   <%= show_thumb(@model, rules: @_rule) %>
-
 <% end %>

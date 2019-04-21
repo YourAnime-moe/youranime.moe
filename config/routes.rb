@@ -86,7 +86,9 @@ Rails.application.routes.draw do
   get '/admin' => 'admin#home'
   namespace :admin do
     resources :shows do
-      resources :episodes, except: [:edit, :new]
+      resources :episodes, except: [:new] do
+        post :subtitles, to: 'episodes#create_subs'
+      end
     end
   end
 
