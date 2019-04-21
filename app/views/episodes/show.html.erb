@@ -39,9 +39,11 @@
               <%= image_tag("baseline-skip_next-24px", width: "35px") %>
             </div>
           <% end %>
-          <div class="button" hf-action="cc">
-            <%= image_tag("baseline-closed_caption-24px", width: "35px") %>
-          </div>
+          <% unless @episode.subtitles.empty? %>
+            <div class="button" hf-action="cc">
+              <%= image_tag("baseline-closed_caption-24px", width: "35px") %>
+            </div>
+          <% end %>
           <div class="button" hf-action="toggle-fullscreen">
             <%= image_tag("baseline-fullscreen-24px", width: "35px") %>
           </div>

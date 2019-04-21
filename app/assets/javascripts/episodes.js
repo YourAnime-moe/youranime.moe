@@ -14,6 +14,7 @@ $(document).on('turbolinks:load', function() {
   var $playing_btn = null;
   var $paused_btn = null;
   var subtitlesMenu = null;
+  var subtitlesMenuButtons = [];
 
   if ($('.video-body').size() > 0) {
     $playing_btn = $('.playing');
@@ -34,14 +35,15 @@ $(document).on('turbolinks:load', function() {
     $('[go-to-episode]').on('click', goToEpisode);
     $('[hf-action]').on('click', execHfAction);
 
-    $('.video-clickable-zone').on('click', togglePlayPause);
-    $('.video-clickable-zone').on('dblclick', toggleFullscreen);
+    $('.video-clickable-zone').on('click', toggleControls);
+    //$('.video-clickable-zone').on('dblclick', toggleFullscreen);
     $progressBar.on('click', seek);
     $video.on('play', onPlay);
     $video.on('timeupdate', onProgress);
     $video.on('pause', onPause);
     $video.on('ended', onEnded);
     $video.on('loadedmetadata', setVideoDuration);
+    setTimeout(function() {play();}, 1500);
 
     document.addEventListener("mousemove", cancelFadeOutInControls, false);
     document.addEventListener("mousedown", cancelFadeOutInControls, false);
@@ -70,15 +72,19 @@ $(document).on('turbolinks:load', function() {
     }
 
     function createMenuItem(id, lang, label) {
-      var subtitlesMenuButtons = [];
       var listItem = document.createElement('li');
 
       var button = listItem.appendChild(document.createElement('button'));
       button.setAttribute('id', id);
       button.className = 'subtitles-button';
-      if (lang && lang.length > 0) { button.setAttribute('lang', lang); }
-      button.value = label;
       button.setAttribute('data-state', 'inactive');
+      if (lang && lang.length > 0) {
+        button.setAttribute('lang', lang);
+      }
+      if (localStorage.savedCC === lang || !localStorage.savedCC && lang === '') {
+        button.setAttribute('data-state', 'active');
+      }
+      button.value = label;
       button.appendChild(document.createTextNode(label));
 
       button.addEventListener('click', function(e) {
@@ -90,12 +96,15 @@ $(document).on('turbolinks:load', function() {
           var track = $video.get(0).textTracks[i];
           if (track.language == lang) {
             track.mode = 'showing';
-            this.setAttribute('data-state', 'active');
           } else {
             track.mode = 'hidden';
           }
+          this.setAttribute('data-state', 'active');
         }
-        subtitlesMenu.style.display = 'none';
+        setTimeout(function() {
+          $('.subtitles-menu').fadeOut();
+          localStorage.savedCC = lang;
+        }, 100);
       });
 
       subtitlesMenuButtons.push(button);
@@ -140,8 +149,11 @@ $(document).on('turbolinks:load', function() {
     }
 
     function execHfAction(e) {
-      if (this.getAttribute('hf-action') === 'toggle-play-pause') {
+      const action = this.getAttribute('hf-action');
+      if (action === 'toggle-play-pause') {
         togglePlayPause();
+      } else if (action == 'toggle-fullscreen') {
+        toggleFullscreen();
       }
     }
 
@@ -244,6 +256,14 @@ $(document).on('turbolinks:load', function() {
       return $video.get(0).paused;
     }
 
+    function toggleControls() {
+      if ($('.video-body').hasClass('muchuu')) {
+        showControls();
+      } else {
+        hideControls();
+      }
+    }
+
     function setFadeOutInControls() {
       showControls();
       timeoutId = timeoutId = setTimeout(hideControls, inactivityTime);
@@ -259,6 +279,7 @@ $(document).on('turbolinks:load', function() {
     }
 
     function hideControls() {
+      $('.subtitles-menu').fadeOut();
       $('.controls-container').fadeOut(function() {
         $('.video-body').addClass('muchuu');
       });
@@ -280,29 +301,38 @@ $(document).on('turbolinks:load', function() {
     function enterFullscreen(video) {
       if (video.requestFullscreen) {
         video.requestFullscreen();
+        fullscreenOn = true;
       } else if (video.mozRequestFullScreen) {
         video.mozRequestFullScreen();
+        fullscreenOn = true;
       } else if (video.webkitRequestFullscreen) {
         video.webkitRequestFullscreen();
+        fullscreenOn = true;
       } else if (video.msRequestFullscreen) {
         video.msRequestFullscreen();
+        fullscreenOn = true;
       }
     }
 
     function exitFullscreen() {
       if (document.exitFullscreen) {
         document.exitFullscreen();
+        fullscreenOn = false;
       } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
+        fullscreenOn = false;
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
+        fullscreenOn = false;
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
+        fullscreenOn = false;
       }
     }
 
     function onFullscreenChange(e) {
       fullscreenOn = document.fullscreenElement === e.target;
+      console.log(fullscreenOn);
     }
   }
 });
