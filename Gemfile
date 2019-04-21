@@ -72,6 +72,9 @@ gem 'bootstrap4-kaminari-views'
 # Image processing
 gem 'image_processing', '~> 1.2'
 
+# Subtitle parsing
+gem 'webvtt'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
