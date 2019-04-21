@@ -68,6 +68,7 @@ $(document).on('turbolinks:load', function() {
           subtitlesMenu.appendChild(menuItem);
         }
         $videoCont.append($(subtitlesMenu));
+        $('[data-state="active"]').click();
       }
     }
 
