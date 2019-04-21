@@ -4,4 +4,14 @@ module EpisodesHelper
     Config.videojs
   end
 
+  def episode_tag(episode)
+    content_tag :video, autoplay: true, controls: false, id: 'video-obj', src: @episode.get_video_url do
+      episode.subtitles.select{|sub| sub.src.attached?}.map do |s|
+        text = <<-HTML
+          <track kind="subtitles" load-src="#{url_for(s.src)}" srclang="#{s.lang}" label="#{s.name}">
+        HTML
+      end.join('').html_safe
+    end
+  end
+
 end

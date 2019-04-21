@@ -7,11 +7,13 @@ $(document).on('turbolinks:load', function() {
   var inactivityTime = 5000;
   var timeoutId;
 
+  var $videoCont = null;
   var $video = null;
   var $progress = null;
   var $progressBar = null;
   var $playing_btn = null;
   var $paused_btn = null;
+  var subtitlesMenu = null;
 
   if ($('.video-body').size() > 0) {
     $playing_btn = $('.playing');
@@ -19,6 +21,14 @@ $(document).on('turbolinks:load', function() {
     $progress = $('.progress-filled');
     $progressBar = $('.progress-bar');
     $video = $('#video-obj');
+    $videoCont = $video.parent();
+
+    for (var i = 0; i < $video.get(0).textTracks.length; i++) {
+      var track = $video.get(0).textTracks[i];
+      track.mode = 'hidden';
+    }
+
+    $('[hf-action="cc"]').on('click', toggleCCMenu);
 
     $('[go-to-show]').on('click', goToShow);
     $('[go-to-episode]').on('click', goToEpisode);
@@ -40,6 +50,71 @@ $(document).on('turbolinks:load', function() {
     document.addEventListener('keypress', spaceBarTogglePlay);
 
     setFadeOutInControls();
+    initCCMenu();
+    setTracks();
+
+    function initCCMenu() {
+      if ($video.get(0).textTracks) {
+        var df = document.createDocumentFragment();
+        subtitlesMenu = df.appendChild(document.createElement('ul'));
+        subtitlesMenu.className = 'subtitles-menu';
+        subtitlesMenu.appendChild(createMenuItem('subtitles-off', '', 'Off'));
+        for (var i = 0; i < $video.get(0).textTracks.length; i++) {
+          var track = $video.get(0).textTracks[i];
+          var id = 'subtitles-' + track.language;
+          var menuItem = createMenuItem(id, track.language, track.label);
+          subtitlesMenu.appendChild(menuItem);
+        }
+        $videoCont.append($(subtitlesMenu));
+      }
+    }
+
+    function createMenuItem(id, lang, label) {
+      var subtitlesMenuButtons = [];
+      var listItem = document.createElement('li');
+
+      var button = listItem.appendChild(document.createElement('button'));
+      button.setAttribute('id', id);
+      button.className = 'subtitles-button';
+      if (lang && lang.length > 0) { button.setAttribute('lang', lang); }
+      button.value = label;
+      button.setAttribute('data-state', 'inactive');
+      button.appendChild(document.createTextNode(label));
+
+      button.addEventListener('click', function(e) {
+        subtitlesMenuButtons.map(function(v, i, a) {
+          subtitlesMenuButtons[i].setAttribute('data-state', 'inactive');
+        });
+        var lang = this.getAttribute('lang');
+        for (var i = 0; i < $video.get(0).textTracks.length; i++) {
+          var track = $video.get(0).textTracks[i];
+          if (track.language == lang) {
+            track.mode = 'showing';
+            this.setAttribute('data-state', 'active');
+          } else {
+            track.mode = 'hidden';
+          }
+        }
+        subtitlesMenu.style.display = 'none';
+      });
+
+      subtitlesMenuButtons.push(button);
+      return listItem;
+    }
+
+    async function setTracks() {
+      var tracks = document.querySelectorAll('[load-src]');
+      for (var i = 0; i < tracks.length; i++) {
+        let blob = await fetch(tracks[i].getAttribute('load-src')).then(r => r.blob());
+        tracks[i].src = URL.createObjectURL(blob);
+      }
+    }
+
+    function toggleCCMenu(e) {
+      subtitlesMenu.style.display = (
+        subtitlesMenu.style.display == 'block' ? 'none' : 'block'
+      );
+    }
 
     function goToShow(e) {
       if (goingToShow) {
