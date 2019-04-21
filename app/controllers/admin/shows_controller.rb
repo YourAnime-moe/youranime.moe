@@ -6,7 +6,7 @@ class Admin::ShowsController < AdminController
     title_column = "en_title" if I18n.locale == :en
     title_column = "roman_title" if title_column.nil?
 
-		@shows = Show.paginate(page: params[:page])
+		@shows = Show.ordered.paginate(page: params[:page])
         .order('published desc')
         .order("#{title_column} asc")
     @shows_parts = @shows.each_slice(4)

@@ -6,6 +6,7 @@ class Episode < ActiveRecord::Base
   has_one_attached :video
   has_one_attached :thumbnail
   has_many :user_watch_progresses
+  has_many :subtitles
   belongs_to :show
   serialize :comments
   paginates_per 20

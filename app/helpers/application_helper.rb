@@ -162,7 +162,11 @@ module ApplicationHelper
   end
 
   def episode_path(episode, *args, **options)
-    "/shows/#{episode.show.id}/episodes/#{episode.id}"
+    path = "/shows/#{episode.show.id}/episodes/#{episode.id}"
+    if options[:format]
+      path << "." << options[:format].to_s
+    end
+    path
   end
 
   def svg_tag(icon, css_class: "")

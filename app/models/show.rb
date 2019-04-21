@@ -28,7 +28,19 @@ class Show < ApplicationRecord
     en_title_query = "(en_title is not null and en_title != '')"
     fr_title_query = "(fr_title is not null and fr_title != '')"
     jp_title_query = "(jp_title is not null and jp_title != '')"
-    where("#{roman_title_query} and (#{en_title_query} or #{fr_title_query} or #{jp_title_query})")
+    ordered.where("#{roman_title_query} and (#{en_title_query} or #{fr_title_query} or #{jp_title_query})")
+  }
+  scope :ordered, -> {
+    title_column = nil
+    case I18n.locale
+    when :fr
+      title_column = 'fr_title'
+    when :jp
+      title_column = 'jp_title'
+    else
+      title_column = 'en_title'
+    end
+    order(:alternate_title).order(:roman_title).order("#{title_column} asc")
   }
 
   serialize :tags
@@ -74,11 +86,14 @@ class Show < ApplicationRecord
   end
 
   def title
-    en_title || jp_title || roman_title || fr_title
+    return en_title if I18n.locale == :en || I18n.locale.nil?
+    return fr_title if I18n.locale == :fr
+    return jp_title if I18n.locale == :jp
+    roman_title
   end
 
   def description
-    result = self['en_description'] if I18n.locale == :en
+    result = self['en_description'] if I18n.locale == :en || I18n.locale.nil?
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
     result
