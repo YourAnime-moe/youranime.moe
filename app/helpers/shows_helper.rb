@@ -19,10 +19,19 @@ module ShowsHelper
 
   def check_episode_broken(episode)
     return '' if episode.class != Episode
-    return '' if episode.video.attached?
+    return content_tag(:span) if episode.video.attached?
 
     content_tag :div, class: 'sub-dub-holder' do
       broken_tag
+    end
+  end
+
+  def check_episode_cc(episode)
+    return '' if episode.class != Episode
+    return '' if episode.has_valid_subtitles?
+
+    content_tag :div, class: 'captions-holder' do
+      badge(type: 'info', content: 'captions')
     end
   end
 
@@ -94,9 +103,16 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (sub_dub_holder(show) +
-      check_episode_broken(show) +
+      top_badges(show) +
       image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}") +
       show_thumb_description(show)).html_safe
+    end
+  end
+
+  def top_badges(show)
+    content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
+      check_episode_broken(show) +
+      check_episode_cc(show)
     end
   end
 
