@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function() {
   var goingToEpisode = false;
   var fullscreenOn = false;
   var videoLoaded = false;
+  var savingProgress = false;
   var inactivityTime = 5000;
   var timeoutId;
 
@@ -15,6 +16,9 @@ $(document).on('turbolinks:load', function() {
   var $paused_btn = null;
   var subtitlesMenu = null;
   var subtitlesMenuButtons = [];
+  
+  const show_id = $('.video-body').attr('show-id');
+  const episode_id = $('.video-body').attr('episode-id');
 
   if ($('.video-body').size() > 0) {
     $playing_btn = $('.playing');
@@ -213,6 +217,29 @@ $(document).on('turbolinks:load', function() {
         $('time').children('.hours').hide();
       }
       $('time').children('.duration').text(min_sec);
+      
+      var currentTimeInt = parseInt(currentTime);
+      var durationInt = parseInt(duration);
+      var ratio = (currentTime / durationInt) * 100;
+      if (savingProgress || currentTimeInt % 8 != 0) {
+         return;
+      } else {
+        console.log("saving " + ratio);
+        savingProgress = true;
+      }
+      
+      $.ajax({
+        type: 'PUT',
+        url: '/shows/' + show_id + '/episodes/' + episode_id,
+        data: {episode: {progress: ratio}},
+        success: function(result) {
+            console.log("Progress saved status:");
+            console.log(result);
+        },
+        complete: function() {
+          savingProgress = false;
+        }
+      });
     }
 
     function onPlay(e) {

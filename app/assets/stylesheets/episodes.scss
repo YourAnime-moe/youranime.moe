@@ -6,6 +6,15 @@
   cursor: none !important;
 }
 
+video::cue {
+  line: 0 !important;
+  margin-bottom: 50px !important;
+  background: none !important;
+  background-color: none !important;
+  font-family: Poppins;
+  text-shadow: 2px 2px #000, 2px 2px #000;
+}
+
 .video-body {
   right: 0;
   bottom: 0;

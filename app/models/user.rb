@@ -123,6 +123,7 @@ class User < ApplicationRecord
         inner join user_watch_progresses progress
         on episodes.id = progress.episode_id and progress.user_id = users.id
         where users.id = ?
+        and progress > 0
         limit ?;
       SQL
       limit = limit.nil? ? 5 : limit.to_i

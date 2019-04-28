@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get :movies, on: :collection
 
     # Episodes
-    resources :episodes, only: [:show]
+    resources :episodes, only: [:show, :update]
   end
 
   root 'application#root'
