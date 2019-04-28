@@ -84,9 +84,16 @@ module ShowsHelper
 
   def show_thumb(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
+    if show.class == Episode
+      progress = show.progress(current_user).progress
+    end
     rules ||= {}
     content_tag :div, class: "no-overflow #{rules[:class]}" do
-      content_tag :div, role: 'have-fun', style: 'display: none;' do
+      progress_bar = content_tag :div, class: 'progress', role: "progress" do
+        content_tag(:div, class: 'progress-bar', style: "width: #{progress}%", role: 'progressbar', "aria-valuenow" => progress.to_i.to_s, "aria-valuemin" => "0", "aria-valuemax" => "100") do
+        end
+      end
+      wrapper = content_tag :div, role: 'have-fun', style: 'display: none;' do
         content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
           content_tag :div, class: 'image-card-container focusable' do
             content_tag :div, class: 'holder' do
@@ -95,6 +102,7 @@ module ShowsHelper
           end
         end
       end
+      wrapper + (progress_bar if show.class == Episode)
     end
   end
 

@@ -182,6 +182,14 @@ class Episode < ApplicationRecord
   def get_watched_mark
     80
   end
+  
+  def set_progress(current_user, progress)
+    progress(current_user).update(progress: progress)
+  end
+  
+  def progress(current_user)
+    UserWatchProgress.find_or_create_by(episode_id: id, user_id: current_user.id)
+  end
 
   def progress_info user, value_only: false
     info = {

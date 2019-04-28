@@ -1,6 +1,6 @@
 class UserWatchProgress < ApplicationRecord
-  belongs_to :episode, class_name: 'Episode'
-  belongs_to :user
+  belongs_to :episode, class_name: 'Episode', required: true
+  belongs_to :user, required: true
 
   before_save :check_progress
 

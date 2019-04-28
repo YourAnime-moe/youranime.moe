@@ -118,6 +118,11 @@ nav.maintenance {
 
 .no-overflow {
   overflow: hidden !important;
+  
+  .progress {
+    height: 3px;
+    display: none;
+  }
 }
 
 .no-padding {

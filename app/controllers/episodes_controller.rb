@@ -18,5 +18,24 @@ class EpisodesController < AuthenticatedController
     end
     set_title before: t('anime.episodes.title', name: @episode.get_title), after: show.get_title
   end
+  
+  def update
+    episode = Episode.find(params[:id])
+    progress = episode_params[:progress].to_f
+    success = episode.set_progress(current_user, progress)
+    render json: {
+      success: success,
+      episode: episode,
+      progress: progress
+    }
+  end
+  
+  private
+  
+  def episode_params
+    params.require(:episode).permit(
+      :progress
+    )
+  end
 
 end
