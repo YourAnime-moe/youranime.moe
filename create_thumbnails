@@ -6,6 +6,7 @@ def help
     puts "./create_thumbnails [-d|--directory <videos directory>] [-h|--help]"
     puts "\t-d or --directory: Indicates where the video files are. Default: current directory. You can pass in several directories at once"
     puts "\t-h or --help: Shows this message."
+    puts "\t-f or --force: If passed, the image will be generated even if it already exists."
     puts "\t-v or --verbose: Shows everything that is happening."
     puts "\t-dr or --dry-run: Runs the script normally without creating any files. Useful for \"What if\" scenarios."
     puts "\t-drv or -vdr: Combines --dry-run and --verbose (-dr and -v) flags."
@@ -176,6 +177,8 @@ end
 path = nil
 
 specified_dir = has_arg?("-d", "--directory")
+force = has_arg?("-f", "--force")[:present]
+
 if ARGV.empty? || !specified_dir[:present]
     warn "No file specified - looking for videos in the current directory..." if verbose
     paths = ['.']
@@ -210,4 +213,4 @@ if manager.videos.empty?
     exit 0
 end
 
-manager.generate
+manager.generate(force_generation: force)
