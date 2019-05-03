@@ -11,6 +11,7 @@ class Show < ApplicationRecord
   scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
   scope :coming_soon, -> { where("publish_after is not null and publish_after > '#{Date.current}' ") }
   scope :published, -> { valid.where(published: true) }
+  scope :recent, -> { published.order('created_at desc') }
   scope :latest, -> (current_user, limit: 5) {
     limit = 1 if limit < 1
     sql = <<-SQL

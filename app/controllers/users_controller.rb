@@ -13,7 +13,7 @@ class UsersController < AuthenticatedController
 
     @trending = force_array_to(6, Show.published)
     @episodes = force_array_to(6, current_user.currently_watching(limit: 6))
-    @recent = force_array_to(6, Show.published)
+    @recent = force_array_to(6, Show.recent)
     @random = force_array_to(6, Show.get_random_shows(limit: 6).map{|id| Show.find(id)})
     @recommended = force_array_to(6, Show.get_presence(:recommended))
   end
