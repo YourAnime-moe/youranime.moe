@@ -5,7 +5,7 @@ class Episode < ApplicationRecord
 
   has_one_attached :video
   has_one_attached :thumbnail
-  has_many :user_watch_progresses
+  has_many :views, class_name: 'UserWatchProgress'
   has_many :subtitles
   belongs_to :show
   serialize :comments
@@ -182,11 +182,11 @@ class Episode < ApplicationRecord
   def get_watched_mark
     80
   end
-  
+
   def set_progress(current_user, progress)
     progress(current_user).update(progress: progress)
   end
-  
+
   def progress(current_user)
     UserWatchProgress.find_or_create_by(episode_id: id, user_id: current_user.id)
   end

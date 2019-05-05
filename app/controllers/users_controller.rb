@@ -11,9 +11,12 @@ class UsersController < AuthenticatedController
     # @last_season = Show.get_presence :season, 3, options: {previous: true}
     # @coming_soon = Show.coming_soon limit: 4
 
-    @trending = force_array_to(6, Show.published)
+    recent_shows_ids = Show.recent.map{|show| show.id}.uniq[0..6]
+    recent_shows = Show.where(id: recent_shows_ids)
+
+    @trending = force_array_to(6, Show.trending)
     @episodes = force_array_to(6, current_user.currently_watching(limit: 6))
-    @recent = force_array_to(6, Show.recent)
+    @recent = force_array_to(6, recent_shows)
     @random = force_array_to(6, Show.get_random_shows(limit: 6).map{|id| Show.find(id)})
     @recommended = force_array_to(6, Show.get_presence(:recommended))
   end
