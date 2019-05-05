@@ -1,7 +1,7 @@
 class ShowsController < AuthenticatedController
 
   include ShowsHelper
-  
+
   def index
     set_title(before: t('anime.shows.view-all'))
     @shows = Show.published
@@ -11,6 +11,7 @@ class ShowsController < AuthenticatedController
 
   def show
     @show = Show.find_by(id: params[:id].to_i)
+    p @show.published
     if @show.nil? || !@show.published?
       flash[:warning] = "This show is not available yet. Please try again later."
       redirect_to shows_path
