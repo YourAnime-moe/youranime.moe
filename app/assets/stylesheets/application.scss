@@ -61,7 +61,7 @@ nav.maintenance {
 }
 
 img.logo {
-  height: 30px !important;
+  height: 50px !important;
   width: 30px !important;
 }
 
@@ -88,6 +88,10 @@ img.logo {
   min-height: 90vh;
   display: flex;
   align-items: center;
+}
+
+.hide, .hidden {
+  display: none !important;
 }
 
 .btn {

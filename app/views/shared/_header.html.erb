@@ -4,25 +4,17 @@
     <a class="navbar-item" href="/">
       <%= image_tag 'tanoshimu', class: 'logo' %>
     </a>
-
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
-        Home
-      </a>
 
       <a class="navbar-item">
-        Documentation
+        <i class="material-icons">play_arrow</i>
+        <%= t('sidebar.anime-movies') %>
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
+      <div class="hide navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           More
         </a>
@@ -48,6 +40,9 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+          <a class="button is-warning is-icon tooltip is-tooltip-bottom" data-tooltip="<%= t('header.settings') %>">
+            <i class="material-icons">bug_report</i>
+          </a>
           <a class="button is-primary is-icon tooltip is-tooltip-bottom" data-tooltip="<%= t('header.settings') %>">
             <i class="material-icons">settings</i>
           </a>
