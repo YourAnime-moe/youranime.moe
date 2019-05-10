@@ -109,7 +109,7 @@ $(document).ready(function() {
       //$('select').formSelect();
       //$('.datepicker').datepicker();
 
-      $('.dropdown-toggle').dropdown();
+      // $('.dropdown-toggle').dropdown();
 
       var current_lang = navigator.language || navigator.userLanguage || 'en';
       if (current_lang == 'ja') {

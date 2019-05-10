@@ -110,6 +110,7 @@ fr:
       coming-soon: "À venir !"
       coming-on: "Arrive le"
       description: "Description"
+      no-description: "- Aucune description disponible -"
       viewing:
         description: "À propos..."
         more-info: "Plus d'infos..."

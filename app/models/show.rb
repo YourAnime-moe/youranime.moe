@@ -14,7 +14,7 @@ class Show < ApplicationRecord
   scope :published, -> { valid.where(published: true) }
   scope :recent, -> {
     sql = <<-SQL
-      select shows.id from shows
+      select distinct shows.* from shows
       inner join episodes
       on shows.id = episodes.show_id
       where shows.published = 't'
@@ -128,7 +128,7 @@ class Show < ApplicationRecord
     result = self['en_description'] if I18n.locale == :en || I18n.locale.nil?
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
-    result
+    result || I18n.t('anime.shows.no-description')
   end
 
   def has_banner?

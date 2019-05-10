@@ -131,6 +131,7 @@ en:
       coming-soon: "Coming soon!"
       coming-on: "Coming on"
       description: "Description"
+      no-description: "- No available description -"
       viewing:
         description: "About this anime"
         more-info: "More info..."

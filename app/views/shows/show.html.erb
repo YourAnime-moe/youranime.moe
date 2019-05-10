@@ -10,7 +10,7 @@
   <div class="head" target="<%= @show.get_banner_url %>">
     <div class="overlay">
       <div class="content">
-        <div class="ui container grid">
+        <div class="ui container pos-inherit grid">
           <div class="show-title">
             <h1 style="font-weight: bold;">
               <%= @show.get_title %>
@@ -33,9 +33,9 @@
     <div class="row no-margin">
       <div class="container">
         <% @episodes_parts.each do |episodes| %>
-          <div class="row">
+          <div class="columns">
             <% episodes.each_with_index do |episode| %>
-              <div class="col-md-4" style="margin-top: 20px;">
+              <div class="column is-4" style="margin-top: 20px;">
                 <% @_rule = {class: nil} %>
                 <% @_thumb_info = {} %>
                 <% @model = episode %>
