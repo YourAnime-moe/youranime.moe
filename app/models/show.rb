@@ -12,15 +12,17 @@ class Show < ApplicationRecord
   scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
   scope :coming_soon, -> { where("publish_after is not null and publish_after > '#{Date.current}' ") }
   scope :published, -> { valid.where(published: true) }
-  scope :recent, -> {
+  scope :recent, -> (limit: 50) {
+    limit = 1 if limit < 1
     sql = <<-SQL
-      select distinct shows.* from shows
+      select shows.* from shows
       inner join episodes
       on shows.id = episodes.show_id
       where shows.published = 't'
-      order by episodes.created_at desc;
+      order by episodes.created_at desc
+      limit ?;
     SQL
-    find_by_sql(sql)
+    find_by_sql([sql, limit])
   }
   scope :latest, -> (current_user, limit: 5) {
     limit = 1 if limit < 1

@@ -6,3 +6,13 @@
     margin: 0 !important;
   }
 }
+
+.columns.is-tiny-gap {
+  margin-top: 1px;
+  margin-bottom: 1px;
+
+  .column {
+    padding: 0 !important;
+    margin: 1px !important;
+  }
+}
