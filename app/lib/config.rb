@@ -27,6 +27,9 @@ module Config
   mattr_accessor :api_version
   @@api_version = nil
 
+  mattr_accessor :bulma_version
+  @@bulma_version = nil
+
   class << self
     # <protocol>://<subdomain>.<domain>:<port>/<path>
     def main_host(as_is: false)
