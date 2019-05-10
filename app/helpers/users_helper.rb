@@ -2,12 +2,12 @@ module UsersHelper
 
   def home_thumbnails_rules
     [
-      {id: 0, class: 'col', display: ''},
-      {id: 1, class: 'col', display: ''},
-      {id: 2, class: 'col', display: ''},
-      {id: 3, class: 'col d-md-blocks', display: ''},
-      {id: 4, class: 'col d-none d-xl-block', display: ''},
-      {id: 5, class: 'col d-none d-xl-block', display: ''}
+      {id: 0, class: '', display: ''},
+      {id: 1, class: '', display: ''},
+      {id: 2, class: '', display: ''},
+      {id: 3, class: 'd-md-blocks', display: ''},
+      {id: 4, class: 'd-none d-xl-block', display: ''},
+      {id: 5, class: 'd-none d-xl-block', display: ''}
     ]
   end
 

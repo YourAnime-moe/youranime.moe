@@ -29,17 +29,20 @@
   margin-right: 0;
 }
 
+.columns.no-margin {
+  margin: 0 !important;
+}
+
 .no-underline {
   text-decoration: none !important;
 }
 
 .hf-section {
   margin: 30px 0 30px 0;
-  border-bottom: 0.5px solid #e5e5e5;
 
   .thumbs-section {
     padding-top: 5px;
-    padding-bottom: 50px;
+    padding-bottom: 5px;
   }
 }
 
@@ -55,7 +58,7 @@
 }
 
 .tanoshimu-list-title {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 

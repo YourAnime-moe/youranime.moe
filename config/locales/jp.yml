@@ -92,6 +92,7 @@ jp:
       coming-soon: "近日公開予定"
       coming-on: "近日公開予定日付は"
       description: "概要"
+      no-description: "- 概要なし -"
       viewing:
         description: "このショーについて"
         more-info: "詳細はこちら"

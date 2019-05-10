@@ -47,11 +47,11 @@ module ShowsHelper
   end
 
   def dub_tag
-    badge(type: 'success', content: "dub")
+    badge(type: 'warning', content: "dub")
   end
 
   def sub_tag
-    badge(type: 'danger', content: "sub")
+    badge(type: 'primary', content: "sub")
   end
 
   def broken_tag
@@ -66,7 +66,7 @@ module ShowsHelper
   end
 
   def badge(type: nil, content: nil)
-    content_tag :span, class: "badge badge-#{type}" do
+    content_tag :span, class: "tag is-#{type}" do
       content
     end
   end
