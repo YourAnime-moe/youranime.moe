@@ -24,7 +24,6 @@
    warning: #CCC06D
  );
 
-@import "bootstrap";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @font-face {
@@ -118,7 +117,7 @@ nav.maintenance {
 
 .no-overflow {
   overflow: hidden !important;
-  
+
   .progress {
     height: 3px;
     display: none;

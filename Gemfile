@@ -42,7 +42,6 @@ gem 'coffee-rails'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'
-gem 'bootstrap'
 gem 'material_icons'
 
 # Template Engine
@@ -65,9 +64,7 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
-gem 'bootstrap-will_paginate'
 gem "kaminari"
-gem 'bootstrap4-kaminari-views'
 
 # Image processing
 gem 'image_processing', '~> 1.2'
