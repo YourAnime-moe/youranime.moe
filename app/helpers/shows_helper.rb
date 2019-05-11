@@ -3,7 +3,7 @@ module ShowsHelper
   def show_tags(show)
     return '' if show.tags.blank?
     links = show.get_tags.map{|t| t.downcase.to_sym}.map do |tag|
-      link_to(Utils.tags[tag], '#', class: 'btn tag')
+      link_to(Utils.tags[tag], '#', class: 'button tag is-rounded is-dark')
     end
     content_tag(:div, class: 'tags-container') do
       links.join('').html_safe

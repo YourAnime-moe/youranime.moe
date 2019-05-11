@@ -26,8 +26,9 @@
 }
 
 input.is-dark {
-  background-color: #3F3F3F !important;
+  background-color: #3F3F3Fa0 !important;
   color: white;
+  transition: 0.3s;
 }
 
 input.is-dark::placeholder { /* Firefox, Chrome, Opera */
@@ -40,6 +41,15 @@ input.is-dark:-ms-input-placeholder { /* Internet Explorer 10-11 */
 
 input.is-dark::-ms-input-placeholder { /* Microsoft Edge */
   color: #b2b2b2;
+}
+
+input.is-dark:hover {
+  background-color: #3F3F3Fc0 !important;
+  transition: 0.3s;
+}
+
+input.is-dark:focus {
+  background-color: #3F3F3F !important;
 }
 
 .card {
