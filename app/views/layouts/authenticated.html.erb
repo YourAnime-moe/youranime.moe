@@ -3,8 +3,8 @@
   <head>
     <title><%= app_title %></title>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
     <meta name="theme-color" content="<%= app_colour %>" />
     <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
   </head>
 
-  <body>
+  <body data-no-turbolink>
     <div role="main">
       <%= render 'shared/header' %>
       <%= yield %>

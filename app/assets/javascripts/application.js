@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/widgets/autocomplete
-//= require turbolinks
 //= require_tree .
 
 function retreiveMessages(container) {

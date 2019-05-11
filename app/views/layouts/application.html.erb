@@ -3,8 +3,8 @@
   <head>
     <title><%= app_title %></title>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
     <meta name="theme-color" content="<%= app_colour %>" />
     <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
@@ -14,7 +14,7 @@
 
     <meta name="google-signin-client_id" content="<%= Config.google_client_id %>.apps.googleusercontent.com">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/<%= Config.bulma_version %>/css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
