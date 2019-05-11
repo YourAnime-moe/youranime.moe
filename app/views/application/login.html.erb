@@ -75,7 +75,10 @@
      });
 
      function execLogin() {
-       login('error-message', 'waiting-message', 'success-message', 'login-form', '<%= @params.to_json %>');
+       $submit.hide();
+       login('error-message', 'waiting-message', 'success-message', 'login-form', '<%= @params.to_json %>', function() {
+         $submit.show();
+       });
      }
   });
 </script>
