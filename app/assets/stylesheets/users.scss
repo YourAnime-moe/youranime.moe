@@ -57,9 +57,13 @@
   margin-top: 30px;
 }
 
-.tanoshimu-list-title {
+.tanoshimu-list-title, .title {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.title {
+  color: #e0e0e0 !important;
 }
 
 .item {
@@ -90,6 +94,9 @@
   }
 }
 
+.settings-form, .login-form {
+  width: 60%; margin: 0 auto;
+}
 
 p.username-info {
     color: green;
@@ -104,6 +111,10 @@ p.login-time-info {
 }
 
 @media (max-width: 480px) {
+    .settings-form {
+      width: 90%;
+    }
+
     p.username-info {
         font-size: 100%;
     }

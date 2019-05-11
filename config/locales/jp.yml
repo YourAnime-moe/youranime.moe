@@ -89,6 +89,7 @@ jp:
   anime:
     shows:
       view-all: "すべてのアニメ"
+      search-result: 検索の結果は%{count}件です
       coming-soon: "近日公開予定"
       coming-on: "近日公開予定日付は"
       description: "概要"
@@ -110,6 +111,7 @@ jp:
     history:
       to-episode: "動画を見る"
       to-show: "ショー情報を開く"
+      clear: 削除する
 
     episodes:
       episode-number: "エピソード %{number}"
