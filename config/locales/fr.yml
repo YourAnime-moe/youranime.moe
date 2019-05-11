@@ -107,6 +107,7 @@ fr:
       empty: >
         Rien n'est encore disponible ! Venez-y jeter un coup d'œil plus tard.
       view-all: "Toutes les émissions animées"
+      search-result: "Résultats de recherche : %{count} trouvé(s)"
       coming-soon: "À venir !"
       coming-on: "Arrive le"
       description: "Description"
@@ -125,6 +126,7 @@ fr:
     history:
       to-episode: "Aller à episode"
       to-show: "Aller à émission"
+      clear: Effacer...
 
     movies:
       view-all: "Tous les films"

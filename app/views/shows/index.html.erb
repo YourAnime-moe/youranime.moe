@@ -8,17 +8,15 @@
   </div>
 <% else %>
   <div style="padding-bottom: 55px;">
-    <div class="container">
-      <div class="hf-section">
-        <h3><%= t('anime.shows.view-all') %></h3>
-      </div>
+    <div class="text-center" style="margin: 40px; display: grid;">
+      <span class="title"><%= t('anime.shows.view-all') %></span>
+      <small><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
-
     <div class="container">
       <% @shows_parts.each do |shows| %>
-        <div class="row">
+        <div class="columns">
           <% shows.each_with_index do |show| %>
-            <div class="col-md-4" style="margin-top: 20px;">
+            <div class="column is-4" style="margin-top: 20px;">
               <% @_rule = {class: nil} %>
               <% @_thumb_info = {} %>
               <% @model = show %>

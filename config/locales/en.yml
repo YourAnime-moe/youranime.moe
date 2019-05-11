@@ -128,6 +128,7 @@ en:
       empty: >
         Nothing has been added yet! Please come back a bit later.
       view-all: "All Anime Shows"
+      search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
       coming-on: "Coming on"
       description: "Description"
@@ -148,6 +149,7 @@ en:
     history:
       to-episode: "Go to episode"
       to-show: "Go to show"
+      clear: Clear...
 
     episodes:
       episode-number: "Episode %{number}"
@@ -156,6 +158,9 @@ en:
       title: "You are watching: \"%{name}\""
       go-back: "Go back to \"%{name}\"..."
       last-episode: "Last episode!"
+    other:
+      more: "More..."
+      reset: "Reset"
 
   time:
     seasons:
@@ -163,10 +168,6 @@ en:
       summer: "Summer"
       fall: "Fall"
       winter: "Winter"
-
-    other:
-      more: "More..."
-      reset: "Reset"
 
   user:
     welcome: "Welcome, %{user}"

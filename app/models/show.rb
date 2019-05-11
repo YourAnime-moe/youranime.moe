@@ -76,6 +76,19 @@ class Show < ApplicationRecord
     end
     order(:alternate_title).order(:roman_title).order("#{title_column} asc")
   }
+  scope :search, -> (query, limit: nil) {
+    return published if query.empty?
+    titles_to_search = [:en_title, :fr_title, :jp_title, :alternate_title, :roman_title]
+    titles_as_queries = titles_to_search.map{ |key| "(lower(shows.#{key}) like '%%#{query}%%')" }.join(' or ')
+    sql = <<-SQL
+      select * from shows
+      where (#{titles_as_queries})
+      and shows.published = 't'
+    SQL
+    sql_args = [sql]
+    sql_args << ("limit #{limit}") unless limit.to_i == 0
+    find_by_sql(sql_args)
+  }
 
   serialize :tags
 
@@ -281,14 +294,6 @@ class Show < ApplicationRecord
       end
     end
     found_shows
-  end
-
-  def self.search keyword, preset_list=nil
-    keyword = keyword.to_s.downcase
-    preset_list = self.published if preset_list.class != Array
-    preset_list.select do |show|
-      show.get_title.downcase.include?(keyword) || show.title.downcase.include?(keyword)
-    end
   end
 
   def self.get_random_shows(ids: true, has_banner: false, published: true, limit: 10)
