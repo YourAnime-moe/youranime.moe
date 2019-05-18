@@ -64,13 +64,31 @@
 
 .dark-background-1 {
   background-color: #2f2f2f !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
 }
 .dark-background-3 {
   background-color: #37474f !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
 }
 
 html, .dark-background-2 {
   background-color: #262626 !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
 }
 
 .navbar.becomes-transparent {
@@ -143,7 +161,7 @@ img.logo {
   position: inherit !important;
 }
 
-.no-click {
+.no-click, .current {
   cursor: default !important;
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -199,6 +217,21 @@ img.logo {
 
 .clickable {
   cursor: pointer;
+}
+
+.locale-switcher:not(.current):not(.is-loading) {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.locale-switcher.current {
+  text-decoration: underline;
+}
+
+.locale-switcher.is-loading {
+  cursor: progress;
+  font-weight: normal;
+  font-style: italic;
 }
 
 .holder {

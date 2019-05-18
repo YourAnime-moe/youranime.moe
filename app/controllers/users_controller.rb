@@ -20,7 +20,7 @@ class UsersController < AuthenticatedController
   def settings
     @episodes = current_user.currently_watching
     @episodes_size = @episodes.size
-    @episodes = @episodes[0..11]
+    @episodes = @episodes[0..10]
     set_title(before: t('header.settings'))
   end
 

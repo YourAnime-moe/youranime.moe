@@ -143,7 +143,7 @@ class Show < ApplicationRecord
     result = self['en_description'] if I18n.locale == :en || I18n.locale.nil?
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
-    result || I18n.t('anime.shows.no-description')
+    result.blank? ? I18n.t('anime.shows.no-description') : result
   end
 
   def has_banner?

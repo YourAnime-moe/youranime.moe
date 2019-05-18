@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(document).ready(function() {
   // Global variables
   var goingToShow = false;
   var goingToEpisode = false;
@@ -28,6 +28,11 @@ $(document).on('turbolinks:load', function() {
     $video = $('#video-obj');
     $videoCont = $video.parent();
 
+    setTimeout(() => {
+      $video.removeAttr('muted');
+      $video.get(0).muted = false;
+    }, 500);
+
     for (var i = 0; i < $video.get(0).textTracks.length; i++) {
       var track = $video.get(0).textTracks[i];
       track.mode = 'hidden';
@@ -47,7 +52,6 @@ $(document).on('turbolinks:load', function() {
     $video.on('pause', onPause);
     $video.on('ended', onEnded);
     $video.on('loadedmetadata', setVideoDuration);
-    setTimeout(function() {play();}, 1500);
 
     document.addEventListener("mousemove", cancelFadeOutInControls, false);
     document.addEventListener("mousedown", cancelFadeOutInControls, false);
@@ -172,7 +176,7 @@ $(document).on('turbolinks:load', function() {
       if (isPlaying()) {
         pause(callback);
       } else {
-        play(callback);
+        play().then(callback);
       }
     }
 
@@ -194,8 +198,8 @@ $(document).on('turbolinks:load', function() {
       $video.get(0).currentTime = duration * (parseFloat($video.attr('watched')) / 100);
     }
 
-    function play(callback) {
-      $video.get(0).play().then(callback);
+    function play() {
+      return $video.get(0).play();
     }
 
     function onProgress(e) {

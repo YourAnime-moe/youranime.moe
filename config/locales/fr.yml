@@ -4,9 +4,9 @@ fr:
 
   lang:
     lang: "Français"
-    fr: "Français (sélectionné)"
-    jp: "Japonais (日本語)"
-    en: "Anglais (English)"
+    fr: "Français"
+    jp: "日本語"
+    en: "English"
 
   issues:
     title: Ouvrir un ticket support
@@ -109,6 +109,7 @@ fr:
       view-all: "Toutes les émissions animées"
       search-result: "Résultats de recherche : %{count} trouvé(s)"
       coming-soon: "À venir !"
+      trending: Populaire
       coming-on: "Arrive le"
       description: "Description"
       no-description: "- Aucune description disponible -"
@@ -132,6 +133,7 @@ fr:
       view-all: "Tous les films"
 
     episodes:
+      continue-watching: "Continuez à regarder..."
       episode-number: "Épisode %{number}"
       up-next: "Lecture automatique"
       discover: "À découvrir..."

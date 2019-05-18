@@ -111,6 +111,7 @@ $(document).ready(function() {
       // $('.dropdown-toggle').dropdown();
 
       var current_lang = navigator.language || navigator.userLanguage || 'en';
+      var lang_is_loading = false;
       if (current_lang == 'ja') {
         current_lang = 'jp';
       }
@@ -118,6 +119,15 @@ $(document).ready(function() {
 
       [].forEach.call(document.querySelectorAll('[locale-switcher]'), function(elem) {
         elem.onclick = function(e) {
+          if (lang_is_loading) {
+            console.log('Please wait while we are changing languages...');
+            return;
+          }
+          if ($(this).hasClass('current')) {
+            return;
+          }
+          lang_is_loading = true;
+          this.classList.add('is-loading');
           switchTo(elem.getAttribute('locale-switcher'), true);
         }
       });
@@ -139,6 +149,8 @@ $(document).ready(function() {
       method: 'put',
       data: {locale: locale, set_at_first: force},
       success: function(res) {
+        var current_switcher = document.querySelector('[locale-switcher="' + res.locale.current + '"]');
+        current_switcher.classList.add('current');
         console.log(res);
         if (res.reload) {
           location.href = location.href;

@@ -25,9 +25,9 @@ en:
 
   lang:
     lang: "English"
-    fr: "French (Français)"
-    jp: "Japanese (日本語)"
-    en: "English (current)"
+    fr: "Français"
+    jp: "日本語"
+    en: "English"
 
   welcome:
     title: "Tanoshimu"
@@ -130,6 +130,7 @@ en:
       view-all: "All Anime Shows"
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
+      trending: Trending
       coming-on: "Coming on"
       description: "Description"
       no-description: "- No available description -"
@@ -152,6 +153,7 @@ en:
       clear: Clear...
 
     episodes:
+      continue-watching: "Continue wating..."
       episode-number: "Episode %{number}"
       up-next: "Up next (auto-play)"
       discover: "Discover..."
