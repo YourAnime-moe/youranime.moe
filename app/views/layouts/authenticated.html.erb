@@ -23,6 +23,9 @@
   <body data-no-turbolink>
     <div role="main">
       <%= render 'shared/header' %>
+      <% flash.each do |key, value| %>
+        <div class="alert has-background-<%= key %>"><%= value %></div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

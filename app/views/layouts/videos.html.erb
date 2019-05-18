@@ -26,9 +26,6 @@
   <body data-no-turbolink style="background-color: #000;">
       <div class="row no-margin">
         <main class="main-width <%= @additional_main_class %>">
-          <% flash.each do |key, value| %>
-            <div class="alert alert-<%= key %>"><%= value %></div>
-          <% end %>
           <div role="main">
             <%= yield %>
           </div>

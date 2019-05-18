@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     # Check if the user has been registered
     if @user.persisted? && @user.google_user
       log_in(@user)
-      redirect_to "/",  notice: t('welcome.login.success.web-message')
+      redirect_to "/",  success: t('welcome.login.success.web-message')
       return
     elsif @user.persisted?
       redirect_to "/",  "Please login with your username and password."
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
     @user.google_user = true
     if @user.save
       log_in(@user)
-      redirect_to '/', notice: t('welcome.login.success.web-message')
+      redirect_to '/', success: t('welcome.login.success.web-message')
     else
       p @user.errors_string
       render 'welcome_google', alert: @user.errors_string
