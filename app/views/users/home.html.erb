@@ -2,14 +2,13 @@
 
   <% if @episodes[:actual].size > 0 %>
     <div class="hf-section">
-      <span class="tanoshimu-list-title">Continue watching...</span>
-      <div style="margin-top: 20px;">
-        <%= render 'users/partial/continue' %>
-      </div>
+      <div class="tanoshimu-list-title"><%= t('anime.episodes.continue-watching') %></div>
+      <%= render 'users/partial/continue' %>
     </div>
   <% end %>
 
   <div class="hf-section">
+    <div class="tanoshimu-list-title"><%= t('anime.shows.trending') %></div>
     <div class="thumbs-section">
       <% @recent_shows.each_slice(4) do |shows_rows| %>
         <div class="columns is-tiny-gap no-margin shows">

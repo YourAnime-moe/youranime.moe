@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   def google_auth
     access_token = request.env["omniauth.auth"]
     @user = User.from_omniauth(access_token)
-    
+
     # Check if the user has been registered
     if @user.persisted? && @user.google_user
       log_in(@user)
@@ -49,16 +49,16 @@ class ApplicationController < ActionController::Base
     refresh_token = access_token.credentials.refresh_token
     @user.google_token = access_token.credentials.token
     @user.google_refresh_token = refresh_token if refresh_token.present?
-    
+
     begin
       I18n.locale = access_token.locale
     rescue
       p "Invalid locale provided by Google: #{access_token.info.locale}"
     end
-  
+
     render 'welcome_google'
   end
-  
+
   def google_register
     @user = User.new(google_user_params)
     @user.limited = true
@@ -71,8 +71,8 @@ class ApplicationController < ActionController::Base
       render 'welcome_google', alert: @user.errors_string
     end
   end
-  
-  def 
+
+  def
 
   def login
     redirect_to "/"
@@ -180,7 +180,7 @@ class ApplicationController < ActionController::Base
       session[:locale] = I18n.locale
       reload = old.to_s != current.to_s
     end
-    res = {success: true, reload: reload, locale: {requested: current, old: old}}
+    res = {success: true, reload: reload, locale: {requested: current, old: old, current: I18n.locale}}
     p "After locale is set: #{res}"
     render json: res
   end
@@ -204,7 +204,7 @@ class ApplicationController < ActionController::Base
       I18n.locale = :fr
     end
   end
-  
+
   def google_user_params
     params.require(:user).permit(
       :name,

@@ -61,6 +61,8 @@ gem 'coveralls', require: false
 
 # AWS S3 SDK
 gem "aws-sdk-s3", require: false
+gem 'carrierwave'
+gem 'carrierwave-aws'
 
 # Pagination
 gem 'will_paginate'

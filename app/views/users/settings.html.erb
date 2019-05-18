@@ -1,5 +1,5 @@
 <div class="container">
-  <span class="title"><%= t('header.settings') + " (#{@episodes_size})" %></span>
+  <span class="title"><%= t('header.settings') %></span>
   <div class="settings-form" style="margin-top: 20px;">
     <%= form_for(current_user, url: "/users/update/#{current_user.id}") do |f| %>
       <div class="card" style="padding-bottom: 30px;">
@@ -59,7 +59,7 @@
           <% index += 1 %>
         <% end %>
         <% if index == 11 && @episodes_size > 11 %>
-          <div class="column is-3 text-center">
+          <div class="column is-2 text-center">
             <%= link_to(t('anime.other.more'), '#') %>
           </div>
         <% end %>

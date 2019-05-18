@@ -126,7 +126,7 @@ class User < ApplicationRecord
         and progress > 0
         limit ?;
       SQL
-      limit = limit.nil? ? 5 : limit.to_i
+      limit = limit.nil? ? 100 : limit.to_i
       Episode.find_by_sql([sql, self.id, limit])
     end
 
