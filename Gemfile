@@ -44,6 +44,11 @@ gem 'coffee-rails'
 gem 'jquery-ui-rails'
 gem 'material_icons'
 
+# Single Sign on
+gem 'omniauth'
+gem 'omniauth-oauth2'
+gem 'omniauth-google-oauth2'
+
 # Slack client
 gem 'slack-ruby-client'
 

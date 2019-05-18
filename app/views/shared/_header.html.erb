@@ -51,10 +51,10 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <%= link_to(new_issue_path, class: 'button is-warning is-icon') do %>
+          <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
             <i class="material-icons">bug_report</i>
           <% end %>
-          <%= link_to(settings_path, class: 'button is-primary is-icon') do %>
+          <%= link_to(users_settings_path, class: 'button is-primary is-icon') do %>
             <i class="material-icons">settings</i>
           <% end %>
           <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
