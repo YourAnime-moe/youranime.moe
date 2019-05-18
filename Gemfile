@@ -44,15 +44,6 @@ gem 'coffee-rails'
 gem 'jquery-ui-rails'
 gem 'material_icons'
 
-# Template Engine
-gem "slim"
-gem "slim-rails"
-
-# Single Sign on
-gem 'omniauth'
-gem 'omniauth-oauth2'
-gem 'omniauth-google-oauth2'
-
 # Slack client
 gem 'slack-ruby-client'
 
@@ -61,8 +52,6 @@ gem 'coveralls', require: false
 
 # AWS S3 SDK
 gem "aws-sdk-s3", require: false
-gem 'carrierwave'
-gem 'carrierwave-aws'
 
 # Pagination
 gem 'will_paginate'
