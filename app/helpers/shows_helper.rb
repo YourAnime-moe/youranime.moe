@@ -17,12 +17,20 @@ module ShowsHelper
     end
   end
 
-  def check_episode_broken(episode)
+  def check_episode_available(episode)
     return '' if episode.class != Episode
-    return content_tag(:span) if episode.video.attached?
+    return content_tag(:span) if episode.unrestricted?
 
-    content_tag :div, class: 'sub-dub-holder' do
-      broken_tag
+    if current_user.google_user
+      content_tag :div, class: 'sub-dub-holder' do
+        restricted_tag
+      end
+    elsif !episode.video.attached?
+      content_tag :div, class: 'sub-dub-holder' do
+        broken_tag
+      end
+    else
+      content_tag(:span)
     end
   end
 
@@ -60,6 +68,17 @@ module ShowsHelper
         "close"
       end + content_tag(:span) do
         " broken"
+      end
+    end
+    badge(type: 'danger', content: content)
+  end
+
+  def restricted_tag
+    content = content_tag(:span) do
+      content_tag(:i, class: 'material-icons', style: "font-size: 12px;") do
+        "close"
+      end + content_tag(:span) do
+        " not available"
       end
     end
     badge(type: 'danger', content: content)
@@ -111,14 +130,14 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}") +
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{"not-avail" if show.class == Episode && show.restricted?} #{rules[:display]}") +
       show_thumb_description(show)).html_safe
     end
   end
 
   def top_badges(show)
     content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
-      check_episode_broken(show).html_safe +
+      check_episode_available(show).html_safe +
       sub_dub_holder(show) +
       check_episode_cc(show)
     end
