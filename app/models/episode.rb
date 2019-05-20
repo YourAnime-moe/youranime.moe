@@ -24,6 +24,14 @@ class Episode < ApplicationRecord
     self.show.is_published? && self.published
   end
 
+  def unrestricted?
+    !!(show&.episodes[0..2].include?(self))
+  end
+
+  def restricted?
+    !unrestricted?
+  end
+
   def get_path_extension
     return nil if self.path.nil?
     parts = self.path.split "."
@@ -184,7 +192,7 @@ class Episode < ApplicationRecord
   end
 
   def set_progress(current_user, progress)
-    progress(current_user).update(progress: progress)
+    video.attached? && progress(current_user).update(progress: progress)
   end
 
   def progress(current_user)

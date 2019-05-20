@@ -92,6 +92,11 @@
   }
 }
 
+img.not-avail {
+  -webkit-filter: blur(8px);
+  filter: blur(8px);
+}
+
 .title-img {
      object-fit: cover;
      width: 100%;
