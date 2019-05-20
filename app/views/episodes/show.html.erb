@@ -34,7 +34,7 @@
               <h5 class="episode"><%= @episode.get_title %></h5>
             <% end %>
           </div>
-          <% unless @episode.next.nil? %>
+          <% unless @episode.next.nil? || restricted?(@episode.next) %>
             <div class="button" hf-action="next-episode" show-id="<%= @episode.show.id %>" go-to-episode="<%= @episode.next.id %>">
               <%= image_tag("baseline-skip_next-24px", width: "35px") %>
             </div>
