@@ -38,6 +38,8 @@ module ShowsHelper
     return '' if episode.class != Episode
     return '' unless episode.has_valid_subtitles?
 
+    return content_tag(:spam) if restricted?(episode)
+
     content_tag :div, class: 'captions-holder' do
       badge(type: 'info', content: 'captions')
     end
@@ -130,7 +132,7 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{"not-avail" if show.class == Episode && show.restricted?} #{rules[:display]}") +
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{"not-avail" if restricted?(show)} #{rules[:display]}") +
       show_thumb_description(show)).html_safe
     end
   end
