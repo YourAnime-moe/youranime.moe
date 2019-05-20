@@ -43,28 +43,30 @@
     <% end %>
   </div>
 
-  <div class="hf-section" style="margin-top: 60px;">
-    <div class="justified w-100">
-      <span class="title"><%= t('header.history') + " (#{@episodes_size})" %></span>
-      <div><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
-    </div>
+    <div class="hf-section" style="margin-top: 60px;">
+      <% if @episodes_size > 0 %>
+        <div class="justified w-100">
+          <span class="title"><%= t('header.history') + " (#{@episodes_size})" %></span>
+          <div><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
+        </div>
+      <% end %>
 
-    <% index = 0 %>
-    <% @episodes.each_slice(6) do |episodes| %>
-      <div class="columns is-tiny-gap no-margin is-vcentered">
-        <% episodes.each do |episode| %>
-          <%= link_to(episode, class: "column is-2 #{index}") do %>
-            <%= show_thumb(episode, rules: {}) %>
+      <% index = 0 %>
+      <% @episodes.each_slice(6) do |episodes| %>
+        <div class="columns is-tiny-gap no-margin is-vcentered">
+          <% episodes.each do |episode| %>
+            <%= link_to(episode, class: "column is-2 #{index}") do %>
+              <%= show_thumb(episode, rules: {}) %>
+            <% end %>
+            <% index += 1 %>
           <% end %>
-          <% index += 1 %>
-        <% end %>
-        <% if index == 11 && @episodes_size > 11 %>
-          <div class="column is-2 text-center">
-            <%= link_to(t('anime.other.more'), '#') %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+          <% if index == 11 && @episodes_size > 11 %>
+            <div class="column is-2 text-center">
+              <%= link_to(t('anime.other.more'), '#') %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
 </div>
