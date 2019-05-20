@@ -94,7 +94,7 @@ en:
     settings: "Account settings"
     bugs: "Known issues"
     logout: "Logout"
-    signed-in: "Signed in <strong class='css-truncate-target'>%{username}</strong>"
+    signed-in: "Signed in as <strong class='css-truncate-target'>%{username}</strong>"
 
   sidebar:
     home-page: Home page

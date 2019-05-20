@@ -1,5 +1,8 @@
 <footer class="footer dark-background-1">
   <div class="content has-text-centered">
+    <p><%= t('header.signed-in', username: current_user.username).html_safe %></p>
+  </div>
+  <div class="content has-text-centered">
     <span class="locale-switcher" locale-switcher="en"><%= t('lang.en') %></span>・
     <span class="locale-switcher" locale-switcher="fr"><%= t('lang.fr') %></span>・
     <span class="locale-switcher" locale-switcher="jp"><%= t('lang.jp') %></span>
