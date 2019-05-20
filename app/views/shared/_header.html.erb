@@ -40,7 +40,7 @@
     <div style="justify-content: center; display: inline; padding-top: 10px; white-space: nowrap;">
       <%= form_tag shows_path, method: 'get' do -%>
         <div class="control">
-          <input style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading">
+          <input style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
           <button style="left: -54px;" type="submit" class="button is-icon">
             <i class="material-icons">search</i>
           </button>

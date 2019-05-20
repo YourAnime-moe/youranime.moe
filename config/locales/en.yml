@@ -36,6 +36,8 @@ en:
       username: "Your username"
       password: "Your password"
       login: "Login"
+      google-login: Sign in with Google
+      google-or: Or
       success:
         web-message: "Login successful! Time to watch anime!"
       errors:
@@ -125,6 +127,8 @@ en:
 
   anime:
     shows:
+      dub: dub
+      sub: sub
       empty: >
         Nothing has been added yet! Please come back a bit later.
       view-all: "All Anime Shows"
@@ -160,6 +164,9 @@ en:
       title: "You are watching: \"%{name}\""
       go-back: "Go back to \"%{name}\"..."
       last-episode: "Last episode!"
+      not-available: Not available
+      broken: Broken
+
     other:
       more: "More..."
       reset: "Reset"
@@ -173,6 +180,18 @@ en:
 
   user:
     welcome: "Welcome, %{user}"
+    settings:
+      form:
+        submit: Submit
+        name: Your name
+        name-prompt: How should we call you?
+        password:
+          new-password: Enter new password
+          confirm-new: Confirm new password
+          change: Change your password
+          google:
+            prompt: Hey there! It looks like you registered here with a Google account.
+            warning: This password is not the same as your Google account's password.
 
   tags:
     title: "Search by tags"

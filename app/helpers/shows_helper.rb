@@ -19,18 +19,22 @@ module ShowsHelper
 
   def check_episode_available(episode)
     return '' if episode.class != Episode
-    return content_tag(:span) if episode.unrestricted?
-
-    if current_user.google_user
-      content_tag :div, class: 'sub-dub-holder' do
-        restricted_tag
-      end
-    elsif !episode.video.attached?
-      content_tag :div, class: 'sub-dub-holder' do
-        broken_tag
+    if episode.unrestricted?
+      if !episode.video.attached?
+        content_tag :div, class: 'sub-dub-holder' do
+          broken_tag
+        end
+      else
+        content_tag(:span)
       end
     else
-      content_tag(:span)
+      if current_user.google_user
+        content_tag :div, class: 'sub-dub-holder' do
+          restricted_tag
+        end
+      else
+        content_tag(:span)
+      end
     end
   end
 
@@ -57,11 +61,11 @@ module ShowsHelper
   end
 
   def dub_tag
-    badge(type: 'warning', content: "dub")
+    badge(type: 'warning', content: t('anime.shows.dub'))
   end
 
   def sub_tag
-    badge(type: 'primary', content: "sub")
+    badge(type: 'primary', content: t('anime.shows.sub'))
   end
 
   def broken_tag
@@ -69,7 +73,7 @@ module ShowsHelper
       content_tag(:i, class: 'material-icons', style: "font-size: 12px;") do
         "close"
       end + content_tag(:span) do
-        " broken"
+        " #{t('anime.episodes.broken')}"
       end
     end
     badge(type: 'danger', content: content)
@@ -80,7 +84,7 @@ module ShowsHelper
       content_tag(:i, class: 'material-icons', style: "font-size: 12px;") do
         "close"
       end + content_tag(:span) do
-        " not available"
+        " #{t('anime.episodes.not-available')}"
       end
     end
     badge(type: 'danger', content: content)
