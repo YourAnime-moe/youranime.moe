@@ -56,7 +56,13 @@ class ApplicationController < ActionController::Base
       p "Invalid locale provided by Google: #{access_token.info.locale}"
     end
 
+    set_title(before: t('welcome.user', user: @user.get_name))
     render 'welcome_google'
+  end
+
+  def welcome_google
+@user = current_user
+      set_title(before: t('welcome.user', user: @user.get_name))
   end
 
   def google_register

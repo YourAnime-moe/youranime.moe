@@ -48,6 +48,7 @@ en:
         no-username-and-password: "Please enter your username and password."
     google:
       register: Awesome! You're almost done.
+      please-dont: We highly suggest you use a password that is different than your Google account's.
       warning: Please note that choosing to register with a Google account means that you'll have limited access to our application. Is this okay?
       terms: Privacy Policy terms for our website
       register-action: Agree & continue

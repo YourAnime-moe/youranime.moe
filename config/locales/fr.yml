@@ -41,6 +41,7 @@ fr:
         no-username-and-password: "Vous avez oublié d'entrer les informations requises."
     google:
       register: Super! Nous avons presque terminé avec votre inscription.
+      please-dont: Nous vous déconseillons très fortement d'utiliser votre mot de passe Google ici.
       warning: Veuillez noter que vous avez choisi vous inscrire avec votre compte Google. Vous aurez donc une accès limité aux ressources de ce système. Etes-vous d'accord ?
       terms: Conditions et polique de vie privée (en Anglais)
       register-action: Accepter et continuer

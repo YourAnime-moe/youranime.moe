@@ -31,6 +31,7 @@ jp:
         no-username-and-password: "ユーザ名とパスワードを入力してください。"
     google:
       register: やったー！新規登録を完成するには次をご記入ください。
+      please-dont: Googleアカウントのパスワードを使用するのは、絶対にオススメしません。
       warning: お客様はGoogleで新規登録をするとアカウントにはアクセスの制限することとなります。それでよろしいでしょうか？
       terms: 利用規約とプライバシーポリシー (英語)
       register-action: 同意して登録する

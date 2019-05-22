@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   root 'application#root'
 
+  get '/google' => 'application#welcome_google'
+
   # Admin console
   get '/admin' => 'admin#home'
   namespace :admin do
