@@ -179,7 +179,7 @@ class Show < ApplicationRecord
   end
 
   def add_tag(tag)
-    return nil if tag.to_s.strip.empty?
+    return nil if tag.blank?
     tag = tag.strip if tag.class == String
     return false unless Utils.tags.keys.include? tag
     self.tags = [] if self.tags.nil?
@@ -189,34 +189,6 @@ class Show < ApplicationRecord
 
   def is_published?
     !!self.published
-  end
-
-  def is_featured?
-    return false if self.featured.nil?
-    self.featured
-  end
-
-  def is_recommended?
-    return false if self.recommended.nil?
-    self.recommended
-  end
-
-  def get_season_code
-    return 0 if self.season_code.nil?
-    self.season_code
-  end
-
-  def get_season_year
-    return self.get_year if self.season_year.nil?
-    self.season_year
-  end
-
-  def is_this_season?
-    self.is_from_season? Utils.current_season, Time.now.year
-  end
-
-  def is_from_season?(season_id, year)
-    get_season_code == season_id && get_season_year == year
   end
 
   def as_json(options={})
