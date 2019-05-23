@@ -14,57 +14,59 @@
           </div>
 
           <div class="control">
-            <%= f.label :name, 'Your name' %>
-            <%= f.text_field :name, class: 'input is-rounded is-dark', placeholder: 'How should we call you?', autocomplete: 'off' %>
+            <%= f.label :name, t('user.settings.form.name') %>
+            <%= f.text_field :name, class: 'input is-rounded is-dark', placeholder: t('user.settings.form.name'), autocomplete: 'off' %>
           </div><br>
 
           <div class="control">
-            <%= f.label :password, 'Change your password' %>
+            <%= f.label :password, t('user.settings.form.password.change') %>
             <% if current_user.google_user %>
               <p class="text-muted">
                 <img width="45px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/><br>
-                Hey there! It looks like you registered here with a Google account.<br>
+                <%= t('user.settings.form.password.google.prompt') %><br>
               </p>
             <% end %>
             <div class="field is-grouped">
-              <%= f.password_field :password, class: 'input is-rounded is-dark', placeholder: 'Enter new password' %>
-              <%= f.password_field :password_confirmation, class: 'input is-rounded is-dark', placeholder: 'Confirm new password' %>
+              <%= f.password_field :password, class: 'input is-rounded is-dark', placeholder: t('user.settings.form.password.new-password') %>
+              <%= f.password_field :password_confirmation, class: 'input is-rounded is-dark', placeholder: t('user.settings.form.password.confirm-new') %>
             </div>
             <% if current_user.google_user %>
-              <small class="text-muted">This password is <strong>not</strong> the same as your Google account's password.</small>
+              <small class="text-muted"><%= t('user.settings.form.password.google.warning') %></small>
             <% end %>
           </div>
 
           <div style="width: 60%; margin: 30px auto 0;">
-            <button type="submit" class="button is-primary is-fullwidth">Submit</button>
+            <button type="submit" class="button is-primary is-fullwidth"><%= t('user.settings.form.submit') %></button>
           </div>
         </div>
       </div>
     <% end %>
   </div>
 
-  <div class="hf-section" style="margin-top: 60px;">
-    <div class="justified w-100">
-      <span class="title"><%= t('header.history') + " (#{@episodes_size})" %></span>
-      <div><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
-    </div>
+    <div class="hf-section" style="margin-top: 60px;">
+      <% if @episodes_size > 0 %>
+        <div class="justified w-100">
+          <span class="title"><%= t('header.history') + " (#{@episodes_size})" %></span>
+          <div><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
+        </div>
+      <% end %>
 
-    <% index = 0 %>
-    <% @episodes.each_slice(6) do |episodes| %>
-      <div class="columns is-tiny-gap no-margin is-vcentered">
-        <% episodes.each do |episode| %>
-          <%= link_to(episode, class: "column is-2 #{index}") do %>
-            <%= show_thumb(episode, rules: {}) %>
+      <% index = 0 %>
+      <% @episodes.each_slice(6) do |episodes| %>
+        <div class="columns is-tiny-gap no-margin is-vcentered">
+          <% episodes.each do |episode| %>
+            <%= link_to(episode, class: "column is-2 #{index}") do %>
+              <%= show_thumb(episode, rules: {}) %>
+            <% end %>
+            <% index += 1 %>
           <% end %>
-          <% index += 1 %>
-        <% end %>
-        <% if index == 11 && @episodes_size > 11 %>
-          <div class="column is-2 text-center">
-            <%= link_to(t('anime.other.more'), '#') %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+          <% if index == 11 && @episodes_size > 11 %>
+            <div class="column is-2 text-center">
+              <%= link_to(t('anime.other.more'), '#') %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
 </div>

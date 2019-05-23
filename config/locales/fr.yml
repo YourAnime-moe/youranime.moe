@@ -29,6 +29,8 @@ fr:
       username: "Nom d'utilisateur"
       password: "Mot de passe"
       login: "Se connecter"
+      google-login: Se connecter avec Google
+      google-or: Ou
       success:
         web-message: "Parfait ! Commençons à regarder des animés !"
       errors:
@@ -39,6 +41,7 @@ fr:
         no-username-and-password: "Vous avez oublié d'entrer les informations requises."
     google:
       register: Super! Nous avons presque terminé avec votre inscription.
+      please-dont: Nous vous déconseillons très fortement d'utiliser votre mot de passe Google ici.
       warning: Veuillez noter que vous avez choisi vous inscrire avec votre compte Google. Vous aurez donc une accès limité aux ressources de ce système. Etes-vous d'accord ?
       terms: Conditions et polique de vie privée (en Anglais)
       register-action: Accepter et continuer
@@ -104,6 +107,8 @@ fr:
 
   anime:
     shows:
+      dub: dub
+      sub: sub
       empty: >
         Rien n'est encore disponible ! Venez-y jeter un coup d'œil plus tard.
       view-all: "Toutes les émissions animées"
@@ -140,6 +145,8 @@ fr:
       title: "Vous êtes en train de regarder : \"%{name}\""
       go-back: "Retourner à \"%{name}\"..."
       last-episode: "Dernier épisode !"
+      not-available: Non disponible
+      broken: Vidéo brisée
 
     other:
       more: "Plus..."
@@ -147,6 +154,18 @@ fr:
 
   user:
     welcome: "Bienvenue, %{user}"
+    settings:
+      form:
+        submit: Soumettre
+        name: Votre nom
+        name-prompt: Comment devons-nous nous adresser à vous ?
+        password:
+          new-password: Entrez votre nouveau mot de passe
+          confirm-new: Confirmez ce mot de passe
+          change: Changez votre mot de passe
+          google:
+            prompt: Dîtes, vous êtes enregistré(e)s avec un compte Google, n'est-ce-pas ?
+            warning: Attention, ce mot de passe diffère de celui de votre compte Google.
 
   time:
     seasons:

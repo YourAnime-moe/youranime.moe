@@ -19,6 +19,8 @@ jp:
       username: "ユーザ名"
       password: "パスワード"
       login: "ログイン"
+      google-or: それとも
+      google-login: Googleでログイン
       success:
         web-message: "ログイン完了。アニメの時間だよ！"
       errors:
@@ -29,6 +31,7 @@ jp:
         no-username-and-password: "ユーザ名とパスワードを入力してください。"
     google:
       register: やったー！新規登録を完成するには次をご記入ください。
+      please-dont: Googleアカウントのパスワードを使用するのは、絶対にオススメしません。
       warning: お客様はGoogleで新規登録をするとアカウントにはアクセスの制限することとなります。それでよろしいでしょうか？
       terms: 利用規約とプライバシーポリシー (英語)
       register-action: 同意して登録する
@@ -88,6 +91,8 @@ jp:
 
   anime:
     shows:
+      dub: 英語
+      sub: 日本語
       empty: >
         申し訳ございませんが、現在では検索基準の通りで結果はありません。後でお試しくださいますようお願いいたします。
       view-all: "すべてのアニメ"
@@ -124,6 +129,8 @@ jp:
       title: "現在は「%{name}」です"
       go-back: "「%{name}」へ戻る..."
       last-episode: "終わりです！"
+      not-available: ご覧いただけません
+      broken: 視聴できません
 
     other:
       more: "もっと見る"
@@ -131,6 +138,18 @@ jp:
 
   user:
     welcome: "ようこそ、%{user}様"
+    settings:
+      form:
+        submit: 保存する
+        name: お名前
+        name-prompt: どう呼べばよろしいのでしょうか？
+        password:
+          new-password: 新しいパスワード
+          confirm-new: パスワードの確認
+          change: パスワードの変更
+          google:
+            prompt: お客様はGoogleアカウントで登録して、ログインしていますね。
+            warning: 登録中のパスワードとお客様のGoogleアカウントのパスワードが違っていますのでご注意ください。
 
   time:
     seasons:
