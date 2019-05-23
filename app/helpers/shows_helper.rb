@@ -20,12 +20,12 @@ module ShowsHelper
   def check_episode_available(episode)
     return '' if episode.class != Episode
     if episode.unrestricted?
-      if !episode.video.attached?
+      if episode.has_video?
+        content_tag(:span)
+      else
         content_tag :div, class: 'sub-dub-holder' do
           broken_tag
         end
-      else
-        content_tag(:span)
       end
     else
       if current_user.google_user
@@ -40,7 +40,7 @@ module ShowsHelper
 
   def check_episode_cc(episode)
     return '' if episode.class != Episode
-    return '' unless episode.has_valid_subtitles?
+    return '' unless episode.has_subtitles?
 
     return content_tag(:spam) if restricted?(episode)
 
