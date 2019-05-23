@@ -98,7 +98,7 @@ module Api
       end
 
       def ensure_is_activated!(user)
-        raise Api::UserNotActivatedError.new if !user.is_activated?
+        raise Api::UserNotActivatedError.new unless user.is_activated?
       end
 
     end
