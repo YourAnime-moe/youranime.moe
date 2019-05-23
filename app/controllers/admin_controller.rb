@@ -1,6 +1,8 @@
 class AdminController < AuthenticatedController
   before_action :ensure_is_admin
 
+  layout 'admin'
+
   def home
     redirect_to admin_shows_url
   end
