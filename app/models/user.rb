@@ -38,16 +38,10 @@ class User < ApplicationRecord
   # All episodes this user is able to view
   def episodes_data(show)
     show.episodes.map do |episode|
-      progress = episode.progress_info(self)
       episode.as_json.merge({
-        progress: progress[:progress_info]
+        progress: episode.progress(self).progress
       })
     end
-  end
-
-  # Returns a list of episodes that have "watching progress"
-  def currently_watching(limit: nil, no_thumbnails: false)
-    history(limit: limit)
   end
 
   def history(limit: nil)
@@ -64,6 +58,7 @@ class User < ApplicationRecord
     limit = limit.nil? ? 100 : limit.to_i
     Episode.find_by_sql([sql, self.id, limit])
   end
+  alias :currently_watching :history
 
   def allows_setting(what)
     return get_default(what) if self.settings.class != Hash
