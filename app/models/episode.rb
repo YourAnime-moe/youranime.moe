@@ -39,7 +39,7 @@ class Episode < ApplicationRecord
   def get_thumbnail(raise_exception: false)
     unless thumbnail.attached?
       begin
-        path = get_image_path(as_is: true)
+        path = "videos/#{show.roman_title}/ep#{episode_number}"
         return thumbnail if path.nil? || File.directory?(path)
         thumbnail.attach(io: File.open(path), filename: "episode-#{id}")
       rescue Errno::ENOENT => e
@@ -63,7 +63,7 @@ class Episode < ApplicationRecord
   def get_video(raise_exception: false)
     unless video.attached?
       begin
-        path = get_path(as_is: true)
+        path = "videos/#{show.roman_title}/ep#{episode_number}"
         return video if path.nil? || File.directory?(path)
         video.attach(io: File.open(path), filename: "episode-#{id}")
       rescue Errno::ENOENT => e
