@@ -178,56 +178,17 @@ class Show < ApplicationRecord
     self.tags.class == String ? self.tags.split(' ') : self.tags
   end
 
-  def has_tags?(tags=nil)
-    return get_tags.size > 0 if tags.nil?
-    return false if tags.class != Array
-    return false if tags.empty?
-    tags.each do |tag|
-      return false unless get_tags.include? tag
-    end
-    true
-  end
-
   def add_tag(tag)
     return nil if tag.to_s.strip.empty?
     tag = tag.strip if tag.class == String
-    self.tags = [] if self.tags.nil?
     return false unless Utils.tags.keys.include? tag
+    self.tags = [] if self.tags.nil?
     self.tags.push tag unless self.tags.include? tag
     self.tags
   end
 
-  def has_starring_info?
-    self.starring.to_s.strip.size > 0
-  end
-
-  def discloses_average_run_time?
-    !self.average_run_time.nil?
-  end
-
   def is_published?
     !!self.published
-  end
-
-  def get_image_path(token=nil, as_is: false)
-    return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
-    path = Config.path self.image_path, as_is: as_is
-    return path if token == nil
-    path + "?token=" + token
-  end
-
-  def get_new_image_path(as_is: false)
-    return nil if self.image_path.nil?
-
-    filename = self.image_path.split('/')
-    under = filename[filename.size-2]
-    filename = filename[filename.size-1]
-
-    filename_parts = filename.split '.'
-    extension = filename_parts[filename_parts.size-1]
-    filename_name = filename_parts[0]
-
-    Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}", as_is: as_is
   end
 
   def is_featured?
@@ -273,41 +234,6 @@ class Show < ApplicationRecord
         all: all_episodes.size
       }
     }
-  end
-
-  def self.get_presence(tag, request_banner=true, limit=3, options: nil)
-    found_shows = []
-    self.all.each do |show|
-      if options.class != Hash && tag == :season
-        raise "Invalid season options"
-      end
-      next unless show.is_published?
-      #next unless request_banner && show.has_banner?
-
-      break if found_shows.size >= limit
-      if tag == :recommended
-        found_shows.push(show) if show.is_recommended?
-      elsif tag == :featured
-        found_shows.push(show) if show.is_featured?
-      elsif tag == :season
-        found_shows.push(show) if options[:current] == true && show.is_this_season?
-      end
-    end
-    found_shows
-  end
-
-  def self.get_random_shows(ids: true, has_banner: false, published: true, limit: 10)
-    shows = self.all
-    unless published == :all
-      shows = shows.select{|show| show.is_published? == published}
-    end
-    shows = shows.select{|show| show.has_banner?} if has_banner
-    shows = shows.map{|show| show.id} if ids
-    shows = shows.shuffle
-    if limit && limit > 0
-      shows = shows[0..limit-1]
-    end
-    shows
   end
 
   def self.clean_up
