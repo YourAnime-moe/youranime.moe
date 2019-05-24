@@ -6,7 +6,7 @@ type:
 up:
   - homebrew:
     - openssl
-  - ruby: 2.6.1
+  - ruby: 2.6.3
   - bundler
 
 commands:
