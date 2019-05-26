@@ -5,4 +5,3 @@ Config.setup do |config|
   config.api_version = 1
 end
 
-p "setup!"
