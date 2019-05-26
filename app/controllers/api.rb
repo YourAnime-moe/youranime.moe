@@ -13,6 +13,11 @@ module Api
     def find_token!
       # Get the token
       token = params[:token]
+      if token.blank?
+        pattern = /^Bearer /
+        header = request.headers['Authorization']
+        token = header.gsub(pattern, '') if header && header.match(pattern)
+      end
   		raise Api::MissingTokenError.new if token.blank?
       token
     end
@@ -55,6 +60,7 @@ module Api
     private
 
     def render_api_error error
+      warn "Caught API error #{error} (status: #{error.http_status})"
       render json: error, status: error.http_status
     end
 
