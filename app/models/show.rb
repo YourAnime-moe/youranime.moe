@@ -153,7 +153,7 @@ class Show < ApplicationRecord
   def get_banner(raise_exception: false)
     unless banner.attached?
       begin
-        path = get_image_path(as_is: true)
+        path = "videos/imgages/#{roman_title}"
         return banner if path.nil? || File.directory?(path)
         banner.attach(io: File.open(path), filename: Utils.get_filename(path))
       rescue Errno::ENOENT => e
@@ -192,20 +192,22 @@ class Show < ApplicationRecord
   end
 
   def as_json(options={})
-    {
+    options[:ignore_urls] = options[:ignore_urls].nil? || options[:ignore_urls]
+    json = {
       id: id,
       title: get_title(default: "<No title>"),
       description: description,
       subbed: subbed,
       dubbed: dubbed,
       published: is_published?,
-      banner: get_banner_url,
       tags: get_tags,
       episodes_count: {
         published: episodes.size,
         all: all_episodes.size
       }
     }
+    json.merge({ banner: get_banner_url }) unless options[:ignore_urls]
+    json
   end
 
   def self.clean_up

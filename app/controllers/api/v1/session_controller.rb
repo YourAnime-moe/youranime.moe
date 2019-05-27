@@ -23,9 +23,17 @@ module Api
         end
 
         if success
-    			render json: {token: user.auth_token, message: t("welcome.user", user: user.get_name), user: user, success: true}
+    			render json: {
+            token: user.auth_token,
+            message: t("welcome.user", user: user.get_name),
+            user: user,
+            success: true
+          }
     		else
-    			render json: {message: "Sorry, our server authenticated you but could not log you in.", success: false}
+    			render json: {
+            message: "Sorry, our server authenticated you but could not log you in.",
+            success: false
+          }
     		end
       end
 
@@ -71,10 +79,7 @@ module Api
         rescue ArgumentError
           raise Api::InvalidCredentialsError.new
         end
-        {
-          username: username.to_s.strip.downcase,
-          password: password.to_s.strip.downcase
-        }
+        { username: username.to_s.strip.downcase, password: password.to_s.strip.downcase }
       end
 
       def ensure_user_exists!(username, password)

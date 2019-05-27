@@ -89,14 +89,20 @@ class Episode < ApplicationRecord
   end
 
   def as_json(options={})
-    {
+    options[:ignore_urls] = options[:ignore_urls].nil? || options[:ignore_urls]
+    json = {
       id: id,
       title: get_title,
       published: is_published?,
-      show_id: show_id,
-      thumbnail: get_thumbnail_url,
-      video: get_video_url
+      show_id: show_id
     }
+    unless options[:ignore_urls]
+      json.merge({
+        thumbnail: get_thumbnail_url,
+        video: get_video_url
+      })
+    end
+    json
   end
 
   def self.clean_up

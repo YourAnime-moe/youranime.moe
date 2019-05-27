@@ -4,5 +4,3 @@ Config.setup do |config|
   config.bulma_version = '0.7.4'
   config.api_version = 1
 end
-
-p "setup!"

@@ -16,6 +16,8 @@ commands:
     run: bin/bundle exec rails console
   test:
     run: bin/bundle exec rails test
+  routes:
+    run: bin/bundle exec rails routes
 
 open:
-  "My Application": "http://0.0.0.0:3000"
+  "My Application": "http://localhost:3000"

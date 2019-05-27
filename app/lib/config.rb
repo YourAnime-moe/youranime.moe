@@ -25,7 +25,10 @@ module Config
   @@videojs = nil
 
   mattr_accessor :api_version
-  @@api_version = nil
+  @@api_version = 1
+
+  mattr_accessor :bulma_version
+  @@bulma_version = nil
 
   mattr_accessor :bulma_version
   @@bulma_version = nil
