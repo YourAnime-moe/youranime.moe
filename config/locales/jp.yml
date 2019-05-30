@@ -4,9 +4,9 @@ jp:
 
   lang:
     lang: "日本語"
-    fr: "フランス語 (Français)"
-    jp: "日本語 (現在)"
-    en: "英語 (English)"
+    fr: "Français"
+    jp: "日本語"
+    en: "English"
 
   badge:
     src: "https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png"
@@ -19,6 +19,8 @@ jp:
       username: "ユーザ名"
       password: "パスワード"
       login: "ログイン"
+      google-or: それとも
+      google-login: Googleでログイン
       success:
         web-message: "ログイン完了。アニメの時間だよ！"
       errors:
@@ -29,6 +31,7 @@ jp:
         no-username-and-password: "ユーザ名とパスワードを入力してください。"
     google:
       register: やったー！新規登録を完成するには次をご記入ください。
+      please-dont: Googleアカウントのパスワードを使用するのは、絶対にオススメしません。
       warning: お客様はGoogleで新規登録をするとアカウントにはアクセスの制限することとなります。それでよろしいでしょうか？
       terms: 利用規約とプライバシーポリシー (英語)
       register-action: 同意して登録する
@@ -57,7 +60,7 @@ jp:
     news: "ニュース"
     random: "ランダムを見る"
     history: "履歴"
-    settings: "設定"
+    settings: "自分の設定"
     bugs: "知っているバグ等"
     logout: "ログアウト"
     signed-in: >
@@ -88,10 +91,17 @@ jp:
 
   anime:
     shows:
+      dub: 英語
+      sub: 日本語
+      empty: >
+        申し訳ございませんが、現在では検索基準の通りで結果はありません。後でお試しくださいますようお願いいたします。
       view-all: "すべてのアニメ"
+      search-result: 検索の結果は%{count}件です
       coming-soon: "近日公開予定"
+      trending: 人気アニメ
       coming-on: "近日公開予定日付は"
       description: "概要"
+      no-description: "- 概要なし -"
       viewing:
         description: "このショーについて"
         more-info: "詳細はこちら"
@@ -109,14 +119,18 @@ jp:
     history:
       to-episode: "動画を見る"
       to-show: "ショー情報を開く"
+      clear: 削除する
 
     episodes:
+      continue-watching: 視聴中のエピソード
       episode-number: "エピソード %{number}"
       up-next: "自動再生"
       discover: "好きになるかも"
       title: "現在は「%{name}」です"
       go-back: "「%{name}」へ戻る..."
       last-episode: "終わりです！"
+      not-available: ご覧いただけません
+      broken: 視聴できません
 
     other:
       more: "もっと見る"
@@ -124,6 +138,18 @@ jp:
 
   user:
     welcome: "ようこそ、%{user}様"
+    settings:
+      form:
+        submit: 保存する
+        name: お名前
+        name-prompt: どう呼べばよろしいのでしょうか？
+        password:
+          new-password: 新しいパスワード
+          confirm-new: パスワードの確認
+          change: パスワードの変更
+          google:
+            prompt: お客様はGoogleアカウントで登録して、ログインしていますね。
+            warning: 登録中のパスワードとお客様のGoogleアカウントのパスワードが違っていますのでご注意ください。
 
   time:
     seasons:

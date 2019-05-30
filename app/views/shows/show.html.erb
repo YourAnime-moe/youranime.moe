@@ -2,6 +2,7 @@
   $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
+    $('div[target]').css('margin-bottom', '-70px');
     $('.show-body').fadeIn(2000);
   });
 </script>
@@ -10,7 +11,7 @@
   <div class="head" target="<%= @show.get_banner_url %>">
     <div class="overlay">
       <div class="content">
-        <div class="ui container grid">
+        <div class="ui container pos-inherit grid">
           <div class="show-title">
             <h1 style="font-weight: bold;">
               <%= @show.get_title %>
@@ -21,21 +22,22 @@
       </div>
     </div>
   </div>
-
-  <div class="container" style="padding-top: 10px;">
+  <div class="container">
     <small>
       <span style="margin-right: 10px;"><%= show_sub_dub(@show) %></span>
       <%= @show.description %>
     </small>
   </div>
 
+
+
   <div class="hf-section padded">
     <div class="row no-margin">
       <div class="container">
         <% @episodes_parts.each do |episodes| %>
-          <div class="row">
+          <div class="columns">
             <% episodes.each_with_index do |episode| %>
-              <div class="col-md-4" style="margin-top: 20px;">
+              <div class="column is-4" style="margin-top: 20px;">
                 <% @_rule = {class: nil} %>
                 <% @_thumb_info = {} %>
                 <% @model = episode %>

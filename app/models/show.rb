@@ -12,15 +12,17 @@ class Show < ApplicationRecord
   scope :by_season, -> (title) { published.where(title: title).order(:show_number) }
   scope :coming_soon, -> { where("publish_after is not null and publish_after > '#{Date.current}' ") }
   scope :published, -> { valid.where(published: true) }
-  scope :recent, -> {
+  scope :recent, -> (limit: 50) {
+    limit = 1 if limit < 1
     sql = <<-SQL
-      select shows.id from shows
+      select shows.* from shows
       inner join episodes
       on shows.id = episodes.show_id
       where shows.published = 't'
-      order by episodes.created_at desc;
+      order by episodes.created_at desc
+      limit ?;
     SQL
-    find_by_sql(sql)
+    find_by_sql([sql, limit])
   }
   scope :latest, -> (current_user, limit: 5) {
     limit = 1 if limit < 1
@@ -73,6 +75,19 @@ class Show < ApplicationRecord
       title_column = 'en_title'
     end
     order(:alternate_title).order(:roman_title).order("#{title_column} asc")
+  }
+  scope :search, -> (query, limit: nil) {
+    return published if query.empty?
+    titles_to_search = [:en_title, :fr_title, :jp_title, :alternate_title, :roman_title]
+    titles_as_queries = titles_to_search.map{ |key| "(lower(shows.#{key}) like '%%#{query}%%')" }.join(' or ')
+    sql = <<-SQL
+      select * from shows
+      where (#{titles_as_queries})
+      and shows.published = 't'
+    SQL
+    sql_args = [sql]
+    sql_args << ("limit #{limit}") unless limit.to_i == 0
+    find_by_sql(sql_args)
   }
 
   serialize :tags
@@ -128,7 +143,7 @@ class Show < ApplicationRecord
     result = self['en_description'] if I18n.locale == :en || I18n.locale.nil?
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
-    result
+    result.blank? ? I18n.t('anime.shows.no-description') : result
   end
 
   def has_banner?
@@ -138,7 +153,7 @@ class Show < ApplicationRecord
   def get_banner(raise_exception: false)
     unless banner.attached?
       begin
-        path = get_image_path(as_is: true)
+        path = "videos/imgages/#{roman_title}"
         return banner if path.nil? || File.directory?(path)
         banner.attach(io: File.open(path), filename: Utils.get_filename(path))
       rescue Errno::ENOENT => e
@@ -163,144 +178,36 @@ class Show < ApplicationRecord
     self.tags.class == String ? self.tags.split(' ') : self.tags
   end
 
-  def has_tags?(tags=nil)
-    return get_tags.size > 0 if tags.nil?
-    return false if tags.class != Array
-    return false if tags.empty?
-    tags.each do |tag|
-      return false unless get_tags.include? tag
-    end
-    true
-  end
-
   def add_tag(tag)
-    return nil if tag.to_s.strip.empty?
+    return nil if tag.blank?
     tag = tag.strip if tag.class == String
-    self.tags = [] if self.tags.nil?
     return false unless Utils.tags.keys.include? tag
+    self.tags = [] if self.tags.nil?
     self.tags.push tag unless self.tags.include? tag
     self.tags
-  end
-
-  def has_starring_info?
-    self.starring.to_s.strip.size > 0
-  end
-
-  def discloses_average_run_time?
-    !self.average_run_time.nil?
   end
 
   def is_published?
     !!self.published
   end
 
-  def get_image_path(token=nil, as_is: false)
-    return self.image_path if self.image_path.to_s.strip.empty? or self.image_path.start_with? "http"
-    path = Config.path self.image_path, as_is: as_is
-    return path if token == nil
-    path + "?token=" + token
-  end
-
-  def get_new_image_path(as_is: false)
-    return nil if self.image_path.nil?
-
-    filename = self.image_path.split('/')
-    under = filename[filename.size-2]
-    filename = filename[filename.size-1]
-
-    filename_parts = filename.split '.'
-    extension = filename_parts[filename_parts.size-1]
-    filename_name = filename_parts[0]
-
-    Config.path "videos?show_icon=#{filename_name}&format=#{extension}&under=#{under}", as_is: as_is
-  end
-
-  def is_featured?
-    return false if self.featured.nil?
-    self.featured
-  end
-
-  def is_recommended?
-    return false if self.recommended.nil?
-    self.recommended
-  end
-
-  def get_season_code
-    return 0 if self.season_code.nil?
-    self.season_code
-  end
-
-  def get_season_year
-    return self.get_year if self.season_year.nil?
-    self.season_year
-  end
-
-  def is_this_season?
-    self.is_from_season? Utils.current_season, Time.now.year
-  end
-
-  def is_from_season?(season_id, year)
-    get_season_code == season_id && get_season_year == year
-  end
-
   def as_json(options={})
-    {
+    options[:ignore_urls] = options[:ignore_urls].nil? || options[:ignore_urls]
+    json = {
       id: id,
       title: get_title(default: "<No title>"),
       description: description,
       subbed: subbed,
       dubbed: dubbed,
       published: is_published?,
-      banner: get_banner_url,
       tags: get_tags,
       episodes_count: {
         published: episodes.size,
         all: all_episodes.size
       }
     }
-  end
-
-  def self.get_presence(tag, request_banner=true, limit=3, options: nil)
-    found_shows = []
-    self.all.each do |show|
-      if options.class != Hash && tag == :season
-        raise "Invalid season options"
-      end
-      next unless show.is_published?
-      #next unless request_banner && show.has_banner?
-
-      break if found_shows.size >= limit
-      if tag == :recommended
-        found_shows.push(show) if show.is_recommended?
-      elsif tag == :featured
-        found_shows.push(show) if show.is_featured?
-      elsif tag == :season
-        found_shows.push(show) if options[:current] == true && show.is_this_season?
-      end
-    end
-    found_shows
-  end
-
-  def self.search keyword, preset_list=nil
-    keyword = keyword.to_s.downcase
-    preset_list = self.published if preset_list.class != Array
-    preset_list.select do |show|
-      show.get_title.downcase.include?(keyword) || show.title.downcase.include?(keyword)
-    end
-  end
-
-  def self.get_random_shows(ids: true, has_banner: false, published: true, limit: 10)
-    shows = self.all
-    unless published == :all
-      shows = shows.select{|show| show.is_published? == published}
-    end
-    shows = shows.select{|show| show.has_banner?} if has_banner
-    shows = shows.map{|show| show.id} if ids
-    shows = shows.shuffle
-    if limit && limit > 0
-      shows = shows[0..limit-1]
-    end
-    shows
+    json.merge({ banner: get_banner_url }) unless options[:ignore_urls]
+    json
   end
 
   def self.clean_up

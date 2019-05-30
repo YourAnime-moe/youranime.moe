@@ -25,9 +25,9 @@ en:
 
   lang:
     lang: "English"
-    fr: "French (Français)"
-    jp: "Japanese (日本語)"
-    en: "English (current)"
+    fr: "Français"
+    jp: "日本語"
+    en: "English"
 
   welcome:
     title: "Tanoshimu"
@@ -36,6 +36,8 @@ en:
       username: "Your username"
       password: "Your password"
       login: "Login"
+      google-login: Sign in with Google
+      google-or: Or
       success:
         web-message: "Login successful! Time to watch anime!"
       errors:
@@ -46,6 +48,7 @@ en:
         no-username-and-password: "Please enter your username and password."
     google:
       register: Awesome! You're almost done.
+      please-dont: We highly suggest you use a password that is different than your Google account's.
       warning: Please note that choosing to register with a Google account means that you'll have limited access to our application. Is this okay?
       terms: Privacy Policy terms for our website
       register-action: Agree & continue
@@ -94,7 +97,7 @@ en:
     settings: "Account settings"
     bugs: "Known issues"
     logout: "Logout"
-    signed-in: "Signed in <strong class='css-truncate-target'>%{username}</strong>"
+    signed-in: "Signed in as <strong class='css-truncate-target'>%{username}</strong>"
 
   sidebar:
     home-page: Home page
@@ -125,12 +128,17 @@ en:
 
   anime:
     shows:
+      dub: dub
+      sub: sub
       empty: >
         Nothing has been added yet! Please come back a bit later.
       view-all: "All Anime Shows"
+      search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
+      trending: Trending
       coming-on: "Coming on"
       description: "Description"
+      no-description: "- No available description -"
       viewing:
         description: "About this anime"
         more-info: "More info..."
@@ -147,14 +155,22 @@ en:
     history:
       to-episode: "Go to episode"
       to-show: "Go to show"
+      clear: Clear...
 
     episodes:
+      continue-watching: "Continue wating..."
       episode-number: "Episode %{number}"
       up-next: "Up next (auto-play)"
       discover: "Discover..."
       title: "You are watching: \"%{name}\""
       go-back: "Go back to \"%{name}\"..."
       last-episode: "Last episode!"
+      not-available: Not available
+      broken: Broken
+
+    other:
+      more: "More..."
+      reset: "Reset"
 
   time:
     seasons:
@@ -163,12 +179,20 @@ en:
       fall: "Fall"
       winter: "Winter"
 
-    other:
-      more: "More..."
-      reset: "Reset"
-
   user:
     welcome: "Welcome, %{user}"
+    settings:
+      form:
+        submit: Submit
+        name: Your name
+        name-prompt: How should we call you?
+        password:
+          new-password: Enter new password
+          confirm-new: Confirm new password
+          change: Change your password
+          google:
+            prompt: Hey there! It looks like you registered here with a Google account.
+            warning: This password is not the same as your Google account's password.
 
   tags:
     title: "Search by tags"

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.1'
+ruby '2.6.3'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -31,7 +31,7 @@ gem 'uglifier'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
@@ -42,12 +42,7 @@ gem 'coffee-rails'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'
-gem 'bootstrap'
 gem 'material_icons'
-
-# Template Engine
-gem "slim"
-gem "slim-rails"
 
 # Single Sign on
 gem 'omniauth'
@@ -65,9 +60,7 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
-gem 'bootstrap-will_paginate'
 gem "kaminari"
-gem 'bootstrap4-kaminari-views'
 
 # Image processing
 gem 'image_processing', '~> 1.2'
@@ -82,6 +75,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
+  gem 'rspec-rails'
 end
 
 group :development do

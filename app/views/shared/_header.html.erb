@@ -1,20 +1,48 @@
-<nav class="navbar navbar-light fixed-top bg-light shadow-sm p-3 mb-5 rounded">
-  <a class="navbar-brand" href="/">
-    <%= image_tag 'tanoshimu', width: '30px', height: '30px' %>
-  </a>
-  <div class="my-2 my-lg-0">
-    <div class="dropdown">
-      <button class="btn dropdown-toggle no-caret user-dropdown no-outline" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span style="padding-right: 10px;"><%= current_user.get_name %></span>
-        <%= avatar_tag(size: 30, style: 'border-radius: 20px;') %>
-      </button>
-      <div class="dropdown-menu dropdown-menu-right hf-dropdown" aria-labelledby="dropdownMenuButton">
-        <a class="no-underline user-profile-link px-3 pt-2 pb-2 mb-n2 mt-n1 d-block" href="#" data-ga-click="Header, go to profile, text:Signed in as">
-          <%= t('header.signed-in', username: current_user.username).html_safe %>
-        </a>
-        <div class="dropdown-divider"></div>
-        <%= link_to(t('header.settings'), settings_path, class: 'dropdown-item') %>
-        <%= link_to(t('header.logout'), logout_path, class: 'dropdown-item') %>
+
+<nav class="navbar is-spaced is-dark becomes-transparent" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <%= image_tag 'tanoshimu', class: 'logo' %>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+
+      <%= link_to(shows_path, class: 'navbar-item') do %>
+        <i class="material-icons">play_arrow</i>
+        <%= t('sidebar.anime-movies') %>
+      <% end %>
+
+      <% if current_user.is_admin? %>
+        <%= link_to(t('header.admin'), admin_path, class: 'navbar-item') %>
+      <% end %>
+    </div>
+
+    <div style="justify-content: center; display: inline; padding-top: 10px; white-space: nowrap;">
+      <%= form_tag shows_path, method: 'get' do -%>
+        <div class="control">
+          <input style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
+          <button style="left: -54px;" type="submit" class="button is-icon">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+      <% end -%>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
+            <i class="material-icons">bug_report</i>
+          <% end %>
+          <%= link_to(users_settings_path, class: 'button is-primary is-icon') do %>
+            <i class="material-icons">settings</i>
+          <% end %>
+          <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
+            <i class="material-icons">power_settings_new</i>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

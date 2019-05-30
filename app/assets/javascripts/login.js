@@ -1,5 +1,5 @@
 
-function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
+function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback) {
 
 	try {
 		params = JSON.parse(params);
@@ -34,6 +34,9 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
 
 	if (!error_p_id) {
 		console.error("Please specify an error ID.");
+		if (typeof(callback) === 'function') {
+			callback();
+		}
 		return false;
 	}
 	var error_container = document.getElementById(error_p_id);
@@ -47,6 +50,9 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
 			waiting_p_id,
 			success_p_id
 		);
+		if (typeof(callback) === 'function') {
+			callback();
+		}
 		return false;
 	}
 	var form_container = document.getElementById(form_id);
@@ -74,6 +80,9 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
 			if (!e.success) {
 				enableForm(form_container);
 				error_container.innerHTML = e.message;
+				if (typeof(callback) === 'function') {
+					callback();
+				}
 			} else {
 				success_container.innerHTML = e.message;
 				document.location.replace(e.new_url);
@@ -83,13 +92,18 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params) {
 			waiting_container.innerHTML = "";
 			enableForm(form_container);
 			error_container.innerHTML = e.message;
+			if (typeof(callback) === 'function') {
+				callback();
+			}
 		},
 		error: function(e) {
 			waiting_container.innerHTML = "";
 			enableForm(form_container);
 			error_container.innerHTML = e.toString();
+			if (typeof(callback) === 'function') {
+				callback();
+			}
 		}
 	});
 	return false;
 }
-

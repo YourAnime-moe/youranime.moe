@@ -11,19 +11,17 @@ class UsersController < AuthenticatedController
     # @last_season = Show.get_presence :season, 3, options: {previous: true}
     # @coming_soon = Show.coming_soon limit: 4
 
-    recent_shows_ids = Show.recent.map{|show| show.id}.uniq[0..6]
-    recent_shows = Show.where(id: recent_shows_ids)
-
-    @trending = force_array_to(6, Show.trending)
+    recent_shows_ids = Show.recent(limit: 1000).map{|show| show.id}.uniq[0..48]
+    @recent_shows = Show.where(id: recent_shows_ids)
     @episodes = force_array_to(6, current_user.currently_watching(limit: 6))
-    @recent = force_array_to(6, recent_shows)
-    @random = force_array_to(6, Show.get_random_shows(limit: 6).map{|id| Show.find(id)})
-    @recommended = force_array_to(6, Show.get_presence(:recommended))
   end
 
   # Going to settings
   def settings
-    set_title(before: 'Your settings')
+    @episodes = current_user.currently_watching
+    @episodes_size = @episodes.size
+    @episodes = @episodes[0..10]
+    set_title(before: t('header.settings'))
   end
 
   # Update the user

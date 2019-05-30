@@ -1,7 +1,7 @@
 <% @shows_parts.each do |shows| %>
-  <div class="row">
+  <div class="columns">
     <% shows.each_with_index do |show| %>
-      <div class="col-md-3" style="margin-top: 20px;" id="shows">
+      <div class="column is-3" style="margin-top: 20px;" id="shows">
         <% @_rule = {class: nil} %>
         <% @_thumb_info = {} %>
         <%= link_to edit_admin_show_path(show) do %>

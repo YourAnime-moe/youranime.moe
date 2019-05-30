@@ -35,11 +35,11 @@ class ApplicationController < ActionController::Base
   def google_auth
     access_token = request.env["omniauth.auth"]
     @user = User.from_omniauth(access_token)
-    
+
     # Check if the user has been registered
     if @user.persisted? && @user.google_user
       log_in(@user)
-      redirect_to "/",  notice: t('welcome.login.success.web-message')
+      redirect_to "/",  success: t('welcome.login.success.web-message')
       return
     elsif @user.persisted?
       redirect_to "/",  "Please login with your username and password."
@@ -49,30 +49,36 @@ class ApplicationController < ActionController::Base
     refresh_token = access_token.credentials.refresh_token
     @user.google_token = access_token.credentials.token
     @user.google_refresh_token = refresh_token if refresh_token.present?
-    
+
     begin
       I18n.locale = access_token.locale
     rescue
       p "Invalid locale provided by Google: #{access_token.info.locale}"
     end
-  
+
+    set_title(before: t('welcome.user', user: @user.get_name))
     render 'welcome_google'
   end
-  
+
+  def welcome_google
+@user = current_user
+      set_title(before: t('welcome.user', user: @user.get_name))
+  end
+
   def google_register
     @user = User.new(google_user_params)
     @user.limited = true
     @user.google_user = true
     if @user.save
       log_in(@user)
-      redirect_to '/', notice: t('welcome.login.success.web-message')
+      redirect_to '/', success: t('welcome.login.success.web-message')
     else
       p @user.errors_string
       render 'welcome_google', alert: @user.errors_string
     end
   end
-  
-  def 
+
+  def
 
   def login
     redirect_to "/"
@@ -180,7 +186,7 @@ class ApplicationController < ActionController::Base
       session[:locale] = I18n.locale
       reload = old.to_s != current.to_s
     end
-    res = {success: true, reload: reload, locale: {requested: current, old: old}}
+    res = {success: true, reload: reload, locale: {requested: current, old: old, current: I18n.locale}}
     p "After locale is set: #{res}"
     render json: res
   end
@@ -204,7 +210,7 @@ class ApplicationController < ActionController::Base
       I18n.locale = :fr
     end
   end
-  
+
   def google_user_params
     params.require(:user).permit(
       :name,

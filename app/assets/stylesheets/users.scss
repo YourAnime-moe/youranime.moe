@@ -29,17 +29,20 @@
   margin-right: 0;
 }
 
+.columns.no-margin {
+  margin: 0 !important;
+}
+
 .no-underline {
   text-decoration: none !important;
 }
 
 .hf-section {
   margin: 30px 0 30px 0;
-  border-bottom: 0.5px solid #e5e5e5;
 
   .thumbs-section {
     padding-top: 5px;
-    padding-bottom: 50px;
+    padding-bottom: 5px;
   }
 }
 
@@ -54,9 +57,14 @@
   margin-top: 30px;
 }
 
-.tanoshimu-list-title {
-  font-size: 1.2rem;
+.tanoshimu-list-title, .title {
+  font-size: 1.5rem;
   font-weight: bold;
+  padding-bottom: 20px;
+}
+
+.title {
+  color: #e0e0e0 !important;
 }
 
 .item {
@@ -87,6 +95,9 @@
   }
 }
 
+.settings-form, .login-form {
+  width: 60%; margin: 0 auto;
+}
 
 p.username-info {
     color: green;
@@ -101,6 +112,10 @@ p.login-time-info {
 }
 
 @media (max-width: 480px) {
+    .settings-form {
+      width: 90%;
+    }
+
     p.username-info {
         font-size: 100%;
     }

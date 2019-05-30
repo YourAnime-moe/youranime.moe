@@ -24,7 +24,6 @@
    warning: #CCC06D
  );
 
-@import "bootstrap";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @font-face {
@@ -52,23 +51,95 @@
   src: url('/fonts/fira-mono/FiraMono-Regular.otf') format("truetype");
 }
 
+.justified {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.dark-background-1 {
+  background-color: #2f2f2f !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
+}
+.dark-background-3 {
+  background-color: #37474f !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
+}
+
+html, .dark-background-2 {
+  background-color: #262626 !important;
+  strong, strong:focus {
+    color: #e0e0e0 !important;
+  }
+  strong:hover {
+    color: #fff !important;
+  }
+}
+
+.navbar.becomes-transparent {
+  background-color: #0000 !important;
+  background: -webkit-linear-gradient(top, #262626, #26262600);
+}
+
 body {
   font-family: "Poppins" !important;
   font-size: 1rem !important;
+  color: #e0e0e0 !important;
+}
+
+.text-center {
+  text-align: center !important;
 }
 
 nav.maintenance {
   background-color: #d87f11 !important;
 }
 
+img.logo {
+  height: 50px !important;
+  width: 30px !important;
+}
+
+.logo.login {
+  height: 100px !important;
+  width: 100px !important;
+}
+
 .google-btn {
-  color: #2E2F30;
+  color: #e0e0e0;
   border: none;
   border-radius: 2px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
   padding: 10px 25px;
   font-size: small;
   text-decoration: none !important;
+
+  img {
+    vertical-align: middle;
+  }
+}
+
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
 }
 
 .material-icons.scale {
@@ -86,8 +157,26 @@ nav.maintenance {
   align-items: center;
 }
 
+.hide, .hidden {
+  display: none !important;
+}
+
 .btn {
   border-radius: 40px;
+}
+
+.pos-inherit {
+  position: inherit !important;
+}
+
+.no-click, .current {
+  cursor: default !important;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 
 .noselect {
@@ -118,7 +207,7 @@ nav.maintenance {
 
 .no-overflow {
   overflow: hidden !important;
-  
+
   .progress {
     height: 3px;
     display: none;
@@ -136,6 +225,21 @@ nav.maintenance {
 
 .clickable {
   cursor: pointer;
+}
+
+.locale-switcher:not(.current):not(.is-loading) {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.locale-switcher.current {
+  text-decoration: underline;
+}
+
+.locale-switcher.is-loading {
+  cursor: progress;
+  font-weight: normal;
+  font-style: italic;
 }
 
 .holder {

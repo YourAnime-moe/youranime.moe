@@ -16,9 +16,14 @@ class EpisodesController < AuthenticatedController
       redirect_to show_path(show)
       return
     end
+    if current_user.google_user && @episode.restricted?
+      flash[:warning] = "As a Google user, you are not permitted to watch this episode. Please contact the admins."
+      redirect_to show_path(show)
+      return
+    end
     set_title before: t('anime.episodes.title', name: @episode.get_title), after: show.get_title
   end
-  
+
   def update
     episode = Episode.find(params[:id])
     progress = episode_params[:progress].to_f
@@ -29,9 +34,9 @@ class EpisodesController < AuthenticatedController
       progress: progress
     }
   end
-  
+
   private
-  
+
   def episode_params
     params.require(:episode).permit(
       :progress

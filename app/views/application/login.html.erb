@@ -5,57 +5,85 @@
 <% succ_cont_id = 'success-message' %>
 
 
-<div class="text-center">
-  <div class="vertical-center">
-    <div class="wrapper tanoshimu-login">
-      <div class="card shadow p-3 mb-5 bg-white rounded">
-        <div class="text-center">
-          <%= image_tag 'tanoshimu', class: 'logo' %>
-        </div>
-        <h4 title='Means "to have fun" (楽しむ) in Japanese.'>
-          <%= t('welcome.title') %>
-        </h4>
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4">
+        <h3 class="title has-text-grey"><%= t('welcome.title') %></h3>
+        <p class="has-text-grey"><%= t('welcome.catch-phrase') %></p>
+        <div class="card" style="padding: 30px; margin-top: 10px;">
+          <figure class="avatar is-rounded">
+              <%= image_tag 'tanoshimu', class: 'login logo' %>
+          </figure>
 
-        <p class="text-muted"><%= t('welcome.catch-phrase') %></p>
-
-        <div class="container">
-          <div id="login-messages" class="center login-messages small">
+          <div id="login-messages" class="text-center login-messages small" style="padding: 13px;">
             <div class="text-danger">
-              <span id="error-message"></span>
+              <span id="error-message" class="has-text-danger"></span>
             </div>
             <div class="text-warning">
-              <span id="waiting-message"></span>
+              <span id="waiting-message" class="has-text-warning"></span>
             </div>
             <div class="text-success">
-              <span id="success-message"></span>
+              <span id="success-message" class="has-text-success"></span>
             </div>
           </div>
 
-          <form id="login-form" class="form-signin" onsubmit="return login('<%= error_cont_id %>', '<%= wait_cont_id %>', '<%= succ_cont_id %>', this.getAttribute('id'), '<%= @params.to_json %>')">
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" class="validate form-control" placeholder="Username" autofocus>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" class="validate form-control" placeholder="Password">
+          <form id="login-form" class="form-signin" onsubmit="return false;">
+            <div class="field">
+              <div class="control">
+                <input type="text" id="username" class="input is-rounded is-dark" placeholder="<%= t('welcome.login.username') %>" autocomplete="off" autofocus>
+              </div>
+            </div>
 
-            <div style="margin-top: 10px;">
-              <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+            <div class="field">
+              <div class="control">
+                <input type="password" id="password" class="input is-rounded is-dark" placeholder="<%= t('welcome.login.password') %>">
+              </div>
+            </div>
+            <div style="margin-top: 10px;"
+              <button class="button is-fullwidth is-primary" type="submit"><%= t('welcome.login.login') %></button>
             </div>
 
             <div class="text-center" style="margin-top: 20px;">
-              <p>- Or -</p>
+              <p style="margin-bottom: 10px;" style="color: #e0e0e0;">- <%= t('welcome.login.google-or') %> -</p>
               <div>
                 <%= link_to '/auth/google_oauth2', class: 'google-btn' do %>
                   <img width="20px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
-                  Sign in with Google
+                  <%= t('welcome.login.google-login') %>
                 <% end %>
               </div>
             </div>
           </form>
+          <div class="hf-section">
+            <%= render 'shared/language_change' %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var $submit = $('[type="submit"]');
+    $('#login-form').find('input').keypress(function(e) {
+       // Enter pressed?
+       if(e.which == 10 || e.which == 13) {
+         $submit.trigger('click');
+       }
+     });
+
+     $submit.on('click', function() {
+      execLogin();
+     });
+
+     function execLogin() {
+       $submit.hide();
+       login('error-message', 'waiting-message', 'success-message', 'login-form', '<%= @params.to_json %>', function() {
+         $submit.show();
+       });
+     }
+  });
+</script>
 
 <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-

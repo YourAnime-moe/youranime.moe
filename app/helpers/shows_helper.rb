@@ -3,7 +3,9 @@ module ShowsHelper
   def show_tags(show)
     return '' if show.tags.blank?
     links = show.get_tags.map{|t| t.downcase.to_sym}.map do |tag|
-      link_to(Utils.tags[tag], '#', class: 'btn tag')
+      tag = Utils.tags[tag]
+      next if tag.blank?
+      link_to(tag, '#', class: 'button tag is-rounded is-dark')
     end
     content_tag(:div, class: 'tags-container') do
       links.join('').html_safe
@@ -17,18 +19,32 @@ module ShowsHelper
     end
   end
 
-  def check_episode_broken(episode)
+  def check_episode_available(episode)
     return '' if episode.class != Episode
-    return content_tag(:span) if episode.video.attached?
-
-    content_tag :div, class: 'sub-dub-holder' do
-      broken_tag
+    if episode.unrestricted?
+      if episode.has_video?
+        content_tag(:span)
+      else
+        content_tag :div, class: 'sub-dub-holder' do
+          broken_tag
+        end
+      end
+    else
+      if current_user.google_user
+        content_tag :div, class: 'sub-dub-holder' do
+          restricted_tag
+        end
+      else
+        content_tag(:span)
+      end
     end
   end
 
   def check_episode_cc(episode)
     return '' if episode.class != Episode
-    return '' unless episode.has_valid_subtitles?
+    return '' unless episode.has_subtitles?
+
+    return content_tag(:spam) if restricted?(episode)
 
     content_tag :div, class: 'captions-holder' do
       badge(type: 'info', content: 'captions')
@@ -47,11 +63,11 @@ module ShowsHelper
   end
 
   def dub_tag
-    badge(type: 'success', content: "dub")
+    badge(type: 'warning', content: t('anime.shows.dub'))
   end
 
   def sub_tag
-    badge(type: 'danger', content: "sub")
+    badge(type: 'primary', content: t('anime.shows.sub'))
   end
 
   def broken_tag
@@ -59,14 +75,25 @@ module ShowsHelper
       content_tag(:i, class: 'material-icons', style: "font-size: 12px;") do
         "close"
       end + content_tag(:span) do
-        " broken"
+        " #{t('anime.episodes.broken')}"
+      end
+    end
+    badge(type: 'danger', content: content)
+  end
+
+  def restricted_tag
+    content = content_tag(:span) do
+      content_tag(:i, class: 'material-icons', style: "font-size: 12px;") do
+        "close"
+      end + content_tag(:span) do
+        " #{t('anime.episodes.not-available')}"
       end
     end
     badge(type: 'danger', content: content)
   end
 
   def badge(type: nil, content: nil)
-    content_tag :span, class: "badge badge-#{type}" do
+    content_tag :span, class: "tag is-#{type}" do
       content
     end
   end
@@ -111,14 +138,14 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{rules[:display]}") +
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{"not-avail" if restricted?(show)} #{rules[:display]}") +
       show_thumb_description(show)).html_safe
     end
   end
 
   def top_badges(show)
     content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
-      check_episode_broken(show).html_safe +
+      check_episode_available(show).html_safe +
       sub_dub_holder(show) +
       check_episode_cc(show)
     end
