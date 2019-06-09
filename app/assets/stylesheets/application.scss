@@ -102,6 +102,10 @@ body {
   color: #e0e0e0 !important;
 }
 
+.navbar-item {
+  user-select: none;
+}
+
 .text-center {
   text-align: center !important;
 }
@@ -370,6 +374,17 @@ img.logo {
 
 .padded {
   padding: 40px;
+}
+
+.logo {
+  user-select: none;
+
+  .logo-title {
+    padding-left: 10px;
+    font-size: 150%;
+    font-style: italic;
+    color: #777 !important;
+  }
 }
 
 @media (max-width: 992px) {

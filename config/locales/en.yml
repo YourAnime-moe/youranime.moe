@@ -136,6 +136,7 @@ en:
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
       trending: Trending
+      trending-what: The most popular here
       coming-on: "Coming on"
       description: "Description"
       no-description: "- No available description -"

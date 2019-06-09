@@ -55,3 +55,7 @@
     <%= episode_tag(@episode) %>
   </div>
 </div>
+
+<% unless Rails.env.prodution? %>
+  <script>document.oncontextmenu = () => false;</script>
+<% end %>

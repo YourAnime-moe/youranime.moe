@@ -12,34 +12,31 @@
             z-index: -1;
         }
     </style>
-    <div class="vertical-center in-maintenance">
-        <div class="wrapper">
-        <div class="center">
-            <h4>HaveFun (Tanoshimu) - In maintenance</h4>
-            <p class="catch-phrase">
-                We are currently in maintenance. We appolozige for the incovenience.
-            </p>
-
-            <div class="container">
-                <div class="container">
-                    <div class="row">
-                        <button class="btn btn-floating" value="reload" id="reload">
-                            <i class="material-icons prefix">loop</i>
-                            Reload
-                        </button>
-                    </div>
+    <section class="hero is-fullheight-with-navbar">
+      <div class="hero-head">
+        <header class="navbar">
+          <div id="navbarMenuHeroC" class="navbar-menu">
+            <div class="navbar-end">
+              <span class="navbar-item">
+                <div class="buttons">
+                  <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
+                    <i class="material-icons">power_settings_new</i>
+                  <% end %>
                 </div>
+              </span>
             </div>
+          </div>
+        </header>
+      </div>
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            HaveFun (Tanoshimu) - In maintenance
+          </h1>
+          <h2 class="subtitle">
+            We are currently in maintenance. We appolozige for the incovenience.
+          </h2>
         </div>
-        </div>
-        <script type="text/javascript">
-            $('document').ready(function() {
-                $('#reload').on('click', function(e) {
-                    document.location.reload();
-                });
-            });
-        </script>
-        
-    </div>
+      </div>
+    </section>
 </div>
-

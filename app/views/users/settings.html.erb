@@ -8,7 +8,7 @@
             <figure class="image">
               <%= avatar_tag(size: 200, class: 'is-rounded') %>
             </figure>
-            <a href="#" class="button is-icon is-dark">
+            <a href="#" class="hide button is-icon is-dark">
               <i class="material-icons">add_photo_alternate</i>
             </a>
           </div>
@@ -47,7 +47,7 @@
       <% if @episodes_size > 0 %>
         <div class="justified w-100">
           <span class="title"><%= t('header.history') + " (#{@episodes_size})" %></span>
-          <div><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
+          <div class="hide"><%= link_to(t('anime.history.clear'), '#', class: 'button is-danger') %></div>
         </div>
       <% end %>
 

@@ -16,6 +16,7 @@ $(document).ready(function() {
   var $paused_btn = null;
   var subtitlesMenu = null;
   var subtitlesMenuButtons = [];
+  var videoPlaying = false;
 
   const show_id = $('.video-body').attr('show-id');
   const episode_id = $('.video-body').attr('episode-id');
@@ -44,8 +45,8 @@ $(document).ready(function() {
     $('[go-to-episode]').on('click', goToEpisode);
     $('[hf-action]').on('click', execHfAction);
 
-    $('.video-clickable-zone').on('click', toggleControls);
-    //$('.video-clickable-zone').on('dblclick', toggleFullscreen);
+    $('.video-clickable-zone').on('click', togglePlayPause);
+    $('.video-clickable-zone').on('dblclick', toggleFullscreen);
     $progressBar.on('click', seek);
     $video.on('play', onPlay);
     $video.on('timeupdate', onProgress);
@@ -222,31 +223,39 @@ $(document).ready(function() {
         $('time').children('.hours').hide();
       }
       $('time').children('.duration').text(min_sec);
+    }
 
-      var currentTimeInt = parseInt(currentTime);
-      var durationInt = parseInt(duration);
-      var ratio = (currentTime / durationInt) * 100;
-      if (savingProgress || currentTimeInt % 8 != 0) {
-         return;
-      } else {
-        savingProgress = true;
+    function getCurrentProgressRatio() {
+      var video = $video.get(0);
+      var duration = parseInt(video.duration);
+      var currentTime = video.currentTime;
+      return (currentTime / duration) * 100;
+    }
+
+    (function worker() {
+      var ratio = getCurrentProgressRatio();
+
+      if (!videoPlaying || ratio == 0) {
+        setTimeout(worker, 5000);
+        return;
       }
 
       $.ajax({
         type: 'PUT',
         url: '/shows/' + show_id + '/episodes/' + episode_id,
         data: {episode: {progress: ratio}},
-        success: function(result) {
+        success: function(data) {
         },
         complete: function() {
-          savingProgress = false;
+          setTimeout(worker, 5000);
         }
       });
-    }
+    })();
 
     function onPlay(e) {
       $playing_btn.addClass('active');
       $paused_btn.removeClass('active');
+      videoPlaying = true;
     }
 
     function seek(e) {
@@ -265,6 +274,7 @@ $(document).ready(function() {
     function onPause(e) {
       $playing_btn.removeClass('active');
       $paused_btn.addClass('active');
+      videoPlaying = false;
     }
 
     function onEnded() {
