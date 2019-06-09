@@ -68,6 +68,16 @@ gem 'image_processing', '~> 1.2'
 # Subtitle parsing
 gem 'webvtt'
 
+# Code quality
+gem 'rubocop', require: false
+gem 'ruby-lint'
+gem 'reek'
+gem 'fasterer'
+gem 'debride'
+
+# ActiveOperation
+gem 'active_operation'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

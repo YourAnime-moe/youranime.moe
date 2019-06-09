@@ -150,10 +150,12 @@ $(document).ready(function() {
       data: {locale: locale, set_at_first: force},
       success: function(res) {
         var current_switcher = document.querySelector('[locale-switcher="' + res.locale.current + '"]');
-        current_switcher.classList.add('current');
-        console.log(res);
-        if (res.reload) {
-          location.href = location.href;
+        if (current_switcher) {
+          current_switcher.classList.add('current');
+          console.log(res);
+          if (res.reload) {
+            location.href = location.href;
+          }
         }
       }
     })

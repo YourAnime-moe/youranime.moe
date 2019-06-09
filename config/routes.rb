@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   root 'application#root'
 
   get '/google' => 'application#welcome_google'
@@ -15,11 +16,11 @@ Rails.application.routes.draw do
   end
 
   # API interface
-  namespace :api, defaults: {format: :json} do
+  namespace :api, defaults: { format: :json } do
     get '/', to: "v#{Config.api_version}/default_action#home"
     namespace "v#{Config.api_version}" do
-      resources :session, only: [:create, :show, :destroy], param: :token
-      resources :shows, only: [:index, :show] do
+      resources :session, only: %i[create show destroy], param: :token
+      resources :shows, only: %i[index show] do
         resources :episodes, only: [:index]
         get :search, on: :collection
         get :latest, on: :collection
@@ -31,22 +32,22 @@ Rails.application.routes.draw do
 
       resources :users, only: [:index]
     end
-    match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, :constraints => { :all => /.*/ }
+    match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, constraints: { all: /.*/ }
   end
 
   # Issues
-  resources :issues, only: [:index, :new] do
+  resources :issues, only: %i[index new] do
     delete :close
     post :open, on: :collection
   end
 
   # Shows
-  resources :shows, only: [:index, :show] do
+  resources :shows, only: %i[index show] do
     get :history, on: :collection
     get :movies, on: :collection
 
     # Episodes
-    resources :episodes, only: [:show, :update]
+    resources :episodes, only: %i[show update]
   end
 
   # User links
@@ -57,7 +58,7 @@ Rails.application.routes.draw do
   end
 
   # Locale management
-  get '/get/current/locale' => 'application#get_locale'
+  get '/get/current/locale' => 'application#locale'
   put '/set/current/locale' => 'application#set_locale'
 
   # Google OAuth2
@@ -68,5 +69,4 @@ Rails.application.routes.draw do
   get '/login' => 'application#root'
   get '/logout' => 'application#logout'
   post '/login' => 'application#login_post'
-
 end

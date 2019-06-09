@@ -115,6 +115,7 @@ fr:
       search-result: "Résultats de recherche : %{count} trouvé(s)"
       coming-soon: "À venir !"
       trending: Populaire
+      trending-what: Ce que tout le monde aime regarder
       coming-on: "Arrive le"
       description: "Description"
       no-description: "- Aucune description disponible -"

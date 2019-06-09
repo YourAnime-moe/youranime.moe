@@ -1,7 +1,9 @@
-class Episode < ApplicationRecord
+# frozen_string_literal: true
 
+class Episode < ApplicationRecord
   has_one_attached :video
   has_one_attached :thumbnail
+  has_one :user_watch_progress
   has_many :views, class_name: 'UserWatchProgress'
   has_many :subtitles
   belongs_to :show
@@ -11,7 +13,8 @@ class Episode < ApplicationRecord
   scope :published, -> { joins(:show).where("shows.published = 't'") }
 
   def get_title
-    return title unless title.blank?
+    return title if title.present?
+
     "Episode #{episode_number}"
   end
 
@@ -20,7 +23,7 @@ class Episode < ApplicationRecord
   end
 
   def unrestricted?
-    !!(show&.episodes[0..2].include?(self))
+    !!show&.episodes[0..2].include?(self)
   end
 
   def restricted?
@@ -28,11 +31,12 @@ class Episode < ApplicationRecord
   end
 
   def has_subtitles?
-    subtitles.select{|subtitle| subtitle.src.attached?}.size > 0
+    !subtitles.select { |subtitle| subtitle.src.attached? }.empty?
   end
 
   def next
     return nil unless show
+
     show.episodes.where(['episode_number > ?', episode_number]).first
   end
 
@@ -41,9 +45,10 @@ class Episode < ApplicationRecord
       begin
         path = "videos/#{show.roman_title}/ep#{episode_number}"
         return thumbnail if path.nil? || File.directory?(path)
+
         thumbnail.attach(io: File.open(path), filename: "episode-#{id}")
       rescue Errno::ENOENT => e
-        puts "Oh no!! The episode thumbnail was not found! #{e}"
+        Rails.logger.error "Oh no!! The episode thumbnail was not found! #{e}"
         raise e if raise_exception
       end
     end
@@ -52,8 +57,21 @@ class Episode < ApplicationRecord
 
   def get_thumbnail_url
     thumbnail = get_thumbnail
-    return "https://anime.akinyele.ca/img/404.jpg" unless thumbnail.attached?
-    get_thumbnail.service_url
+    return 'https://anime.akinyele.ca/img/404.jpg' unless thumbnail.attached?
+
+    get_thumbnail.service_url(expires_in: 3.days)
+  end
+
+  def thumbnail_url
+    return self['thumbnail_url'] if self['thumbnail_url']
+
+    'https://anime.akinyele.ca/img/404.jpg'
+  end
+
+  def generate_urls!(force: false)
+    return true if thumbnail_url? && !force
+
+    update(thumbnail_url: get_thumbnail_url)
   end
 
   def has_video?
@@ -65,9 +83,10 @@ class Episode < ApplicationRecord
       begin
         path = "videos/#{show.roman_title}/ep#{episode_number}"
         return video if path.nil? || File.directory?(path)
+
         video.attach(io: File.open(path), filename: "episode-#{id}")
       rescue Errno::ENOENT => e
-        puts "Oh no!! The episode video was not found! #{e}"
+        Rails.logger.error "Oh no!! The episode video was not found! #{e}"
         raise e if raise_exception
       end
     end
@@ -76,19 +95,28 @@ class Episode < ApplicationRecord
 
   def get_video_url(expires_in: 500.minutes)
     video = get_video
-    return "https://anime.akinyele.ca/img/404.mp4" unless video.attached?
+    return 'https://anime.akinyele.ca/img/404.mp4' unless video.attached?
+
     get_video.service_url(expires_in: expires_in)
   end
 
   def set_progress(current_user, progress)
-    video.attached? && progress(current_user).update(progress: progress)
+    return false unless video.attached?
+
+    user_progress = progress(current_user)
+    if user_progress.persisted?
+      user_progress.update(progress: progress)
+    else
+      user_progress.progress = progress
+      user_progress.save
+    end
   end
 
   def progress(current_user)
-    UserWatchProgress.find_or_create_by(episode_id: id, user_id: current_user.id)
+    UserWatchProgress.find_by(episode_id: id, user_id: current_user.id) || UserWatchProgress.new(progress: 0)
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options[:ignore_urls] = options[:ignore_urls].nil? || options[:ignore_urls]
     json = {
       id: id,
@@ -97,16 +125,16 @@ class Episode < ApplicationRecord
       show_id: show_id
     }
     unless options[:ignore_urls]
-      json.merge({
+      json.merge(
         thumbnail: get_thumbnail_url,
         video: get_video_url
-      })
+      )
     end
     json
   end
 
   def self.clean_up
-    self.all.each do |episode|
+    all.each do |episode|
       p "Cleaning thumbnail for episode id #{episode.id}"
       episode.thumbnail.purge if episode.thumbnail.attached?
       p "Making thumbnail for episode id #{episode.id}"
@@ -119,7 +147,7 @@ class Episode < ApplicationRecord
   end
 
   def self.remove_all_media
-    self.all.each do |episode|
+    all.each do |episode|
       p "Cleaning thumbnail for episode id #{episode.id}"
       episode.thumbnail.purge if episode.thumbnail.attached?
       p "Cleaning video for episode id #{episode.id}"
@@ -127,4 +155,9 @@ class Episode < ApplicationRecord
     end
   end
 
+  class DummyProgress
+    def progress
+      0
+    end
+  end
 end

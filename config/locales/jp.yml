@@ -99,6 +99,7 @@ jp:
       search-result: 検索の結果は%{count}件です
       coming-soon: "近日公開予定"
       trending: 人気アニメ
+      trending-what: タノシムには流行しているアニメです
       coming-on: "近日公開予定日付は"
       description: "概要"
       no-description: "- 概要なし -"
