@@ -1,12 +1,13 @@
-module ApplicationHelper
+# frozen_string_literal: false
 
+module ApplicationHelper
   def back_index
     {
       from: {
-        "history" => "/shows/history"
+        'history' => '/shows/history'
       },
       title: {
-        "history" => "episode history"
+        'history' => 'episode history'
       }
     }
   end
@@ -16,7 +17,7 @@ module ApplicationHelper
     ('logged-in' if logged_in?).to_s
   end
 
-  def get_back_url(params, default=nil)
+  def get_back_url(params, default = nil)
     _get_back params, :from, default
   end
 
@@ -26,6 +27,7 @@ module ApplicationHelper
 
   def _get_back(params, key, default)
     return back_index[key][params[:from]] || default if params[:from]
+
     default
   end
 
@@ -35,37 +37,43 @@ module ApplicationHelper
 
   def login_time
     return nil unless logged_in?
+
     @login_time ||= session[:user_login_time]
-    return "None" if @login_time.nil?
+    return 'None' if @login_time.nil?
+
     Utils.get_date_from_time(Time.parse(@login_time).getlocal)
   end
 
   def update
-    ENV["UPDATE"] || "2017/01/19"
+    ENV['UPDATE'] || '2017/01/19'
   end
 
   def is_watching_something(what)
     return !session[:currently_watching].nil? if what.nil?
+
     what = what.to_s
     return false if session[:currently_watching].nil?
+
     !session[:currently_watching][what].nil?
   end
 
   def current_episode
     return nil if session[:currently_watching].nil?
-    @current_episode ||= Episode.find(session[:currently_watching]["episode"])
+
+    @current_episode ||= Episode.find(session[:currently_watching]['episode'])
   end
 
   def current_admin_show_id
     return -1 unless logged_in? && current_user.is_admin?
+
     @current_show_id ||= session[:current_show_id]
     if @current_show_id.nil?
       shows = Show.all_published
-      if !shows.blank?
-        select_show = shows[0].id;
-      else
-        select_show = Show.first.nil? ? -1 : @select_show.id
-      end
+      select_show = if shows.present?
+                      shows[0].id
+                    else
+                      Show.first.nil? ? -1 : @select_show.id
+                    end
       @current_show_id = select_show
       current_admin_show_id = select_show
     end
@@ -75,31 +83,28 @@ module ApplicationHelper
   def set_current_admin_show_id(id)
     p "Now: #{current_admin_show_id}"
     return false unless logged_in? && current_user.is_admin?
+
     @current_show_id = id
     session[:current_show_id] = id
     p "After: #{current_admin_show_id}"
   end
 
-  def current_action(action=nil)
+  def current_action(action = nil)
     @action ||= action
   end
 
-  def current_controller(controller=nil)
+  def current_controller(controller = nil)
     @controller ||= controller
   end
 
   def set_title(before: nil, after: nil, reset: true, home: false)
     @app_title = nil if reset
     if @app_title.nil?
-      @app_title = "Private" if home == true
+      @app_title = 'Private' if home == true
       @app_title = t('app.name') if home == false
     end
-    unless before.nil?
-      @app_title = "#{before} | #{@app_title}"
-    end
-    unless after.nil?
-      @app_title << " | #{after}"
-    end
+    @app_title = "#{before} | #{@app_title}" unless before.nil?
+    @app_title << " | #{after}" unless after.nil?
     @app_title
   end
 
@@ -117,6 +122,7 @@ module ApplicationHelper
 
   def current_token
     return nil unless logged_in?
+
     current_user.auth_token
   end
 
@@ -131,9 +137,7 @@ module ApplicationHelper
 
   def log_in(user)
     session[:user_id] = user.id
-    session[:user_login_time] = Time.now
-    return if Config.slack_client.nil?
-    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN IN] User #{user.username}-#{user.id} at #{Time.now}!")
+    session[:user_login_time] = Time.zone.now
   end
 
   def log_out
@@ -149,7 +153,7 @@ module ApplicationHelper
   end
 
   def is_maintenance_activated?
-    ENV["TANOSHIMU_MAINTENANCE"] == "true"
+    ENV['TANOSHIMU_MAINTENANCE'] == 'true'
   end
 
   def maintenance_activated?(user: nil)
@@ -161,27 +165,26 @@ module ApplicationHelper
     end
   end
 
-  def episode_path(episode, *args, **options)
+  def episode_path(episode, *_args, **options)
     path = "/shows/#{episode.show.id}/episodes/#{episode.id}"
-    if options[:format]
-      path << "." << options[:format].to_s
-    end
+    path << '.' << options[:format].to_s if options[:format]
     path
   end
 
-  def svg_tag(icon, css_class: "")
+  def svg_tag(icon, css_class: '')
     content_tag(:svg, class: "icon icon_#{icon} #{css_class}") do
-        content_tag(:use, nil, 'xlink:href' => "#icon_#{icon}")
+      content_tag(:use, nil, 'xlink:href' => "#icon_#{icon}")
     end
   end
 
   private
+
   def _logout
     user = current_user
     session.delete(:user_id)
     session.delete(:current_show_id)
     return if Config.slack_client.nil?
-    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.now}.")
-  end
 
+    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.zone.now}.")
+  end
 end

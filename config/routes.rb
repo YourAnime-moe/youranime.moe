@@ -69,4 +69,12 @@ Rails.application.routes.draw do
   get '/login' => 'application#root'
   get '/logout' => 'application#logout'
   post '/login' => 'application#login_post'
+
+  constraints(host: /localhost|0.0.0.0/) do
+    match '/prod' => redirect('https://anime.akinyele.ca'), via: [:get]
+  end
+
+  constraints(host: /\w+\.herokuapp.com/) do
+    match '/(*path)' => redirect { |params, _| "http://bar.tld/#{params[:path]}" }, via: :all
+  end
 end

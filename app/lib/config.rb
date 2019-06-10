@@ -1,5 +1,6 @@
-module Config
+# frozen_string_literal: true
 
+module Config
   class Error < StandardError
   end
 
@@ -33,42 +34,46 @@ module Config
   mattr_accessor :bulma_version
   @@bulma_version = nil
 
+  mattr_accessor :authorized_locales
+  @@authorized_locales = %w[en fr ja jp]
+
   class << self
     # <protocol>://<subdomain>.<domain>:<port>/<path>
     def main_host(as_is: false)
       return if domain.nil?
+
       _protocol = use_ssl ? 'https' : (protocol || 'http')
       _port = use_ssl ? 443 : (port || 80)
       host = ''
       host = _protocol + '://' unless as_is
       host << (sub_domain + '.') if sub_domain
       host << domain
-      host << (":#{_port}") unless port.nil?
+      host << ":#{_port}" unless port.nil?
       host
     end
 
     def slack_client
       return @slack_client unless @slack_client.nil?
+
       @slack_client = Slack::Web::Client.new
       begin
         @slack_client.auth_test
-      rescue Slack::Web::Api::Errors::SlackError => e
-        warn "Could not auth to Slack. Are you connected?"
+      rescue Slack::Web::Api::Errors::SlackError
+        warn 'Could not auth to Slack. Are you connected?'
         @slack_client = nil
       end
     end
 
     def path(path, as_is: false)
-      main = self.main_host(as_is: as_is).dup
+      main = main_host(as_is: as_is).dup
       return path if main.blank?
-      if !main.end_with? "/" and !path.start_with? "/"
-        main << "/"
-      end
+
+      main << '/' if !main.end_with?('/') && !path.start_with?('/')
       main + path
     end
 
     def google_client_id
-      ENV["GOOGLE_OAUTH_CLIENT_ID"]
+      ENV['GOOGLE_OAUTH_CLIENT_ID']
     end
 
     def setup

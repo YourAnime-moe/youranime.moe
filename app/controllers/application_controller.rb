@@ -3,21 +3,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_action :redirect_if_old
   before_action :find_locale
   before_action :check_is_in_maintenance_mode!, except: [:logout]
-
-  before_action do
-    # if logged_in?
-    #  logout
-    # end
-    cont = params['controller'] || params[:controller]
-    act = params['action'] || params[:action]
-    @par = params
-    current_controller(cont) if cont
-    current_action(act) if act
-    @body_class = 'container-fluid'
-  end
 
   include ApplicationHelper
 
@@ -37,31 +24,18 @@ class ApplicationController < ActionController::Base
   end
 
   def google_auth
-    access_token = request.env['omniauth.auth']
-    @user = User.from_omniauth(access_token)
-
-    # Check if the user has been registered
-    if @user.persisted? && @user.google_user
+    google_auth = User::GoogleAuth.perform(
+      access_token: request.env['omniauth.auth']
+    )
+    if google_auth.output
+      set_title(before: t('welcome.user', user: @user.get_name))
+      render 'welcome_google'
+    else
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')
-      return
-    elsif @user.persisted?
-      redirect_to '/', 'Please login with your username and password.'
-      return
     end
-
-    refresh_token = access_token.credentials.refresh_token
-    @user.google_token = access_token.credentials.token
-    @user.google_refresh_token = refresh_token if refresh_token.present?
-
-    begin
-      I18n.locale = access_token.locale
-    rescue StandardError
-      Rails.logger.error "Invalid locale provided by Google: #{access_token.info.locale}"
-    end
-
-    set_title(before: t('welcome.user', user: @user.get_name))
-    render 'welcome_google'
+  rescue User::GoogleAuth::NotGoogleUser
+    redirect_to '/', danger: t('welcome.google.not-google')
   end
 
   def welcome_google
@@ -77,14 +51,9 @@ class ApplicationController < ActionController::Base
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')
     else
-      p @user.errors_string
+      Rails.logger.error @user.errors_string
       render 'welcome_google', alert: @user.errors_string
     end
-  end
-
-  def
-  def(_login)
-    redirect_to '/'
   end
 
   def logout
@@ -93,63 +62,18 @@ class ApplicationController < ActionController::Base
   end
 
   def login_post
-    username = params[:username].strip.downcase
-    password = params[:password].strip
-
-    controller = params[:ccontroller]
-    action = params[:caction]
-
-    render json: { message: t('welcome.login.errors.no-username-and-password') } if username.empty? && password.empty?
-    render json: { message: t('welcome.login.errors.no-username') } if !password.empty? && username.empty?
-    render json: { message: t('welcome.login.errors.no-password') } if !username.empty? && password.empty?
-
-    return if username.empty? || password.empty?
-
-    user = User.find_by(username: username.downcase)
-    if user.nil?
-      render json: { message: t('welcome.login.errors.unknown-user', attempt: username.downcase) }
-    else
-      if user.authenticate(password)
-        if !user.is_admin? && maintenance_activated?(user: user)
-          render json: { message: 'Sorry, this site is undergoing maintenance as we speak! Please check back later.', success: false }
-          return
-        end
-        user.regenerate_auth_token if user.auth_token.nil?
-        unless user.is_activated?
-          render json: { message: 'Please go to the <a href="https://my-akinyele-admin.herokuapp.com" target="_blank">admin console</a> to get started.', success: false }
-          return
-        end
-        log_in user
-        if controller && action
-          p "Alternate url detected: c = #{controller} - a = #{action}"
-          begin
-            new_url = url_for controller: controller, action: action, only_path: true
-          rescue ActionController::UrlGenerationError => e
-            warn "Error: #{e}"
-            new_url = '/'
-          end
-          new_url += '?'
-          params.each do |k, v|
-            if !k.to_s.include?('controller') && !k.to_s.include?('action') && k != 'username' && k != 'password'
-              new_url += "#{k}=#{v}&"
-            end
-          end
-          render json: { new_url: new_url, message: t('welcome.login.success.web-message'),  success: true }
-        else
-          render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
-        end
-      else
-        render json: { message: t('welcome.login.errors.wrong-password', user: username.downcase) }
-      end
-    end
+    user = User::Login.perform(
+      username: params[:username].strip.downcase,
+      password: params[:password].strip
+    )
+    log_in(user)
+    render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
+  rescue User::Login::LoginError => e
+    render json: { message: t(e.message) }
   end
 
   def locale
     render json: { success: true, locale: I18n.locale }
-  end
-
-  def authorized_locales
-    %w[en fr ja jp]
   end
 
   def set_locale
@@ -159,30 +83,21 @@ class ApplicationController < ActionController::Base
     if session[:locale].nil? || params[:set_at_first] == 'true'
       session[:locale] = current
       found_locale = false
-      authorized_locales.each do |auth_locale|
+      Config.authorized_locales.each do |auth_locale|
         next unless current.include?(auth_locale)
 
         current = auth_locale
-        p "Set locale #{auth_locale}"
+        Rails.logger.info "Set locale #{auth_locale}"
         found_locale = true
         next
       end
-      p "Set locale #{current}"
+      Rails.logger.info "Set locale #{current}"
       I18n.locale = current if found_locale
       session[:locale] = I18n.locale
       reload = old.to_s != current.to_s
     end
     res = { success: true, reload: reload, locale: { requested: current, old: old, current: I18n.locale } }
-    p "After locale is set: #{res}"
     render json: res
-  end
-
-  protected
-
-  def redirect_if_old
-    if request.host == 'tanoshimu.herokuapp.com'
-      redirect_to "https://anime.akinyele.ca#{request.fullpath}", status: :moved_permanently
-    end
   end
 
   private

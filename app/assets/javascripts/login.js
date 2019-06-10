@@ -70,9 +70,19 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback
 	disableForm(form_container);
 	error_container.innerHTML = "";
 
+	var next = location.search;
+	if (next) {
+		next = next.substring(1, next.length);
+	}
+
 	$.ajax({
 		url: '/login',
 		method: 'post',
+		data: {
+			username: one,
+			password: two,
+			next: next
+		},
 		data: 'username=' + one + '&password=' + two + '&' + params,
 		success: function(e) {
 			waiting_container.innerHTML = "";
