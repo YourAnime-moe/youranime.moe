@@ -13,12 +13,6 @@ class ApplicationController < ActionController::Base
       redirect_to '/users/home'
     else
       set_title after: t('welcome.text'), before: t('welcome.login.login')
-      @params = {}
-      params.each do |k, v|
-        next if %w[controller action].include? k
-
-        @params[k] = v
-      end
       render 'login'
     end
   end

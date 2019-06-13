@@ -75,6 +75,6 @@ Rails.application.routes.draw do
   end
 
   constraints(host: /\w+\.herokuapp.com/) do
-    match '/(*path)' => redirect { |params, _| "http://bar.tld/#{params[:path]}" }, via: :all
+    match '/(*path)' => redirect { |params, _| "https://anime.akinyele.ca/#{params[:path]}" }, via: :all
   end
 end
