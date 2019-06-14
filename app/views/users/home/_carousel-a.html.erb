@@ -8,7 +8,7 @@
       <% show = Show.find_by id: show_id %>
       <% next if show.nil? %>
       <a class="carousel-item" href="/shows?id=<%= show_id %>">
-        <%= image_tag show.get_banner_url, style: "object-fit: cover;" %>
+        <%= image_tag show.banner_url, style: "object-fit: cover;" %>
       </a>  
     <% end %>
   </div>

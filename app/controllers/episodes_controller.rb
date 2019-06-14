@@ -21,7 +21,7 @@ class EpisodesController < AuthenticatedController
       redirect_to show_path(show)
       return
     end
-    set_title before: t('anime.episodes.title', name: @episode.get_title), after: show.get_title
+    set_title before: t('anime.episodes.title', name: @episode.title), after: show.title
   end
 
   def update

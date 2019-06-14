@@ -2,7 +2,7 @@ class MoviesController < ApplicationController
 
   def view
     @shows = Show.all.select {|show| show.is_movie?}
-    @shows = @shows.to_a.sort_by(&:get_title)
+    @shows = @shows.to_a.sort_by(&:title)
     @shows.select! {|s| s.is_published?}
     shows = @shows.each_slice(2).to_a
     @split_shows = []
@@ -13,7 +13,7 @@ class MoviesController < ApplicationController
       else
         first = show_group[0]
         second = show_group[1]
-        if first.get_title > second.get_title
+        if first.title > second.title
           tmp = first
           first = second
           second = tmp

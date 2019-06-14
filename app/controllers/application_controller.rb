@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
       access_token: request.env['omniauth.auth']
     )
     if google_auth.output
-      set_title(before: t('welcome.user', user: @user.get_name))
+      set_title(before: t('welcome.user', user: @user.name))
       render 'welcome_google'
     else
       log_in(@user)
@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
 
   def welcome_google
     @user = current_user
-    set_title(before: t('welcome.user', user: @user.get_name))
+    set_title(before: t('welcome.user', user: @user.name))
   end
 
   def google_register

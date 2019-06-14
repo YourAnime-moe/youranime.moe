@@ -1,11 +1,11 @@
 <%= form_for(@episode, url: admin_show_episode_path(@episode.show, @episode)) do |f| %>
   <div class="hf-section">
     <div class="justify-content-between w-100 d-flex">
-      <h2>Editing <i><%= @episode.get_title %></i> (#<%= @episode.id %>)</h2>
+      <h2>Editing <i><%= @episode.title %></i> (#<%= @episode.id %>)</h2>
       <div><%= f.submit('Save and submit', class: 'btn btn-sm btn-primary') %></div>
     </div>
     <h6 class="text-muted">
-      Back to <%= link_to("Manage <strong>#{@episode.show.get_title}</strong> episodes".html_safe, admin_show_episodes_path(@episode.show)) %>
+      Back to <%= link_to("Manage <strong>#{@episode.show.title}</strong> episodes".html_safe, admin_show_episodes_path(@episode.show)) %>
     </h6>
   </div>
 
@@ -18,7 +18,7 @@
           <%= f.text_field :title, class: 'form-control', placeholder: "ie: Episode #{@episode.episode_number}", autocomplete: 'off' %>
         </div>
         <div class="form-group">
-          <% shows_options = Show.ordered.map{|s| [s.get_title, s.id]} %>
+          <% shows_options = Show.ordered.map{|s| [s.title, s.id]} %>
           <%= f.label :show_id, 'Show', class: 'text-muted' %>
           <%= select_tag("show_id", options_for_select(shows_options, (@episode.show_id)), name: 'episode[show_id]', class: 'form-control', include_blank: '- choose a show -') %>
         </div>

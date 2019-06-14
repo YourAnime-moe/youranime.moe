@@ -3,7 +3,7 @@ module Api
     class ShowsController < AuthApiController
 
       def index
-        shows = @user.is_admin? ? Show.ordered : Show.published
+        shows = @user.admin? ? Show.ordered : Show.published
         respond_to do |format|
           format.json { render json: shows }
         end

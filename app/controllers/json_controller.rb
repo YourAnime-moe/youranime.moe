@@ -26,7 +26,7 @@ class JsonController < ApplicationController
         res.each do |title|
           next if title.class != String
           Show.all.each do |show|
-            if show.get_title.downcase == title.downcase
+            if show.title.downcase == title.downcase
               ress.push show
               break
             end
@@ -48,7 +48,7 @@ class JsonController < ApplicationController
   def find_show
     if params[:given_title]
       Show.all.each do |show|
-        if show.get_title.downcase == params[:given_title].downcase
+        if show.title.downcase == params[:given_title].downcase
           @show = show
           break
         end
@@ -127,11 +127,11 @@ class JsonController < ApplicationController
   def all_users
     result = {data: {}}
     User.all.each do |user|
-      next if user.get_name.nil? || user.username.nil?
+      next if user.name.nil? || user.username.nil?
       if user.id == current_user.id
-        result[:data]["Me | " + user.get_name + " | " + user.username] = nil
+        result[:data]["Me | " + user.name + " | " + user.username] = nil
       else
-        result[:data][user.get_name + " | " + user.username] = nil
+        result[:data][user.name + " | " + user.username] = nil
       end
     end
     render json: result

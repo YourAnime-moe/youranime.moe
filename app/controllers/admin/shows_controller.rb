@@ -35,7 +35,7 @@ class Admin::ShowsController < AdminController
 	def edit
 		@show = Show.find_by(id: params[:id])
     if @show
-      set_title before: @show.get_title
+      set_title before: @show.title
     else
       redirect_to admin_shows_path
     end

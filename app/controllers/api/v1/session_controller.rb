@@ -25,7 +25,7 @@ module Api
         if success
     			render json: {
             token: user.auth_token,
-            message: t("welcome.user", user: user.get_name),
+            message: t("welcome.user", user: user.name),
             user: user,
             success: true
           }
@@ -42,7 +42,7 @@ module Api
         respond_to do |format|
           format.json {
             raise InvalidTokenError.new if user.nil?
-            render json: { message: "Welcome back, #{user.get_name}!", user: user }
+            render json: { message: "Welcome back, #{user.name}!", user: user }
           }
         end
       end
@@ -91,13 +91,13 @@ module Api
       end
 
       def ensure_maintenance!(user)
-        if !user.is_admin? && maintenance_activated?(user: user)
+        if !user.admin? && maintenance_activated?(user: user)
           raise Api::UndergoingMaintenanceError.new
         end
       end
 
       def ensure_admin_if_requested!(user)
-        if params[:admin] == "true" && !user.is_admin?
+        if params[:admin] == "true" && !user.admin?
           raise Api::NotAdminError.new
         end
       end

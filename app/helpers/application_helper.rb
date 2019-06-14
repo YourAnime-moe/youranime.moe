@@ -64,7 +64,7 @@ module ApplicationHelper
   end
 
   def current_admin_show_id
-    return -1 unless logged_in? && current_user.is_admin?
+    return -1 unless logged_in? && current_user.admin?
 
     @current_show_id ||= session[:current_show_id]
     if @current_show_id.nil?
@@ -82,7 +82,7 @@ module ApplicationHelper
 
   def set_current_admin_show_id(id)
     p "Now: #{current_admin_show_id}"
-    return false unless logged_in? && current_user.is_admin?
+    return false unless logged_in? && current_user.admin?
 
     @current_show_id = id
     session[:current_show_id] = id
@@ -113,7 +113,7 @@ module ApplicationHelper
   end
 
   def google_search(show)
-    "https://www.google.com/search?q=#{show.get_title} Anime"
+    "https://www.google.com/search?q=#{show.title} Anime"
   end
 
   def current_user
@@ -159,7 +159,7 @@ module ApplicationHelper
   def maintenance_activated?(user: nil)
     user = current_user || user
     if !user.nil? && is_maintenance_activated?
-      !user.is_admin?
+      !user.admin?
     else
       false
     end

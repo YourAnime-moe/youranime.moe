@@ -10,7 +10,7 @@ class AdminController < AuthenticatedController
   protected
 
   def ensure_is_admin
-    unless current_user.is_admin?
+    unless current_user.admin?
       flash[:danger] = "Sorry, you need to be logged in as an admin user!"
         redirect_to '/';
       end

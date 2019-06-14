@@ -17,7 +17,7 @@ class AuthApiController < ApiController
 				show_login_message: "Re-login",
 				success: false
 			}
-		elsif is_admin && !@user.is_admin?
+		elsif is_admin && !@user.admin?
 			render json: {
 				rails_message: "Access denied. This action requires to be an admin.",
 				message: "Access denied. This action requires to be an admin.",
@@ -54,10 +54,10 @@ class AuthApiController < ApiController
 
 	def shows
 		if shows_params.empty? || shows_params[:get_host]
-			results = Show.all.select {|show| show.is_anime? && !show.get_title.nil?}
-			results = results.to_a.sort_by(&:get_title)
+			results = Show.all.select {|show| show.is_anime? && !show.title.nil?}
+			results = results.to_a.sort_by(&:title)
 			results.select! {|show| show.is_published? || @is_admin}
-			results = results.as_json(methods: [:get_banner_url])
+			results = results.as_json(methods: [:banner_url])
 		else
 			results = Show.find_by(shows_params) || {}
 			json = results.to_json

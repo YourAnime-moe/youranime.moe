@@ -4,7 +4,7 @@ module ShowsHelper
   def show_tags(show)
     return '' if show.tags.blank?
 
-    links = show.get_tags.map { |t| t.downcase.to_sym }.map do |tag|
+    links = show.tags.map { |t| t.downcase.to_sym }.map do |tag|
       tag = Utils.tags[tag]
       next if tag.blank?
 
@@ -27,7 +27,7 @@ module ShowsHelper
     return '' if episode.class != Episode
 
     if episode.unrestricted?
-      if episode.has_video?
+    if episode.video?
         content_tag(:span)
       else
         content_tag :div, class: 'sub-dub-holder' do
@@ -47,7 +47,7 @@ module ShowsHelper
 
   def check_episode_cc(episode)
     return '' if episode.class != Episode
-    return '' unless episode.has_subtitles?
+    return '' unless episode.subtitles?
 
     return content_tag(:spam) if restricted?(episode)
 
@@ -112,7 +112,7 @@ module ShowsHelper
 
     content_tag :div, class: "hf-thumb-info description #{rules[:display]}", style: 'width: 95%' do
       content_tag :span, class: 'truncate' do
-        show.get_title
+        show.title
       end
     end
   end
