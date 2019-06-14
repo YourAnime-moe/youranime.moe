@@ -29,9 +29,9 @@
             <%= image_tag("baseline-play_arrow-24px", width: "35px") %>
           </div>
           <div class="title">
-            <h5 class="show"><%= @episode.show.get_title %></h5>
+            <h5 class="show"><%= @episode.show.title %></h5>
             <% if @episode.show.episodes.size > 1 %>
-              <h5 class="episode"><%= @episode.get_title %></h5>
+              <h5 class="episode"><%= @episode.title %></h5>
             <% end %>
           </div>
           <% unless @episode.next.nil? || restricted?(@episode.next) %>
@@ -56,6 +56,6 @@
   </div>
 </div>
 
-<% unless Rails.env.prodution? %>
+<% if Rails.env.prodution? %>
   <script>document.oncontextmenu = () => false;</script>
 <% end %>

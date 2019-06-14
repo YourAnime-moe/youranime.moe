@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :progresses, lambda {
     includes(:episode).where('progress > 1')
-  }, class_name: 'UserWatchProgress'
+  }, class_name: 'UserWatchProgress', inverse_of: :user
 
   DEFAULT_DEMO_NAME = 'Demo Account'
   DEFAULT_DEMO_USERNAME = 'demo'
@@ -19,34 +19,24 @@ class User < ApplicationRecord
   has_secure_password
 
   def auth_token
-    return DEFAULT_DEMO_TOKEN if is_demo_account?
-
-    self[:auth_token]
+    demo? ? DEFAULT_DEMO_TOKEN : self[:auth_token]
   end
 
   def username
-    return DEFAULT_DEMO_USERNAME if is_demo_account?
-
-    self[:username]
+    demo? ? DEFAULT_DEMO_USERNAME : self[:username]
   end
 
   def name
-    return DEFAULT_DEMO_NAME if is_demo_account?
+    return DEFAULT_DEMO_NAME if demo?
 
-    self[:name]
-  end
-
-  def get_name
-    return username.to_s if name.nil?
-
-    name
+    self['name'] || self['username']
   end
 
   # All episodes this user is able to view
   def episodes_data(show)
     show.episodes.map do |episode|
       episode.as_json.merge(
-        progress: episode.progress(self).progress
+        progress: progress_for(episode)
       )
     end
   end
@@ -69,49 +59,15 @@ class User < ApplicationRecord
     is_ok(what, get_default(what))
   end
 
-  def is_admin?
-    return false if admin.nil?
-
-    admin
-  end
-
-  def is_demo_account?
-    !!demo
-  end
-
-  def is_activated?
+  def activated?
     # All users should be activated by default. They will be deactivated on request.
     was_nil = is_activated.nil?
     update(is_activated: true) if was_nil
     is_activated
   end
 
-  def is_demo?
-    username == 'demo'
-  end
-
-  def update_settings(new_settings, save = true)
-    keys = %i[watch_anime last_episode episode_tracking recommendations images autoplay]
-    if new_settings.nil? || new_settings.class != Hash
-      new_settings = {
-        watch_anime: true,
-        last_episode: true,
-        episode_tracking: true,
-        recommendations: true,
-        images: true,
-        autoplay: true
-      }
-    end
-    self.settings = {} if settings.class != Hash
-    keys.each do |setting_key|
-      new_value = new_settings[setting_key]
-      new_value = new_settings[setting_key.to_s] if new_value.nil?
-      next if new_value.nil?
-
-      settings.delete setting_key.to_s if settings.keys.include? setting_key.to_s
-      settings[setting_key] = new_value
-    end
-    save ? self.save : true
+  def demo?
+    self[:username] == 'demo'
   end
 
   def destroy_token
@@ -119,12 +75,7 @@ class User < ApplicationRecord
   end
 
   def as_json(_options = {})
-    keys = %i[
-      username
-      name
-      limited
-      google_user
-    ]
+    keys = %i[username name limited google_user]
     super(only: keys).tap do |hash|
       hash[:active] = is_activated?
       hash[:admin] = is_admin?
@@ -167,23 +118,5 @@ class User < ApplicationRecord
         throw :abort
       end
     end
-  end
-
-  def is_ok(value, default)
-    res = settings[value]
-    res = settings[value.to_s] if res.nil?
-    res = true if res == 'true'
-    res = false if res == 'false'
-    res.nil? ? default : res
-  end
-
-  def get_default(value)
-    value = value.to_s
-    return true if value == 'watch_anime'
-    return true if value == 'last_episode'
-    return true if value == 'episode_tracking'
-    return true if value == 'recommendations'
-    return true if value == 'images'
-    return true if value == 'autoplay'
   end
 end

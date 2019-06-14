@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_08_173144) do
+ActiveRecord::Schema.define(version: 2019_06_14_121755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "intarray"
@@ -73,38 +73,6 @@ ActiveRecord::Schema.define(version: 2019_06_08_173144) do
     t.text "screenshots"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "messages", id: :serial, force: :cascade do |t|
-    t.string "subject"
-    t.integer "from_id"
-    t.integer "to_id"
-    t.boolean "from_flag"
-    t.boolean "from_read"
-    t.boolean "to_read"
-    t.text "content"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "news", id: :serial, force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "recommendations", id: :serial, force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.text "plot"
-    t.integer "show_type"
-    t.boolean "dubbed"
-    t.string "ref_link"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "from_user"
   end
 
   create_table "shows", id: :serial, force: :cascade do |t|

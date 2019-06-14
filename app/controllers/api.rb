@@ -31,7 +31,7 @@ module Api
 
       # Check if the user is an admin as per the request
   		is_admin = params[:admin] == "true"
-      raise Api::NotAdminError.new unless !is_admin || @user.is_admin?
+      raise Api::NotAdminError.new unless !is_admin || @user.admin?
   		@is_admin = params[:admin] == "true"
     end
 

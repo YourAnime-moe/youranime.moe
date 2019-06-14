@@ -35,7 +35,7 @@ class Admin::ShowsController < AdminController
 	def edit
 		@show = Show.find_by(id: params[:id])
     if @show
-      set_title before: @show.get_title
+      set_title before: @show.title
     else
       redirect_to admin_shows_path
     end
@@ -71,7 +71,7 @@ class Admin::ShowsController < AdminController
 		message = t(message_key) if show
 
 		respond_to do |format|
-			format.json { render json: { success: !show.nil?, message: message, published: (show.is_published? if show) } }
+			format.json { render json: { success: !show.nil?, message: message, published: (show.published? if show) } }
 		end
 	end
 

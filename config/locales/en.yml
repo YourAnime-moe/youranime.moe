@@ -45,13 +45,16 @@ en:
         unknown-user: "We are sorry, but no user with username \"%{attempt}\" exists in our system."
         no-username: "Please enter your username."
         no-password: "Please enter your password."
-        no-username-and-password: "Please enter your username and password."
+        no-credentials: "Please enter your username and password."
+        deactivated: "Your account has been deactivated because it has been reported to the moderators."
+        maintenance: "We are sorry but our servers are current in maintenance. Please try again later."
     google:
       register: Awesome! You're almost done.
       please-dont: We highly suggest you use a password that is different than your Google account's.
       warning: Please note that choosing to register with a Google account means that you'll have limited access to our application. Is this okay?
       terms: Privacy Policy terms for our website
       register-action: Agree & continue
+      not-google: Please login with your username and password.
 
     text: "Welcome"
     user: "Welcome, %{user}!"

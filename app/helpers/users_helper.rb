@@ -47,7 +47,7 @@ module UsersHelper
       image_tag(current_user.avatar.variant(resize_to_limit: [size, size]), **options)
     else
       url = "https://api.adorable.io/avatars/#{size}/#{current_user.username}.png"
-      image_tag(url, alt: current_user.get_name, size: size, **options)
+      image_tag(url, alt: current_user.name, size: size, **options)
     end
   end
 end

@@ -20,7 +20,7 @@ class ShowsController < AuthenticatedController
       flash[:warning] = "This show is not available yet. Please try again later."
       redirect_to shows_path
     else
-      set_title(:before => @show.get_title)
+      set_title(:before => @show.title)
       @episodes_parts = @show.episodes.each_slice(3).to_a
       @additional_main_class = 'no-margin no-padding'
     end
@@ -39,8 +39,8 @@ class ShowsController < AuthenticatedController
       redirect_to '/'
       return
     end
-    @episodes = episodes.map{|e| Episode.find(e)}
-    @episodes.select!{|e| e.is_published?}
+    @episodes = episodes.map { |e| Episode.find(e) }
+    @episodes.select!(&:published?)
     @episodes.reverse!
     set_title before: t('header.history') #, after: "What have you watched so far?"
   end
@@ -73,7 +73,7 @@ class ShowsController < AuthenticatedController
       http.request(req)
     }
 
-    send_data res.body, filename: "#{show.get_title}"
+    send_data res.body, filename: "#{show.title}"
   end
 
 end

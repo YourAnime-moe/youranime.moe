@@ -15,9 +15,6 @@ RSpec.describe User, type: :model do
   describe 'name' do
     it 'returns the name'
     it 'returns the appropriate demo name'
-  end
-
-  describe 'get_name' do
     it 'returns the username if no name is present'
     it 'returns the name if present'
   end
@@ -37,7 +34,7 @@ RSpec.describe User, type: :model do
     it 'does this'
   end
 
-  describe 'is_admin?' do
+  describe 'admin?' do
     it 'does this'
   end
 
@@ -50,10 +47,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'is_demo?' do
-    it 'does this'
-  end
-
-  describe 'update_settings' do
     it 'does this'
   end
 

@@ -4,14 +4,14 @@ module ShowsHelper
   def show_tags(show)
     return '' if show.tags.blank?
 
-    links = show.get_tags.map { |t| t.downcase.to_sym }.map do |tag|
+    links = show.tags.map { |t| t.downcase.to_sym }.map do |tag|
       tag = Utils.tags[tag]
       next if tag.blank?
 
       link_to(tag, '#', class: 'button tag is-rounded is-dark')
     end
     content_tag(:div, class: 'tags-container') do
-      links.join('').html_safe
+      sanitize(links.join(''))
     end
   end
 
@@ -27,7 +27,7 @@ module ShowsHelper
     return '' if episode.class != Episode
 
     if episode.unrestricted?
-      if episode.has_video?
+      if episode.video?
         content_tag(:span)
       else
         content_tag :div, class: 'sub-dub-holder' do
@@ -47,7 +47,7 @@ module ShowsHelper
 
   def check_episode_cc(episode)
     return '' if episode.class != Episode
-    return '' unless episode.has_subtitles?
+    return '' unless episode.subtitles?
 
     return content_tag(:spam) if restricted?(episode)
 
@@ -112,7 +112,7 @@ module ShowsHelper
 
     content_tag :div, class: "hf-thumb-info description #{rules[:display]}", style: 'width: 95%' do
       content_tag :span, class: 'truncate' do
-        show.get_title
+        show.title
       end
     end
   end
@@ -120,13 +120,10 @@ module ShowsHelper
   def show_thumb(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
 
-    progress = current_user.progress_for(show) if show.class == Episode
+    progress = (current_user.progress_for(show) if show.class == Episode) || 0
     rules ||= {}
     content_tag :div, class: "no-overflow #{rules[:class]}" do
-      progress_bar = content_tag :div, class: 'progress', role: 'progress' do
-        content_tag(:div, class: 'progress-bar', style: "width: #{progress}%", role: 'progressbar', 'aria-valuenow' => progress.to_i.to_s, 'aria-valuemin' => '0', 'aria-valuemax' => '100') do
-        end
-      end
+      progress_bar = "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
       wrapper = content_tag :div, role: 'have-fun', style: 'display: none;' do
         content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
           content_tag :div, class: 'image-card-container focusable' do
@@ -136,7 +133,7 @@ module ShowsHelper
           end
         end
       end
-      wrapper + (progress_bar if show.class == Episode)
+      wrapper + (progress_bar if show.class == Episode && progress.positive?)
     end
   end
 
@@ -147,13 +144,13 @@ module ShowsHelper
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
       image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]}") +
-      show_thumb_description(show)).html_safe
+      sanitize(show_thumb_description(show)))
     end
   end
 
   def top_badges(show)
     content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
-      check_episode_available(show).html_safe +
+      sanitize(check_episode_available(show)) +
         sub_dub_holder(show) +
         check_episode_cc(show)
     end

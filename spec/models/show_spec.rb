@@ -28,14 +28,14 @@ RSpec.describe Show, type: :model do
     it 'returns "no description" by default'
   end
 
-  describe 'get_title' do
+  describe 'title' do
     it 'returns a default title if no title'
     it 'returns the alternate title if no title or default'
     it 'returns no title in html format if no title'
     it 'returns the title'
   end
 
-  describe 'get_tags' do
+  describe 'tags' do
     it 'is an array by default'
     it 'returns the saved tags'
   end
@@ -46,7 +46,7 @@ RSpec.describe Show, type: :model do
     it 'is null if the tag is blank'
   end
 
-  describe 'is_published?' do
+  describe 'published?' do
     it 'is not published by default'
     it 'is published'
     it 'is not published'
