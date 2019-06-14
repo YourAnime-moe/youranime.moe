@@ -46,7 +46,7 @@ RSpec.describe Show, type: :model do
     it 'is null if the tag is blank'
   end
 
-  describe 'is_published?' do
+  describe 'published?' do
     it 'is not published by default'
     it 'is published'
     it 'is not published'

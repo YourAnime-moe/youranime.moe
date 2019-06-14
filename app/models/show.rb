@@ -81,7 +81,7 @@ class Show < ApplicationRecord
       description: description,
       subbed: subbed,
       dubbed: dubbed,
-      published: is_published?,
+      published: published?,
       tags: tags,
       episodes_count: {
         published: episodes.size,

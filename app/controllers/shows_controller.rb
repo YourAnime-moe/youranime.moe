@@ -39,8 +39,8 @@ class ShowsController < AuthenticatedController
       redirect_to '/'
       return
     end
-    @episodes = episodes.map{|e| Episode.find(e)}
-    @episodes.select!{|e| e.is_published?}
+    @episodes = episodes.map { |e| Episode.find(e) }
+    @episodes.select!(&:published?)
     @episodes.reverse!
     set_title before: t('header.history') #, after: "What have you watched so far?"
   end

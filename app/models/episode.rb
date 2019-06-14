@@ -25,7 +25,7 @@ class Episode < ApplicationRecord
   end
 
   def published?
-    (published && show&.is_published?).present?
+    (published && show&.published?).present?
   end
 
   def unrestricted?
@@ -74,7 +74,7 @@ class Episode < ApplicationRecord
     {
       id: id,
       title: title,
-      published: is_published?,
+      published: published?,
       show_id: show_id,
       thumbnail_url: thumbnail_url,
       video: video_url
