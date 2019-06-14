@@ -7,7 +7,7 @@ class User
     def execute
       user = User.from_omniauth(access_token)
       return nil if user.persisted? && user.google_user
-      raise Error, 'welcome.google.not-google' if user.persisted?
+      raise NotGoogleUser, 'welcome.google.not-google' if user.persisted?
 
       refresh_token = access_token.credentials.refresh_token
       user.google_token = access_token.credentials.token
@@ -21,6 +21,6 @@ class User
       Rails.logger.error "Unsupported locale provided by Google: #{access_token.info.locale}"
     end
 
-    class Error < NotGoogleUser; end
+    class NotGoogleUser < StandardError; end
   end
 end
