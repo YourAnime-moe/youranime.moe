@@ -1,14 +1,5 @@
 
-function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback) {
-
-	try {
-		params = JSON.parse(params);
-	} catch (e) {
-		console.error(e);
-		params = {};
-	}
-	params = $.param(params);
-	console.log(params);
+function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 
 	function edForm(form, readOnly) {
 		if (form && form.elements) {
@@ -70,22 +61,19 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback
 	disableForm(form_container);
 	error_container.innerHTML = "";
 
-	var next = location.search;
-	if (next) {
-		next = next.substring(1, next.length);
-	}
+	// var next = location.search;
+	// if (next) {
+	// 	next = next.substring(1, next.length);
+	// }
 
 	$.ajax({
 		url: '/login',
 		method: 'post',
 		data: {
 			username: one,
-			password: two,
-			next: next
+			password: two
 		},
-		data: 'username=' + one + '&password=' + two + '&' + params,
 		success: function(e) {
-			waiting_container.innerHTML = "";
 			error_container.innerHTML = "";
 			if (!e.success) {
 				enableForm(form_container);
@@ -99,7 +87,6 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback
 			}
 		},
 		failure: function(e) {
-			waiting_container.innerHTML = "";
 			enableForm(form_container);
 			error_container.innerHTML = e.message;
 			if (typeof(callback) === 'function') {
@@ -107,12 +94,14 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, params, callback
 			}
 		},
 		error: function(e) {
-			waiting_container.innerHTML = "";
 			enableForm(form_container);
 			error_container.innerHTML = e.toString();
 			if (typeof(callback) === 'function') {
 				callback();
 			}
+		},
+		complete: function() {
+			waiting_container.innerHTML = "";
 		}
 	});
 	return false;

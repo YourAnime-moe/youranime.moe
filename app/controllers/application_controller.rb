@@ -18,10 +18,10 @@ class ApplicationController < ActionController::Base
   end
 
   def google_auth
-    google_auth = User::GoogleAuth.perform(
+    @user = User::GoogleAuth.perform(
       access_token: request.env['omniauth.auth']
     )
-    if google_auth.output
+    if !@user.persisted?
       set_title(before: t('welcome.user', user: @user.name))
       render 'welcome_google'
     else
