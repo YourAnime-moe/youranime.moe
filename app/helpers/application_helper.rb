@@ -138,6 +138,7 @@ module ApplicationHelper
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.zone.now
+    Rails.logger.info "User #{user.name} is now logged"
   end
 
   def log_out
