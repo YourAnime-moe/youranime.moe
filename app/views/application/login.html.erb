@@ -79,7 +79,7 @@
 
      function execLogin() {
        $submit.hide();
-       login('error-message', 'waiting-message', 'success-message', 'login-form', '<%= @params.to_json %>', function() {
+       login('error-message', 'waiting-message', 'success-message', 'login-form', function() {
          $submit.show();
        });
      }
