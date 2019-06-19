@@ -13,7 +13,7 @@ class UserWatchProgress < ApplicationRecord
       user_id: user_id,
       episode_id: episode_id
     )
-    throw :abort unless current_progress.empty?
+    throw :abort if current_progress.empty?
     self.progress = 0.0 if progress.nil? || progress.negative?
   end
 end

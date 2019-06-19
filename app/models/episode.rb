@@ -55,15 +55,19 @@ class Episode < ApplicationRecord
   end
 
   def set_progress(current_user, progress)
+    p "Saving the progress... (#{progress})"
     return false unless video.attached?
 
     user_progress = progress(current_user)
     if user_progress.persisted?
-      user_progress.update(progress: progress)
+      res = user_progress.update(progress: progress)
     else
+      p "new progress fam"
       user_progress.progress = progress
-      user_progress.save
+      res = user_progress.save
     end
+    p user_progress.errors.to_a.join ', '
+    res
   end
 
   def progress(current_user)
