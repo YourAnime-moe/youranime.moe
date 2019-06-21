@@ -8,8 +8,8 @@ class UsersController < AuthenticatedController
     set_title(before: t('user.welcome', user: current_user.name))
     episodes = current_user.currently_watching(limit: 6)
 
-    recent_shows_ids = Show.recent(limit: 1000).map(&:id).uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.where(id: recent_shows_ids)
+    ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
+    @recent_shows = Show.where(id: ids)
     @episodes = force_array_to(6, episodes)
   end
 
@@ -71,5 +71,16 @@ class UsersController < AuthenticatedController
       :recommendations,
       :images
     )
+  end
+
+  def home_shows
+    shows = Show.recent(limit: 1000)
+    return shows if shows.any?
+
+    Show.published
+  end
+
+  def recent_shows_ids
+    home_shows.map(&:id)
   end
 end

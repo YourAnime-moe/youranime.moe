@@ -10,10 +10,12 @@ This is the repository of a streaming application. Check out a live demo
 [here](https://akinyele.herokuapp.com/#tanoshimu) on my website!
 
 #### How can I use it?
-You can visit [https://tanoshimu.herokuapp.com](https://tanoshimu.herokuapp.com)
+You can visit [youranime.moe](http://youranime.moe)
 to get started (may take a couple of seconds to load up). But you will need a
-username and password to get in. [Send me an email](mailto:akinyele.akintola.febrissy@gmail.com)
-to get your own login credentials! **Please note that the contents (ie: videos) of this application 
+username and password to get in. **You can register with a Google account, but
+your account will have limited access** as these accounts are consided demo account.
+[Send me an email](mailto:akinyele.kafe.febrissy@gmail.com)
+to get an account with full access! **Please note that the contents (ie: videos) of this application 
 are not available publicly for copyright reasons. This application is by all means not built 
 for commercial use.**
 
@@ -24,98 +26,27 @@ of a formality. Also, I don't want to make `heroku` my main branch to avoid desa
 
 #### Technologies
 The following technologies made this app into what it is today:
-- [Ruby on Rails 5](http://rubyonrails.org/) (Server-side and API development)
-- [Materialize CSS](http://materializecss.com/) (JavaScript and CSS library, similar to Bootstrap)
+- [Ruby on Rails 6](http://rubyonrails.org/) (Server-side and API development)
+- [Bulma.io](https://bulma.io/) (CSS library)
 - [jQuery](https://jquery.com/) (Various JavaScript libraries, mostly used for AJAX here)
-- [Slim](http://slim-lang.com/) (Jade-based Ruby HTML generator, make the HTML easier to read when developing)
-- Python (Used for generating video thumbnails. Still needs a lot of work)
 - Ruby (Other than Ruby of Rails, lots of cool Ruby libraries are used - See [Gemfile](Gemfile))
 - _and more to come!_
 
-#### RESTful API
-The application comes with a JSON API. It is not fully functionally yet, but allows
-you to login, get information about the current user, get a list of available shows
-and episodes. Here are a couple of useful endpoints:
-```
-POST /api/token => {token:string, message:string}
-	username: Your username in base64
-	password: Your password in base64
-
-GET *or* POST /api/check => {message:string, success:boolean}
-    token: Your token
-
-GET *or* POST /api/get/shows => {shows:[list]}
-	token: Your token
-
-GET *or* POST /api/get/episodes => {episodes:[list]}
-	token: Your token
-
-GET *or* POST /api/get/episode/path => {path:null or string, message:string, success:boolean}
-	token: Your token
-
-GET *or* POST /api/get/news => {news:[list]}
-	token: Your token
-
-GET *or* POST /api/get/user => {all user information}
-	token: Your token
-
-POST /api/token/destroy => {message:string}
-	token: Your token
-```
-You can use this API on the production app (provided you have login credentials), or on
-the development application. How? Go to the next section explaining how to install it and
-to get it running!
-
-More endpoints coming soon!
-
 #### How do I contribute or check out the project?
-This is a Rails application, so you will have to have *Ruby* and *Ruby on Rails* installed.
-Once you have your development environment set up, simply run:
+This is a Rails application, however you will need to have [Docker](https://www.docker.com) 
+and [Docker compose](https://docs.docker.com/compose/) installed on your computer.
 ```
 git clone git@github.com:/thedrummeraki/tanoshimu.git
 cd tanoshimu
-cp database.sample db/development.sqlite3
-bundle						# Installs all necessary rails packages
-bundle exec rake db:migrate         # Initialize the database if necessary
-rails s						# Run the server
+docker-compose build
+docker-compose run web bundle exec rails db:setup
+docker-compose up
 ```
 Once the server is running, you can go to http://localhost:3000. You can login with credentials ```tanoshimu```
 (both username and password).
 
-#### How do I view the models?
-As the time of write this README, the following models available are:
-```
-User 						# User model used to identify the current user
-News 		
-Show 						# Contains information about shows available to watch that has several Episodes.
-Episode						# Instance of an episode that has exactly one Show.
-
-```
-Go to the CLI (command line interface) by running...:
-```
-rails c
-```
-... and type:
-```ruby
-users = User.all 			# Gets all saved User instances
-episodes = Episode.all  	# Gets all saved Episode instances
-shows = Show.all 			# Gets all saved Show instances
-...etc...
-```
-
-Have a look at [ActiveModels](http://guides.rubyonrails.org/active_model_basics.html) to
-know more about simple methods you can use. Also, take a look at [schema.rb](db/schema.rb) to
-see which model-specific methods are available.
-
-#### But where are all the files?
-| Controllers      | Models     | Views     |
-| ---------------- |:----------:| ---------:|
-| app/controllers  | app/models | app/views |
-
-
 #### Is this project alive? 
-Yes! Last big update was in September 2017 and I made the development easier in November 2017. I started 
-this project in December 2016, and plan to continue for a couple of years.
+YES YES YES! When was the last commit? ;)
 
 ### About Tanoshimu
 This project was originally called *My Akinyele* and was running Rails 4. The UI and the code design 
@@ -126,9 +57,13 @@ In July 2017, I went from Bootstrap to Materialize CSS. The transition was nothi
 impresive how fuild the CSS transition and translation was.
 
 Starting October 2017, I started re-visiting a feature I discovered with my [reviews website](https://reviews.herokuapp.com):
-internal messaging between users. Most apps these days have a messaging feature. I think this feature will become a 
-requirement very soon. I want to add this feature because I want users to be able to share and recommend shows to
-each other.
+internal messaging between users. Most apps these days have a messaging feature. I wanted this feature to become a 
+requirement very soon become out of scope 
+
+In June 2019, after a long pause of development from May 2018 to April 2019 (hey I have school you know!), I worked
+hard refactoring the code (making it better) and decided it was time for this site to become public. The app was
+now renamed to [YourAnime.moe](http://youranime.moe). A new look was implemented in February 2019, then once more
+in April 2019.
 
 **Please note that the contents (ie: videos) of this application are not available publicly for copyright reasons. 
 This application is by all means not built for commercial use.**
