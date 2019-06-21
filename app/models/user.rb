@@ -78,8 +78,8 @@ class User < ApplicationRecord
     keys = %i[username name limited google_user]
     super(only: keys).tap do |hash|
       hash[:active] = is_activated?
-      hash[:admin] = is_admin?
-      hash[:demo] = is_demo_account?
+      hash[:admin] = admin?
+      hash[:demo] = demo?
     end
   end
 
@@ -100,7 +100,7 @@ class User < ApplicationRecord
     self.episodes_watched = [] if episodes_watched.nil?
     self.episode_progress_list = [] if episode_progress_list.nil?
 
-    if is_demo_account?
+    if demo?
       found_user = User.find_by(demo: true)
       unless found_user.nil? || found_user.id == id
         errors.add 'username', "\"#{found_user.username}\" is already a demo account. Only one demo account is allowed."

@@ -28,7 +28,8 @@ class ApplicationController < ActionController::Base
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')
     end
-  rescue User::GoogleAuth::NotGoogleUser
+  rescue User::GoogleAuth::NotGoogleUser => e
+    Rails.logger.error e
     redirect_to '/', danger: t('welcome.google.not-google')
   end
 
@@ -41,6 +42,7 @@ class ApplicationController < ActionController::Base
     @user = User.new(google_user_params)
     @user.limited = true
     @user.google_user = true
+    @user.is_activated = true
     if @user.save
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')
