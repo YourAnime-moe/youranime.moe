@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [[ -z "${DATABASE_URL}" ]]; then
   bundle exec rails db:setup
 else

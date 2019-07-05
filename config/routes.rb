@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, constraints: { all: /.*/ }
   end
 
+  get '/home' => 'application#home'
+
   # Issues
   resources :issues, only: %i[index new] do
     delete :close
@@ -67,7 +69,7 @@ Rails.application.routes.draw do
 
   # Authentication
   get '/login' => 'application#root'
-  get '/logout' => 'application#logout'
+  delete '/logout' => 'application#logout'
   post '/login' => 'application#login_post'
 
   constraints(host: /localhost|0.0.0.0/) do

@@ -12,7 +12,7 @@ class Show < ApplicationRecord
   has_many :views, -> { where('progress > 0') }, through: :all_episodes, inverse_of: :show
 
   has_one_attached :banner
-  has_resource :banner, default_url: 'https://anime.akinyele.ca/img/404.jpg', expiry: 3.days
+  has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
 
   serialize :tags
 

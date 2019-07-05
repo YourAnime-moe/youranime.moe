@@ -39,7 +39,7 @@
           <%= link_to(users_settings_path, class: 'button is-primary is-icon') do %>
             <i class="material-icons">settings</i>
           <% end %>
-          <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
+          <%= link_to(logout_path, class: 'button is-danger is-icon', method: :delete) do %>
             <i class="material-icons">power_settings_new</i>
           <% end %>
         </div>

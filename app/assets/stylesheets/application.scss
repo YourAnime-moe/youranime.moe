@@ -150,6 +150,18 @@ img.logo {
   font-size: 100%;
 }
 
+.material-icons.is-large {
+  font-size: 60px;
+}
+
+.jumbo {
+  .material-icons.is-large {
+    padding-bottom: 20px;
+  }
+}
+
+
+
 .loading {
   background-position: center center;
   background-image: asset_url("thumb-loading-40.gif");

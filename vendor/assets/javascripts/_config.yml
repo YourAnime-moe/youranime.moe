@@ -1,0 +1,18 @@
+# Variables
+title:         "bulma-carousel"
+description:   ""
+version:       4.0.4
+env:           "production"
+# url:            https://demo.creativebulma.net/components/carousel/
+
+# Build
+markdown:      kramdown
+permalink:     pretty
+includes:      ['assets/css', 'assets/js']
+exclude:       ['package.json']
+sass:
+  sass_dir:    _sass
+  style:       compressed
+
+# Icons
+fontawesome:   https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
