@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def home; end
+
   def google_auth
     @user = User::GoogleAuth.perform(
       access_token: request.env['omniauth.auth']

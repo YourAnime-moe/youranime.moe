@@ -59,15 +59,15 @@ class User < ApplicationRecord
     is_ok(what, get_default(what))
   end
 
+  def admin?
+    super && !demo? && activated?
+  end
+
   def activated?
     # All users should be activated by default. They will be deactivated on request.
     was_nil = is_activated.nil?
     update(is_activated: true) if was_nil
     is_activated
-  end
-
-  def demo?
-    self[:username] == 'demo'
   end
 
   def destroy_token

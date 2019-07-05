@@ -2,6 +2,8 @@
 # Start the anime business...
 set -e
 
+./dbsetup.sh
+
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /myapp/tmp/pids/server.pid
 

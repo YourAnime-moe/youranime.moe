@@ -14,5 +14,4 @@ ENTRYPOINT ["anime.sh"]
 EXPOSE 3000
 
 # Start the main process.
-RUN ./dbsetup.sh
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
