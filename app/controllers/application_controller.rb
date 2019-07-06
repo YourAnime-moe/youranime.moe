@@ -3,8 +3,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  include SessionsConcern
+  include ApplicationConcern
+
   before_action :find_locale
-  before_action :check_is_in_maintenance_mode!, except: [:logout]
+  # before_action :check_is_in_maintenance_mode!, except: [:logout]
 
   include ApplicationHelper
 
@@ -17,7 +20,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def home; end
+  def home
+    @latest_shows = Show::Latest.perform(limit: 10)
+  end
 
   def google_auth
     @user = User::GoogleAuth.perform(

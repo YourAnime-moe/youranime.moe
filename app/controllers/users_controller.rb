@@ -8,8 +8,7 @@ class UsersController < AuthenticatedController
     set_title(before: t('user.welcome', user: current_user.name))
     episodes = current_user.currently_watching(limit: 6)
 
-    ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.where(id: ids)
+    @recent_shows = Show::Latest.perform(limit: (episodes.size.positive? ? 7 : 11))
     @episodes = force_array_to(6, episodes)
   end
 

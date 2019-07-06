@@ -27,7 +27,7 @@
     color: #fff;
 }
 
-.show-title {
+.show-title, .hero-title {
   position: absolute;
   bottom: 30px;
 }
@@ -67,7 +67,7 @@
   }
 }
 
-.show-body {
+.show-body, .hero-body {
   .head {
     background-repeat: no-repeat;
     background-size: cover;

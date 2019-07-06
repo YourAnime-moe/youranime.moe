@@ -2,6 +2,7 @@
 
 class UserWatchProgress < ApplicationRecord
   belongs_to :episode, class_name: 'Episode', optional: false
+  has_one :show, through: :episode
   belongs_to :user, optional: false
 
   before_save :check_progress

@@ -62,12 +62,12 @@ module ShowScopesConcern
     scope :ordered, lambda {
       title_column = nil
       title_column = case I18n.locale
-                    when :fr
-                      'fr_title'
-                    when :jp
-                      'jp_title'
-                    else
-                      'en_title'
+                     when :fr
+                       'fr_title'
+                     when :jp
+                       'jp_title'
+                     else
+                       'en_title'
                     end
       order(:alternate_title).order(:roman_title).order("#{title_column} asc")
     }

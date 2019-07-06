@@ -1,21 +1,9 @@
 # frozen_string_literal: true
 
 module UsersHelper
-  def home_thumbnails_rules
-    [
-      { id: 0, class: '', display: '' },
-      { id: 1, class: '', display: '' },
-      { id: 2, class: '', display: '' },
-      { id: 3, class: 'd-md-blocks', display: '' },
-      { id: 4, class: 'd-none d-xl-block', display: '' },
-      { id: 5, class: 'd-none d-xl-block', display: '' }
-    ]
-  end
-
   def thumb_class_for(model, index)
     rules = home_thumbnails_rules
-    last_possible = rules.last[:id]
-    rule = rules.select { |rule| rule[:id] == index }[0]
+    rule = rules.select { |r| r[:id] == index }[0]
     rule[:display] = 'd-none' if model.nil?
     rule
   end
@@ -49,5 +37,18 @@ module UsersHelper
       url = "https://api.adorable.io/avatars/#{size}/#{current_user.username}.png"
       image_tag(url, alt: current_user.name, size: size, **options)
     end
+  end
+
+  private
+
+  def home_thumbnails_rules
+    [
+      { id: 0, class: '', display: '' },
+      { id: 1, class: '', display: '' },
+      { id: 2, class: '', display: '' },
+      { id: 3, class: 'd-md-blocks', display: '' },
+      { id: 4, class: 'd-none d-xl-block', display: '' },
+      { id: 5, class: 'd-none d-xl-block', display: '' }
+    ]
   end
 end
