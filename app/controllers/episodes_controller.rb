@@ -16,8 +16,9 @@ class EpisodesController < AuthenticatedController
 
   def update
     episode = Episode.find(params[:id])
-    progress = episode_params[:progress].to_f
+    progress = episode_params[:progress]
     success = episode.set_progress(current_user, progress)
+
     render json: {
       success: success,
       episode: episode,
