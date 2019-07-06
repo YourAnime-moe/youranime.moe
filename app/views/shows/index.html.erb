@@ -12,11 +12,11 @@
       <span class="title"><%= t('anime.shows.view-all') %></span>
       <small><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
-    <div class="container">
+    <div class="container is-fluid">
       <% @shows_parts.each do |shows| %>
-        <div class="columns">
+        <div class="columns is-tiny-gap no-margin shows">
           <% shows.each_with_index do |show| %>
-            <div class="column is-4" style="margin-top: 20px;">
+            <div class="column is-3" style="margin-top: 20px;">
               <% @_rule = {class: nil} %>
               <% @_thumb_info = {} %>
               <% @model = show %>
