@@ -45,10 +45,6 @@ Rails.application.routes.draw do
 
   # Shows
   resources :shows, only: %i[index show] do
-    get :history, on: :collection
-    get :movies, on: :collection
-
-    # Episodes
     resources :episodes, only: %i[show update]
   end
 
