@@ -55,19 +55,12 @@ class Episode < ApplicationRecord
   end
 
   def set_progress(current_user, progress)
-    p "Saving the progress... (#{progress})"
+    progress = progress.to_f
+    Rails.logger.info "Saving the progress... (#{progress})"
     return false unless video.attached?
 
     user_progress = progress(current_user)
-    if user_progress.persisted?
-      res = user_progress.update(progress: progress)
-    else
-      p "new progress fam"
-      user_progress.progress = progress
-      res = user_progress.save
-    end
-    p user_progress.errors.to_a.join ', '
-    res
+    save_progress(user_progress)
   end
 
   def progress(current_user)
@@ -87,14 +80,35 @@ class Episode < ApplicationRecord
 
   def self.remove_all_media
     all.each do |episode|
-      Rails.logger.info "Cleaning thumbnail for episode id #{episode.id}"
-      episode.thumbnail.purge if episode.thumbnail.attached?
-      Rails.logger.info "Cleaning video for episode id #{episode.id}"
-      episode.video.purge if episode.video.attached?
+      purge_thumbnail(episode)
+      purge_video(episode)
     end
   end
 
   def path
     self[:path] || "/videos/#{show.roman_title}/ep#{episode_number}"
+  end
+
+  private
+
+  def save_progress(user_progress)
+    if user_progress.persisted?
+      user_progress.update(progress: progress)
+    else
+      user_progress.progress = progress
+      user_progress.save
+    end
+  end
+
+  class << self
+    def purge_thumbnail(episode)
+      Rails.logger.info "Cleaning thumbnail for episode id #{episode.id}"
+      episode.thumbnail.purge if episode.thumbnail.attached?
+    end
+
+    def purge_video(episode)
+      Rails.logger.info "Cleaning video for episode id #{episode.id}"
+      episode.video.purge if episode.video.attached?
+    end
   end
 end
