@@ -1,0 +1,22 @@
+<h1 class="title">
+  <%= title %>
+</h1>
+
+<section class="section">
+  <div id="slider-<%= resource_type %>" class="carousel no-navigation">
+    <% elements.each do |element| %>
+      <div class="card">
+      <div class="card-image">
+        <figure class="image is-16by9  is-covered">
+          <img src="<%= element.send(resource) %>" alt="<%= element.title %>">
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="item__title">
+          <%= element.title %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</section>

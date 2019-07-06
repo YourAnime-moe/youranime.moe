@@ -26,6 +26,10 @@ module ApplicationHelper
     end
   end
 
+  def backdrop_url
+    asset_path("backdrop-#{I18n.locale}.png")
+  end
+
   private
 
   def _logout
