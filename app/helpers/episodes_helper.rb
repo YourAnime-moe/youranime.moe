@@ -6,11 +6,17 @@ module EpisodesHelper
   end
 
   def episode_tag(episode)
-    content_tag :video, controls: false, muted: true, autoplay: true, id: 'video-obj', src: @episode.video_url, watched: current_user.progress_for(episode) do
+    content_tag(
+      :video,
+      controls: false,
+      muted: true,
+      autoplay: true,
+      id: 'video-obj',
+      src: @episode.video_url,
+      watched: current_user.progress_for(episode)
+    ) do
       html_subs = episode.subtitles.select { |sub| sub.src.attached? }.map do |s|
-        <<-HTML
-          <track kind="subtitles" load-src="#{url_for(s.src)}" srclang="#{s.lang}" label="#{s.name}">
-        HTML
+        subtitle_html(s)
       end.join('')
       # sanitize(html_subs, tags: %w[tags], attributes: %w[kind load-src srclang label])
       html_subs.html_safe
@@ -18,6 +24,18 @@ module EpisodesHelper
   end
 
   def restricted?(episode)
-    !!current_user.google_user && episode.respond_to?(:restricted?) && episode.restricted?
+    current_user.google_user && episode.respond_to?(:restricted?) && episode.restricted?
+  end
+
+  private
+
+  def subtitle_html(subtitle)
+    <<-HTML
+      <track
+        kind="subtitles"
+        load-src="#{url_for(subtitle.src)}"
+        srclang="#{subtitle.lang}"
+        label="#{subtitle.name}">
+    HTML
   end
 end

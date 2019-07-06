@@ -8,7 +8,7 @@ module TranslatableTitleConcern
     return fr_title if I18n.locale == :fr
     return jp_title if I18n.locale == :jp
 
-    roman_title
+    default_title
   end
 
   def description
@@ -16,5 +16,11 @@ module TranslatableTitleConcern
     result = self['fr_description'] if I18n.locale == :fr
     result = self['jp_description'] if I18n.locale == :jp
     result.presence || I18n.t('anime.shows.no-description')
+  end
+
+  private
+
+  def default_title
+    try(:roman_title) || try(:alternate_title)
   end
 end

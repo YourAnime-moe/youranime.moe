@@ -27,10 +27,14 @@ module ResourceFetchConcern
     method(resource_name).call
   end
 
+  def saves_resource_url?(resource_url)
+    @saves_resource_url ||= has_attribute?(resource_url)
+  end
+
   def resource_url_for(resource_name, default_url: '/', expiry: 1.day)
     ensure_attachable_resource!(resource_name)
     resource_url = :"#{resource_name}_url"
-    if @saves_resource_url
+    if saves_resource_url?(resource_url)
       self[resource_url] || default_url
     else
       resource = resource_for(resource_name)
