@@ -3,8 +3,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  include SessionsConcern
+  include ApplicationConcern
+
   before_action :find_locale
-  before_action :check_is_in_maintenance_mode!, except: [:logout]
+  # before_action :check_is_in_maintenance_mode!, except: [:logout]
 
   include ApplicationHelper
 

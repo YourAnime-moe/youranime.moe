@@ -43,13 +43,6 @@ class Show < ApplicationRecord
     subbed? && dubbed?
   end
 
-  def title(html: false, default: nil)
-    if html
-      return '<i>No title</i>'.html_safe if title(html: false, default: nil).blank?
-    end
-    (self[:title] || default || alternate_title)
-  end
-
   def generate_urls!(force: false)
     return true if banner_url? && !force
 
