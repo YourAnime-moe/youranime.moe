@@ -20,7 +20,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def home; end
+  def home
+    @latest_shows = Show::Latest.perform(limit: 10)
+  end
 
   def google_auth
     @user = User::GoogleAuth.perform(

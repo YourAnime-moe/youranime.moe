@@ -1,44 +1,57 @@
-<nav class="navbar is-spaced is-dark becomes-transparent" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-    </a>
+<script type="text/javascript">
+  $(document).ready(function() {
+    url = $('[target]').attr('target');
+    $('<img/>').attr('src', url).on('load', function() {
+      $('[target]').css('background-image', "url(" + url + ")");
+      $('.hero-body').fadeIn(2000);
+    });
+  });
+</script>
 
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light">
-            Log in
-          </a>
+<section class="hero is-fullheight dark-background-2 is-bold">
+  <div class="hero-body has-img-background" style="display: none;" target="<%= backdrop_url %>">
+    <div class="overlay">
+      <div class="content">
+        <div class="ui has-centered-text container pos-inherit grid">
+          <div class="show-title" style="width: 80%;">
+            <span class="title">
+              Your anime
+            </span>
+            <span class="">
+              Yours alone.
+            </span>
+            <div class="hf-section">
+              <div class="columns" style="margin: 10px auto;">
+                <div class="column">
+                  <button class="button is-info is-large is-fullwidth">Sign up now</button>
+                </div>
+                <div class="column">
+                  <button class="button is-primary is-inverted is-outlined is-large is-fullwidth">Login</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</nav>
+</section>
 
-<section class="hero is-medium is-bold">
-  <div class="hero-body">
+<section class="hero is-medium dark-backgrousnd-2 is-bold">
+  <div class="hero-body" style="padding-top: 6rem">
     <div class="container">
-      <h1 class="title">
-        Your anime
-      </h1>
-      <h2 class="subtitle">
-        Yours alone.
-      </h2>
+      <div class="demo thumbs">
+        <%= render partial: 'application/partials/newest_shows', locals: {
+              title: 'Newest shows',
+              elements: @latest_shows,
+              resource: :banner_url,
+              resource_type: :show,
+            } %>
+      </div>
     </div>
   </div>
 </section>
+
 <section class="hero is-medium is-info is-bold">
   <div class="hero-body">
     <div class="container">
@@ -67,41 +80,29 @@
           <i class="material-icons is-large">format_paint</i>
           <h4 class="subtitle">Personalize your interface.</h4>
           <p>
-            Tired of seeing the stock theme? Choose how the site looks like from a palette
+            Tired of seeing the default theme? Choose how the site looks like from a palette
             of preset colours! You can also have more control for this too!
           </p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-<section class="hero is-medium is-dark is-bold">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Newest shows
-      </h1>
-    </div>
-  </div>
-</section>
-<section class="hero is-medium is-dark is-bold">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Latest episodes
-      </h1>
-    </div>
-  </div>
-</section>
-<section class="hero is-medium is-primary is-bold">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Convinced?
-      </h1>
       <div class="columns" style="width: 60%; margin: 0 auto;">
-        <button style="margin-top: 10px;" class="button is-primary is-inverted is-outlined is-large is-fullwidth">Sign up now</button>
+        <button style="margin-top: 5rem;" class="button is-info is-inverted is-outlined is-large is-fullwidth">Sign up now</button>
       </div>
     </div>
   </div>
 </section>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Initialize all div with carousel class
+    bulmaCarousel.attach('#slider-show', {
+      loop: true,
+      slidesToShow: 2,
+      navigation: false,
+      navigationKeys: false,
+      pagination: null,
+      autoplay: true,
+      pauseOnHover: false
+    });
+  });
+</script>
