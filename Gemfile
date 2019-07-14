@@ -45,7 +45,7 @@ gem 'jquery-ui-rails'
 gem 'material_icons'
 
 # Single Sign on
-gem 'omniauth'
+gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-oauth2'
 gem 'omniauth-google-oauth2'
 

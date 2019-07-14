@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
 
   def logout
     log_out
+    p 'test'
     redirect_to '/'
   end
 
