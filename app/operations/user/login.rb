@@ -7,17 +7,17 @@ class User
     input :maintenance, type: :keyword, required: false
 
     before do
-      raise LoginError, 'welcome.login.errors.no-credentials' if username.blank? && password.blank?
-      raise LoginError, 'welcome.login.errors.no-username' if username.blank?
-      raise LoginError, 'welcome.login.errors.no-password' if password.blank?
+      raise LoginError.new('welcome.login.errors.no-credentials') if username.blank? && password.blank?
+      raise LoginError.new('welcome.login.errors.no-username') if username.blank?
+      raise LoginError.new('welcome.login.errors.no-password') if password.blank?
     end
 
     def execute
       user = User.find_by(username: username.downcase)
-      raise LoginError, 'welcome.login.errors.unknown-user' if user.nil?
-      raise LoginError, 'welcome.login.errors.wrong-password' unless user.authenticate(password)
-      raise LoginError, 'welcome.login.errors.maintenance' if maintenance && !user.admin?
-      raise LoginError, 'welcome.login.errors.deactivated' unless user.is_activated?
+      raise LoginError.new('welcome.login.errors.unknown-user', attempt: username) if user.nil?
+      raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
+      raise LoginError.new('welcome.login.errors.maintenance') if maintenance && !user.admin?
+      raise LoginError.new('welcome.login.errors.deactivated') unless user.is_activated?
 
       user
     end
@@ -30,8 +30,8 @@ class User
     end
 
     class LoginError < StandardError
-      def initialize(i18n_key)
-        super(i18n_key)
+      def initialize(i18n_key, *args, **options)
+        super(I18n.t(i18n_key, *args, **options))
       end
     end
   end
