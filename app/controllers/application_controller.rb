@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
     log_in(user)
     render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
   rescue User::Login::LoginError => e
-    render json: { message: t(e.message) }
+    render json: { message: e.message }
   end
 
   def locale
