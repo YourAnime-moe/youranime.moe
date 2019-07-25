@@ -6,7 +6,10 @@ module ResourceFetchConcern
   class_methods do
     def has_resource(resource_name, default_url: '/', expiry: 1.day)
       resource_url = :"#{resource_name}_url"
-      send(:instance_variable_set, :@saves_resource_url, respond_to?(resource_url))
+      db_resource_url = :"db_#{resource_url}?"
+      send(:define_method, db_resource_url) do
+        @db_resource_url ||= respond_to?(resource_url)
+      end
       send(:define_method, resource_url) do
         ensure_fetchable_resource!(resource_name)
         resource_url_for(resource_name, default_url: default_url, expiry: expiry)
@@ -30,7 +33,7 @@ module ResourceFetchConcern
   def resource_url_for(resource_name, default_url: '/', expiry: 1.day)
     ensure_attachable_resource!(resource_name)
     resource_url = :"#{resource_name}_url"
-    if @saves_resource_url
+    if try(:"db_#{resource_url}?")
       self[resource_url] || default_url
     else
       resource = resource_for(resource_name)
