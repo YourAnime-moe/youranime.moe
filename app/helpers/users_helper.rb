@@ -20,9 +20,11 @@ module UsersHelper
     rule
   end
 
-  def force_array_to(size, array)
+  def force_array_to(size, array, reverse: false)
     return nil if array.nil? || !array.respond_to?(:size)
     return { cut: array, actual: array } if size <= 0
+
+    array.reverse! if reverse
 
     current_size = array.size
     return { cut: array[0, size], actual: array } if current_size >= size

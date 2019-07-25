@@ -10,7 +10,7 @@ class UsersController < AuthenticatedController
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
     @recent_shows = Show.where(id: ids)
-    @episodes = force_array_to(6, episodes)
+    @episodes = force_array_to(6, episodes, reverse: true)
   end
 
   # Going to settings
