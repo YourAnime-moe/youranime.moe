@@ -35,7 +35,7 @@ fr:
         web-message: "Parfait ! Commençons à regarder des animés !"
       errors:
         wrong-password: "Désolé %{user}, mais votre mot de passe est incorrect."
-        unknown-user: "Aucun utilisateur nommé %{attempt} n'existe sur le système. Veuillez s'il vous plaît réessayer."
+        unknown-user: "Aucun utilisateur nommé « %{attempt} » n'existe sur le système. Veuillez s'il vous plaît réessayer."
         no-username: "Veuillez entrer votre nom d'utilisateur."
         no-password: "Veuillez entrer votre mot de passe."
         no-credentials: "Vous avez oublié d'entrer les informations requises."
