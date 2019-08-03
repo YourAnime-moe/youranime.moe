@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :check_is_in_maintenance_mode!, except: [:logout]
 
   include ApplicationHelper
+  include LocaleConcern
 
   def root
     if logged_in?
@@ -73,41 +74,7 @@ class ApplicationController < ActionController::Base
     render json: { success: true, locale: I18n.locale }
   end
 
-  def set_locale
-    current = params[:locale]
-    old = I18n.locale
-    reload = false
-    if session[:locale].nil? || params[:set_at_first] == 'true'
-      session[:locale] = current
-      found_locale = false
-      Config.authorized_locales.each do |auth_locale|
-        next unless current.include?(auth_locale)
-
-        current = auth_locale
-        Rails.logger.info "Set locale #{auth_locale}"
-        found_locale = true
-        next
-      end
-      Rails.logger.info "Set locale #{current}"
-      I18n.locale = current if found_locale
-      session[:locale] = I18n.locale
-      reload = old.to_s != current.to_s
-    end
-    res = { success: true, reload: reload, locale: { requested: current, old: old, current: I18n.locale } }
-    render json: res
-  end
-
   private
-
-  def find_locale
-    try_to_set = params[:lang] || session[:locale]
-    begin
-      I18n.locale = try_to_set || :fr
-    rescue I18n::InvalidLocale
-      p "Invalid locale #{try_to_set}. Defaulting to :fr..."
-      I18n.locale = :fr
-    end
-  end
 
   def google_user_params
     params.require(:user).permit(

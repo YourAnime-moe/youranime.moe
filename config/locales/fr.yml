@@ -149,7 +149,7 @@ fr:
       title: "Vous êtes en train de regarder : \"%{name}\""
       go-back: "Retourner à \"%{name}\"..."
       last-episode: "Dernier épisode !"
-      not-available: Non disponible
+      not-available: Accès limité
       broken: Vidéo brisée
 
     other:
@@ -168,7 +168,7 @@ fr:
           confirm-new: Confirmez ce mot de passe
           change: Changez votre mot de passe
           google:
-            prompt: Dîtes, vous êtes enregistré(e)s avec un compte Google, n'est-ce-pas ?
+            prompt: Dîtes, vous vous êtes enregistré(e)s avec un compte Google, n'est-ce-pas ?
             warning: Attention, ce mot de passe diffère de celui de votre compte Google.
 
   time:
