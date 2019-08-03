@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   has_many :progresses, lambda {
-    includes(:episode).where('progress > 1')
+    includes(:episode).order('updated_at desc').where('progress > 1')
   }, class_name: 'UserWatchProgress', inverse_of: :user
 
   DEFAULT_DEMO_NAME = 'Demo Account'

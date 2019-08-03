@@ -8,7 +8,7 @@ module ResourceFetchConcern
       resource_url = :"#{resource_name}_url"
       db_resource_url = :"db_#{resource_url}?"
       send(:define_method, db_resource_url) do
-        @db_resource_url ||= respond_to?(resource_url)
+        @db_resource_url ||= self.class.column_names.include?(resource_url.to_s)
       end
       send(:define_method, resource_url) do
         ensure_fetchable_resource!(resource_name)
