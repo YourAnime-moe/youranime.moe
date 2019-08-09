@@ -71,10 +71,10 @@ Rails.application.routes.draw do
   post '/login' => 'application#login_post'
 
   constraints(host: /localhost|0.0.0.0/) do
-    match '/prod' => redirect('https://anime.akinyele.ca'), via: [:get]
+    match '/prod' => redirect('https://youranime.moe'), via: [:get]
   end
 
   constraints(host: /\w+\.herokuapp.com/) do
-    match '/(*path)' => redirect { |params, _| "https://anime.akinyele.ca/#{params[:path]}" }, via: :all
+    match '/(*path)' => redirect { |params, _| "https://youranime.moe/#{params[:path]}" }, via: :all
   end
 end

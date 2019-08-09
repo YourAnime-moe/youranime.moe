@@ -8,7 +8,9 @@ module ShowsHelper
       tag = Utils.tags[tag]
       next if tag.blank?
 
-      link_to(tag, '#', class: 'button tag is-rounded is-dark')
+      content_tag(:span, class: 'button tag is-rounded is-dark') do
+        tag
+      end
     end
     content_tag(:div, class: 'tags-container') do
       sanitize(links.join(''))

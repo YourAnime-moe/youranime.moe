@@ -5,8 +5,8 @@ class Episode < ApplicationRecord
 
   has_one_attached :video
   has_one_attached :thumbnail
-  has_resource :thumbnail, default_url: 'https://anime.akinyele.ca/img/404.jpg', expiry: 3.days
-  has_resource :video, default_url: 'https://anime.akinyele.ca/img/404.mp4', expiry: 500.minutes
+  has_resource :thumbnail, default_url: '/img/404.jpg', expiry: 3.days
+  has_resource :video, default_url: '/img/404.mp4', expiry: 500.minutes
 
   belongs_to :show
   has_one :user_watch_progress, dependent: :destroy
