@@ -10,8 +10,25 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  primary:
+    database: primary_db
+    user: postgres
+    adapter: postgresql
+  primary_replica:
+    database: primary_db
+    user: postgres_readonly
+    adapter: postgresql
+    replica: true
+  users:
+    database: users_db
+    user: postgres
+    adapter: postgresql
+    migrations_paths: db/users_migrate
+  users_replica:
+    database: users_db
+    user: postgres_readonly
+    adapter: postgresql
+    replica: true
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -21,5 +38,9 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  primary:
+    url: <%= ENV['TANOSHIMU_DATABASE_URL'] %>
+  shows:
+    url: <%= ENV['SHOWS_DATABASE_URL'] %>
+  episodes:
+    url: <%= ENV['EPISODES_DATABASE_URL'] %>
