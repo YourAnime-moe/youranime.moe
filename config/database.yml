@@ -5,50 +5,49 @@
 #   gem 'sqlite3'
 #
 default: &default
+  adapter: postgresql
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  user: postgres
+
+replica: &replica
+  <<: *default
+  user: postgre_replica
+  replica: true
+
+sqlite: &sqlite
   adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   primary:
+    <<: *default
     database: primary_db
-    user: postgres
-    adapter: postgresql
   primary_replica:
+    <<: *replica
     database: primary_db
-    user: postgres_readonly
-    adapter: postgresql
-    replica: true
   users:
+    <<: *default
     database: users_db
-    user: postgres
-    adapter: postgresql
     migrations_paths: db/users_migrate
   users_replica:
+    <<: *replica
     database: users_db
-    user: postgres_readonly
-    adapter: postgresql
-    replica: true
   shows:
+    <<: *default
     database: shows_db
-    user: postgres
-    adapter: postgresql
     migrations_paths: db/shows_migrate
   shows_replica:
+    <<: *replica
     database: shows_db
-    user: postgres_readonly
-    adapter: postgresql
-    replica: true
   episodes:
+    <<: *default
     database: episodes_db
-    user: postgres
-    adapter: postgresql
     migrations_paths: db/episodes_migrate
   episodes_replica:
+    <<: *replica
     database: episodes_db
-    user: postgres_readonly
-    adapter: postgresql
-    replica: true
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -56,32 +55,31 @@ development:
 test:
   primary:
     <<: *default
-    database: db/test.sqlite3
+    database: primary_test_db
   primary_replica:
-    <<: *default
-    replica: true
-    database: db/test.sqlite3
+    <<: *replica
+    database: primary_test_db
   users:
     <<: *default
-    database: db/users_test.sqlite3
+    database: users_test_db
+    migrations_paths: db/users_migrate
   users_replica:
-    <<: *default
-    replica: true
-    database: db/users_test.sqlite3
+    <<: *replica
+    database: users_test_db
   shows:
     <<: *default
-    database: db/shows_test.sqlite3
+    database: shows_test_db
+    migrations_paths: db/shows_migrate
   shows_replica:
-    <<: *default
-    replica: true
-    database: db/shows_test.sqlite3
+    <<: *replica
+    database: shows_test_db
   episodes:
     <<: *default
-    database: db/episodes_test.sqlite3
+    database: episodes_test_db
+    migrations_paths: db/episodes_migrate
   episodes_replica:
-    <<: *default
-    replica: true
-    database: db/episodes_test.sqlite3
+    <<: *replica
+    database: episodes_test_db
 
 production:
   primary:

@@ -11,7 +11,7 @@ module Users
     validates :active_until, presence: true
 
     def user
-      User.where(user_type: user_type, id: user_id)
+      User.where(user_type: user_type, id: user_id).first
     end
 
     def user=(user)
