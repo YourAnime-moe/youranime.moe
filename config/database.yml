@@ -29,18 +29,73 @@ development:
     user: postgres_readonly
     adapter: postgresql
     replica: true
+  shows:
+    database: shows_db
+    user: postgres
+    adapter: postgresql
+    migrations_paths: db/shows_migrate
+  shows_replica:
+    database: shows_db
+    user: postgres_readonly
+    adapter: postgresql
+    replica: true
+  episodes:
+    database: episodes_db
+    user: postgres
+    adapter: postgresql
+    migrations_paths: db/episodes_migrate
+  episodes_replica:
+    database: episodes_db
+    user: postgres_readonly
+    adapter: postgresql
+    replica: true
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: db/test.sqlite3
+  primary:
+    <<: *default
+    database: db/test.sqlite3
+  primary_replica:
+    <<: *default
+    replica: true
+    database: db/test.sqlite3
+  users:
+    <<: *default
+    database: db/users_test.sqlite3
+  users_replica:
+    <<: *default
+    replica: true
+    database: db/users_test.sqlite3
+  shows:
+    <<: *default
+    database: db/shows_test.sqlite3
+  shows_replica:
+    <<: *default
+    replica: true
+    database: db/shows_test.sqlite3
+  episodes:
+    <<: *default
+    database: db/episodes_test.sqlite3
+  episodes_replica:
+    <<: *default
+    replica: true
+    database: db/episodes_test.sqlite3
 
 production:
   primary:
     url: <%= ENV['TANOSHIMU_DATABASE_URL'] %>
+  primary_replica:
+    replica: true
+    url: <%= ENV['TANOSHIMU_DATABASE_URL'] %>
   shows:
     url: <%= ENV['SHOWS_DATABASE_URL'] %>
+  shows_replica:
+    replica: true
+    url: <%= ENV['SHOWS_DATABASE_URL'] %>
   episodes:
+    url: <%= ENV['EPISODES_DATABASE_URL'] %>
+  episodes_replica:
+    replica: true
     url: <%= ENV['EPISODES_DATABASE_URL'] %>
