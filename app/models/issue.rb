@@ -1,4 +1,6 @@
 class Issue < ApplicationRecord
+  include ConnectsToShowsConcern
+  
   validates :title, presence: true
   validates :description, presence: true
   validates :status, presence: true
