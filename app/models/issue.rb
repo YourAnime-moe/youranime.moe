@@ -14,10 +14,10 @@ class Issue < ApplicationRecord
 
   validates :title, presence: true
   validates :description, presence: true
-  validates :status, inclusion: { in: STATUSES }
+  validates_inclusion_of :status, in: STATUSES.map{|s| s.to_s}, message: '%{value} is not a valid status'
 
   belongs_to :user, inverse_of: :issues
-  validates_format_for :page_url, with: PAGE_URL_FORMAT, if: :page_url?
+  validates_format_of :page_url, with: PAGE_URL_FORMAT, if: :page_url?
 
   aasm column: :status do
     state OPEN, initial: true

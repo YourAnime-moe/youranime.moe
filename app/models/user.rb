@@ -12,6 +12,7 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
+  has_many :issues, inverse_of: :user
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'

@@ -5,18 +5,18 @@ RSpec.describe Issue, type: :model do
     valid_issue = FactoryBot.create(:issue, page_url: '/test/test')
     expect(valid_issue).to be_valid
 
-    invalid_issue = FactoryBot.create(:issue, page_url: 'test/test')
+    invalid_issue = FactoryBot.build(:issue, page_url: 'test/test')
     expect(invalid_issue).not_to be_valid
   end
 
   it 'is not valid without a title' do
-    issue = FactoryBot.create(:issue, title: nil)
+    issue = FactoryBot.build(:issue, title: nil)
 
     expect(issue).not_to be_valid
   end
 
   it 'is not valid without a description' do
-    issue = FactoryBot.create(:issue, description: nil)
+    issue = FactoryBot.build(:issue, description: nil)
 
     expect(issue).not_to be_valid
   end
@@ -38,7 +38,7 @@ RSpec.describe Issue, type: :model do
 
     [:close, :as_pending].each do |transition|
       it "can #{transition} an open issue" do
-        expect(issue.send("may_#{transition}?")).to be_falsey
+        expect(issue.send("may_#{transition}?")).to be_truthy
       end
     end
   end
@@ -54,7 +54,7 @@ RSpec.describe Issue, type: :model do
 
     [:close, :as_in_progress, :archive].each do |transition|
       it "can #{transition} an open issue" do
-        expect(issue.send("may_#{transition}?")).to be_falsey
+        expect(issue.send("may_#{transition}?")).to be_truthy
       end
     end
   end
@@ -70,7 +70,7 @@ RSpec.describe Issue, type: :model do
 
     [:close, :resolve].each do |transition|
       it "can #{transition} an open issue" do
-        expect(issue.send("may_#{transition}?")).to be_falsey
+        expect(issue.send("may_#{transition}?")).to be_truthy
       end
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe Issue, type: :model do
 
     [:archive].each do |transition|
       it "can #{transition} an open issue" do
-        expect(issue.send("may_#{transition}?")).to be_falsey
+        expect(issue.send("may_#{transition}?")).to be_truthy
       end
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe Issue, type: :model do
 
     [:archive].each do |transition|
       it "can #{transition} an open issue" do
-        expect(issue.send("may_#{transition}?")).to be_falsey
+        expect(issue.send("may_#{transition}?")).to be_truthy
       end
     end
   end
