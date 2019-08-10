@@ -82,6 +82,8 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (5.0.5)
+      concurrent-ruby (~> 1.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -189,6 +191,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   bootsnap (>= 1.4.2)
   byebug
   factory_bot_rails
