@@ -12,7 +12,6 @@ default: &default
 
 replica: &replica
   <<: *default
-  user: postgre_replica
   replica: true
 
 sqlite: &sqlite

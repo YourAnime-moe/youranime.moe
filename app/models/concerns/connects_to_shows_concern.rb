@@ -4,6 +4,6 @@ module ConnectsToShowsConcern
   extend ActiveSupport::Concern
 
   included do
-    connects_to database: { writing: :users, reading: :users_replica }
+    connects_to database: { writing: :shows, reading: :shows_replica }
   end
 end
