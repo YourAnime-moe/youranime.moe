@@ -15,6 +15,8 @@ module Users
     end
 
     def user=(user)
+      return unless user.respond_to?(:user_type)
+
       self.user_type = user.user_type
       self.user_id = user.id
       user
@@ -35,11 +37,13 @@ module Users
     def delete!
       return if deleted?
 
-      update(
-        deleted: true,
-        deleted_on: Time.now.utc,
-        active_until: Time.now.utc
-      )
+      User.transaction do
+        update(
+          deleted: true,
+          deleted_on: Time.now.utc,
+          active_until: Time.now.utc
+        )
+      end
     end
 
     private
@@ -49,8 +53,9 @@ module Users
     end
 
     def ensure_token
+      return if self.token.present?
+
       self.token = SecureRandom.hex
-    
       until self.class.where(token: self.token)
         self.token = SecureRandom.hex
       end

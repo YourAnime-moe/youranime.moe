@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   include ConnectsToShowsConcern
   include IdentifiableConcern
+  include RespondToTypesConcern
   include ValidateUserLikeConcern
 
   REGULAR = 'regular'
@@ -16,6 +17,8 @@ class User < ApplicationRecord
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
+
+  respond_to_types USER_TYPES
 
   validate_like_user user_types: USER_TYPES
   validates :email, uniqueness: true

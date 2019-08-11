@@ -1,15 +1,17 @@
 class Staff < ApplicationRecord
   include ConnectsToShowsConcern
   include IdentifiableConcern
+  include RespondToTypesConcern
   include ValidateUserLikeConcern
 
-  ADMIN = 'staff-admin'
+  ADMIN = 'staff_admin'
   REGULAR = 'staff'
-  GUEST = 'staff-guest'
-  DEMO = 'staff-demo'
+  GUEST = 'staff_guest'
+  DEMO = 'staff_demo'
 
   USER_TYPES = [ADMIN, REGULAR, GUEST, DEMO].freeze
 
+  respond_to_types USER_TYPES
   validate_like_user user_types: USER_TYPES
 
   def user

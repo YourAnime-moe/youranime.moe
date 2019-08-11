@@ -16,5 +16,10 @@ FactoryBot.define do
       deleted { false }
       active_until { 1.day.from_now.utc }
     end
+
+    trait :expired do
+      deleted { false }
+      active_until { 1.day.ago.utc }
+    end
   end
 end
