@@ -1,5 +1,5 @@
 class Staff < ApplicationRecord
-  include ConnectsToShowsConcern
+  include ConnectsToUsersConcern
   include IdentifiableConcern
   include RespondToTypesConcern
   include ValidateUserLikeConcern

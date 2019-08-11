@@ -1,6 +1,6 @@
 class Issue < ApplicationRecord
   include AASM
-  include ConnectsToShowsConcern
+  include ConnectsToUsersConcern
 
   OPEN = :open
   PENDING = :pending

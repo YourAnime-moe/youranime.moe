@@ -1,6 +1,6 @@
 module Users
   class Session < ApplicationRecord
-    include ConnectsToShowsConcern
+    include ConnectsToUsersConcern
 
     before_destroy :prevent_destroy!
     before_validation :ensure_token
