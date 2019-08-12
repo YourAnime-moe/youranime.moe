@@ -3,7 +3,7 @@
 IMAGE_RE = /\.(png|jpg)\z/.freeze
 
 def seed
-  # seed_users
+  seed_users
   seed_shows
 end
 
@@ -21,11 +21,9 @@ def seed_shows
   banners.each_with_index do |banner_filename, i|
     show_name = banner_filename.split('.')[0]
     show = seed_show(show_name, at: i)
-    p show.errors.full_messages
     next unless show.persisted?
 
-    banner = File.open(Rails.root.join('seeds', 'banners', banner_filename))
-    show.banner.attach(filename: banner_filename, io: banner)
+    # show.banner.attach(filename: banner_filename, io: File.open("./seeds/banners/#{banner_filename}"))
   end
 end
 

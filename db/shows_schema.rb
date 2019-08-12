@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_11_163438) do
+ActiveRecord::Schema.define(version: 2019_08_11_212113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2019_08_11_163438) do
     t.string "fr_title", default: "Titre", null: false
     t.string "jp_title", default: "タイトル", null: false
     t.string "roman_title", default: "taitoru", null: false
+    t.integer "queue_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
@@ -80,6 +81,13 @@ ActiveRecord::Schema.define(version: 2019_08_11_163438) do
     t.index ["fr_title", "published"], name: "index_shows_on_fr_title_and_published"
     t.index ["jp_title", "published"], name: "index_shows_on_jp_title_and_published"
     t.index ["roman_title"], name: "index_shows_on_roman_title"
+  end
+
+  create_table "shows_queue_relations", force: :cascade do |t|
+    t.integer "show_id", null: false
+    t.integer "queue_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "shows_seasons", force: :cascade do |t|

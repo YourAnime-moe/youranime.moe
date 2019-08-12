@@ -1,0 +1,9 @@
+<% @shows.each do |show| %>
+  <%= show.en_title %>
+  <% if show.banner.attached? %>
+    <%= image_tag show.banner %>
+  <% else %>
+    <%= image_tag show.banner_url %>
+  <% end %>
+  <br/>
+<% end %>

@@ -29,6 +29,12 @@ gem 'aasm'
 gem 'mini_magick'
 gem 'image_processing'
 
+# Webpack
+gem 'webpacker'
+
+# ActiveOperation
+gem 'active_operation'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
