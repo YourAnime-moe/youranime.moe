@@ -36,41 +36,6 @@ class Show < ApplicationRecord
     end
   end
 
-  def self.seed_from(csv_data, options: {})
-    require 'csv'
-
-    csv = csv_data if csv_data.class == CSV
-    unless csv
-      options[:headers] ||= true
-      options[:header_converters] ||= :symbol
-      options[:converters] ||= :all
-
-      csv = CSV.new(csv_data, **options)
-    end
-
-    data = csv.to_a.map {|row| row.to_hash }
-    data.each do |entry|
-      episodes_count = entry[:episodes]
-      released_on = nil
-      begin
-        released_on = JSON.parse(entry[:aired].gsub('\'', '"'))["from"]
-      rescue => exception
-        released_on = Time.now.utc
-      end
-
-      params = ActionController::Parameters.new(entry).permit(
-        :en_title,
-        :jp_title,
-        :roman_title,
-        :banner_url
-      )
-      params[:released_on] = released_on
-      params[:plot] = 'anime.plot.coming_soon'
-       
-      Show.create(params)
-    end
-  end
-
   private
 
   def init_values
