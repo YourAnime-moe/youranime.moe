@@ -42,6 +42,7 @@ group :development, :test do
   gem 'sqlite3', '~> 1.4'
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  gem 'timecop'
 end
 
 group :development do

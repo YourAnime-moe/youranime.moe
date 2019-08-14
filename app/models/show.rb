@@ -32,8 +32,13 @@ class Show < ApplicationRecord
 
   def queues
     ShowsQueueRelation.connected_to(role: :reading) do
-      ShowsQueueRelation.where(show_id: id)
+      ids = ShowsQueueRelation.where(show_id: id).pluck(:queue_id)
+      Shows::Queue.where(id: ids)
     end
+  end
+
+  def published?
+    published_on? && published_on <= Time.now.utc
   end
 
   private
