@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_11_165308) do
+ActiveRecord::Schema.define(version: 2019_08_16_193059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,34 @@ ActiveRecord::Schema.define(version: 2019_08_11_165308) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "descriptions", force: :cascade do |t|
+    t.string "used_by_model"
+    t.string "model_id"
+    t.string "en"
+    t.string "fr"
+    t.string "jp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["en", "fr", "jp"], name: "index_descriptions_on_en_and_fr_and_jp"
+    t.index ["en", "used_by_model"], name: "index_descriptions_on_en_and_used_by_model"
+    t.index ["fr", "used_by_model"], name: "index_descriptions_on_fr_and_used_by_model"
+    t.index ["jp", "used_by_model"], name: "index_descriptions_on_jp_and_used_by_model"
+  end
+
+  create_table "titles", force: :cascade do |t|
+    t.string "used_by_model"
+    t.string "model_id"
+    t.string "en"
+    t.string "fr"
+    t.string "jp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["en", "fr", "jp"], name: "index_titles_on_en_and_fr_and_jp"
+    t.index ["en", "used_by_model"], name: "index_titles_on_en_and_used_by_model"
+    t.index ["fr", "used_by_model"], name: "index_titles_on_fr_and_used_by_model"
+    t.index ["jp", "used_by_model"], name: "index_titles_on_jp_and_used_by_model"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

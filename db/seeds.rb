@@ -28,7 +28,18 @@ def seed_shows
 end
 
 def seed_show(show_name, at: nil)
-  Show.create(
+  title = Title.create(
+    en: "Title for #{show_name}",
+    fr: "Titre pour #{show_name}",
+    jp: "「#{show_name}」のタイトル",
+  )
+  description = Description.create(
+    en: 'My description in English',
+    fr: 'Ma description en Français',
+    jp: '日本語での概要',
+  )
+  
+  Show.create!(
     show_type: 'anime',
     dubbed: (at % 2).zero?,
     subbed: (at % 3).zero?,
@@ -36,12 +47,8 @@ def seed_show(show_name, at: nil)
     published_on: Time.now.utc,
     published: true,
     plot: 'My plot',
-    en_description: 'My description in English',
-    fr_description: 'Ma description en Français',
-    jp_description: '日本語での概要',
-    en_title: "Title for #{show_name}",
-    fr_title: "Titre pour #{show_name}",
-    jp_title: "「#{show_name}」のタイトル",
+    title: title,
+    description: description,
     roman_title: show_name
   )
 end

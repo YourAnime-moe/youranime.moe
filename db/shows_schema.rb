@@ -66,20 +66,11 @@ ActiveRecord::Schema.define(version: 2019_08_11_212113) do
     t.boolean "featured", default: false, null: false
     t.boolean "recommended", default: false, null: false
     t.string "banner_url", default: "/img/404.jpg", null: false
-    t.text "en_description", default: "No description"
-    t.text "fr_description", default: "Aucune description"
-    t.text "jp_description", default: "概要無し"
-    t.string "en_title", default: "Title", null: false
-    t.string "fr_title", default: "Titre", null: false
-    t.string "jp_title", default: "タイトル", null: false
     t.string "roman_title", default: "taitoru", null: false
     t.integer "queue_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
-    t.index ["en_title", "published"], name: "index_shows_on_en_title_and_published"
-    t.index ["fr_title", "published"], name: "index_shows_on_fr_title_and_published"
-    t.index ["jp_title", "published"], name: "index_shows_on_jp_title_and_published"
     t.index ["roman_title"], name: "index_shows_on_roman_title"
   end
 

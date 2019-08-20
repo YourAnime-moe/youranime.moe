@@ -18,13 +18,14 @@ class Show < ApplicationRecord
   has_many :ratings
   has_many :seasons, inverse_of: :show
   has_many :shows_queue_relations
+  has_one :description
+  has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
+  has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
   has_one_attached :banner
 
   respond_to_types SHOW_TYPES
 
   validate :dub_sub
-  validate_presence_one_of [:en_title, :fr_title, :jp_title]
-  validate_presence_one_of [:en_description, :fr_description, :jp_description]
 
   validates_presence_of :plot, :released_on, :banner_url, :roman_title
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
@@ -39,6 +40,14 @@ class Show < ApplicationRecord
 
   def published?
     published_on? && published_on <= Time.now.utc
+  end
+
+  def title
+    (@title ||= title_record).value
+  end
+
+  def description
+    (@description ||= description_record).value
   end
 
   private
