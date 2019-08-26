@@ -1,6 +1,12 @@
 module TranslatableConcern
   extend ActiveSupport::Concern
 
+  def metaclass
+    class << self
+      self
+    end
+  end
+
   class_methods do
     def translates(field, through: [], default:)
       raise 'Field must be present' unless field.present?
@@ -26,7 +32,10 @@ module TranslatableConcern
           end
         end
 
-        through.include?(I18n.locale) ? send(I18n.locale) : nil
+        return nil unless through.include?(I18n.locale)
+        value = send(I18n.locale)
+        value = send(default) if value.nil? && default
+        value
       end
     end
   end
