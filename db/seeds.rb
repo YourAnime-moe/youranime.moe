@@ -28,12 +28,13 @@ def seed_shows
 end
 
 def seed_show(show_name, at: nil)
-  title = Title.create(
+  title = Title.new(
     en: "Title for #{show_name}",
     fr: "Titre pour #{show_name}",
     jp: "「#{show_name}」のタイトル",
+    roman: show_name
   )
-  description = Description.create(
+  description = Description.new(
     en: 'My description in English',
     fr: 'Ma description en Français',
     jp: '日本語での概要',
@@ -49,7 +50,6 @@ def seed_show(show_name, at: nil)
     plot: 'My plot',
     title: title,
     description: description,
-    roman_title: show_name
   )
 end
 

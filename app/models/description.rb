@@ -1,7 +1,9 @@
 class Description < ApplicationRecord
   include TranslatableConcern
+  include GetRecordConcern
 
   validate :description_present
+  validates :used_by_model, presence: true
 
   translates :value, through: [:en, :fr, :jp], default: :en
 

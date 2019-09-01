@@ -53,7 +53,7 @@ module Shows
 
     def create_show(entry)
       params = to_param(entry)
-      if Title.exists?(params[:en_title]).present?
+      if Title.search(params[:en_title]).present?
         Rails.logger.warn("#{params[:en_title]} already exists!")
         return
       end

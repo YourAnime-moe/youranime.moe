@@ -66,12 +66,10 @@ ActiveRecord::Schema.define(version: 2019_08_11_212113) do
     t.boolean "featured", default: false, null: false
     t.boolean "recommended", default: false, null: false
     t.string "banner_url", default: "/img/404.jpg", null: false
-    t.string "roman_title", default: "taitoru", null: false
     t.integer "queue_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
-    t.index ["roman_title"], name: "index_shows_on_roman_title"
   end
 
   create_table "shows_queue_relations", force: :cascade do |t|

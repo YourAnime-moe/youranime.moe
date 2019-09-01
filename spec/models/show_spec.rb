@@ -12,19 +12,22 @@ RSpec.describe Show, type: :model do
   end
 
   it 'creates a valid show only with english title' do
-    show = FactoryBot.build(:show, fr_title: '', jp_title: '')
+    title = FactoryBot.build(:title, en: 'In English')
+    show = FactoryBot.build(:show, title: title)
 
     expect(show).to be_valid
   end
 
   it 'creates a valid show only with french title' do
-    show = FactoryBot.build(:show, en_title: '', jp_title: '')
+    title = FactoryBot.build(:title, fr: 'En francais')
+    show = FactoryBot.build(:show, title: title)
 
     expect(show).to be_valid
   end
 
   it 'creates a valid show only with japanese title' do
-    show = FactoryBot.build(:show, fr_title: '', en_title: '')
+    title = FactoryBot.build(:title, jp: '日本語で')
+    show = FactoryBot.build(:show, title: title)
 
     expect(show).to be_valid
   end
@@ -36,7 +39,7 @@ RSpec.describe Show, type: :model do
   end
 
   it 'is not published when there is no published on date' do
-    show = FactoryBot.create(:show, published_on: nil)
+    show = create_show(published_on: nil)
 
     expect(show).not_to be_published
   end
@@ -47,20 +50,21 @@ RSpec.describe Show, type: :model do
     it "is not published when published 1 #{unit} from now" do
       date = date_range.from_now.utc
 
-      show = FactoryBot.create(:show, published_on: date)
+      show = FactoryBot.build(:show, published_on: date)
       expect(show).not_to be_published
     end
 
     it "is published when published 1 #{unit} ago" do
       date = date_range.ago.utc
 
-      show = FactoryBot.create(:show, published_on: date)
+      show = FactoryBot.build(:show, published_on: date)
       expect(show).to be_published
     end
   end
 
   it 'is released today by default' do
-    show = FactoryBot.build(:show, released_on: nil)
+    title = FactoryBot.build(:title, en: 'my show')
+    show = FactoryBot.build(:show, released_on: nil, title: title)
     expect(show.released_on).to be_nil
 
     Timecop.freeze do
@@ -71,17 +75,26 @@ RSpec.describe Show, type: :model do
   end
 
   it 'belongs to no queues by default' do
-    show = FactoryBot.create(:show)
+    show = create_show
 
     expect(show.queues).to be_empty
   end
 
   it 'returns all the queues it belows to' do
-    show = FactoryBot.create(:show)
+    show = create_show
     queue = FactoryBot.create(:shows_queue)
 
     queue << show
 
     expect(show.queues).to include(queue)
   end
+end
+
+def create_show(*args, **options)
+  show = FactoryBot.build(:show, *args, **options)
+  show.title = FactoryBot.build(:title)
+  show.save
+
+  expect(show).to be_persisted
+  show
 end

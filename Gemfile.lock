@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: 840cf10c8f2d42d8348a874d2500a617ae635a9c
+  branch: master
+  specs:
+    faker (2.1.2)
+      i18n (>= 0.8)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: 599c170d8e0525d2535984341976f877b36b28d5
   specs:
@@ -213,6 +221,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   factory_bot_rails
+  faker!
   image_processing
   listen (>= 3.0.5, < 3.2)
   mini_magick

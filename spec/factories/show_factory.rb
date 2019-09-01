@@ -2,6 +2,9 @@ FactoryBot.define do
   factory :show do
     show_type { :anime }
     released_on { Time.now.utc }
+    
+    description
+    title
 
     plot do
       "This anime is about this girl and this guy."

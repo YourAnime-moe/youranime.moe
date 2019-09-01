@@ -13,11 +13,9 @@ class CreateShows < ActiveRecord::Migration[6.1]
       t.boolean :featured, null: false, default: false
       t.boolean :recommended, null: false, default: false
       t.string :banner_url, null: false, default: '/img/404.jpg'
-      t.string :roman_title, null: false, default: 'taitoru'
       t.integer :queue_id
 
       t.index :banner_url
-      t.index :roman_title
 
       t.timestamps
     end

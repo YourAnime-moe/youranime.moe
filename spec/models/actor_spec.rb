@@ -15,7 +15,7 @@ RSpec.describe Actor, type: :model do
   end
 
   it 'validates if the last name is there' do
-    actor = Actor.new(last_name: 'Your')
+    actor = Actor.new
 
     expect(actor).not_to be_valid
     expect(actor.errors[:last_name]).to be_present
