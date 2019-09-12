@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
+  has_secure_password
 
   respond_to_types USER_TYPES
 
