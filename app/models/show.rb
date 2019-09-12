@@ -4,6 +4,7 @@ class Show < ApplicationRecord
   include ConnectsToShowsConcern
   include RespondToTypesConcern
   include ValidatePresenceOneOfConcern
+  include ShowScopesConcern
 
   ANIME = 'anime'
   MOVIE = 'movie'
@@ -16,7 +17,7 @@ class Show < ApplicationRecord
   has_and_belongs_to_many :tags
 
   has_many :ratings
-  has_many :seasons, inverse_of: :show
+  has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
   has_many :shows_queue_relations
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
@@ -63,6 +64,18 @@ class Show < ApplicationRecord
     new_description_record.used_by_model = self.class.table_name
     new_description_record.model_id = self.id
     self.description_record = new_description_record
+  end
+
+  def only_subbed?
+    (!subbed? && !dubbed?) || subbed? && !dubbed?
+  end
+
+  def only_dubbed?
+    dubbed? && !subbed?
+  end
+
+  def subbed_and_dubbed?
+    subbed? && dubbed?
   end
 
   private

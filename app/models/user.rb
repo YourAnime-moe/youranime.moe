@@ -33,6 +33,10 @@ class User < ApplicationRecord
     sessions.where(deleted: false)
   end
 
+  def auth_token
+    @auth_token ||= active_sessions.order('created_at desc').first&.token
+  end
+
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
       user.name = "#{auth.info.given_name} #{auth.info.family_name}"
