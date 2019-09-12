@@ -26,10 +26,18 @@ class User < ApplicationRecord
   validates_format_of :email, with: EMAIL_REGEX, if: :email?
 
   def sessions
-    Users::Session.where(user_id: id, user_type: user_type)
+    @sessions ||= Users::Session.where(user_id: id, user_type: user_type)
   end
 
   def active_sessions
     sessions.where(deleted: false)
+  end
+
+  def self.from_omniauth(auth)
+    where(email: auth.info.email).first_or_initialize do |user|
+      user.name = "#{auth.info.given_name} #{auth.info.family_name}"
+      user.email = auth.info.email
+      user.username = auth.info.email
+    end
   end
 end

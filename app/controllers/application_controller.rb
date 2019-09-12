@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
     @user = User.new(google_user_params)
     @user.limited = true
     @user.google_user = true
-    @user.is_activated = true
+    @user.active = true
     if @user.save
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')

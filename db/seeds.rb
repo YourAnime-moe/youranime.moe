@@ -11,7 +11,8 @@ def seed_users
   admin_user = Staff.create(
     username: 'admin',
     name: 'Admin User',
-    limited: false
+    limited: false,
+    password: 'password'
   )
 
   admin_user.to_user!

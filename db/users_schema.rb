@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2019_08_10_140503) do
     t.string "identification", null: false
     t.string "name", null: false
     t.string "user_type", default: "staff", null: false
+    t.string "password_digest"
     t.boolean "active", default: true, null: false
     t.boolean "limited", default: true, null: false
     t.integer "user_id"
@@ -71,9 +72,17 @@ ActiveRecord::Schema.define(version: 2019_08_10_140503) do
     t.string "user_type", default: "regular", null: false
     t.boolean "active", default: true, null: false
     t.boolean "limited", default: true, null: false
+    t.boolean "google_user", default: false, null: false
+    t.string "hex", default: "#000000", null: false
+    t.string "google_token"
+    t.string "google_refresh_token"
+    t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["google_refresh_token"], name: "index_users_on_google_refresh_token"
+    t.index ["google_token"], name: "index_users_on_google_token"
+    t.index ["hex"], name: "index_users_on_hex", unique: true
     t.index ["identification"], name: "index_users_on_identification", unique: true
     t.index ["updated_at"], name: "index_users_on_updated_at"
     t.index ["username", "email"], name: "index_users_on_username_and_email"

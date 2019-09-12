@@ -11,6 +11,8 @@ class Staff < ApplicationRecord
 
   USER_TYPES = [ADMIN, REGULAR, GUEST, DEMO].freeze
 
+  has_secure_password
+
   respond_to_types USER_TYPES
   validate_like_user user_types: USER_TYPES
 
@@ -27,6 +29,7 @@ class Staff < ApplicationRecord
       name: name,
       active: true,
       limited: false,
+      password: password
     )
 
     update!(user_id: new_user.id)

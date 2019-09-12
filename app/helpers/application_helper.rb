@@ -8,7 +8,7 @@ module ApplicationHelper
       _logout
       false
     else
-      !current_user.nil? && current_user.is_activated?
+      !current_user.nil? && current_user.active?
     end
   end
 

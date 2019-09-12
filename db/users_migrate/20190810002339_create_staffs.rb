@@ -5,6 +5,7 @@ class CreateStaffs < ActiveRecord::Migration[6.1]
       t.string :identification, null: false, unique: true
       t.string :name, null: false
       t.string :user_type, null: false, default: 'staff'
+      t.string :password_digest
       t.boolean :active, null: false, default: true
       t.boolean :limited, null: false, default: true
       t.integer :user_id
