@@ -12,6 +12,8 @@ class User < ApplicationRecord
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
+  before_save :ensure_hex
+
   has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
@@ -39,9 +41,25 @@ class User < ApplicationRecord
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
-      user.name = "#{auth.info.given_name} #{auth.info.family_name}"
+      user.name = auth.info.name
       user.email = auth.info.email
       user.username = auth.info.email
     end
+  end
+
+  private
+
+  def ensure_hex
+    return if hex && hex != self.class.new.hex
+
+    hash_code = 0
+    username.each_char do |char|
+      hash_code = char.ord + ((hash_code << 5) - hash_code)
+    end
+
+    code = hash_code & 0x00FFFFFF
+    code = code.to_s(16).upcase
+
+    self[:hex] = "#" << "00000"[0, 6 - code.size] + code
   end
 end

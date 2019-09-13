@@ -78,6 +78,7 @@ class ApplicationController < ActionController::Base
     params.require(:user).permit(
       :name,
       :username,
+      :email,
       :password,
       :password_confirmation,
       :google_refresh_token,
