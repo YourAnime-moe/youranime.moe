@@ -54,6 +54,12 @@ module ApplicationHelper
     @app_title
   end
 
+  def episode_path(episode, *_args, **options)
+    path = "/shows/#{episode.show.id}/episodes/#{episode.id}"
+    path << '.' << options[:format].to_s if options[:format]
+    path
+  end
+
   private
 
   def _logout

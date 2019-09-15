@@ -13,6 +13,7 @@ def development_seed
   seed_users
   seed_show_tags
   seed_shows
+  seed_episodes
 end
 
 def seed_users
@@ -40,6 +41,19 @@ def seed_shows
   end
 
   Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
+end
+
+def seed_episodes
+  Show.all.each do |show|
+    show.seasons.each do |season|
+      (1..26).each do |number|
+        season.episodes.create(
+          number: number,
+          title: "Episode #{number} - Season #{season.number} - #{show.title}"
+        )
+      end
+    end
+  end
 end
 
 def seed_show(show_name, at: nil)

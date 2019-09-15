@@ -25,8 +25,7 @@ module ResourceFetchConcern
         end
       end
       send(:define_method, "#{resource_name}?") do
-        resource = fetch!(resource_name)
-        resource.blank? ? false : resource.attached?
+        (fetch!(resource_name, default_url)&.attached?).present?
       end
     end
   end
@@ -45,20 +44,20 @@ module ResourceFetchConcern
     else
       resource = resource_for(resource_name)
       if resource.attached?
-        p "OOOOGESA"
-        #resource.service_url(expires_in: expiry)
+        resource.service_url(expires_in: expiry)
       else
         default_url
       end
     end
   end
 
-  def fetch!(resource_name)
+  def fetch!(resource_name, default_url)
     ensure_attachable_resource!(resource_name)
     resource = resource_for(resource_name)
-    return resource if resource.attached?
+    #return resource if resource.attached?
 
-    resource.attach(io: File.open(path), filename: "episode-#{id}")
+    #resource.attach(io: File.open("./public/#{default_url}"), filename: "episode-#{id}")
+
   rescue ResourceNotAttachable, Errno::ENOENT
     nil
   end

@@ -122,7 +122,8 @@ module ShowsHelper
   def show_thumb(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
 
-    progress = (current_user.progress_for(show) if show.class == Episode) || 0
+    # progress = (current_user.progress_for(show) if show.class == Episode) || 0
+    progress = 0
     rules ||= {}
     content_tag :div, class: "no-overflow #{rules[:class]}" do
       progress_bar = "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
@@ -155,6 +156,25 @@ module ShowsHelper
       sanitize(check_episode_available(show)) +
         sub_dub_holder(show) +
         check_episode_cc(show)
+    end
+  end
+
+  def seasons_tabs(show)
+    show_seasons = show.seasons.to_a.reject { |season| season.episodes.empty? }
+    return '' if show_seasons.empty?
+
+    seasons_tag = show_seasons.map do |season|
+      content_tag :li, class: ('is-active' if season.number == 1) do
+        content_tag :a, href: "#season-#{season.number}", data: {season: season.number.to_s} do
+          "Season #{season.number}"
+        end
+      end
+    end.join('')
+
+    content_tag :div, class: 'tabs is-boxed has-text-light' do
+      content_tag :ul do
+        sanitize(seasons_tag, attributes: %w(href data-season class))
+      end
     end
   end
 
