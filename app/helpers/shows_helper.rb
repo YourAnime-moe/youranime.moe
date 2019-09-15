@@ -37,7 +37,7 @@ module ShowsHelper
         end
       end
     else
-      if current_user.google_user
+      if current_user.google?
         content_tag :div, class: 'sub-dub-holder' do
           restricted_tag
         end

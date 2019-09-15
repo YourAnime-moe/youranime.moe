@@ -6,10 +6,8 @@ class User
 
     def execute
       user = User.from_omniauth(access_token)
-      return user if user.persisted? && user.google_user
+      return user if user.persisted? && user.google?
       raise NotGoogleUser, 'welcome.google.not-google' if user.persisted?
-
-      puts user
 
       refresh_token = access_token.credentials.refresh_token
       user.google_token = access_token.credentials.token

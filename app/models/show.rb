@@ -7,6 +7,8 @@ class Show < ApplicationRecord
   include ShowScopesConcern
   include ResourceFetchConcern
 
+  self.per_page = 24
+
   ANIME = 'anime'
   MOVIE = 'movie'
 
@@ -39,6 +41,12 @@ class Show < ApplicationRecord
     ShowsQueueRelation.connected_to(role: :reading) do
       ids = ShowsQueueRelation.where(show_id: id).pluck(:queue_id)
       Shows::Queue.where(id: ids)
+    end
+  end
+
+  def episodes
+    Episode.connected_to(role: :reading) do
+      Episode.where(season_id: seasons.ids)
     end
   end
 

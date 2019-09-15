@@ -14,7 +14,7 @@
         <%= t('sidebar.anime-movies') %>
       <% end %>
 
-      <% if current_user.admin? %>
+      <% if current_user.can_manage? %>
         <%= link_to(t('header.admin'), admin_path, class: 'navbar-item') %>
       <% end %>
     </div>

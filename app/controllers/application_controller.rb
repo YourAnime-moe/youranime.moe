@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   def google_register
     @user = User.new(google_user_params)
     @user.limited = true
-    @user.google_user = true
+    @user.user_type = User::GOOGLE
     @user.active = true
     if @user.save
       log_in(@user)

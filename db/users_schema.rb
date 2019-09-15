@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(version: 2019_08_10_140503) do
     t.string "user_type", default: "regular", null: false
     t.boolean "active", default: true, null: false
     t.boolean "limited", default: true, null: false
-    t.boolean "google_user", default: false, null: false
     t.string "hex", default: "#000000", null: false
     t.string "google_token"
     t.string "google_refresh_token"

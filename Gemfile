@@ -18,7 +18,7 @@ gem "activejob"
 gem 'rollbar'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', git: "https://github.com/rails/rails", branch: '6-0-stable'
+gem 'rails', git: "https://github.com/rails/rails"
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -60,7 +60,6 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
-gem "kaminari"
 
 # Image processing
 gem 'image_processing', '~> 1.2'
