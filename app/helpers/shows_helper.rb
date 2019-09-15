@@ -4,7 +4,7 @@ module ShowsHelper
   def show_tags(show)
     return '' if show.tags.blank?
 
-    links = show.tags.map { |t| t.downcase.to_sym }.map do |tag|
+    links = show.tags.pluck(:value).map { |t| t.downcase.to_sym }.map do |tag|
       tag = Utils.tags[tag]
       next if tag.blank?
 

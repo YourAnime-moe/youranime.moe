@@ -21,7 +21,7 @@ class ShowsController < AuthenticatedController
       redirect_to shows_path
     else
       set_title(:before => @show.title)
-      @episodes_parts = @show.episodes.each_slice(3).to_a
+      @episodes_parts = @show.seasons.map{|s| s.episodes}.flatten.each_slice(3).to_a
       @additional_main_class = 'no-margin no-padding'
     end
   end

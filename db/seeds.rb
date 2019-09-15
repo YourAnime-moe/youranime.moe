@@ -1,9 +1,17 @@
 # encoding: utf-8
+require 'mini_magick'
 
-IMAGE_RE = /\.(png|jpg)\z/.freeze
+def production_seed
+  return unless Rails.env.production?
 
-def seed
+  seed_show_tags
+end
+
+def development_seed
+  return unless Rails.env.development?
+
   seed_users
+  seed_show_tags
   seed_shows
 end
 
@@ -18,14 +26,20 @@ def seed_users
   admin_user.to_user!
 end
 
+def seed_show_tags
+  Utils.valid_tags.each do |tag|
+    Tag.create(value: tag)
+  end
+end
+
 def seed_shows
   banners.each_with_index do |banner_filename, i|
     show_name = banner_filename.split('.')[0]
     show = seed_show(show_name, at: i)
     next unless show.persisted?
-
-    # show.banner.attach(filename: banner_filename, io: File.open("./seeds/banners/#{banner_filename}"))
   end
+
+  Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
 end
 
 def seed_show(show_name, at: nil)
@@ -41,7 +55,7 @@ def seed_show(show_name, at: nil)
     jp: '日本語での概要',
   )
   
-  Show.create!(
+  show = Show.create!(
     show_type: 'anime',
     dubbed: (at % 2).zero?,
     subbed: (at % 3).zero?,
@@ -52,14 +66,25 @@ def seed_show(show_name, at: nil)
     title: title,
     description: description,
   )
+
+  [:comedy, :fantasy, :magic].each do |tag|
+    show.tags << Tag.find_by(value: tag)
+  end
+
+  (1..3).each do |season_number|
+    show.seasons.create(number: season_number)
+  end
+
+  show
 end
 
 def banners
-  files_at('seeds', 'banners').select { |file| file =~ IMAGE_RE }
+  files_at('seeds', 'banners').select { |file| file =~ /\.(png|jpg)\z/.freeze }
 end
 
 def files_at(*args)
   Dir.entries(Rails.root.join(*args))
 end
 
-seed
+development_seed
+production_seed

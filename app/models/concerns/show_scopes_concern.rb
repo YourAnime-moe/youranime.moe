@@ -65,19 +65,5 @@ module ShowScopesConcern
                     end
       order(:alternate_title).order(:roman_title).order("#{title_column} asc")
     }
-    scope :search, lambda { |query, limit: nil|
-      return published if query.empty?
-
-      titles_to_search = %i[en_title fr_title jp_title alternate_title roman_title]
-      titles_as_queries = titles_to_search.map { |key| "(lower(shows.#{key}) like '%%#{query}%%')" }.join(' or ')
-      sql = <<-SQL
-        select * from shows
-        where (#{titles_as_queries})
-        and shows.published = 't'
-      SQL
-      sql_args = [sql]
-      sql_args << "limit #{limit}" unless limit.to_i == 0
-      find_by_sql(sql_args)
-    }
   end
 end

@@ -5,6 +5,7 @@ class Show < ApplicationRecord
   include RespondToTypesConcern
   include ValidatePresenceOneOfConcern
   include ShowScopesConcern
+  include ResourceFetchConcern
 
   ANIME = 'anime'
   MOVIE = 'movie'
@@ -14,14 +15,17 @@ class Show < ApplicationRecord
   before_validation :init_values
 
   has_and_belongs_to_many :starring, class_name: 'Actor'
-  has_and_belongs_to_many :tags
+  has_many :shows_tag_relations
+  has_many :tags, -> { distinct }, through: :shows_tag_relations
 
   has_many :ratings
   has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
   has_many :shows_queue_relations
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
+
   has_one_attached :banner
+  has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
 
   respond_to_types SHOW_TYPES
 
@@ -76,6 +80,12 @@ class Show < ApplicationRecord
 
   def subbed_and_dubbed?
     subbed? && dubbed?
+  end
+
+  def self.search(by_title)
+    Title.search(by_title).map do |title|
+      title.record
+    end
   end
 
   private
