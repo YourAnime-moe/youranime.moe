@@ -87,6 +87,11 @@ production:
   primary_replica:
     replica: true
     url: <%= ENV['DATABASE_URL'] %>
+  users:
+    url: <%= ENV['USERS_DATABASE_URL'] %>
+  users_replica:
+    replica: true
+    url: <%= ENV['USERS_DATABASE_URL'] %>
   shows:
     url: <%= ENV['SHOWS_DATABASE_URL'] %>
   shows_replica:
