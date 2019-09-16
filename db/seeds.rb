@@ -5,6 +5,8 @@ def production_seed
   return unless Rails.env.production?
 
   seed_show_tags
+  seed_shows
+  seed_episodes
 end
 
 def development_seed
