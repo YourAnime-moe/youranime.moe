@@ -1,0 +1,12 @@
+<% model_id = @model.class.to_s.downcase + "-#{@model.id.to_s}" if @model %>
+<% options = {} %>
+<% options[:target] = '_blank' if @_new_tab %>
+<% if restricted?(@model) %>
+  <%= content_tag :div, **options do %>
+    <%= show_thumb(@model, rules: @_rule) %>
+  <% end %>
+<% else %>
+  <%= link_to(@_url || @model, **options) do %>
+    <%= show_thumb(@model, rules: @_rule) %>
+  <% end %>
+<% end %>

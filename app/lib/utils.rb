@@ -39,6 +39,12 @@ class Utils
     }
   end
 
+  def self.valid_tags
+    valid_sym = self.tags.keys
+    valid_string = valid_sym.map { |tag| tag.to_s }
+    valid_sym + valid_string
+  end
+
   def self.get_tag_name(key)
     self.tags[key]
   end

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.3'
+ruby '2.6.4'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -60,7 +60,6 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
-gem "kaminari"
 
 # Image processing
 gem 'image_processing', '~> 1.2'
@@ -68,15 +67,21 @@ gem 'image_processing', '~> 1.2'
 # Subtitle parsing
 gem 'webvtt'
 
+# Webpack
+gem 'webpacker'
+
+# ActiveOperation
+gem 'active_operation'
+
+# As a state machine (AASM)
+gem 'aasm'
+
 # Code quality
 gem 'rubocop', require: false
 gem 'ruby-lint'
 gem 'reek'
 gem 'fasterer'
 gem 'debride'
-
-# ActiveOperation
-gem 'active_operation'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -114,3 +119,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+

@@ -1,0 +1,49 @@
+
+<nav class="navbar is-spaced is-dark becomes-transparent" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <%= image_tag 'tanoshimu', class: 'logo' %><h1 class="hide logo-title"><%= t('app.name') %></h1>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+
+      <%= link_to(shows_path, class: 'navbar-item') do %>
+        <i class="material-icons">play_arrow</i>
+        <%= t('sidebar.anime-movies') %>
+      <% end %>
+
+      <% if current_user.admin? %>
+        <%= link_to(t('header.admin'), admin_path, class: 'navbar-item') %>
+      <% end %>
+    </div>
+
+    <div style="justify-content: center; display: inline; padding-top: 10px; white-space: nowrap;">
+      <%= form_tag shows_path, method: 'get' do -%>
+        <div class="control">
+          <input style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
+          <button style="left: -54px;" type="submit" class="button is-icon">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+      <% end -%>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
+            <i class="material-icons">bug_report</i>
+          <% end %>
+          <%= link_to(users_settings_path, class: 'button is-primary is-icon') do %>
+            <i class="material-icons">settings</i>
+          <% end %>
+          <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
+            <i class="material-icons">power_settings_new</i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

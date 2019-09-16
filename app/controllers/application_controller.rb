@@ -1,21 +1,14 @@
-# frozen_string_literal: true
-
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
-
-  before_action :find_locale
-  before_action :check_is_in_maintenance_mode!, except: [:logout]
-
+  helper Webpacker::Helper
   include ApplicationHelper
   include LocaleConcern
 
-  def root
-    if logged_in?
-      redirect_to '/users/home'
-    else
-      set_title after: t('welcome.text'), before: t('welcome.login.login')
-      render 'login'
-    end
+  before_action :find_locale
+  before_action :check_is_in_maintenance_mode!, except: [:logout]
+  before_action :redirect_to_users_home_if_logged_in, only: [:login]
+
+  def login
+    set_title after: t('welcome.text'), before: t('welcome.login.login')
   end
 
   def google_auth
@@ -42,8 +35,8 @@ class ApplicationController < ActionController::Base
   def google_register
     @user = User.new(google_user_params)
     @user.limited = true
-    @user.google_user = true
-    @user.is_activated = true
+    @user.user_type = User::GOOGLE
+    @user.active = true
     if @user.save
       log_in(@user)
       redirect_to '/', success: t('welcome.login.success.web-message')
@@ -55,7 +48,6 @@ class ApplicationController < ActionController::Base
 
   def logout
     log_out
-    p 'test'
     redirect_to '/'
   end
 
@@ -76,10 +68,17 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def redirect_to_users_home_if_logged_in
+    return unless logged_in?
+
+    redirect_to '/users/home'
+  end
+
   def google_user_params
     params.require(:user).permit(
       :name,
       :username,
+      :email,
       :password,
       :password_confirmation,
       :google_refresh_token,

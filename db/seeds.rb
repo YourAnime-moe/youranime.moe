@@ -1,68 +1,102 @@
-# frozen_string_literal: true
+# encoding: utf-8
+require 'mini_magick'
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+def seed
+  seed_users
+  seed_show_tags
+  seed_shows
+  seed_episodes
+end
 
-# These are not production values ;)
-User.create(
-  [
-    {
-      username: 'tanoshimu',
-      password: 'tanoshimu',
-      password_confirmation: 'tanoshimu',
-      admin: false,
-      is_activated: true,
-      name: 'Regular User',
-      google_user: false,
-      demo: true,
-      limited: false
-    },
-    {
+def seed_users
+  if Rails.env.development?
+    Staff.create(
       username: 'admin',
-      password: 'admin',
-      password_confirmation: 'admin',
-      admin: true,
-      is_activated: true,
       name: 'Admin User',
-      google_user: false,
-      demo: false,
-      limited: false
-    },
-    {
-      username: 'google',
-      password: 'google',
-      password_confirmation: 'google',
-      admin: false,
-      is_activated: true,
-      name: 'Google User',
-      google_user: true,
-      demo: false,
-      limited: true
-    }
-  ]
-)
+      limited: false,
+      password: 'password'
+    ).to_user!
+  else
+    User.create(
+      username: 'demo',
+      password: 'demo',
+      limited: true,
+      name: 'Demo User'
+    )
+  end
+end
 
-Show.create(
-  show_type: 0,
-  dubbed: false,
-  subbed: true,
-  starring: 'Kakihara Tetsuya, Hirano Aya, Kugimiya Rie',
-  movie: false,
-  average_run_time: 23,
-  show_number: 1,
-  year: 2012,
-  alternate_title: 'Fairy Tail',
-  published: true,
-  en_description: 'The world of Earth-land is home to numerous guilds where wizards apply their magic for paid job requests',
-  tags: %w[magic fantasy comedy],
-  fr_title: 'Fairy Tail',
-  roman_title: 'Fearii Teiru',
-  fr_description: 'Dans le royaume de Fiore, il existe parmi le commun des mortels des hommes et des femmes qui manipulent la magie : ils sont appelés mages.',
-  en_title: nil,
-  banner_url: nil
-)
+def seed_show_tags
+  Utils.valid_tags.each do |tag|
+    Tag.create(value: tag)
+  end
+end
+
+def seed_shows
+  banners.each_with_index do |banner_filename, i|
+    show_name = banner_filename.split('.')[0]
+    show = seed_show(show_name, at: i)
+    next unless show.persisted?
+  end
+
+  Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
+end
+
+def seed_episodes
+  Show.all.each do |show|
+    show.seasons.each do |season|
+      (1..26).each do |number|
+        season.episodes.create(
+          number: number,
+          title: "Episode #{number} - Season #{season.number} - #{show.title}"
+        )
+      end
+    end
+  end
+end
+
+def seed_show(show_name, at: nil)
+  title = Title.new(
+    en: "Title for #{show_name}",
+    fr: "Titre pour #{show_name}",
+    jp: "「#{show_name}」のタイトル",
+    roman: show_name
+  )
+  description = Description.new(
+    en: 'My description in English',
+    fr: 'Ma description en Français',
+    jp: '日本語での概要',
+  )
+  
+  show = Show.create!(
+    show_type: 'anime',
+    dubbed: (at % 2).zero?,
+    subbed: (at % 3).zero?,
+    released_on: Time.now.utc,
+    published_on: Time.now.utc,
+    published: true,
+    plot: 'My plot',
+    title: title,
+    description: description,
+  )
+
+  [:comedy, :fantasy, :magic].each do |tag|
+    show.tags << Tag.find_by(value: tag)
+  end
+
+  (1..3).each do |season_number|
+    show.seasons.create(number: season_number)
+  end
+
+  show
+end
+
+def banners
+  files_at('seeds', 'banners').select { |file| file =~ /\.(png|jpg)\z/.freeze }
+end
+
+def files_at(*args)
+  Dir.entries(Rails.root.join(*args))
+end
+
+seed

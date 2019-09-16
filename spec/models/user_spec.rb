@@ -1,66 +1,48 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
-  describe 'auth_token' do
-    it 'returns the auth_token'
-    it 'returns appropriate demo token'
+  User::USER_TYPES.each do |user_type|
+    it "creates a valid `#{user_type}` user" do
+      expect(FactoryBot.create(:user, user_type: user_type)).to be_valid
+    end
   end
 
-  describe 'username' do
-    it 'returns the username'
-    it 'returns the appropriate demo username'
+  it 'is invalid when invalid user_type is used' do
+    user = FactoryBot.build(:user, user_type: 'junk')
+
+    expect(user).not_to be_valid
   end
 
-  describe 'name' do
-    it 'returns the name'
-    it 'returns the appropriate demo name'
-    it 'returns the username if no name is present'
-    it 'returns the name if present'
+  it 'is invalid when username is missing' do
+    user = FactoryBot.build(:user, username: nil)
+
+    expect(user).not_to be_valid
   end
 
-  describe 'episodes_data' do
-    it 'includes the progress key for show that hasn\'t been seen'
-    it 'includes the progress key for show that has been seen'
+  it 'is not valid when name is missing' do
+    user = FactoryBot.build(:user, name: nil)
+
+    expect(user).not_to be_valid
   end
 
-  describe 'history' do
-    it 'is empty when no episodes have been watched'
-    it 'is empty when the progress for all episodes is 0'
-    it 'does not go over the limit if specified'
+  it 'is only accepts valid emails' do
+    user = FactoryBot.build(:user, :with_email)
+    expect(user).to be_valid
+
+    user = FactoryBot.build(:user, email: 'IamInvalid@test')
+    expect(user).not_to be_valid
+    expect(user.errors[:email]).to be_present
   end
 
-  describe 'allows_setting' do
-    it 'does this'
+  it 'creates a valid session with user info' do
+    user = FactoryBot.create(:user)
+
+    deleted_session = FactoryBot.create(:users_session, :deleted, user: user)
+    expect(user.active_sessions).not_to include(deleted_session)
+    expect(user.sessions).to include(deleted_session)
+
+    active_session = FactoryBot.create(:users_session, :active, user: user)
+    expect(user.active_sessions).to include(active_session)
+    expect(user.sessions).to include(active_session)
   end
-
-  describe 'admin?' do
-    it 'does this'
-  end
-
-  describe 'is_demo_account?' do
-    it 'does this'
-  end
-
-  describe 'is_activated?' do
-    it 'does this'
-  end
-
-  describe 'is_demo?' do
-    it 'does this'
-  end
-
-  describe 'destroy_token' do
-    it 'does this'
-  end
-
-  describe 'find_by_token' do
-    it 'does this'
-  end
-
-  describe 'from_omniauth' do
-    it 'does this'
-  end
-
-
 end

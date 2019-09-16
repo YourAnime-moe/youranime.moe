@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root 'application#root'
+  root 'application#login'
 
   get '/google' => 'application#welcome_google'
 
@@ -17,8 +17,8 @@ Rails.application.routes.draw do
 
   # API interface
   namespace :api, defaults: { format: :json } do
-    get '/', to: "v#{Config.api_version}/default_action#home"
-    namespace "v#{Config.api_version}" do
+    get '/', to: "v1/default_action#home"
+    namespace "v1" do
       resources :session, only: %i[create show destroy], param: :token
       resources :shows, only: %i[index show] do
         resources :episodes, only: [:index]
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:index]
     end
-    match '*all', to: "v#{Config.api_version}/default_action#not_found", via: :all, constraints: { all: /.*/ }
+    match '*all', to: "v1/default_action#not_found", via: :all, constraints: { all: /.*/ }
   end
 
   # Issues

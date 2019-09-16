@@ -6,18 +6,12 @@ module ShowScopesConcern
   included do
     scope :by_season, ->(title) { published.where(title: title).order(:show_number) }
     scope :coming_soon, -> { where("publish_after is not null and publish_after > '#{Date.current}' ") }
-    scope :published, -> { valid.where(published: true) }
+    scope :published, -> do 
+      includes(:seasons).where(published: true)
+    end
     scope :recent, lambda { |limit: 50|
       limit = 1 if limit < 1
-      sql = <<-SQL
-        select shows.* from shows
-        inner join episodes
-        on shows.id = episodes.show_id
-        where shows.published = 't'
-        order by episodes.created_at desc
-        limit ?;
-      SQL
-      find_by_sql([sql, limit])
+      includes(:seasons).where(published: true).limit(limit)
     }
     scope :latest, lambda { |current_user, limit: 5|
       limit = 1 if limit < 1
@@ -70,20 +64,6 @@ module ShowScopesConcern
                       'en_title'
                     end
       order(:alternate_title).order(:roman_title).order("#{title_column} asc")
-    }
-    scope :search, lambda { |query, limit: nil|
-      return published if query.empty?
-
-      titles_to_search = %i[en_title fr_title jp_title alternate_title roman_title]
-      titles_as_queries = titles_to_search.map { |key| "(lower(shows.#{key}) like '%%#{query}%%')" }.join(' or ')
-      sql = <<-SQL
-        select * from shows
-        where (#{titles_as_queries})
-        and shows.published = 't'
-      SQL
-      sql_args = [sql]
-      sql_args << "limit #{limit}" unless limit.to_i == 0
-      find_by_sql(sql_args)
     }
   end
 end

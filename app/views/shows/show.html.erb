@@ -8,7 +8,7 @@
 </script>
 
 <div class="show-body" style="display: none;">
-  <div class="head" target="<%= @show.banner_url %>">
+  <div class="head" target="<%= @show.banner_url! %>">
     <div class="overlay">
       <div class="content">
         <div class="ui container pos-inherit grid">
@@ -29,24 +29,47 @@
     </small>
   </div>
 
+  <div class="container padded">
+    <div class="hf-section">
+      <%= seasons_tabs(@show) %>
+    </div>
 
-
-  <div class="hf-section padded">
-    <div class="row no-margin">
-      <div class="container">
-        <% @episodes_parts.each do |episodes| %>
-          <div class="columns">
-            <% episodes.each_with_index do |episode| %>
-              <div class="column is-4" style="margin-top: 20px;">
-                <% @_rule = {class: nil} %>
-                <% @_thumb_info = {} %>
-                <% @model = episode %>
-                <%= render 'shows/partial/_thumbs' %>
+    <div class="hf-section">
+      <div class="row no-margin">
+        <div class="container-fluid">
+          <% @episodes.each do |episode_info| %>
+            <% episode_info[:episodes].each do |episodes| %>
+              <div class="columns hide" season="<%= episode_info[:season] %>">
+                <% episodes.each_with_index do |episode| %>
+                  <% @_rule = {class: nil} %>
+                  <% @_thumb_info = {} %>
+                  <% @model = episode %>
+                  <div class="column is-4" style="margin-top: 20px;">
+                    <%= render 'shows/partial/_thumbs' %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(() => {
+    $('div[season="1"]').removeClass('hide');
+    $('a[data-season]').on('click', (e) => {
+      e.preventDefault();
+      const $target = $(e.target);
+      const season = $target.attr('data-season');
+
+      $('div[season]').addClass('hide');
+      $('li').removeClass('is-active');
+
+      $target.parent().addClass('is-active');
+      $('div[season="' + season + '"]').removeClass('hide');
+    });
+  });
+</script>

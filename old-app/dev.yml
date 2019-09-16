@@ -1,0 +1,23 @@
+name: tanoshimu
+
+type:
+  - rails
+
+up:
+  - homebrew:
+    - openssl
+  - ruby: 2.6.4
+  - bundler
+
+commands:
+  server:
+    run: bin/bundle exec rails server -b 0.0.0.0 -p 3000
+  console:
+    run: bin/bundle exec rails console
+  test:
+    run: bin/bundle exec rails test
+  routes:
+    run: bin/bundle exec rails routes
+
+open:
+  "My Application": "http://localhost:3000"

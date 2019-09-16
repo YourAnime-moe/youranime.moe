@@ -1,34 +1,81 @@
-# frozen_string_literal: true
+require_relative 'active_storage'
 
 class Show < ApplicationRecord
-  include ResourceFetchConcern
+  include ConnectsToShowsConcern
+  include RespondToTypesConcern
+  include ValidatePresenceOneOfConcern
   include ShowScopesConcern
-  include TranslatableTitleConcern
+  include ResourceFetchConcern
 
   self.per_page = 24
 
-  has_many :episodes, -> { published.order(:episode_number) }, inverse_of: :show
-  has_many :all_episodes, -> { order(:episode_number) }, class_name: 'Episode', inverse_of: :show
-  has_many :views, -> { where('progress > 0') }, through: :all_episodes, inverse_of: :show
+  ANIME = 'anime'
+  MOVIE = 'movie'
+
+  SHOW_TYPES = [ANIME, MOVIE]
+
+  before_validation :init_values
+
+  has_and_belongs_to_many :starring, class_name: 'Actor'
+  has_many :shows_tag_relations
+  has_many :tags, -> { distinct }, through: :shows_tag_relations
+
+  has_many :ratings
+  has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
+  has_many :shows_queue_relations
+  has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
+  has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
 
   has_one_attached :banner
   has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
 
-  serialize :tags
+  respond_to_types SHOW_TYPES
 
-  validate :title_present
-  validate :description_present
-  validates :roman_title, presence: true
+  validate :dub_sub
 
-  before_save do
-    # Make the show is at least one of dubbed or subbed.
-    self.subbed = true if dubbed.nil? && subbed.nil?
-    show_number = 1 if show_number.nil?
+  validates_presence_of :plot, :released_on, :banner_url
+  validates_inclusion_of :recommended, :published, :featured, in: [true, false]
+  validates_inclusion_of :show_type, in: SHOW_TYPES
 
-    if !show_number.nil? && show_number < 1
-      errors.add 'show_number', "can't be negative"
-      throw :abort
+  def queues
+    ShowsQueueRelation.connected_to(role: :reading) do
+      ids = ShowsQueueRelation.where(show_id: id).pluck(:queue_id)
+      Shows::Queue.where(id: ids)
     end
+  end
+
+  def episodes
+    Episode.connected_to(role: :reading) do
+      Episode.where(season_id: seasons.ids)
+    end
+  end
+
+  def published?
+    published_on? && published_on <= Time.now.utc
+  end
+
+  def title
+    (@title ||= title_record).value
+  end
+
+  def title=(new_title_record)
+    return unless new_title_record.kind_of?(Title)
+
+    new_title_record.used_by_model = self.class.table_name
+    new_title_record.model_id = self.id
+    self.title_record = new_title_record
+  end
+
+  def description
+    (@description ||= description_record).value
+  end
+
+  def description=(new_description_record)
+    return unless new_description_record.kind_of?(Description)
+
+    new_description_record.used_by_model = self.class.table_name
+    new_description_record.model_id = self.id
+    self.description_record = new_description_record
   end
 
   def only_subbed?
@@ -43,78 +90,23 @@ class Show < ApplicationRecord
     subbed? && dubbed?
   end
 
-  def generate_urls!(force: false)
-    return true if banner_url? && !force
-
-    new_url = banner_url!
-    new_url.present? && update(banner_url: new_url)
-  end
-
-  def tags
-    return [] if self[:tags].nil?
-
-    self[:tags].class == String ? self[:tags].split(' ') : self[:tags]
-  end
-
-  def add_tag(tag)
-    return nil if tag.blank?
-
-    tag = tag.strip if tag.class == String
-    return false unless Utils.tags.keys.include? tag
-
-    tags = [] if tags.nil?
-    tags.push tag unless tags.include? tag
-    tags
-  end
-
-  def as_json(_ = {})
-    {
-      id: id,
-      title: title(default: '<No title>'),
-      description: description,
-      subbed: subbed,
-      dubbed: dubbed,
-      published: published?,
-      tags: tags,
-      episodes_count: {
-        published: episodes.size,
-        all: all_episodes.size
-      },
-      banner_url: banner_url
-    }
-  end
-
-  def self.clean_up
-    all.each do |show|
-      p "Cleaning banner for show id #{show.id}"
-      show.banner.purge if show.banner.attached?
-      p "Making banner for show id #{show.id}"
-      show.get_banner
-    end
-  end
-
-  def self.remove_all_media
-    all.each do |show|
-      p "Cleaning banner for show id #{show.id}"
-      show.banner.purge if show.banner.attached?
+  def self.search(by_title)
+    Title.search(by_title).map do |title|
+      title.record
     end
   end
 
   private
 
-  def title_present
-    return unless en_title.blank? && jp_title.blank? && fr_title.blank?
+  def init_values
+    return if persisted?
 
-    errors.add(:title, 'must be present')
+    self.released_on = Time.now.utc
   end
 
-  def description_present
-    if en_description.blank? && jp_description.blank? && fr_description.blank?
-      errors.add(:description, 'must be present')
+  def dub_sub
+    if dubbed.nil? && subbed.nil?
+      errors.add(:subbed, 'must at least be selected')
     end
-  end
-
-  def path
-    "videos/images/#{roman_title}"
   end
 end

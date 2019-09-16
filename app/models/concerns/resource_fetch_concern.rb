@@ -15,11 +15,17 @@ module ResourceFetchConcern
         resource_url_for(resource_name, default_url: default_url, expiry: expiry)
       end
       send(:define_method, "#{resource_url}!") do
-        resource_for(resource_name).attachment&.service_url(expires_in: expiry)
+        attachment = resource_for(resource_name).attachment
+        return default_url if attachment.nil?
+
+        if Config.uses_disk_storage?
+          Rails.application.routes.url_helpers.rails_blob_url(attachment, only_path: true)
+        else
+          attachment.service_url(expires_in: expiry)
+        end
       end
       send(:define_method, "#{resource_name}?") do
-        resource = fetch!(resource_name)
-        resource.blank? ? false : resource.attached?
+        (fetch!(resource_name, default_url)&.attached?).present?
       end
     end
   end
@@ -45,12 +51,13 @@ module ResourceFetchConcern
     end
   end
 
-  def fetch!(resource_name)
+  def fetch!(resource_name, default_url)
     ensure_attachable_resource!(resource_name)
     resource = resource_for(resource_name)
-    return resource if resource.attached?
+    #return resource if resource.attached?
 
-    resource.attach(io: File.open(path), filename: "episode-#{id}")
+    #resource.attach(io: File.open("./public/#{default_url}"), filename: "episode-#{id}")
+
   rescue ResourceNotAttachable, Errno::ENOENT
     nil
   end

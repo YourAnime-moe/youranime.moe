@@ -3,5 +3,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 end
 
 OmniAuth.config.full_host = ENV.fetch("GOOGLE_OAUTH_REDIRECT_HOST") {
-    Rails.env.production? ? 'https://youranime.moe' : 'http://localhost:3000'
+  Rails.env.production? ? 'https://youranime.moe' : 'http://localhost:3000'
 }

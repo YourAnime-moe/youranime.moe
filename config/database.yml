@@ -1,4 +1,4 @@
-# SQLite version 3.x
+# SQLite. Versions 3.8.0 and up are supported.
 #   gem install sqlite3
 #
 #   Ensure the SQLite 3 gem is defined in your Gemfile
@@ -6,23 +6,102 @@
 #
 default: &default
   adapter: postgresql
-  encoding: unicode
-  host: db
-  username: postgres
-  password:
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  user: postgres
+  password: postgres
+
+replica: &replica
+  <<: *default
+  replica: true
+
+sqlite: &sqlite
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
-  <<: *default
-  database: tanoshimu_db_dev
+  primary:
+    <<: *default
+    database: primary_db
+  primary_replica:
+    <<: *replica
+    database: primary_db
+  users:
+    <<: *default
+    database: users_db
+    migrations_paths: db/users_migrate
+  users_replica:
+    <<: *replica
+    database: users_db
+  shows:
+    <<: *default
+    database: shows_db
+    migrations_paths: db/shows_migrate
+  shows_replica:
+    <<: *replica
+    database: shows_db
+  episodes:
+    <<: *default
+    database: episodes_db
+    migrations_paths: db/episodes_migrate
+  episodes_replica:
+    <<: *replica
+    database: episodes_db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: tanoshimu_db_test
+  primary:
+    <<: *default
+    database: primary_test_db
+  primary_replica:
+    <<: *replica
+    database: primary_test_db
+  users:
+    <<: *default
+    database: users_test_db
+    migrations_paths: db/users_migrate
+  users_replica:
+    <<: *replica
+    database: users_test_db
+  shows:
+    <<: *default
+    database: shows_test_db
+    migrations_paths: db/shows_migrate
+  shows_replica:
+    <<: *replica
+    database: shows_test_db
+  episodes:
+    <<: *default
+    database: episodes_test_db
+    migrations_paths: db/episodes_migrate
+  episodes_replica:
+    <<: *replica
+    database: episodes_test_db
 
 production:
-  <<: *default
-  database: tanoshimu_db
+  primary:
+    url: <%= ENV['DATABASE_URL'] %>
+  primary_replica:
+    replica: true
+    url: <%= ENV['DATABASE_URL'] %>
+  users:
+    migrations_paths: db/users_migrate
+    url: <%= ENV['USERS_DATABASE_URL'] %>
+  users_replica:
+    replica: true
+    url: <%= ENV['USERS_DATABASE_URL'] %>
+  shows:
+    migrations_paths: db/shows_migrate
+    url: <%= ENV['SHOWS_DATABASE_URL'] %>
+  shows_replica:
+    replica: true
+    url: <%= ENV['SHOWS_DATABASE_URL'] %>
+  episodes:
+    migrations_paths: db/episodes_migrate
+    url: <%= ENV['EPISODES_DATABASE_URL'] %>
+  episodes_replica:
+    replica: true
+    url: <%= ENV['EPISODES_DATABASE_URL'] %>

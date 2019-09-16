@@ -17,7 +17,7 @@ class User
       raise LoginError.new('welcome.login.errors.unknown-user', attempt: username) if user.nil?
       raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
       raise LoginError.new('welcome.login.errors.maintenance') if maintenance && !user.admin?
-      raise LoginError.new('welcome.login.errors.deactivated') unless user.is_activated?
+      raise LoginError.new('welcome.login.errors.deactivated') unless user.active?
 
       user
     end

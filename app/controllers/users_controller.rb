@@ -6,10 +6,10 @@ class UsersController < AuthenticatedController
   # Home page
   def home
     set_title(before: t('user.welcome', user: current_user.name))
-    episodes = current_user.currently_watching(limit: 6)
+    episodes = Episode.all
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.where(id: ids)
+    @recent_shows = Show.all
     @episodes = force_array_to(6, episodes)
   end
 

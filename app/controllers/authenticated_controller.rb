@@ -9,7 +9,7 @@ class AuthenticatedController < ApplicationController
   private
 
   def ensure_logged_in!
-    current_user.regenerate_auth_token if logged_in? && current_user.auth_token.nil?
+    current_user.sessions.create(active_until: 1.week.from_now) if logged_in? && current_user.auth_token.nil?
     return if logged_in?
 
     next_url = NextLinkFinder.perform(path: request.fullpath)

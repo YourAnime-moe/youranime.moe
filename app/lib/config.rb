@@ -76,6 +76,10 @@ module Config
       ENV['GOOGLE_OAUTH_CLIENT_ID']
     end
 
+    def uses_disk_storage?
+      Rails.application.config.active_storage.service == :local
+    end
+
     def setup
       yield self
     end
