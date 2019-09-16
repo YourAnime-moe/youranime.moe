@@ -1,17 +1,7 @@
 # encoding: utf-8
 require 'mini_magick'
 
-def production_seed
-  return unless Rails.env.production?
-
-  seed_show_tags
-  seed_shows
-  seed_episodes
-end
-
-def development_seed
-  return unless Rails.env.development?
-
+def seed
   seed_users
   seed_show_tags
   seed_shows
@@ -19,14 +9,21 @@ def development_seed
 end
 
 def seed_users
-  admin_user = Staff.create(
-    username: 'admin',
-    name: 'Admin User',
-    limited: false,
-    password: 'password'
-  )
-
-  admin_user.to_user!
+  if Rails.env.development?
+    Staff.create(
+      username: 'admin',
+      name: 'Admin User',
+      limited: false,
+      password: 'password'
+    ).to_user!
+  else
+    User.create(
+      username: 'demo',
+      password: 'demo',
+      limited: true,
+      name: 'Demo User'
+    )
+  end
 end
 
 def seed_show_tags
@@ -102,5 +99,4 @@ def files_at(*args)
   Dir.entries(Rails.root.join(*args))
 end
 
-development_seed
-production_seed
+seed
