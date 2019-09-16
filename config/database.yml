@@ -83,10 +83,10 @@ test:
 
 production:
   primary:
-    url: <%= ENV['TANOSHIMU_DATABASE_URL'] %>
+    url: <%= ENV['DATABASE_URL'] %>
   primary_replica:
     replica: true
-    url: <%= ENV['TANOSHIMU_DATABASE_URL'] %>
+    url: <%= ENV['DATABASE_URL'] %>
   shows:
     url: <%= ENV['SHOWS_DATABASE_URL'] %>
   shows_replica:
