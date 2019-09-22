@@ -80,6 +80,10 @@ module Config
       Rails.application.config.active_storage.service == :local
     end
 
+    def demo?
+      ENV['DEMO'].to_s.downcase.strip == 'true'
+    end
+
     def setup
       yield self
     end

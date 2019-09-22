@@ -10,7 +10,7 @@ namespace :seed do
         filename = banners[i]
         p "Attaching #{filename} to #{show.title}..."
         show.banner.attach(io: banner_files[i], filename: filename)
-        
+
         p "Waiting 2 seconds"
         sleep 2
       end

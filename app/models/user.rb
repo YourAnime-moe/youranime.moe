@@ -51,6 +51,12 @@ class User < ApplicationRecord
     end
   end
 
+  def self.demo
+    where(username: 'demo').first_or_initialize do |user|
+      user.name = 'Demo User'
+    end
+  end
+
   private
 
   def ensure_hex
@@ -64,6 +70,6 @@ class User < ApplicationRecord
     code = hash_code & 0x00FFFFFF
     code = code.to_s(16).upcase
 
-    self[:hex] = "#" << "00000"[0, 6 - code.size] + code
+    self[:hex] = '#' << '00000'[0, 6 - code.size] + code
   end
 end

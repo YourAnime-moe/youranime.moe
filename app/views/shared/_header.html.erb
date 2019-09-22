@@ -36,11 +36,13 @@
           <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
             <i class="material-icons">bug_report</i>
           <% end %>
-          <%= link_to(users_settings_path, class: 'button is-primary is-icon') do %>
-            <i class="material-icons">settings</i>
-          <% end %>
-          <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
-            <i class="material-icons">power_settings_new</i>
+          <% unless Config.demo? %>
+            <%= link_to(users_settings_path, class: 'hide button is-primary is-icon') do %>
+              <i class="material-icons">settings</i>
+            <% end %>
+            <%= link_to(logout_path, class: 'button is-danger is-icon') do %>
+              <i class="material-icons">power_settings_new</i>
+            <% end %>
           <% end %>
         </div>
       </div>

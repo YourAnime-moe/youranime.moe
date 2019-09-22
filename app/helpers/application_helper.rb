@@ -1,5 +1,8 @@
 module ApplicationHelper
   def current_user
+    if Config.demo? && (demo_user = User.demo)
+      return @current_user = demo_user
+    end
     @current_user ||= User.find_by(id: session[:user_id])
   end
 
