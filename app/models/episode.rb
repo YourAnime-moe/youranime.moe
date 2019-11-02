@@ -1,8 +1,7 @@
 class Episode < ApplicationRecord
   include ResourceFetchConcern
-  include ConnectsToEpisodesConcern
 
-  belongs_to :season, -> { connected_to(role: :reading) { all } }, class_name: 'Shows::Season'
+  belongs_to :season, class_name: 'Shows::Season'
 
   has_one_attached :video
   has_one_attached :thumbnail

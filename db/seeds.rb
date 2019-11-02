@@ -37,6 +37,9 @@ def seed_shows
     show_name = banner_filename.split('.')[0]
     show = seed_show(show_name, at: i)
     next unless show.persisted?
+
+    file = File.open(banner_files[i])
+    show.banner.attach(io: file, filename: banner_filename)
   end
 
   Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
@@ -89,6 +92,10 @@ def seed_show(show_name, at: nil)
   end
 
   show
+end
+
+def banner_files
+  @banner_files ||= banners.map { |banner_filename| File.open("./seeds/banners/#{banner_filename}") }
 end
 
 def banners
