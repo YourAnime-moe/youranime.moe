@@ -39,7 +39,7 @@ class Show < ApplicationRecord
   validates_inclusion_of :show_type, in: SHOW_TYPES
 
   def published?
-    published_on? && published_on <= Time.now.utc
+    self[:published] || published_on? && published_on <= Time.now.utc
   end
 
   def title
