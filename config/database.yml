@@ -33,26 +33,5 @@ test:
   database: db/test.sqlite3
 
 production:
-  primary:
-    url: <%= ENV['DATABASE_URL'] %>
-  primary_replica:
-    replica: true
-    url: <%= ENV['DATABASE_URL'] %>
-  users:
-    migrations_paths: db/users_migrate
-    url: <%= ENV['USERS_DATABASE_URL'] %>
-  users_replica:
-    replica: true
-    url: <%= ENV['USERS_DATABASE_URL'] %>
-  shows:
-    migrations_paths: db/shows_migrate
-    url: <%= ENV['SHOWS_DATABASE_URL'] %>
-  shows_replica:
-    replica: true
-    url: <%= ENV['SHOWS_DATABASE_URL'] %>
-  episodes:
-    migrations_paths: db/episodes_migrate
-    url: <%= ENV['EPISODES_DATABASE_URL'] %>
-  episodes_replica:
-    replica: true
-    url: <%= ENV['EPISODES_DATABASE_URL'] %>
+  <<: *postgres
+  database: tanoshimu
