@@ -1,6 +1,4 @@
 class Actor < ApplicationRecord
-  include ConnectsToShowsConcern
-
   validates_presence_of :last_name
 
   DEFAULT_FORMAT = "%{last_name}, %{first_name}"

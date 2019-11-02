@@ -1,7 +1,6 @@
 require_relative 'active_storage'
 
 class Show < ApplicationRecord
-  include ConnectsToShowsConcern
   include RespondToTypesConcern
   include ValidatePresenceOneOfConcern
   include ShowScopesConcern
@@ -22,7 +21,9 @@ class Show < ApplicationRecord
 
   has_many :ratings
   has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
+  has_many :episodes, through: :seasons
   has_many :shows_queue_relations
+  has_many :queues, through: :shows_queue_relations
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
 
@@ -36,19 +37,6 @@ class Show < ApplicationRecord
   validates_presence_of :plot, :released_on, :banner_url
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
   validates_inclusion_of :show_type, in: SHOW_TYPES
-
-  def queues
-    ShowsQueueRelation.connected_to(role: :reading) do
-      ids = ShowsQueueRelation.where(show_id: id).pluck(:queue_id)
-      Shows::Queue.where(id: ids)
-    end
-  end
-
-  def episodes
-    Episode.connected_to(role: :reading) do
-      Episode.where(season_id: seasons.ids)
-    end
-  end
 
   def published?
     published_on? && published_on <= Time.now.utc
