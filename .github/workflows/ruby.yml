@@ -29,6 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -yqq install libpq-dev chromium-chromedriver
+          sudo apt-get -yqq install libsqlite3-dev
           gem install bundler
           bundle install
           yarn install
