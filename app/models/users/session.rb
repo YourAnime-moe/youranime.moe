@@ -36,7 +36,7 @@ module Users
       return if deleted?
 
       User.transaction do
-        update(
+        update!(
           deleted: true,
           deleted_on: Time.now.utc,
           active_until: Time.now.utc

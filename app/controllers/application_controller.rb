@@ -54,7 +54,8 @@ class ApplicationController < ActionController::Base
   def login_post
     user = User::Login.perform(
       username: params[:username].strip.downcase,
-      password: params[:password].strip
+      password: params[:password].strip,
+      fingerprint: params[:fingerprint]
     )
     log_in(user)
     render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
