@@ -31,11 +31,19 @@ class User < ApplicationRecord
   end
 
   def active_sessions
-    sessions.where(deleted: false)
+    sessions.where(deleted: false).order('created_at desc')
   end
 
   def auth_token
-    @auth_token ||= active_sessions.order('created_at desc').first&.token
+    @auth_token ||= active_sessions.first&.token
+  end
+
+  def delete_auth_token!
+    active_sessions.first&.delete!
+  end
+
+  def delete_all_auth_token!
+    active_sessions.each { |session| session.delete! }
   end
 
   def can_manage?

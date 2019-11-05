@@ -102,61 +102,82 @@ window.fadeIn = function(obj) {
 };
 
 $(document).ready(function() {
-      //$(".button-collapse").sidenav();
-      //$('.modal').modal();
-      //$(".dropdown-trigger").dropdown();
-      //$('select').formSelect();
-      //$('.datepicker').datepicker();
+    //$(".button-collapse").sidenav();
+    //$('.modal').modal();
+    //$(".dropdown-trigger").dropdown();
+    //$('select').formSelect();
+    //$('.datepicker').datepicker();
 
-      // $('.dropdown-toggle').dropdown();
+    // $('.dropdown-toggle').dropdown();
 
-      var current_lang = navigator.language || navigator.userLanguage || 'en';
-      var lang_is_loading = false;
-      if (current_lang == 'ja') {
-        current_lang = 'jp';
+    var current_lang = navigator.language || navigator.userLanguage || 'en';
+    var lang_is_loading = false;
+    if (current_lang == 'ja') {
+      current_lang = 'jp';
+    }
+    switchTo(current_lang, false);
+
+    [].forEach.call(document.querySelectorAll('[locale-switcher]'), function(elem) {
+      elem.onclick = function(e) {
+        if (lang_is_loading) {
+          console.log('Please wait while we are changing languages...');
+          return;
+        }
+        if ($(this).hasClass('current')) {
+          return;
+        }
+        lang_is_loading = true;
+        this.classList.add('is-loading');
+        switchTo(elem.getAttribute('locale-switcher'), true);
       }
-      switchTo(current_lang, false);
+    });
 
-      [].forEach.call(document.querySelectorAll('[locale-switcher]'), function(elem) {
-        elem.onclick = function(e) {
-          if (lang_is_loading) {
-            console.log('Please wait while we are changing languages...');
-            return;
-          }
-          if ($(this).hasClass('current')) {
-            return;
-          }
-          lang_is_loading = true;
-          this.classList.add('is-loading');
-          switchTo(elem.getAttribute('locale-switcher'), true);
-        }
-      });
+    /* $('[role="have-fun"]').on('click', function(e) {
+      console.log('click!');
+      if ($(this).attr('show')) {
+        window.location.href = "/shows?id=" + $(this).attr('show');
+      }
+      if ($(this).attr('episode')) {
+        window.location.href = "/shows/episodes?id=" + $(this).attr('episode');
+      }
+    }); */
+});
 
-      /* $('[role="have-fun"]').on('click', function(e) {
-        console.log('click!');
-        if ($(this).attr('show')) {
-          window.location.href = "/shows?id=" + $(this).attr('show');
-        }
-        if ($(this).attr('episode')) {
-          window.location.href = "/shows/episodes?id=" + $(this).attr('episode');
-        }
-      }); */
-  });
-
-  function switchTo(locale, force) {
-    $.ajax({
-      url: '/set/current/locale.json',
-      method: 'put',
-      data: {locale: locale, set_at_first: force},
-      success: function(res) {
-        var current_switcher = document.querySelector('[locale-switcher="' + res.locale.current + '"]');
-        if (current_switcher) {
-          current_switcher.classList.add('current');
-          console.log(res);
-          if (res.reload) {
-            location.href = location.href;
-          }
+function switchTo(locale, force) {
+  $.ajax({
+    url: '/set/current/locale.json',
+    method: 'put',
+    data: {locale: locale, set_at_first: force},
+    success: function(res) {
+      var current_switcher = document.querySelector('[locale-switcher="' + res.locale.current + '"]');
+      if (current_switcher) {
+        current_switcher.classList.add('current');
+        console.log(res);
+        if (res.reload) {
+          location.href = location.href;
         }
       }
+    }
+  })
+}
+
+if (window.requestIdleCallback) {
+  requestIdleCallback(function () {
+    Fingerprint2.get(function (components) {
+      handleFingerprint(components);
     })
-  }
+  })
+} else {
+  setTimeout(function () {
+    Fingerprint2.get(function (components) {
+      handleFingerprint(components);
+    })
+  }, 500);
+}
+
+function handleFingerprint(components) {
+  var values = components.map(component => component.value);
+  var print = Fingerprint2.x64hash128(values.join(''), 31);
+  localStorage.setItem('id', print);
+  return print;
+}

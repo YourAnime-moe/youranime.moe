@@ -66,43 +66,49 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 	// 	next = next.substring(1, next.length);
 	// }
 
-	$.ajax({
-		url: '/login',
-		method: 'post',
-		data: {
-			username: one,
-			password: two
-		},
-		success: function(e) {
-			error_container.innerHTML = "";
-			if (!e.success) {
+	Fingerprint2.get((components) => {
+		$.ajax({
+			url: '/login',
+			method: 'post',
+			data: {
+				username: one,
+				password: two,
+				fingerprint: {
+					print: handleFingerprint(components),
+					items: components
+				},
+			},
+			success: function(e) {
+				error_container.innerHTML = "";
+				if (!e.success) {
+					enableForm(form_container);
+					error_container.innerHTML = e.message;
+					if (typeof(callback) === 'function') {
+						callback();
+					}
+				} else {
+					success_container.innerHTML = e.message;
+					document.location.replace(e.new_url);
+				}
+			},
+			failure: function(e) {
 				enableForm(form_container);
 				error_container.innerHTML = e.message;
 				if (typeof(callback) === 'function') {
 					callback();
 				}
-			} else {
-				success_container.innerHTML = e.message;
-				document.location.replace(e.new_url);
+			},
+			error: function(e) {
+				enableForm(form_container);
+				error_container.innerHTML = e.toString();
+				if (typeof(callback) === 'function') {
+					callback();
+				}
+			},
+			complete: function() {
+				waiting_container.innerHTML = "";
 			}
-		},
-		failure: function(e) {
-			enableForm(form_container);
-			error_container.innerHTML = e.message;
-			if (typeof(callback) === 'function') {
-				callback();
-			}
-		},
-		error: function(e) {
-			enableForm(form_container);
-			error_container.innerHTML = e.toString();
-			if (typeof(callback) === 'function') {
-				callback();
-			}
-		},
-		complete: function() {
-			waiting_container.innerHTML = "";
-		}
+		});
 	});
 	return false;
 }

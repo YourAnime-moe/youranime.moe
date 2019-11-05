@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_190129) do
+ActiveRecord::Schema.define(version: 2019_11_03_080605) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -189,6 +189,11 @@ ActiveRecord::Schema.define(version: 2019_09_13_190129) do
     t.datetime "deleted_on"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "device_id", default: "", null: false
+    t.string "device_name", default: "", null: false
+    t.string "device_location", default: "", null: false
+    t.string "device_os", default: "", null: false
+    t.boolean "device_unknown", default: true, null: false
     t.index ["deleted", "token"], name: "index_user_sessions_on_deleted_and_token"
     t.index ["token"], name: "index_user_sessions_on_token", unique: true
     t.index ["updated_at"], name: "index_user_sessions_on_updated_at"
