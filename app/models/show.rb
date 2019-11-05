@@ -34,7 +34,7 @@ class Show < ApplicationRecord
 
   validate :dub_sub
 
-  validates_presence_of :plot, :released_on, :banner_url
+  validates_presence_of :released_on, :banner_url
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
   validates_inclusion_of :show_type, in: SHOW_TYPES
 
