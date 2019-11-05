@@ -42,6 +42,10 @@ class User < ApplicationRecord
     active_sessions.first&.delete!
   end
 
+  def delete_all_auth_token!
+    active_sessions.each { |session| session.delete! }
+  end
+
   def can_manage?
     admin? || staff_user.present?
   end
