@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2019_11_03_080605) do
     t.string "caption_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "published", default: true, null: false
     t.index ["caption_url"], name: "index_episodes_on_caption_url"
     t.index ["number"], name: "index_episodes_on_number"
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true

@@ -8,6 +8,8 @@ class Episode < ApplicationRecord
   has_resource :thumbnail, default_url: '/img/404.jpg', expiry: 3.days
   has_resource :video, default_url: '/img/404.mp4', expiry: 500.minutes
 
+  scope :published, -> { where(published: true) }
+
   def show
     @show ||= season.show
   end
