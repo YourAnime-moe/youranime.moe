@@ -51,7 +51,7 @@ class Show < ApplicationRecord
   end
 
   def published?
-    published_on? && published_on <= Time.now.utc
+    self[:published] || published_on? && published_on <= Time.now.utc
   end
 
   def title

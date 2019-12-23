@@ -5,7 +5,6 @@ def seed
   seed_users
   seed_show_tags
   seed_shows
-  seed_episodes
 end
 
 def seed_users
@@ -37,20 +36,20 @@ def seed_shows
     show_name = banner_filename.split('.')[0]
     show = seed_show(show_name, at: i)
     next unless show.persisted?
+
+    seed_episodes(show, show_name)
   end
 
   Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
 end
 
-def seed_episodes
-  Show.all.each do |show|
-    show.seasons.each do |season|
-      (1..26).each do |number|
-        season.episodes.create(
-          number: number,
-          title: "Episode #{number} - Season #{season.number} - #{show.title}"
-        )
-      end
+def seed_episodes(show, key)
+  show.seasons.each do |season|
+    episodes(key).each_with_index do |_, i|
+      season.episodes.create(
+        number: i,
+        title: "Episode #{i} - Season #{season.number} - #{show.title}"
+      )
     end
   end
 end
@@ -65,9 +64,9 @@ def seed_show(show_name, at: nil)
   description = Description.new(
     en: 'My description in English',
     fr: 'Ma description en Français',
-    jp: '日本語での概要',
+    jp: '日本語での概要'
   )
-  
+
   show = Show.create!(
     show_type: 'anime',
     dubbed: (at % 2).zero?,
@@ -77,22 +76,29 @@ def seed_show(show_name, at: nil)
     published: true,
     plot: 'My plot',
     title: title,
-    description: description,
+    description: description
   )
 
-  [:comedy, :fantasy, :magic].each do |tag|
+  %w[comedy fantasy magic].each do |tag|
     show.tags << Tag.find_by(value: tag)
   end
 
-  (1..3).each do |season_number|
-    show.seasons.create(number: season_number)
-  end
+  show.seasons.create(number: 1)
 
   show
 end
 
 def banners
   files_at('seeds', 'banners').select { |file| file =~ /\.(png|jpg)\z/.freeze }
+end
+
+def episodes(key)
+  files_at('seeds', 'thumbnails').select do |file|
+    file =~ /\.(png|jpg)\z/.freeze
+    return false unless file
+
+    file.start_with?(key)
+  end
 end
 
 def files_at(*args)
