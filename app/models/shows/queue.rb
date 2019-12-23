@@ -1,25 +1,18 @@
 module Shows
   class Queue < ApplicationRecord
-    include ConnectsToUsersConcern
-  
     belongs_to :user, inverse_of: :queues
 
-    def shows
-      ShowsQueueRelation.connected_to(role: :reading) do
-        fetch_shows
-      end
-    end
+    has_many :shows_queue_relations
+    has_many :shows, through: :shows_queue_relations
 
     def <<(show)
       return unless show.kind_of?(Show)
       return false unless persisted?
 
-      ShowsQueueRelation.connected_to(role: :writing) do
-        return show if show_ids.include?(show.id)
+      return show if reload.shows.include?(show)
 
-        @loaded = false
-        ShowsQueueRelation.create!(show_id: show.id, queue_id: id)
-      end
+      @loaded = false
+      shows_queue_relations.create!(show_id: show.id)
     end
 
     def count
@@ -31,12 +24,8 @@ module Shows
     def show_ids
       return @show_ids if @show_ids && @loaded
 
-      @loaded = false
-      @show_ids ||= ShowsQueueRelation.where(queue_id: id).pluck(:show_id)
-    end
-
-    def fetch_shows
-      Show.where(id: show_ids)
+      @loaded = true
+      @show_ids ||= shows_queue_relations.pluck(:show_id)
     end
   end  
 end

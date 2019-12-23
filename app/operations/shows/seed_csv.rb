@@ -6,11 +6,16 @@ module Shows
     attr_reader :remaining
 
     property! :io, accepts: File
+    property! :banners_root, accepts: String
     property :range, accepts: Range
+    property :locales, accepts: Array, default: -> { [:en, :jp, :fr] }
 
     before do
       @failed_shows = []
       treat_io
+
+      # Check if the directory exists
+      Dir.entries(banners_root)
     end
 
     halted do
@@ -52,31 +57,54 @@ module Shows
     end
 
     def create_show(entry)
-      params = to_param(entry)
-      if Title.search(params[:en_title]).present?
-        Rails.logger.warn("#{params[:en_title]} already exists!")
+      @remaining ||= []
+
+      banner_io = File.open("#{banners_root}/#{entry[:filename]}")
+      title_params = title_params(entry)
+
+      # Japanese title is guarenteed to be unique
+      if Title.where(jp: title_params[:jp]).present?
+        Rails.logger.warn("#{title_params[:en]} already exists!")
         return
       end
 
-      @remaining ||= []
+      title = Title.new(title_params)
+      description = Description.new(description_params(entry))
 
-      show = Show.create(params)
-      failed_shows << show unless show.persisted?
+      show = Show.new(
+        published: true,
+        published_on: Time.now.utc,
+      )
+      show.title = title
+      show.description = description
+      show.save!
+      if show.persisted?
+        show.banner.attach(io: banner_io, filename: entry[:filename])
+        p show.errors.to_a
+      else
+        failed_shows << show unless show.persisted?
+      end
     rescue => e
-      remaining << {raw: entry, parsed: params}
-      Rails.logger.error("Error while creating show with params #{params.to_h}: `#{e}`")
+      remaining << {raw: entry, parsed: entry}
+      Rails.logger.error("Error while creating show with params #{entry.to_h}: `#{e}`")
     end
 
-    def to_param(entry)
-      params = ActionController::Parameters.new(entry).permit(
-        :en_title,
-        :jp_title,
-        :roman_title,
-        :banner_url
-      )
-      params[:released_on] = released_on(entry)
-      params[:plot] = 'anime.plot.coming_soon'
-      params
+    def title_params(entry)
+      parsed = parse_translatable_params(entry, :title)
+      ActionController::Parameters.new(parsed).permit(*locales)
+    end
+
+    def description_params(entry)
+      parsed = parse_translatable_params(entry, :description)
+      ActionController::Parameters.new(parsed).permit(*locales)
+    end
+
+    def parse_translatable_params(entry, type)
+      entry.map {|k, v| [mappings_for(type)[k], v]}.to_h
+    end
+
+    def mappings_for(type)
+      locales.map {|k, v| [:"#{type}_#{k}", k]}.to_h
     end
 
     def released_on(entry)

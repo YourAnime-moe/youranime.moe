@@ -12,6 +12,7 @@ module TanoshimuNew
     config.load_defaults 6.0
     config.autoload_paths << Rails.root.join('app/lib')
     config.autoload_paths << Rails.root.join('app/operations')
+    config.autoload_paths << Rails.root.join('lib/tasks')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

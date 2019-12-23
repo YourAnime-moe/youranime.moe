@@ -67,6 +67,7 @@ module ApplicationHelper
 
   def _logout
     user = current_user
+    user.delete_auth_token!
     session.delete(:user_id)
     session.delete(:current_show_id)
     return if Config.slack_client.nil?

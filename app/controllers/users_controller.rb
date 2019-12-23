@@ -9,7 +9,7 @@ class UsersController < AuthenticatedController
     episodes = Episode.all
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.all
+    @recent_shows = Show.published
     @episodes = force_array_to(6, episodes)
   end
 

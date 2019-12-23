@@ -88,6 +88,10 @@ def seed_show(show_name, at: nil)
   show
 end
 
+def banner_files
+  @banner_files ||= banners.map { |banner_filename| File.open("./seeds/banners/#{banner_filename}") }
+end
+
 def banners
   files_at('seeds', 'banners').select { |file| file =~ /\.(png|jpg)\z/.freeze }
 end

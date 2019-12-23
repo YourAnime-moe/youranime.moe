@@ -1,7 +1,5 @@
 module Users
   class Session < ApplicationRecord
-    include ConnectsToUsersConcern
-
     before_destroy :prevent_destroy!
     before_validation :ensure_token
 
@@ -38,7 +36,7 @@ module Users
       return if deleted?
 
       User.transaction do
-        update(
+        update!(
           deleted: true,
           deleted_on: Time.now.utc,
           active_until: Time.now.utc
