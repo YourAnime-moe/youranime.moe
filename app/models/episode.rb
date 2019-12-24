@@ -19,7 +19,21 @@ class Episode < ApplicationRecord
     !episodes.nil? && episodes[0..2].include?(self)
   end
 
+  def restricted?
+    !unrestricted?
+  end
+
   def subtitles?
     false
+  end
+
+  def subtitles
+    []
+  end
+
+  def next
+    return nil unless show
+
+    show.episodes.find_by(['episodes.number > ?', number])
   end
 end

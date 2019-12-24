@@ -46,9 +46,10 @@ end
 def seed_episodes(show, key)
   show.seasons.each do |season|
     episodes(key).each_with_index do |_, i|
+      episode_number = i + 1
       season.episodes.create(
-        number: i,
-        title: "Episode #{i} - Season #{season.number} - #{show.title}"
+        number: episode_number,
+        title: "Episode #{episode_number} - Season #{season.number} - #{show.title}"
       )
     end
   end

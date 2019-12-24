@@ -37,7 +37,7 @@ module UsersHelper
     return nil unless [Episode, Show].include?(model.class)
 
     if model.class == Episode
-      image = model.thumbnail_url
+      image = model.thumbnail_url!
     else
       image = model.banner.attached? ? model.banner : model.banner_url
     end

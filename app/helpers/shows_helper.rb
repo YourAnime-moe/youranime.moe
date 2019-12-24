@@ -143,10 +143,12 @@ module ShowsHelper
   def show_thumb_body(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
 
+    img_url = resource_url_for(show)
+
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]}") +
+      image_for(img_url, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]}") +
       sanitize(show_thumb_description(show)))
     end
   end
@@ -171,7 +173,7 @@ module ShowsHelper
       end
     end.join('')
 
-    content_tag :div, class: 'tabs is-boxed has-text-light' do
+    content_tag :div, class: 'tabs is-boxed' do
       content_tag :ul do
         sanitize(seasons_tag, attributes: %w(href data-season class))
       end
@@ -182,5 +184,10 @@ module ShowsHelper
 
   def valid_thumbable_class?(model)
     model.class == Show || model.class == Episode
+  end
+
+  def resource_url_for(model)
+    return unless valid_thumbable_class?(model)
+    return model if [Show, Episode].include?(model.class)
   end
 end

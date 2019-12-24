@@ -1,0 +1,61 @@
+
+<div class="video-body muchuu" show-id="<%= @episode.show.id %>" episode-id="<%= @episode.id %>">
+  <div class="controls-container">
+    <div class="gradient top"></div>
+    <div class="gradient bottom"></div>
+    <div class="video-clickable-zone"></div>
+    <div class="controls-zone">
+      <div class="back button" go-to-show="<%= @episode.show.id %>">
+        <%= image_tag("baseline-arrow_back-24px", width: "35px") %>
+      </div>
+      <div class="controls-bottom">
+        <div class="hf-progress">
+          <div class="progress-bar-mgmt">
+            <div class="progress-bar-cont">
+              <div class="progress-bar">
+                <div class="progress-filled"></div>
+              </div>
+            </div>
+          </div>
+          <div class="progress-elapsed">
+            <time class="remaining"><span class="hours">00:</span><span class="duration">00:00</span></time>
+          </div>
+        </div>
+        <div class="hf-controls">
+          <div class="button playing" hf-action="toggle-play-pause">
+            <%= image_tag("baseline-pause-24px", width: "35px") %>
+          </div>
+          <div class="button paused active" hf-action="toggle-play-pause">
+            <%= image_tag("baseline-play_arrow-24px", width: "35px") %>
+          </div>
+          <div class="title">
+            <h5 class="show"><%= @episode.show.title %></h5>
+            <% if @episode.show.episodes.size > 1 %>
+              <h5 class="episode"><%= @episode.title %></h5>
+            <% end %>
+          </div>
+          <% unless @episode.next.nil? || restricted?(@episode.next) %>
+            <div class="button" hf-action="next-episode" show-id="<%= @episode.show.id %>" go-to-episode="<%= @episode.next.id %>">
+              <%= image_tag("baseline-skip_next-24px", width: "35px") %>
+            </div>
+          <% end %>
+          <% unless @episode.subtitles.empty? %>
+            <div class="button" hf-action="cc">
+              <%= image_tag("baseline-closed_caption-24px", width: "35px") %>
+            </div>
+          <% end %>
+          <div class="button" hf-action="toggle-fullscreen">
+            <%= image_tag("baseline-fullscreen-24px", width: "35px") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="video">
+    <%= episode_tag(@episode) %>
+  </div>
+</div>
+
+<% if Rails.env.prodution? %>
+  <script>document.oncontextmenu = () => false;</script>
+<% end %>
