@@ -1,3 +1,5 @@
+require 'active_support'
+
 require 'tanoshimu_utils/version'
 require 'tanoshimu_utils/concerns'
 
