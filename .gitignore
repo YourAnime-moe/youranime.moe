@@ -49,3 +49,5 @@ yarn-debug.log*
 
 vendor/
 !vendor/.keep
+
+*.gem
