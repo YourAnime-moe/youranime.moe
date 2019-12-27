@@ -1,10 +1,10 @@
 require_relative 'active_storage'
 
 class Show < ApplicationRecord
-  include RespondToTypesConcern
-  include ValidatePresenceOneOfConcern
   include ShowScopesConcern
-  include ResourceFetchConcern
+  include TanoshimuUtils::Concerns::RespondToTypes
+  include TanoshimuUtils::Concerns::ResourceFetch
+  include TanoshimuUtils::Validators::PresenceOneOf
 
   self.per_page = 24
 

@@ -1,6 +1,6 @@
 class Title < ApplicationRecord
-  include TranslatableConcern
-  include GetRecordConcern
+  include TanoshimuUtils::Concerns::Translatable
+  include TanoshimuUtils::Concerns::GetRecord
 
   validate :title_present
   validates :used_by_model, presence: true

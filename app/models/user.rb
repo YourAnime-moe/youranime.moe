@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  include IdentifiableConcern
-  include RespondToTypesConcern
-  include ValidateUserLikeConcern
+  include TanoshimuUtils::Concerns::Identifiable
+  include TanoshimuUtils::Concerns::RespondToTypes
+  include TanoshimuUtils::Validators::UserLike
 
   REGULAR = 'regular'
   GOOGLE = 'google'

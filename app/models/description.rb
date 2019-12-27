@@ -1,6 +1,6 @@
 class Description < ApplicationRecord
-  include TranslatableConcern
-  include GetRecordConcern
+  include TanoshimuUtils::Concerns::Translatable
+  include TanoshimuUtils::Concerns::GetRecord
 
   validate :description_present
   validates :used_by_model, presence: true

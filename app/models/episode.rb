@@ -1,5 +1,5 @@
 class Episode < ApplicationRecord
-  include ResourceFetchConcern
+  include TanoshimuUtils::Concerns::ResourceFetch
 
   belongs_to :season, class_name: 'Shows::Season'
 

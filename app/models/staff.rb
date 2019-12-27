@@ -1,7 +1,7 @@
 class Staff < ApplicationRecord
-  include IdentifiableConcern
-  include RespondToTypesConcern
-  include ValidateUserLikeConcern
+  include TanoshimuUtils::Concerns::Identifiable
+  include TanoshimuUtils::Concerns::RespondToTypes
+  include TanoshimuUtils::Validators::UserLike
 
   ADMIN = 'staff_admin'
   REGULAR = 'staff'
