@@ -1,6 +1,6 @@
 class Title < ApplicationRecord
-  include TranslatableConcern
-  include GetRecordConcern
+  include TanoshimuUtils::Concerns::Translatable
+  include TanoshimuUtils::Concerns::GetRecord
 
   validate :title_present
   validates :used_by_model, presence: true
@@ -15,7 +15,7 @@ class Title < ApplicationRecord
     sql = <<-SQL
       select * from titles
       where (#{titles_as_queries})
-    SQL
+    SQ
     sql_args = [sql]
     sql_args << "limit #{limit}" unless limit.to_i == 0
     find_by_sql(sql_args)

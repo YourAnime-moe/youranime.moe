@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'YourAnime.moe utilities'
   spec.description   = 'Just a couple of utilities shared accross the apps to make development much easier.'
-  spec.homepage      = 'https://github.com/thedrummeraki'
+  spec.homepage      = 'https://github.com/thedrummeraki/tanoshimu/tree/heroku/tanoshimu_utils'
 
 =begin
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
