@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tanoshimu_utils (1.1.0)
+    tanoshimu_utils (1.1.2)
       activesupport
 
 GEM
