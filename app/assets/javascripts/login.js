@@ -67,6 +67,12 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 	// }
 
 	Fingerprint2.get((components) => {
+		console.log(components);
+		const items = [
+			components[0],
+			components[9],
+			components[16]
+		];
 		$.ajax({
 			url: '/login',
 			method: 'post',
@@ -75,7 +81,7 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 				password: two,
 				fingerprint: {
 					print: handleFingerprint(components),
-					items: components
+					items: items
 				},
 			},
 			success: function(e) {

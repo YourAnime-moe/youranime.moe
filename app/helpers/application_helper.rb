@@ -63,6 +63,19 @@ module ApplicationHelper
     path
   end
 
+  def hf_header(title, subtitle: nil, link_title: nil, link: nil)
+    subtitle_markup = content_tag(:div, class: 'subtitle') do
+      subtitle
+    end
+    title_markup = content_tag(:div, class: 'tanoshimu-list-title') do
+      content_tag(:span) { title } + subtitle_markup
+    end
+    link_markup = link_to(link_title, link, class: 'button is-rounded is-dark')
+    content_tag(:div, class: 'justified w-100') do
+      title_markup + link_markup
+    end
+  end
+
   private
 
   def _logout

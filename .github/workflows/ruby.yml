@@ -26,13 +26,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.13.0
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get -yqq install libpq-dev chromium-chromedriver
           sudo apt-get -yqq install libsqlite3-dev
           gem install bundler
-          bundle install
+          bundle install --jobs 4 --retry 3
           yarn install
 
       - name: Setup test database
@@ -46,8 +52,3 @@ jobs:
 
       - name: Run tests
         run: bin/rails test
-
-      - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@v1.0.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
