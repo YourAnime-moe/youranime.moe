@@ -45,11 +45,10 @@ class User
 
       device_id = fprint
       device_name = items["0"]["value"]
-      device_location = items["9"]["value"]
-      device_os = items["16"]["value"]
+      device_location = items["1"]["value"]
+      device_os = items["2"]["value"]
 
       device_unknown = [device_id, device_name, device_location, device_os].compact.empty?
-
       user.sessions.create!(
         active_until: 1.week.from_now,
         device_id: device_id,

@@ -65,7 +65,6 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.string "caption_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "published", default: true, null: false
     t.index ["caption_url"], name: "index_episodes_on_caption_url"
     t.index ["number"], name: "index_episodes_on_number"
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true
@@ -190,11 +189,6 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.datetime "deleted_on"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "device_id", default: "", null: false
-    t.string "device_name", default: "", null: false
-    t.string "device_location", default: "", null: false
-    t.string "device_os", default: "", null: false
-    t.boolean "device_unknown", default: true, null: false
     t.index ["deleted", "token"], name: "index_user_sessions_on_deleted_and_token"
     t.index ["token"], name: "index_user_sessions_on_token", unique: true
     t.index ["updated_at"], name: "index_user_sessions_on_updated_at"

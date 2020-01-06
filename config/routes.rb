@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   # API interface
   namespace :api, defaults: { format: :json } do
     get '/', to: "v1/default_action#home"
-    namespace "v1" do
+    namespace :v1 do
       resources :session, only: %i[create show destroy], param: :token
       resources :shows, only: %i[index show] do
         resources :episodes, only: [:index]
