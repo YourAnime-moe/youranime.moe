@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.integer "views", default: 0, null: false
     t.string "thumbnail_url"
     t.string "caption_url"
+    t.boolean "published"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["caption_url"], name: "index_episodes_on_caption_url"
@@ -101,6 +102,9 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.boolean "dubbed", default: false, null: false
     t.boolean "subbed", default: true, null: false
     t.boolean "published", default: false, null: false
+    t.integer "views", default: 0, null: false
+    t.integer "popularity", default: -1, null: false
+    t.float "rating", default: 0.0, null: false
     t.text "plot", default: "", null: false
     t.date "released_on", null: false
     t.date "published_on"
@@ -189,6 +193,11 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.datetime "deleted_on"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "device_id", default: "", null: false
+    t.string "device_name", default: "", null: false
+    t.string "device_location", default: "", null: false
+    t.string "device_os", default: "", null: false
+    t.boolean "device_unknown", default: true, null: false
     t.index ["deleted", "token"], name: "index_user_sessions_on_deleted_and_token"
     t.index ["token"], name: "index_user_sessions_on_token", unique: true
     t.index ["updated_at"], name: "index_user_sessions_on_updated_at"

@@ -7,6 +7,9 @@ class CreateShows < ActiveRecord::Migration[6.1]
       t.boolean :dubbed, default: false, null: false
       t.boolean :subbed, default: true, null: false
       t.boolean :published, null: false, default: false
+      t.integer :views, default: 0, null: false
+      t.integer :popularity, default: -1, null: false
+      t.float :rating, default: 0, null: false
       t.text :plot, null: false, default: ''
       t.date :released_on, null: false
       t.date :published_on

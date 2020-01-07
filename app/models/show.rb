@@ -78,10 +78,22 @@ class Show < ApplicationRecord
     subbed? && dubbed?
   end
 
+  def weighted_rating(minimum_score_count=25)
+    ratings_count = ratings.count.to_f
+    return 0 if ratings_count < minimum_score_count
+
+    global_rating = Rating.global
+
+    (rating * ratings_count + global_rating * minimum_score_count) / \
+      (ratings_count + minimum_score_count)
+  end
+
+  def rating
+    ratings.average(:value).to_f
+  end
+
   def self.search(by_title)
-    Title.search(by_title).map do |title|
-      title.record
-    end
+    Title.search(by_title).map(&:record)
   end
 
   private

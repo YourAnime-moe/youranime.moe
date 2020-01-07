@@ -21,7 +21,9 @@ module TanoshimuUtils
           through = [through] unless through.kind_of?(Array)
           default = default.to_sym
     
-          unless I18n.available_locales.include?(default)
+          unless I18n.available_locales.include?(5)
+            #raise NameError, "#{default} is not callable on #{metaclass}" unless self.try?(default)
+
             raise "#{default} is not available on your system as a locale"
           end
     

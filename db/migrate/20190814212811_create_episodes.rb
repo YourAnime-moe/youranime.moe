@@ -8,6 +8,7 @@ class CreateEpisodes < ActiveRecord::Migration[6.1]
       t.integer :views, null: false, default: 0
       t.string :thumbnail_url
       t.string :caption_url
+      t.boolean :published
 
       t.timestamps
 
