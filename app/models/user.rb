@@ -15,6 +15,8 @@ class User < ApplicationRecord
 
   has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
+  has_many :ratings
+  has_many :shows, through: :ratings
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
@@ -52,6 +54,10 @@ class User < ApplicationRecord
 
   def progress_for(*)
     0
+  end
+
+  def rated_shows
+    Show.joins(:ratings).where('user_id = ?', id)
   end
 
   def self.from_omniauth(auth)

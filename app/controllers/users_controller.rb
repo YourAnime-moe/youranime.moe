@@ -9,8 +9,10 @@ class UsersController < AuthenticatedController
     episodes = Episode.all
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.published
+    @recent_shows = Show.published.where(id: ids).limit(8)
+    @trending = Show.trending.limit(8)
     @episodes = force_array_to(6, episodes)
+    @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
   end
 
   # Going to settings

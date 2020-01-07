@@ -23,6 +23,15 @@ def seed_users
       name: 'Demo User'
     )
   end
+  (1..249).each do |i|
+    User.create!(
+      username: "user#{i}",
+      password: 'password',
+      name: "User #{i}",
+      limited: true,
+      email: "user#{i}@email.com"
+    )
+  end
 end
 
 def seed_show_tags
@@ -39,6 +48,17 @@ def seed_shows
 
     seed_episodes(show, show_name)
   end
+
+  # Seed an additional 500 shows
+  start = Show.count + 1
+  fin = 500 + start
+  (start..fin).each do |i|
+    title = Title.new(en: "Show #{i}")
+    description = Description.new(en: "This show was autogenetared. Number: #{i}")
+    Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
+  end
+
+  seed_ratings
 
   Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
 end
@@ -87,6 +107,20 @@ def seed_show(show_name, at: nil)
   show.seasons.create(number: 1)
 
   show
+end
+
+def seed_ratings
+  ids = Show.ids.sample 100
+  shows = Show.where(id: ids)
+
+  shows.each do |show|
+    user_ids = User.ids.sample(rand(50..User.count))
+    users = User.where(id: user_ids)
+
+    users.each do |user|
+      user.ratings.create!(show: show, value: rand(1..5))
+    end
+  end
 end
 
 def banner_files
