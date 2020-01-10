@@ -14,7 +14,7 @@ class Episode
     end
 
     def execute
-      @episodes.each { |episode| episode.generate_urls!(force: force) }
+      @episodes.each { |episode| episode.generate_thumbnail_url!(force: force) }
     end
 
     succeeded do

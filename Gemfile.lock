@@ -420,7 +420,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
-  tanoshimu_utils
+  tanoshimu_utils (~> 1.2.2)
   tzinfo-data
   uglifier
   web-console (>= 3.3.0)
