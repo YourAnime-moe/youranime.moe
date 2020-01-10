@@ -78,6 +78,13 @@ class Show < ApplicationRecord
     subbed? && dubbed?
   end
 
+  def generate_banner_url!(force: false)
+    return true if banner_url != '/img/404.jpg' && !force
+
+    new_url = banner_url!
+    new_url.present? && update(banner_url: new_url)
+  end
+
   def self.search(by_title)
     Title.search(by_title).map do |title|
       title.record

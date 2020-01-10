@@ -14,7 +14,7 @@ class Show
     end
 
     def execute
-      @shows.each { |show| show.generate_urls!(force: force) }
+      @shows.each { |show| show.generate_banner_url!(force: force) }
     end
 
     succeeded do

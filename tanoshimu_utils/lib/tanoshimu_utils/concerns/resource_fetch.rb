@@ -23,7 +23,7 @@ module TanoshimuUtils
           send(:define_method, "#{resource_url}!") do
             attachment = resource_for(resource_name).attachment
             return default_url if attachment.nil?
-    
+
             if Config.uses_disk_storage?
               Rails.application.routes.url_helpers.rails_blob_url(attachment, only_path: true)
             else
@@ -32,6 +32,12 @@ module TanoshimuUtils
           end
           send(:define_method, "#{resource_name}?") do
             (fetch!(resource_name, default_url)&.attached?).present?
+          end
+          send(:define_method, "generate_#{resource_name}_url!") do
+            return true if send("#{resource_url}?") && !force
+
+            new_url = send("#{resource_url}!")
+            new_url.present? && update(resource_url => new_url)
           end
         end
       end
