@@ -18,7 +18,7 @@ gem "activejob"
 gem 'rollbar'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', git: "https://github.com/rails/rails"
+gem 'rails', '~> 6.0.0'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -87,7 +87,7 @@ gem 'debride'
 # gem 'capistrano-rails', group: :development
 
 # My gems
-gem 'tanoshimu_utils', '~> 1.2.2'
+gem 'tanoshimu_utils'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
