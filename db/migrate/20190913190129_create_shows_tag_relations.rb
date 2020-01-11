@@ -1,4 +1,4 @@
-class CreateShowsTagRelations < ActiveRecord::Migration[6.1]
+class CreateShowsTagRelations < ActiveRecord::Migration[6.0]
   def change
     create_table :shows_tag_relations do |t|
       t.integer :show_id
