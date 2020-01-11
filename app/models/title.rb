@@ -5,7 +5,7 @@ class Title < ApplicationRecord
   validate :title_present
   validates :used_by_model, presence: true
 
-  translates :value, through: [:en, :fr, :jp], default: :en
+  translates :value, through: [:en, :fr, :jp], default: :roman
 
   scope :search, lambda { |query, limit: nil|
     return all if query.empty?
