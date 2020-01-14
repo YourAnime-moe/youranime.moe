@@ -62,31 +62,27 @@ module Shows
       banner_io = File.open("#{banners_root}/#{entry[:filename]}")
       title_params = title_params(entry)
 
-      # Japanese title is guarenteed to be unique
-      if Title.where(jp: title_params[:jp]).present?
-        Rails.logger.warn("#{title_params[:en]} already exists!")
-        return
-      end
-
-      title = Title.new(title_params)
-      description = Description.new(description_params(entry))
-
-      show = Show.new(
-        published: true,
-        published_on: Time.now.utc,
-      )
-      show.title = title
-      show.description = description
-      show.save!
-      if show.persisted?
-        show.banner.attach(io: banner_io, filename: entry[:filename])
-        p show.errors.to_a
-      else
-        failed_shows << show unless show.persisted?
-      end
+      show = create_show!(title_params, entry, banner_io)
+      failed_shows << show if show.persisted?
     rescue => e
-      remaining << {raw: entry, parsed: entry}
+      remaining << { raw: entry, parsed: entry }
       Rails.logger.error("Error while creating show with params #{entry.to_h}: `#{e}`")
+    end
+
+    def create_show!(title_params, entry, banner_io)
+      # Japanese title is guarenteed to be unique# Japanese title is guarenteed to be unique
+      raise "#{title_params[:en]} already exists" if Title.where(jp: title_params[:jp]).present?
+
+      create_show_instance!(title_params, entry, banner_io)
+    end
+
+    def create_show_instance!(title_params, entry, banner_io)
+      show = Show.new(published: true, published_on: Time.now.utc)
+      show.title = Title.new(title_params)
+      show.description = description(entry)
+      show.save!
+      show.banner.attach(io: banner_io, filename: entry[:filename]) if show.persisted?
+      show
     end
 
     def title_params(entry)
@@ -97,6 +93,10 @@ module Shows
     def description_params(entry)
       parsed = parse_translatable_params(entry, :description)
       ActionController::Parameters.new(parsed).permit(*locales)
+    end
+
+    def description(entry)
+      Description.new(description_params(entry))
     end
 
     def parse_translatable_params(entry, type)

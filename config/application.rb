@@ -14,6 +14,18 @@ module TanoshimuNew
     config.autoload_paths << Rails.root.join('app/operations')
     config.autoload_paths << Rails.root.join('lib/tasks')
 
+    # I18n
+    config.authorized_locales = %w[en fr ja jp]
+
+    # UI
+    config.bulma_version = nil
+    config.videojs_version = nil
+
+    # Misc
+    config.is_demo = ENV['DEMO'].to_s.downcase.strip == 'true'
+    config.is_using_disk_storage = config.active_storage.service == :local
+    config.google_client_id = ENV['GOOGLE_OAUTH_CLIENT_ID']
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

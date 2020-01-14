@@ -1,7 +1,0 @@
-$('#shows').append('<%= j render "admin/shows/thumbs" %>');
-<% if @shows.next_page %>
-  $('.pagination').replaceWith('<%= j will_paginate @shows %>');
-<% else %>
-  $(window).off('scroll');
-  $('.pagination').remove();
-<% end %>

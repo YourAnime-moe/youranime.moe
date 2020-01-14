@@ -46,12 +46,8 @@ module ApplicationHelper
     @app_title
   end
 
-  def set_title(before: nil, after: nil, reset: true, home: false)
-    @app_title = nil if reset
-    if @app_title.nil?
-      @app_title = 'Private' if home == true
-      @app_title = t('app.name') if home == false
-    end
+  def set_title(before: nil, after: nil)
+    @app_title = t('app.name') if @app_title.nil?
     @app_title = "#{before} | #{@app_title}" unless before.nil?
     @app_title << " | #{after}" unless after.nil?
     @app_title

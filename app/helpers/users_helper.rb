@@ -36,13 +36,7 @@ module UsersHelper
   def image_for(model, *args, **options)
     return nil unless [Episode, Show].include?(model.class)
 
-    if model.class == Episode
-      image = model.thumbnail_url!
-    else
-      image = model.banner.attached? ? model.banner : model.banner_url
-    end
-
-    image_tag(image, *args, **options)
+    image_tag(fetch_image(model), *args, **options)
   end
 
   def avatar_tag(size: 200, **options)
@@ -54,5 +48,13 @@ module UsersHelper
       url = "https://api.adorable.io/avatars/#{size}/#{current_user.username}.png"
       image_tag(url, alt: current_user.name, size: size, **options)
     end
+  end
+
+  private
+
+  def fetch_image(model)
+    return model.thumbnail_url! if model.is_a?(Episode)
+
+    model.banner.attached? ? model.banner : model.banner_url
   end
 end

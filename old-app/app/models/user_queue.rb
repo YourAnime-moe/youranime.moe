@@ -1,2 +1,0 @@
-class UserQueue < ApplicationRecord
-end

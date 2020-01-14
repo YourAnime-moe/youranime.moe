@@ -15,13 +15,12 @@ class User
     end
 
     def execute
-      user = User.find_by(username: username.downcase)
-      raise LoginError.new('welcome.login.errors.unknown-user', attempt: username) if user.nil?
-      raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
-      raise LoginError.new('welcome.login.errors.maintenance') if maintenance && !user.admin?
-      raise LoginError.new('welcome.login.errors.deactivated') unless user.active?
+      check_user_unknown!
+      check_wrong_password!
+      check_if_maintenance_and_not_admin_user!
+      check_user_deactivated!
 
-      activate_session!(user)
+      activate_session!
     end
 
     succeeded do
@@ -39,7 +38,27 @@ class User
 
     private
 
-    def activate_session!(user)
+    def user
+      @user ||= User.find_by(username: username.downcase)
+    end
+
+    def check_user_unknown!
+      raise LoginError.new('welcome.login.errors.unknown-user', attempt: username) if user.nil?
+    end
+
+    def check_wrong_password!
+      raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
+    end
+
+    def check_if_maintenance_and_not_admin_user!
+      raise LoginError.new('welcome.login.errors.maintenance') if maintenance && !user.admin?
+    end
+
+    def check_user_deactivated!
+      raise LoginError.new('welcome.login.errors.deactivated') unless user.active?
+    end
+
+    def activate_session!
       items = fingerprint[:items]
       fprint = fingerprint[:print]
 

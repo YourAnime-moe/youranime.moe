@@ -1,2 +1,0 @@
-class UserFavorite < ApplicationRecord
-end
