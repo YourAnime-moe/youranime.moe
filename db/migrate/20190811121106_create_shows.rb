@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-class CreateShows < ActiveRecord::Migration[6.1]
+class CreateShows < ActiveRecord::Migration[6.0]
   def change
     create_table :shows do |t|
       t.string :show_type, null: false, default: 'anime'

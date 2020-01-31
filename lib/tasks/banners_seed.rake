@@ -18,7 +18,7 @@ namespace :seed do
 
   namespace :all do
     desc 'Seed all banners and thumbnails'
-    task :media do
+    task media: :environment do
       seed_thumbnails
       seed_banners
     end
@@ -28,6 +28,8 @@ end
 def seed_banners(wait_for = 2)
   Show.all.each_with_index do |show, i|
     filename = banners[i]
+    next if filename.nil?
+
     p "Attaching #{filename} to #{show.title}..."
     show.banner.attach(io: banner_files[i], filename: filename)
 
@@ -38,13 +40,14 @@ end
 
 def seed_thumbnails(wait_for = 2)
   Show.all.each_with_index do |show, show_index|
-    key = banners[show_index].split('.')[0]
-    p episodes(key)
+    info = banners[show_index]
+    next if info.nil?
+
+    key = info.split('.')[0]
     episodes(key).each_with_index do |episode_filename, i|
       p "Attaching #{episode_filename} to #{show.title}..."
 
       file = thumbnail_files(key)[i]
-      p file
       show.episodes[i].thumbnail.attach(io: file, filename: episode_filename)
 
       p "Waiting #{wait_for} seconds"
