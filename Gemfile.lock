@@ -133,6 +133,10 @@ GEM
     gli (2.19.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.7.0)
+      railties
+      sprockets-rails
+    graphql (1.10.2)
     hashie (3.6.0)
     i18n (1.8.1)
       concurrent-ruby (~> 1.0)
@@ -384,6 +388,8 @@ DEPENDENCIES
   debride
   dotenv-rails
   fasterer
+  graphiql-rails
+  graphql
   image_processing (~> 1.2)
   jbuilder
   jquery-rails

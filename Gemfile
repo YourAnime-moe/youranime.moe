@@ -89,11 +89,17 @@ gem 'debride'
 # My gems
 gem 'tanoshimu_utils'
 
+# Use GraphQL
+gem 'graphql'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
   gem 'rspec-rails'
+  
+  # Use GraphiQL
+  gem 'graphiql-rails'
 end
 
 group :development do

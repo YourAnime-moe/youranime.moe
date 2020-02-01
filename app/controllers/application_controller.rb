@@ -1,10 +1,7 @@
 class ApplicationController < ActionController::Base
   helper Webpacker::Helper
-  include ApplicationHelper
-  include LocaleConcern
 
-  before_action :find_locale
-  before_action :check_is_in_maintenance_mode!, except: [:logout]
+  # before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_users_home_if_logged_in, only: [:login]
 
   def login

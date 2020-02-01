@@ -4,14 +4,13 @@ class User
   class Login < ApplicationOperation
     input :username, accepts: String, type: :keyword, required: true
     input :password, accepts: String, type: :keyword, required: true
-    input :fingerprint, type: :keyword, required: true
+    input :fingerprint, type: :keyword, required: false
     input :maintenance, type: :keyword, required: false
 
     before do
       raise LoginError.new('welcome.login.errors.no-credentials') if username.blank? && password.blank?
       raise LoginError.new('welcome.login.errors.no-username') if username.blank?
       raise LoginError.new('welcome.login.errors.no-password') if password.blank?
-      raise LoginError.new('fingerprint.missing') if fingerprint.blank?
     end
 
     def execute
@@ -59,6 +58,12 @@ class User
     end
 
     def activate_session!
+      return with_fingerprint! if fingerprint.present?
+
+      without_fingerprint!
+    end
+
+    def with_fingerprint!
       items = fingerprint[:items]
       fprint = fingerprint[:print]
 
@@ -75,6 +80,13 @@ class User
         device_location: device_location,
         device_os: device_os,
         device_unknown: device_unknown
+      )
+      user
+    end
+
+    def without_fingerprint!
+      user.sessions.create!(
+        active_until: 1.week.from_now,
       )
       user
     end

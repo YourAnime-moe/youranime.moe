@@ -8,6 +8,8 @@ module Users
     validates :deleted, inclusion: { in: [true, false] }
     validates :active_until, presence: true
 
+    alias_attribute :active_since, :created_at
+
     def user
       User.where(user_type: user_type, id: user_id).first
     end
