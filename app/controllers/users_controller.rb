@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UsersController < AuthenticatedController
-  include UsersHelper
-
   # Home page
   def home
     set_title(before: t('user.welcome', user: current_user.name))

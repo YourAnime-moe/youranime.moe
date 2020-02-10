@@ -1,7 +1,4 @@
 class ShowsController < AuthenticatedController
-
-  include ShowsHelper
-
   def index
     set_title(before: t('anime.shows.view-all'))
     if params[:query].present?
