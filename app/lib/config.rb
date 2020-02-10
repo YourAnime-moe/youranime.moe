@@ -16,5 +16,9 @@ module Config
         @slack_client = nil
       end
     end
+
+    def uses_disk_storage?
+      Rails.application.config.is_using_disk_storage
+    end
   end
 end

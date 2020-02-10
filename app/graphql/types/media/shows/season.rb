@@ -6,6 +6,8 @@ module Types
       class Season < BaseObject
         field :number, Int, null: false
         field :name, String, null: true
+
+        field :episodes, [Episode], null: false
       end
     end
   end

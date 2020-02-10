@@ -91,6 +91,10 @@ gem 'tanoshimu_utils'
 
 # Use GraphQL
 gem 'graphql'
+gem 'rack-cors'
+
+# JSON web token
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

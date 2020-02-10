@@ -43,7 +43,7 @@ class User < ApplicationRecord
   end
 
   def delete_all_auth_token!
-    active_sessions.each { |session| session.delete! }
+    active_sessions.each(&:delete!)
   end
 
   def can_manage?

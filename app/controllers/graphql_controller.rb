@@ -26,10 +26,14 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
-    token = request.headers["X-Tanoshimu-Auth"]
+    token = request.headers['Authorization']
     return unless token
 
-    Users::Session.find_by(token: token)&.user
+    if token.include?('Authorization')
+      token = token.split('Authorization')[1].strip
+    end
+
+    Users::Session.authenticated_with(token)&.user
   end
 
   # Handle form data, JSON body, or a blank value
@@ -54,6 +58,6 @@ class GraphqlController < ApplicationController
     logger.error e.message
     logger.error e.backtrace.join("\n")
 
-    render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
+    render json: { error: { message: e.message }, data: {} }, status: 500
   end
 end

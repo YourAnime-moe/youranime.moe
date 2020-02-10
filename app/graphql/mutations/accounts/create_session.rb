@@ -9,7 +9,7 @@ module Mutations
 
       field :token, String, null: true
       field :user, Types::Accounts::User, null: true
-      
+
       def resolve(input: nil)
         username = input[:username]
         password = input[:password]

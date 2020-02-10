@@ -46,6 +46,10 @@ module Users
       end
     end
 
+    def self.authenticated_with(token)
+      where(deleted: false).find_by(token: token)
+    end
+
     private
 
     def prevent_destroy!
@@ -53,11 +57,11 @@ module Users
     end
 
     def ensure_token
-      return if self.token.present?
+      return if token.present?
 
-      self.token = SecureRandom.hex
-      until self.class.where(token: self.token)
+      loop do
         self.token = SecureRandom.hex
+        break if self.class.where(token: token).empty?
       end
     end
 

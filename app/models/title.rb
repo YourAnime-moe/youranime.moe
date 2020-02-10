@@ -11,14 +11,10 @@ class Title < ApplicationRecord
     return all if query.empty?
 
     titles_to_search = %i[en fr jp roman]
-    titles_as_queries = titles_to_search.map { |key| "(lower(titles.#{key}) like '%%#{query}%%')" }.join(' or ')
-    sql = <<-SQL
-      select * from titles
-      where (#{titles_as_queries})
-    SQL
-    sql_args = [sql]
-    sql_args << "limit #{limit}" unless limit.to_i == 0
-    find_by_sql(sql_args)
+    titles_as_queries = titles_to_search.map do |key|
+      "(lower(titles.#{key}) like '%%#{query}%%')"
+    end.join(' or ')
+    where(titles_as_queries)
   }
 
   private

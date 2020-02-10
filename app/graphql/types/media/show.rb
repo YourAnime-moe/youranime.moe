@@ -18,6 +18,10 @@ module Types
       def seasons_count
         @object.seasons.count
       end
+
+      def published
+        @object.published?
+      end
     end
   end
 end

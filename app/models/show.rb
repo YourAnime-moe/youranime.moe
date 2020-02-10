@@ -39,7 +39,9 @@ class Show < ApplicationRecord
   validates_inclusion_of :show_type, in: SHOW_TYPES
 
   def published?
-    self[:published] || published_on? && published_on <= Time.now.utc
+    return false unless self[:published]
+
+    published_on? && published_on <= Time.now.utc
   end
 
   def title
@@ -78,10 +80,8 @@ class Show < ApplicationRecord
     subbed? && dubbed?
   end
 
-  def self.search(by_title)
-    Title.search(by_title).map do |title|
-      title.record
-    end
+  def self.search(by_title, limit: nil)
+    Title.search(by_title).limit(limit).map(&:record)
   end
 
   private

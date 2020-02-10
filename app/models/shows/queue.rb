@@ -19,6 +19,10 @@ module Shows
       shows.count
     end
 
+    def inspect
+      shows.inspect
+    end
+
     private
 
     def show_ids
