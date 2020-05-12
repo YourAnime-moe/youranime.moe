@@ -8,6 +8,12 @@ class CreateUserSessions < ActiveRecord::Migration[6.0]
       t.datetime :active_until, null: false
       t.datetime :deleted_on
 
+      t.string :device_id, default: "", null: false
+      t.string :device_name, default: "", null: false
+      t.string :device_location, default: "", null: false
+      t.string :device_os, default: "", null: false
+      t.boolean :device_unknown, default: true, null: false
+
       t.index :user_id
       t.index [:user_id, :token]
       t.index [:deleted, :token]
