@@ -22,16 +22,22 @@ def seed_users
       limited: true,
       name: 'Demo User'
     )
-  end
-  (1..249).each do |i|
-    User.create!(
-      username: "user#{i}",
-      password: 'password',
-      name: "User #{i}",
-      limited: true,
-      email: "user#{i}@email.com"
+    Staff.create(
+      username: 'admin',
+      name: 'Admin User',
+      password: 'this is my boss password',
+      limited: false,
     )
   end
+  #(1..249).each do |i|
+  #  User.create!(
+  #    username: "user#{i}",
+  #    password: 'password',
+  #    name: "User #{i}",
+  #    limited: true,
+  #    email: "user#{i}@email.com"
+  #  )
+  #end
 end
 
 def seed_show_tags
@@ -58,7 +64,7 @@ def seed_shows
     Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
   end
 
-  seed_ratings
+  # seed_ratings
 
   Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
 end
