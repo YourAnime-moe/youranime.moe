@@ -55,6 +55,8 @@ def seed_shows
     seed_episodes(show, show_name)
   end
 
+  `bundle exec rails seed:all:media`
+
   # Seed an additional 500 shows
   #start = Show.count + 1
   #fin = 500 + start
