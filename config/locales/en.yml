@@ -105,7 +105,7 @@ en:
   sidebar:
     home-page: Home page
     browse: Browse
-    anime-movies: Anime & Movies
+    anime-movies: All videos
     feel-adventure: Feel Adventurous?
     for-you:
       title: For you
@@ -135,7 +135,7 @@ en:
       sub: sub
       empty: >
         Nothing has been added yet! Please come back a bit later.
-      view-all: "All Anime Shows"
+      view-all: "All Shows"
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
       trending: Trending

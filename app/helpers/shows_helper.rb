@@ -168,7 +168,7 @@ module ShowsHelper
     seasons_tag = show_seasons.map do |season|
       content_tag :li, class: ('is-active' if season.number == 1) do
         content_tag :a, href: "#season-#{season.number}", data: {season: season.number.to_s} do
-          "Season #{season.number}"
+          season.name.presence || "Season #{season.number}"
         end
       end
     end.join('')

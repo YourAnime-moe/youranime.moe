@@ -73,7 +73,7 @@ jp:
   sidebar:
     home-page: トップページ
     browse: 詳細検索
-    anime-movies: アニメや映画
+    anime-movies: すべての動画
     feel-adventure: おまかせ
     for-you:
       title: あなたのみ
@@ -98,7 +98,7 @@ jp:
       sub: 日本語
       empty: >
         申し訳ございませんが、現在では検索基準の通りで結果はありません。後でお試しくださいますようお願いいたします。
-      view-all: "すべてのアニメ"
+      view-all: "すべてのショー"
       search-result: 検索の結果は%{count}件です
       coming-soon: "近日公開予定"
       trending: 人気アニメ

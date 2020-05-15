@@ -84,7 +84,7 @@ fr:
   sidebar:
     home-page: Page principale
     browse: Naviguer
-    anime-movies: Anime et Films
+    anime-movies: Toutes les vidéos
     feel-adventure: Surprenez-moi !
     for-you:
       title: Pour vous
@@ -114,7 +114,7 @@ fr:
       sub: sub
       empty: >
         Rien n'est encore disponible ! Venez-y jeter un coup d'œil plus tard.
-      view-all: "Toutes les émissions animées"
+      view-all: "Toutes les émissions"
       search-result: "Résultats de recherche : %{count} trouvé(s)"
       coming-soon: "À venir !"
       trending: Populaire
