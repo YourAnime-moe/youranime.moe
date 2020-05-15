@@ -56,7 +56,7 @@ module LocaleConcern
   end
 
   def filter_locale
-    Config.authorized_locales.each do |authorized_locale|
+    Rails.configuration.authorized_locales.each do |authorized_locale|
       next unless authorized_locale == requested_locale
 
       I18n.locale = authorized_locale
