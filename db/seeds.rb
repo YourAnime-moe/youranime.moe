@@ -56,13 +56,13 @@ def seed_shows
   end
 
   # Seed an additional 500 shows
-  start = Show.count + 1
-  fin = 500 + start
-  (start..fin).each do |i|
-    title = Title.new(en: "Show #{i}")
-    description = Description.new(en: "This show was autogenetared. Number: #{i}")
-    Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
-  end
+  #start = Show.count + 1
+  #fin = 500 + start
+  #(start..fin).each do |i|
+  #  title = Title.new(en: "Show #{i}")
+  #  description = Description.new(en: "This show was autogenetared. Number: #{i}")
+  #  Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
+  #end
 
   # seed_ratings
 
