@@ -6,7 +6,7 @@ class UsersController < AuthenticatedController
   # Home page
   def home
     set_title(before: t('user.welcome', user: current_user.name))
-    episodes = Episode.all
+    episodes = Episode.published
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
     @recent_shows = Show.published.order('created_at desc').where(id: ids).limit(8)
