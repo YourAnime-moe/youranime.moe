@@ -15,13 +15,12 @@ class User < ApplicationRecord
 
   has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
-  has_many :ratings
-  has_many :shows, through: :ratings
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
   has_secure_password
 
+  recommends :shows
   respond_to_types USER_TYPES
 
   validate_like_user user_types: USER_TYPES
