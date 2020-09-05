@@ -29,7 +29,7 @@ module Config
     end	
 
     def uses_disk_storage?	
-      Rails.application.config.active_storage.service == :local	
+      Rails.application.config.active_storage.service == :local
     end
   end
 end

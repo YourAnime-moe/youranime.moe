@@ -37,6 +37,7 @@ en:
       password: "Your password"
       login: "Login"
       google-login: Sign in with Google
+      misete-login: Misete Accounts
       google-or: Or
       success:
         web-message: "Login successful! Time to watch anime!"

@@ -4,6 +4,7 @@ class Show < ApplicationRecord
   include ShowScopesConcern
   include TanoshimuUtils::Concerns::RespondToTypes
   include TanoshimuUtils::Concerns::ResourceFetch
+  include TanoshimuUtils::Concerns::HasTranslatableField
   include TanoshimuUtils::Validators::PresenceOneOf
 
   self.per_page = 24
@@ -24,8 +25,11 @@ class Show < ApplicationRecord
   has_many :episodes, through: :seasons
   has_many :shows_queue_relations
   has_many :queues, through: :shows_queue_relations
+
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
+  has_translatable_field :title
+  has_translatable_field :description
 
   has_one_attached :banner
   has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
@@ -40,30 +44,6 @@ class Show < ApplicationRecord
 
   def published?
     self[:published] || published_on? && published_on <= Time.now.utc
-  end
-
-  def title
-    (@title ||= title_record).value
-  end
-
-  def title=(new_title_record)
-    return unless new_title_record.kind_of?(Title)
-
-    new_title_record.used_by_model = self.class.table_name
-    new_title_record.model_id = self.id
-    self.title_record = new_title_record
-  end
-
-  def description
-    (@description ||= description_record).value
-  end
-
-  def description=(new_description_record)
-    return unless new_description_record.kind_of?(Description)
-
-    new_description_record.used_by_model = self.class.table_name
-    new_description_record.model_id = self.id
-    self.description_record = new_description_record
   end
 
   def only_subbed?

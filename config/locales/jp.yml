@@ -21,6 +21,7 @@ jp:
       login: "ログイン"
       google-or: それとも
       google-login: Googleでログイン
+      misete-login: Misete.ioでログイン
       success:
         web-message: "ログイン完了。アニメの時間だよ！"
       errors:

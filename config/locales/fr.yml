@@ -30,6 +30,7 @@ fr:
       password: "Mot de passe"
       login: "Se connecter"
       google-login: Se connecter avec Google
+      misete-login: Misete Accounts
       google-or: Ou
       success:
         web-message: "Parfait ! Commençons à regarder des animés !"

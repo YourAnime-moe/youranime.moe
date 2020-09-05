@@ -45,13 +45,22 @@
             </div>
 
             <div class="text-center" style="margin-top: 20px;">
-              <p style="margin-bottom: 10px;" style="color: #e0e0e0;">- <%= t('welcome.login.google-or') %> -</p>
-              <div>
-                <%= link_to '/auth/google_oauth2', method: :post, class: 'google-btn' do %>
-                  <img width="20px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
-                  <%= t('welcome.login.google-login') %>
-                <% end %>
-              </div>
+              <% if Config.google_client_id.present? %>
+                <p style="margin-bottom: 10px;" style="color: #e0e0e0;">- <%= t('welcome.login.google-or') %> -</p>
+                <div>
+                  <%= link_to '/auth/google_oauth2', method: :post, class: 'google-btn' do %>
+                    <img width="20px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
+                    <%= t('welcome.login.google-login') %>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if ENV['MISETE_OAUTH_CLIENT_ID'].present? %>
+                <div style="margin-top: 20px">
+                  <%= link_to '/auth/misete', method: :post, class: 'google-btn' do %>
+                    <%= t('welcome.login.misete-login') %>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           </form>
           <div class="hf-section">

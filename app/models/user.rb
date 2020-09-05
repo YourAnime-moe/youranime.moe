@@ -6,8 +6,9 @@ class User < ApplicationRecord
   REGULAR = 'regular'
   GOOGLE = 'google'
   ADMIN = 'admin'
+  MISETE = 'misete'
 
-  USER_TYPES = [REGULAR, GOOGLE, ADMIN].freeze
+  USER_TYPES = [REGULAR, GOOGLE, ADMIN, MISETE].freeze
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
@@ -60,11 +61,20 @@ class User < ApplicationRecord
     Show.joins(:ratings).where('user_id = ?', id)
   end
 
-  def self.from_omniauth(auth)
+  def self.from_google_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
       user.name = auth.info.name
       user.email = auth.info.email
       user.username = auth.info.email
+    end
+  end
+
+  def self.from_misete_omniauth(auth)
+    where(email: auth.info.email).first_or_initialize do |user|
+      user.name = auth.info.first_name + " " + auth.info.last_name
+      user.email = auth.info.email
+      user.username = auth.info.email
+      user.limited = !auth.info.active || auth.info.blocked
     end
   end
 
