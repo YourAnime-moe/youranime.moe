@@ -8,6 +8,7 @@ class User < ApplicationRecord
   ADMIN = 'admin'
   MISETE = 'misete'
 
+  OAUTH_USER_TYPES = [GOOGLE, MISETE].freeze
   USER_TYPES = [REGULAR, GOOGLE, ADMIN, MISETE].freeze
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
@@ -59,6 +60,10 @@ class User < ApplicationRecord
 
   def rated_shows
     Show.joins(:ratings).where('user_id = ?', id)
+  end
+
+  def oauth?
+    OAUTH_USER_TYPES.include?(user_type)
   end
 
   def self.from_google_omniauth(auth)

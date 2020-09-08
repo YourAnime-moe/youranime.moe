@@ -1,0 +1,33 @@
+<div class="container">
+  <h1 class="title">Users List</h1>
+  <div class="table-container">
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>User Type</th>
+          <th>Color</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= link_to 'View', admin_users_path(user), class: 'button is-primary is-small' %></td>
+            <td><%= user.id %></td>
+            <td><%= user.username %></td>
+            <td><%= user.name %></td>
+            <td><%= user.email.presence || '-' %></td>
+            <td><%= user_type(user) %></td>
+            <td><%= user_color(user) %></td>
+            <td><%= user_status(user) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

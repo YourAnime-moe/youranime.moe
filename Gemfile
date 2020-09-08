@@ -89,6 +89,12 @@ gem 'debride'
 # My gems
 gem 'tanoshimu_utils'
 
+# Downloading files
+gem 'down', '~> 5.0'
+
+# Sidekiq
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

@@ -1,0 +1,68 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><%= link_to('Home', admin_path) %></li>
+    <li><%= link_to('Shows', admin_shows_path) %></li>
+    <li class="is-active"><a href="../"><%= @show.title %></a></li>
+  </ul>
+</nav>
+
+<h1 class="title"><%= @show.title %></h1>
+<div class="columns">
+  <div class="column is-3">
+
+  </div>
+  <div class="column is-9">
+    <%= seasons_tabs(@show, new_season: true) %>
+    <div class="row no-margin">
+      <div class="container-fluid">
+        <% @show.seasons.each do |season| %>
+          <div class="columns is-multiline hide" season="<%= season.number %>">
+            <% season.episodes.each_with_index do |episode| %>
+              <% @model = episode %>
+              <div class="column is-3">
+                <%= show_thumb(episode) %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="new-season-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Modal title</p>
+      <button class="delete" aria-label="close" action="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success">Save changes</button>
+      <button class="button" action="close">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<script type="text/javascript">
+  const newSeasonButton = document.querySelector('[data-season="new"]');
+  const newSeasonModal = document.querySelector('#new-season-modal');
+
+  newSeasonButton.onclick = (e) => {
+    e.preventDefault();
+
+    newSeasonModal.classList.add('is-active');
+  };
+
+  const closeButtons = document.querySelectorAll('[action="close"]');
+  for (var i = 0; i < closeButtons.length; i++) {
+    const element = closeButtons[i];
+    element.onclick = (e) => {
+      e.preventDefault();
+      newSeasonModal.classList.remove('is-active');
+    };
+  }
+</script>

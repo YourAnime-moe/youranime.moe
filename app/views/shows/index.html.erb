@@ -17,10 +17,9 @@
         <div class="columns">
           <% shows.each_with_index do |show| %>
             <div class="column is-4" style="margin-top: 20px;">
-              <% @_rule = {class: nil} %>
-              <% @_thumb_info = {} %>
-              <% @model = show %>
-              <%= render 'shows/partial/_thumbs' %>
+              <%= link_to(show_path(show)) do %>
+                <%= show_thumb(show) %>
+              <% end %>
             </div>
           <% end %>
         </div>

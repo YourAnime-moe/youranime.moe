@@ -11,7 +11,7 @@ module ShowScopesConcern
     end
     scope :recent, lambda { |limit: 50|
       limit = 1 if limit < 1
-      includes(:seasons).where(published: true).limit(limit)
+      includes(:seasons).where(published: true).order(:updated_at).limit(limit)
     }
     scope :latest, lambda { |current_user, limit: 5|
       limit = 1 if limit < 1

@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_05_002343) do
+ActiveRecord::Schema.define(version: 2020_09_08_011048) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -184,6 +187,16 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.index ["roman"], name: "index_titles_on_roman"
   end
 
+  create_table "uploads", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "uuid", null: false
+    t.string "upload_type", null: false
+    t.string "upload_status", default: "pending", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_uploads_on_user_id"
+  end
+
   create_table "user_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_type", null: false
@@ -230,4 +243,5 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "uploads", "users"
 end

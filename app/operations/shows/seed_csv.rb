@@ -5,8 +5,8 @@ module Shows
     attr_reader :errors
     attr_reader :remaining
 
-    property! :io, accepts: File
-    property! :banners_root, accepts: String
+    property! :io, accepts: [File, Tempfile, String]
+    #property! :banners_root, accepts: String
     property :range, accepts: Range
     property :locales, accepts: Array, default: -> { [:en, :jp, :fr] }
 
@@ -15,7 +15,7 @@ module Shows
       treat_io
 
       # Check if the directory exists
-      Dir.entries(banners_root)
+      #Dir.entries(banners_root)
     end
 
     halted do
@@ -42,14 +42,17 @@ module Shows
     def treat_io
       return @data if @data
 
-      raw_data = io.read
+      raw_data = io.kind_of?(String) ? io : io.read
       csv = CSV.new(raw_data,
         headers: true,
         header_converters: :symbol,
         converters: :all
       )
 
-      @data = csv.to_a.map { |row| row.to_hash }
+      data_as_list = csv.to_a
+      data_as_list = data_as_list[range] if range
+
+      @data = data_as_list.map { |row| row.to_hash }
     end
 
     def shows_data
@@ -59,11 +62,15 @@ module Shows
     def create_show(entry)
       @remaining ||= []
 
-      banner_io = File.open("#{banners_root}/#{entry[:filename]}")
+      banner_io = Down.download(entry[:image_url])
       title_params = title_params(entry)
 
       show = create_show!(title_params, entry, banner_io)
-      failed_shows << show if show.persisted?
+      if show.persisted?
+        show.generate_banner_url!(force: true)
+      else
+        failed_shows << show
+      end
     rescue => e
       remaining << { raw: entry, parsed: entry }
       Rails.logger.error("Error while creating show with params #{entry.to_h}: `#{e}`")
@@ -79,9 +86,9 @@ module Shows
     def create_show_instance!(title_params, entry, banner_io)
       show = Show.new(published: true, published_on: Time.now.utc)
       show.title = Title.new(title_params)
-      show.description = description(entry)
+      show.description = Description.new(en: "Description for #{show.title}") # description(entry)
       show.save!
-      show.banner.attach(io: banner_io, filename: entry[:filename]) if show.persisted?
+      show.banner.attach(io: banner_io, filename: "uploaded-for-show-#{show.id}") if show.persisted?
       show
     end
 

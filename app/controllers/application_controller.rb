@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_users_home_if_logged_in, only: [:login]
 
+  def admin
+    render plain: 'admin panel!'
+  end
+
   def login
     set_title after: t('welcome.text'), before: t('welcome.login.login')
   end

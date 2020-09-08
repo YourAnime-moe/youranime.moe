@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= app_title %></title>
+
+    <%= stylesheet_link_tag    'admin', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+    <meta name="theme-color" content="<%= app_colour %>" />
+    <meta name="msapplication-navbutton-color" content="<%= app_colour %>" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="<%= app_colour %>" />
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="//cdn.jsdelivr.net/npm/fingerprintjs2@2.1.0/dist/fingerprint2.min.js"></script>
+  </head>
+
+  <body>
+    <%= render 'admin/navigation_bar' %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
+  </body>
+</html>

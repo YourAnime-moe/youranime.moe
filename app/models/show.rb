@@ -69,7 +69,14 @@ class Show < ApplicationRecord
   end
 
   def rating
-    ratings.average(:value).to_f
+    average_rating = ratings.average(:value)
+    return 'N/A' if average_rating.nil? || average_rating.zero?
+
+    '%.2f' % average_rating
+  end
+
+  def views_count
+    0
   end
 
   def self.search(by_title)

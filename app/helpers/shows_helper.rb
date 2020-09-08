@@ -79,14 +79,16 @@ module ShowsHelper
   end
 
   def broken_tag
-    content = content_tag(:span) do
-      content_tag(:i, class: 'material-icons', style: 'font-size: 12px;') do
-        'close'
-      end + content_tag(:span) do
-        " #{t('anime.episodes.broken')}"
-      end
-    end
-    badge(type: 'danger', content: content)
+    content_tag(:span)
+  
+    #content = content_tag(:span) do
+    #  content_tag(:i, class: 'material-icons', style: 'font-size: 12px;') do
+    #    'close'
+    #  end + content_tag(:span) do
+    #    " #{t('anime.episodes.broken')}"
+    #  end
+    #end
+    #badge(type: 'danger', content: content)
   end
 
   def restricted_tag
@@ -148,7 +150,7 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(img_url, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]}") +
+      image_for(img_url, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}") +
       sanitize(show_thumb_description(show)))
     end
   end
@@ -161,21 +163,29 @@ module ShowsHelper
     end
   end
 
-  def seasons_tabs(show)
+  def seasons_tabs(show, new_season: false)
     show_seasons = show.seasons.to_a.reject { |season| season.episodes.empty? }
     return '' if show_seasons.empty?
 
-    seasons_tag = show_seasons.map do |season|
+    seasons_tabs = show_seasons.map do |season|
       content_tag :li, class: ('is-active' if season.number == 1) do
         content_tag :a, href: "#season-#{season.number}", data: {season: season.number.to_s} do
           season.name.presence || "Season #{season.number}"
         end
       end
-    end.join('')
+    end
+
+    if new_season
+      seasons_tabs << content_tag(:li) do
+        content_tag :a, href: '#new-season', data: {season: 'new'} do
+          "Add new season"
+        end
+      end
+    end
 
     content_tag :div, class: 'tabs is-boxed' do
       content_tag :ul do
-        sanitize(seasons_tag, attributes: %w(href data-season class))
+        sanitize(seasons_tabs.join(''), attributes: %w(href data-season class))
       end
     end
   end
