@@ -2,13 +2,16 @@ require 'csv'
 
 module Shows
   class SeedCsv < ApplicationOperation
+    class AlreadyExistsError < StandardError
+    end
+
     attr_reader :errors
     attr_reader :remaining
 
     property! :io, accepts: [File, Tempfile, String]
     #property! :banners_root, accepts: String
     property :range, accepts: Range
-    property :locales, accepts: Array, default: -> { [:en, :jp, :fr] }
+    property :locales, accepts: Array, default: -> { [:en, :jp] }
 
     before do
       @failed_shows = []
@@ -71,14 +74,14 @@ module Shows
       else
         failed_shows << show
       end
-    rescue => e
+    rescue AlreadyExistsError => e
       remaining << { raw: entry, parsed: entry }
       Rails.logger.error("Error while creating show with params #{entry.to_h}: `#{e}`")
     end
 
     def create_show!(title_params, entry, banner_io)
       # Japanese title is guarenteed to be unique# Japanese title is guarenteed to be unique
-      raise "#{title_params[:en]} already exists" if Title.where(jp: title_params[:jp]).present?
+      raise AlreadyExistsError.new("#{title_params[:en]} already exists") if Title.where(en: title_params[:en]).present?
 
       create_show_instance!(title_params, entry, banner_io)
     end

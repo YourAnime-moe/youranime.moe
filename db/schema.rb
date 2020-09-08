@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_08_011048) do
+ActiveRecord::Schema.define(version: 2020_09_08_143239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2020_09_08_011048) do
 
   create_table "descriptions", force: :cascade do |t|
     t.string "used_by_model"
-    t.string "model_id"
+    t.bigint "model_id"
     t.string "en"
     t.string "fr"
     t.string "jp"
@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(version: 2020_09_08_011048) do
 
   create_table "titles", force: :cascade do |t|
     t.string "used_by_model"
-    t.string "model_id"
+    t.bigint "model_id"
     t.string "en"
     t.string "fr"
     t.string "jp"

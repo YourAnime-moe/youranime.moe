@@ -1,7 +1,7 @@
 module Admin
   class ShowsController < ApplicationController
     def index
-      @shows = Show.order('updated_at asc')
+      @shows = Show.includes(:title_record).order('updated_at asc')
       set_title(before: 'Shows')
     end
 

@@ -7,7 +7,7 @@ class ShowsController < AuthenticatedController
     if params[:query].present?
       @shows = Show.search(params[:query])
     else
-      @shows = Title.order(I18n.locale).map(&:record).select{|show| show.published?}
+      @shows = Show.published.includes(:title_record).order("titles.#{I18n.locale}")
     end
     @shows_count = @shows.count
     @additional_main_class = 'no-margin no-padding' if @shows.blank?
