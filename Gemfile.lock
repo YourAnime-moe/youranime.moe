@@ -377,6 +377,8 @@ GEM
     websocket-extensions (0.1.5)
     webvtt (0.0.2)
     will_paginate (3.1.8)
+    will_paginate-bulma (1.0.0)
+      will_paginate (>= 3.0.3)
     zeitwerk (2.4.0)
 
 PLATFORMS
@@ -435,6 +437,7 @@ DEPENDENCIES
   webpacker
   webvtt
   will_paginate
+  will_paginate-bulma
 
 RUBY VERSION
    ruby 2.6.3p62

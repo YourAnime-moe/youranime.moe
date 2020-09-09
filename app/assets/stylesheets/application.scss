@@ -58,6 +58,11 @@
   display: flex !important;
 }
 
+.justify-content-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 .w-100 {
   width: 100% !important;
 }

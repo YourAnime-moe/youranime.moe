@@ -1,11 +1,13 @@
-<h1 class="title">Show List</h1>
-<div class="section">
-  <%= form_with(url: process_csv_admin_shows_path, multipart: true) do %>
-    <%= file_field_tag 'shows_data' %>
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><%= link_to('Home', admin_path) %></li>
+    <li class="is-active"><a href="../">Shows</a></li>
+  </ul>
+</nav>
 
-    <%= submit_tag 'Submit CSV file', class: 'button is-small is-light' %>
-  <% end %>
-</div>
+<h1 class="title">Show List</h1>
+
+<%= will_paginate @shows, renderer: BulmaPagination::Rails %>
 
 <div class="columns is-multiline">
   <% @shows.each do |show| %>
@@ -16,3 +18,5 @@
     </div>
   <% end %>
 </div>
+
+<%= will_paginate @shows, renderer: BulmaPagination::Rails %>

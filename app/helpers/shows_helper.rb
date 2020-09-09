@@ -17,11 +17,12 @@ module ShowsHelper
     end
   end
 
-  def sub_dub_holder(show)
+  def sub_dub_rating_holder(show)
     return content_tag(:div) unless show.class == Show
 
-    content_tag :div, class: 'sub-dub-holder' do
-      show_sub_dub(show)
+    content_tag :div, class: 'sub-dub-holder justify-content-between' do
+      show_sub_dub(show) +
+      show_rating(show)
     end
   end
 
@@ -56,6 +57,12 @@ module ShowsHelper
     content_tag :div, class: 'captions-holder' do
       badge(type: 'info', content: 'captions')
     end
+  end
+
+  def show_rating(show)
+    return '' unless show.kind_of?(Show) && !show.ratings.empty?
+
+    badge(type: 'info', content: show.rating)
   end
 
   def show_sub_dub(show)
@@ -158,7 +165,7 @@ module ShowsHelper
   def top_badges(show)
     content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
       sanitize(check_episode_available(show)) +
-        sub_dub_holder(show) +
+        sub_dub_rating_holder(show) +
         check_episode_cc(show)
     end
   end

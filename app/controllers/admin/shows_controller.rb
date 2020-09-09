@@ -1,7 +1,7 @@
 module Admin
   class ShowsController < ApplicationController
     def index
-      @shows = Show.includes(:title_record).order('updated_at asc')
+      @shows = Show.includes(:title_record).order('updated_at asc').paginate(page: params[:page])
       set_title(before: 'Shows')
     end
 
@@ -17,7 +17,7 @@ module Admin
     def process_csv
       Import::ShowsCsv.perform(
         by_author: current_user,
-        file: params[:shows_data],
+        file: params[:shows_data].tempfile,
       )
 
       redirect_to admin_shows_path

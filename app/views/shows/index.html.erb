@@ -13,6 +13,8 @@
       <small><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
     <div class="container">
+      <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
+
       <% @shows_parts.each do |shows| %>
         <div class="columns">
           <% shows.each_with_index do |show| %>
@@ -24,6 +26,8 @@
           <% end %>
         </div>
       <% end %>
+
+      <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
     </div>
   </div>
 <% end %>

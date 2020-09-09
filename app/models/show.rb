@@ -7,7 +7,7 @@ class Show < ApplicationRecord
   include TanoshimuUtils::Concerns::HasTranslatableField
   include TanoshimuUtils::Validators::PresenceOneOf
 
-  self.per_page = 24
+  self.per_page = 48
 
   ANIME = 'anime'
   MOVIE = 'movie'

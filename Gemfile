@@ -60,6 +60,7 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
+gem 'will_paginate-bulma'
 
 # Image processing
 gem 'image_processing', '~> 1.2'
