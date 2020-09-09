@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :ratings
   has_many :shows, through: :ratings
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
+  has_many :uploads, inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
   has_secure_password

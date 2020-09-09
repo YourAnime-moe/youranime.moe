@@ -8,17 +8,12 @@ module Shows
     attr_reader :errors
     attr_reader :remaining
 
-    property! :io, accepts: [File, Tempfile, String]
-    #property! :banners_root, accepts: String
-    property :range, accepts: Range
+    property! :data, accepts: Array
     property :locales, accepts: Array, default: -> { [:en, :jp] }
 
     before do
+      Rails.logger.info("[Shows::SeedCsv] Processing #{data.size}")
       @failed_shows = []
-      treat_io
-
-      # Check if the directory exists
-      #Dir.entries(banners_root)
     end
 
     halted do
@@ -42,30 +37,14 @@ module Shows
     attr_reader :data
     attr_reader :failed_shows
 
-    def treat_io
-      return @data if @data
-
-      raw_data = io.kind_of?(String) ? io : io.read
-      csv = CSV.new(raw_data,
-        headers: true,
-        header_converters: :symbol,
-        converters: :all
-      )
-
-      data_as_list = csv.to_a
-      data_as_list = data_as_list[range] if range
-
-      @data = data_as_list.map { |row| row.to_hash }
-    end
-
     def shows_data
-      @shows_data ||= range ? data[range] : data
+      data
     end
 
     def create_show(entry)
       @remaining ||= []
 
-      banner_io = Down.download(entry[:image_url])
+      banner_io = try_fetching_image_tempfile(entry)
       title_params = title_params(entry)
 
       show = create_show!(title_params, entry, banner_io)
@@ -91,8 +70,15 @@ module Shows
       show.title = Title.new(title_params)
       show.description = Description.new(en: "Description for #{show.title}") # description(entry)
       show.save!
-      show.banner.attach(io: banner_io, filename: "uploaded-for-show-#{show.id}") if show.persisted?
+      show.banner.attach(io: banner_io, filename: "uploaded-for-show-#{show.id}") if show.persisted? && banner_io
       show
+    end
+
+    def try_fetching_image_tempfile(entry)
+      Down.download(entry[:image_url])
+    rescue => e
+      Rails.logger.error(e)
+      nil
     end
 
     def title_params(entry)

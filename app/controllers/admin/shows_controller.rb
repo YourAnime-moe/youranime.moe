@@ -15,10 +15,10 @@ module Admin
     end
 
     def process_csv
-      upload = Upload.create(upload_type: 'show-csv', user: current_user)
-      upload.attachment.attach(params[:shows_data])
-
-      ImportShowsCsvJob.perform_later(upload)
+      Import::ShowsCsv.perform(
+        by_author: current_user,
+        file: params[:shows_data],
+      )
 
       redirect_to admin_shows_path
     end

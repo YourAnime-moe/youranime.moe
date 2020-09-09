@@ -6,11 +6,11 @@ class UsersController < AuthenticatedController
   # Home page
   def home
     set_title(before: t('user.welcome', user: current_user.name))
-    episodes = Episode.published
+    episodes = Episode.published.includes(season: :show)
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
-    @recent_shows = Show.published.order('created_at desc').where(id: ids).limit(8)
-    @trending = Show.trending.limit(8)
+    @recent_shows = Show.published.includes(:title_record).order('created_at desc').where(id: ids).limit(8)
+    @trending = Show.trending.includes(:title_record).limit(8)
     @episodes = force_array_to(6, episodes)
     @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
   end

@@ -1,21 +1,42 @@
 class ImportShowsCsvJob < ApplicationJob
   queue_as :default
 
-  def perform(upload, range: nil)
+  def perform(upload, batches: 1000, range: nil)
+    raise "Missing user" unless upload.user.present?
+
+    Rails.logger.info("Upload #{upload.uuid} of type '#{upload.upload_type}' by #{upload.user.name}")
     upload.attachment.download do |file|
       upload.update(upload_status: :processing)
 
-      operation = Shows::SeedCsv.new(
-        io: file,
-        range: range,
-      )
+      entire_shows_data = shows_data_for(file)
+      batches = entire_shows_data.in_groups_of(batches, false)
+      Rails.logger.info("Running #{batches.size} batch(es)")
 
-      operation.perform
-      upload.update(upload_status: operation.failed_shows.any? ? :failed_shows : :success)
+      batches.each do |data|
+        BatchOperationJob.perform_later(
+          'Shows::SeedCsv',
+          data: data,
+          range: range,
+        )
+      end
     end
 
-    upload.update(upload_status: :success)
+    upload.update(upload_status: :waiting)
   rescue => e
     upload.update(upload_status: :failed_exception)
+  ensure
+    Rails.logger.info("Upload #{upload.uuid} complete with status '#{upload.upload_status}'")
+  end
+
+  private
+
+  def shows_data_for(file)
+    file.rewind if file.kind_of?(Tempfile) # ensure a tempfile is always readable
+
+    csv = CSV.new(file.read,
+      headers: true,
+      header_converters: :symbol,
+      converters: :all,
+    )
   end
 end
