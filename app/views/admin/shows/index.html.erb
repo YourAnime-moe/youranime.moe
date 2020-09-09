@@ -5,7 +5,10 @@
   </ul>
 </nav>
 
-<h1 class="title">Show List</h1>
+<div style="display: flex; justify-content: space-between;" class="justify-content-between">
+  <h1 class="title">Show List</h1>
+  <a href="sync" class="button is-warning is-light">Sync airing shows</a>
+</div>
 
 <%= will_paginate @shows, renderer: BulmaPagination::Rails %>
 

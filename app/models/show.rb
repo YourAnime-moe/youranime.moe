@@ -23,6 +23,7 @@ class Show < ApplicationRecord
   has_many :ratings
   has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
   has_many :episodes, through: :seasons
+  has_many :published_episodes, through: :seasons
   has_many :shows_queue_relations
   has_many :queues, through: :shows_queue_relations
 
@@ -44,6 +45,22 @@ class Show < ApplicationRecord
 
   def published?
     self[:published] || published_on? && published_on <= Time.now.utc
+  end
+
+  def publish
+    update(published: true)
+  end
+
+  def unpublish
+    update(published: false)
+  end
+
+  def publish_episodes
+    episodes.update_all(published: true)
+  end
+
+  def unpublish_episodes
+    episodes.update_all(published: false)
   end
 
   def only_subbed?
@@ -77,6 +94,16 @@ class Show < ApplicationRecord
 
   def views_count
     0
+  end
+
+  def slug
+    return unless title.present?
+
+    title_record.roman
+  end
+
+  def to_param
+    slug
   end
 
   def self.search(by_title)

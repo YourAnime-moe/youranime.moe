@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
 
   # Shows
-  resources :shows, only: %i[index show] do
+  resources :shows, only: %i[index show], param: :slug do
     get :history, on: :collection
     get :movies, on: :collection
 

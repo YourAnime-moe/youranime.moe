@@ -39,6 +39,7 @@ gem 'jbuilder'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'coffee-rails'
+gem 'rest-client'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'

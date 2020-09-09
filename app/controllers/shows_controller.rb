@@ -4,11 +4,11 @@ class ShowsController < AuthenticatedController
 
   def index
     set_title(before: t('anime.shows.view-all'))
-    if params[:query].present?
-      @shows = Show.search(params[:query])
+    @shows = if params[:query].present?
+      Show.search(params[:query])
     else
-      @shows = Show.published
-        .includes(:title_record)
+      Show.published
+        .includes(:title_record, :ratings)
         .order("titles.#{I18n.locale}")
         .paginate(page: params[:page])
     end
@@ -18,19 +18,28 @@ class ShowsController < AuthenticatedController
   end
 
   def show
-    @show = Show.find_by(id: params[:id].to_i)
-    if @show.nil? || !@show.published?
-      flash[:warning] = "This show is not available yet. Please try again later."
-      redirect_to shows_path
-    else
-      set_title(:before => @show.title)
-      @episodes = @show.seasons.includes(:episodes).map do |season| 
-        {
-          season: season.number,
-          episodes: season.episodes.each_slice(3).to_a
-        }
+    title_record = Title.find_by(roman: params[:slug])
+    if title_record.present? && title_record.record.present?
+      @show = title_record.record
+
+      if @show.published?
+        set_title(:before => @show.title)
+        @episodes = @show.seasons.includes(:episodes).map do |season| 
+          {
+            season: season.number,
+            episodes: season.episodes.each_slice(3).to_a
+          }
+        end
+        @additional_main_class = 'no-margin no-padding'
+      else
+        flash[:warning] = "This show is not available yet. Check back later!"
+        redirect_to shows_parts
       end
-      @additional_main_class = 'no-margin no-padding'
+    elsif (show = Show.find_by(id: params[:slug]))
+      redirect_to(show_path(show.title_record.roman))
+    else
+      flash[:warning] = "This show does not exist. Please try again later."
+      redirect_to shows_path
     end
   end
 

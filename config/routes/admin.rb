@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
     resources :shows do
       post :process_csv, on: :collection
+      get :sync, on: :collection
 
       resources :episodes, except: [:new] do
         post :subtitles, to: 'episodes#create_subs'
