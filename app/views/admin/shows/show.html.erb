@@ -6,23 +6,130 @@
   </ul>
 </nav>
 
-<h1 class="title"><%= @show.title %></h1>
-<div class="columns">
-  <div class="column is-3">
-
+<div style="display: flex; justify-content: space-between;">
+  <h1 class="title"><%= @show.title %></h1>
+  <div>
+    <% if @show.synchable? %>
+      <%= link_to('Sync all episodes', admin_show_sync_episodes_path(@show.id), class: 'button is-warning is-light', data: {method: :post}) %>
+    <% end %>
+    <% if @show.published? %>
+      <%= link_to('Unpublish', admin_show_unpublish_path(@show.id), class: 'button is-danger', data: {method: :post}) %>
+    <% else %>
+      <%= link_to('Publish', admin_show_publish_path(@show.id), class: 'button is-success is-light', data: {method: :post}) %>
+    <% end %>
   </div>
-  <div class="column is-9">
-    <%= seasons_tabs(@show, new_season: true) %>
+</div>
+<div class="columns">
+  <div class="column is-4">
+    <div class="hf-section">
+      <h2 class="subtitle">Thumbnail preview</h2>
+      <%= show_thumb(@show) %>
+      <div style="margin-top: 10px">
+        <% if @show.published? %>
+          <%= link_to('View as a user', show_path(@show), class: 'button is-fullwidth', target: :_blank) %>
+        <% else %>
+          <%= link_to('Preview', show_path(@show, as_admin: true), class: 'button is-fullwidth', target: :_blank) %>
+        <% end %>
+      </div>
+    </div>
+    <div class="hf-section">
+      <h2 class="subtitle">General info</h2>
+      <div class="tile box">
+        <div class="content">
+          <p>Site ID: <code><%= @show.slug %></code></p>
+          <p>Internal ID: <code><%= @show.id %></code></p>
+          <p>Status: <%= boolean_tag(@show.published?, true_text: 'Published', false_text: 'Unpublished', light: true) %></p>
+          <p>Created: <%= @show.created_at.strftime('%b %d, %Y @ %H:%M:%S') %></p>
+
+          <% if @show.synched? %>
+            <hr>
+            <p>Sync ref ID <code><%= @show.reference_id %></code>
+            <p>Last sync: <%= @show.synched_at.strftime('%b %d, %Y @ %H:%M:%S') %></p>
+            <p>Sync source: <code><%= @show.reference_source.presence || 'N/A' %></code></p>
+            <p>Sync request by <b><%= @show.synched_by_user.name %></b></p>
+          <% end %>
+
+          <hr>
+          <p>Seasons count: <code><%= @show.seasons.count %></code></p>
+          <p>Episodes count: <code><%= @show.episodes.count %></code></p>
+
+          <hr>
+          <p>Avg. Rating: <code><%= @show.rating %></code></p>
+          <p>Ratings count: <code><%= @show.ratings.count %></code></p>
+          <p>Queues count: <code><%= @show.queues.count %></code></p>
+          <p>Tags: <%= show_tags(@show).presence || 'N/A' %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-8">
+    <div class="hf-section">
+      <% unless @show.synchable? %>
+        <div class="notification is-warning is-light">
+          <small>
+            This show may be "out of sync" and we can't sync episodes with Kitsu. Please go to <%= link_to('Shows', admin_shows_path) %>
+            and sync all shows using the "Sync airing shows". This may take some time to complete.
+          </small>
+        </div>
+      <% end %>
+      <h2 class="subtitle">Edit show information</h2>
+      <div class="tile is-child box">
+        <%= form_with(model: @show) do |f| %>
+          <div class="columns">
+            <div class="column field">
+              <%= f.label :title, 'English title', class: 'label' %>
+              <%= text_field_tag('title[en]', @show.title_record.en, class: 'input is-fullwidth') %>
+            </div>
+            <div class="column field">
+              <%= f.label :title, 'Japanese title', class: 'label' %>
+              <%= text_field_tag('title[jp]', @show.title_record.jp, class: 'input is-fullwidth') %>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column field">
+              <%= f.label :description, 'English description', class: 'label' %>
+              <%= text_area_tag('description[en]', @show.description_record.en, class: 'textarea is-fullwidth', rows: 4) %>
+            </div>
+            <div class="column field">
+              <%= f.label :description, 'Japanese description', class: 'label' %>
+              <%= text_area_tag('description[jp]', @show.description_record.jp, class: 'textarea is-fullwidth', rows: 4, placeholder: 'Notice: English description is used by default.') %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <h2 class="subtitle">Seasons and episodes</h2>
+    <%= seasons_tabs(@show, admin: true) %>
     <div class="row no-margin">
       <div class="container-fluid">
         <% @show.seasons.each do |season| %>
-          <div class="columns is-multiline hide" season="<%= season.number %>">
-            <% season.episodes.each_with_index do |episode| %>
-              <% @model = episode %>
-              <div class="column is-3">
-                <%= show_thumb(episode) %>
+          <div class="is-hidden" season="<%= season.number %>">
+            <div class="hf-section is-hidden">
+              <div class="tile is-child box">
+                <%= link_to('Publish all episodes', '/', class: 'button is-small is-success is-light', data: {method: :post}) %>
+                <%= link_to('Unpublish all episodes', '/', class: 'button is-small is-danger is-light', data: {method: :post}) %>
+                <% #form_with(model: [:admin, season]) do |f| %>
+                  <div class="columns">
+                    <div class="column field">
+                      <% #f.label :name, 'Season name', class: 'label' %>
+                      <% #f.text_field(:name, class: 'input is-fullwidth', placeholder: "Default: #{season.default_name}") %>
+                    </div>
+                    <div class="column field">
+                      <% #f.label :number, 'Season number', class: 'label' %>
+                      <% #f.text_field(:number, class: 'input is-fullwidth') %>
+                    </div>
+                  </div>
+                <% #end %>
               </div>
-            <% end %>
+            </div>
+            <div class="columns is-multiline">
+              <% season.episodes.each_with_index do |episode| %>
+                <% @model = episode %>
+                <div class="column is-4">
+                  <%= show_thumb(episode) %>
+                </div>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>
@@ -65,4 +172,19 @@
       newSeasonModal.classList.remove('is-active');
     };
   }
+
+  $(document).ready(() => {
+    $('div[season="1"]').removeClass('is-hidden');
+    $('a[data-season]').on('click', (e) => {
+      e.preventDefault();
+      const $target = $(e.target);
+      const season = $target.attr('data-season');
+
+      $('div[season]').addClass('is-hidden');
+      $('li').removeClass('is-active');
+
+      $target.parent().addClass('is-active');
+      $('div[season="' + season + '"]').removeClass('is-hidden');
+    });
+  });
 </script>

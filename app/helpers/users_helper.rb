@@ -53,7 +53,7 @@ module UsersHelper
   private
 
   def fetch_image(model)
-    return model.thumbnail_url! if model.is_a?(Episode)
+    return model.thumbnail_url if model.is_a?(Episode)
 
     #model.banner.attached? ? model.banner : model.banner_url
     model.banner_url

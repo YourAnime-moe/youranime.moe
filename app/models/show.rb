@@ -43,16 +43,16 @@ class Show < ApplicationRecord
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
   validates_inclusion_of :show_type, in: SHOW_TYPES
 
-  def published?
-    self[:published] || published_on? && published_on <= Time.now.utc
-  end
+  scope :optimized, -> { includes(:ratings, :tags, :title_record, seasons: :episodes) }
+  scope :published_with_title, -> { with_title.published }
+  scope :with_title, -> { joins(:title_record).optimized }
 
   def publish
-    update(published: true)
+    update!(published: true)
   end
 
   def unpublish
-    update(published: false)
+    update!(published: false)
   end
 
   def publish_episodes
@@ -73,6 +73,20 @@ class Show < ApplicationRecord
 
   def subbed_and_dubbed?
     subbed? && dubbed?
+  end
+
+  def synchable?
+    reference_id.present?
+  end
+
+  def synched?
+    synchable? && synched_at?
+  end
+
+  def synched_by_user
+    return unless synched?
+
+    Staff.find_by(id: synched_by)
   end
 
   def weighted_rating(minimum_score_count=25)
@@ -107,7 +121,25 @@ class Show < ApplicationRecord
   end
 
   def self.search(by_title)
-    Title.search(by_title).map(&:record)
+    by_title = "%#{by_title}%"
+
+    Show.published_with_title.where('lower(titles.en) LIKE ?', by_title)
+      .or(Show.published_with_title.where('lower(titles.jp) LIKE ?', by_title))
+  end
+
+  def self.search_all(by_title)
+    by_title = "%#{by_title}%"
+
+    Show.with_title.where('lower(titles.en) LIKE ?', by_title)
+      .or(Show.with_title.where('lower(titles.jp) LIKE ?', by_title))
+  end
+
+  def self.find_by_slug(slug)
+    Show
+      .optimized
+      .joins(:title_record)
+      .where('titles.roman' => slug)
+      .first
   end
 
   private

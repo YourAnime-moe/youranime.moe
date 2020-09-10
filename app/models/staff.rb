@@ -28,7 +28,8 @@ class Staff < ApplicationRecord
       name: name,
       active: true,
       limited: false,
-      password: password
+      password: password,
+      email: email,
     )
 
     update!(user_id: new_user.id)

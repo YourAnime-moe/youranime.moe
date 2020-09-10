@@ -1,13 +1,18 @@
 <nav class="breadcrumb" aria-label="breadcrumbs">
   <ul>
     <li><%= link_to('Home', admin_path) %></li>
-    <li class="is-active"><a href="../">Shows</a></li>
+    <li class="is-active"><a href="../">Shows (<%= @shows_count %>)</a></li>
   </ul>
 </nav>
 
 <div style="display: flex; justify-content: space-between;" class="justify-content-between">
   <h1 class="title">Show List</h1>
-  <a href="sync" class="button is-warning is-light">Sync airing shows</a>
+  <%= form_tag(admin_shows_path, method: :get) do %>
+    <div class="control">
+      <input type="text" name="query" placeholder="Search by title, id, slug..." value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
+    </div>
+  <% end %>
+  <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
 </div>
 
 <%= will_paginate @shows, renderer: BulmaPagination::Rails %>

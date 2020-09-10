@@ -10,8 +10,8 @@ class ShowsController < AuthenticatedController
       Show.published
         .includes(:title_record, :ratings)
         .order("titles.#{I18n.locale}")
-        .paginate(page: params[:page])
-    end
+    end.paginate(page: params[:page])
+
     @shows_count = @shows.count
     @additional_main_class = 'no-margin no-padding' if @shows.blank?
     @shows_parts = @shows.each_slice(3).to_a
@@ -22,18 +22,18 @@ class ShowsController < AuthenticatedController
     if title_record.present? && title_record.record.present?
       @show = title_record.record
 
-      if @show.published?
+      if @show.published? || (params[:as_admin] == 'true' && current_user.staff_user.present?)
         set_title(:before => @show.title)
         @episodes = @show.seasons.includes(:episodes).map do |season| 
           {
             season: season.number,
-            episodes: season.episodes.each_slice(3).to_a
+            episodes: season.published_episodes.each_slice(3).to_a
           }
         end
         @additional_main_class = 'no-margin no-padding'
       else
         flash[:warning] = "This show is not available yet. Check back later!"
-        redirect_to shows_parts
+        redirect_to shows_path
       end
     elsif (show = Show.find_by(id: params[:slug]))
       redirect_to(show_path(show.title_record.roman))

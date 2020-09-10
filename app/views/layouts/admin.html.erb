@@ -21,6 +21,10 @@
 
   <body>
     <%= render 'admin/navigation_bar' %>
+    <% flash.each do |key, value| %>
+      <div class="alert has-background-<%= key %>"><%= value %></div>
+    <% end %>
+
     <section class="section">
       <div class="container">
         <%= yield %>

@@ -4,7 +4,7 @@ require 'mini_magick'
 def seed
   seed_users
   seed_show_tags
-  seed_shows
+  #seed_shows
 end
 
 def seed_users
@@ -13,8 +13,25 @@ def seed_users
       username: 'admin',
       name: 'Admin User',
       limited: false,
-      password: 'password'
+      password: 'password',
+      email: 'admin@youranime.moe',
     ).to_user!
+
+    User.create(
+      username: 'futsuu',
+      name: 'Yamada Normy',
+      limited: false,
+      password: 'normal',
+      email: 'normal@youranime.moe',
+    )
+
+    User.create(
+      username: 'limited',
+      name: 'Limited User',
+      limited: true,
+      password: 'limited',
+      email: 'limited@youranime.moe',
+    )
   else
     User.create(
       username: 'demo',

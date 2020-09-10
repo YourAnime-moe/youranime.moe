@@ -54,7 +54,7 @@ module ApplicationHelper
   end
 
   def episode_path(episode, *_args, **options)
-    path = "/shows/#{episode.show.id}/episodes/#{episode.id}"
+    path = "/shows/#{episode.show.slug}/episodes/#{episode.number}"
     path << '.' << options[:format].to_s if options[:format]
     path
   end

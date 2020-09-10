@@ -41,11 +41,10 @@
             <% episode_info[:episodes].each do |episodes| %>
               <div class="columns hide" season="<%= episode_info[:season] %>">
                 <% episodes.each_with_index do |episode| %>
-                  <% @_rule = {class: nil} %>
-                  <% @_thumb_info = {} %>
-                  <% @model = episode %>
                   <div class="column is-4" style="margin-top: 20px;">
-                    <%= render 'shows/partial/_thumbs' %>
+                    <%= link_to(episode) do %>
+                      <%= show_thumb(episode) %>
+                    <% end %>
                   </div>
                 <% end %>
               </div>

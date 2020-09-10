@@ -157,7 +157,7 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(img_url, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}") +
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}") +
       sanitize(show_thumb_description(show)))
     end
   end
@@ -170,19 +170,21 @@ module ShowsHelper
     end
   end
 
-  def seasons_tabs(show, new_season: false)
-    show_seasons = show.seasons.to_a.reject { |season| season.episodes.empty? }
-    return '' if show_seasons.empty?
+  def seasons_tabs(show, admin: false)
+    show_seasons = show.seasons.to_a.reject do |season|
+      (check_admin?(admin) ? season.episodes : season.published_episodes).empty?
+    end
+    return '' if show_seasons.empty? && !check_admin?(admin)
 
     seasons_tabs = show_seasons.map do |season|
       content_tag :li, class: ('is-active' if season.number == 1) do
         content_tag :a, href: "#season-#{season.number}", data: {season: season.number.to_s} do
-          season.name.presence || "Season #{season.number}"
+          season.name.presence || season.default_name
         end
       end
     end
 
-    if new_season
+    if admin
       seasons_tabs << content_tag(:li) do
         content_tag :a, href: '#new-season', data: {season: 'new'} do
           "Add new season"
@@ -206,5 +208,9 @@ module ShowsHelper
   def resource_url_for(model)
     return unless valid_thumbable_class?(model)
     return model if [Show, Episode].include?(model.class)
+  end
+
+  def check_admin?(admin)
+    admin && current_user.staff_user.present?
   end
 end

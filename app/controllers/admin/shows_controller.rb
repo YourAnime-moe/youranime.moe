@@ -1,17 +1,54 @@
 module Admin
   class ShowsController < ApplicationController
     def index
-      @shows = Show.includes(:title_record).order('updated_at asc').paginate(page: params[:page])
-      set_title(before: 'Shows')
+      if show_from_query.present?
+        redirect_to(admin_show_path(show_from_query))
+      else
+        @shows = if params[:query].present?
+          Show.search_all(params[:query])
+        else
+          Show.optimized.order("titles.#{I18n.locale}")
+        end
+        @shows_count = @shows.count
+        @shows = @shows.paginate(page: params[:page])
+        set_title(before: 'Shows')
+      end
     end
 
     def show
-      shows = Show.includes(:ratings, :tags, :title_record, seasons: :episodes)
-      if (@show = shows.find_by(id: params[:id]))
+      if (@show = Show.find_by_slug(params[:show_id] || params[:id]))
         render('show')
       else
         redirect_to(admin_shows_path, notice: 'This show does not exist!')
       end
+    end
+
+    def sync
+      Sync::ShowsFromKitsuJob.perform_later(by_user: current_user.staff_user)
+
+      flash[:warning] = 'Sit tight, grab a coffee: sync is in progress.'
+      redirect_to(admin_shows_path)
+    end
+
+    def sync_episodes
+      show = Show.find(params[:show_id])
+      Sync::EpisodesFromKitsuJob.perform_now(show, by_user: current_user.staff_user)
+
+      redirect_to(admin_show_path(show))
+    end
+
+    def publish
+      show = Show.find(params[:show_id])
+      show.publish
+
+      redirect_to(admin_show_path(show))
+    end
+
+    def unpublish
+      show = Show.find(params[:show_id])
+      show.unpublish
+
+      redirect_to(admin_show_path(show))
     end
 
     def process_csv
@@ -21,6 +58,15 @@ module Admin
       )
 
       redirect_to admin_shows_path
+    end
+
+    private
+
+    def show_from_query
+      return @show_from_query if @show_from_query
+      return unless params[:query].present?
+
+      @show_from_query = Show.find_by(id: params[:query]) || Show.find_by_slug(params[:query])
     end
   end
 end

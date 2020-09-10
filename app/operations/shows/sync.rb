@@ -1,6 +1,8 @@
 module Shows
   class Sync < ApplicationOperation
-    property! :sync_type, accepts: [:airing]
+    property! :sync_type, accepts: [:airing, :episodes]
+    property! :requested_by, accepts: Staff
+    property :show, accepts: Show
 
     REQUEST_URL_BASE = 'https://kitsu.io/api/edge/anime'
 
@@ -17,32 +19,34 @@ module Shows
     }.freeze
 
     def execute
-      @current_page = 1
-      Rails.logger.info("[Shows::Sync] #{request_url}")
-
-      response = RestClient.get(request_url)
-      halt unless response.code < 300 && response.code >= 200
-
-      data = JSON.parse(response.body).deep_symbolize_keys
-      return if data[:data].blank?
-
-      created_shows = []
-      data[:data].each do |show_data|
-        created_shows << create_or_update_show_for(show_data)
-      end
-
-      created_shows
+      return sync_airing if sync_type == :airing
+      return sync_episodes if sync_type == :episodes
     end
 
     private
     attr_accessor :current_page
+
+    def sync_airing
+      @current_page = 0
+      Rails.logger.info("[Shows::Sync] #{request_airing_url}")
+
+      create_shows_then_next_page
+    end
+
+    def sync_episodes
+      raise '`show` params is mandatory with sync_type: :episodes' unless show.present?
+      return if show.reference_id.blank?
+
+      Rails.logger.info("[Shows::Sync] #{request_episodes_url(show)}")
+      override_episodes_for(show)
+    end
 
     def create_shows_then_next_page
       there_is_data = true
       created_shows = []
 
       while there_is_data
-        response = RestClient.get(request_url)
+        response = RestClient.get(request_airing_url)
         return unless response.code < 300 && response.code >= 200
 
         data = JSON.parse(response.body).deep_symbolize_keys
@@ -54,8 +58,10 @@ module Shows
           created_shows << create_or_update_show_for(show_data)
         end
 
-        current_page += 1
+        @current_page += 1
       end
+
+      created_shows
     end
 
     def create_or_update_show_for(data)
@@ -77,21 +83,23 @@ module Shows
       end
 
       if synched_show.persisted?
-        synched_show.description_record.update(en: description_content)
+        if synched_show.description_record.present?
+          synched_show.description_record.update(en: description_content)
+        else
+          synched_show.description = Description.new(
+            en: 'No description exists for this show yet.',
+            fr: 'Aucune description n\'existe pour ce show pour le moment',
+            jp: 'このショーには概要やあらすじがまだありません。',
+          )
+        end
       end
+
+      synched_show.synched_at = Time.now.utc
+      synched_show.synched_by = requested_by.id
+      synched_show.reference_source = :kitsu
+      synched_show.reference_id = data[:id]
 
       synched_show.save!
-
-      synched_show.seasons.destroy_all
-      fetched_attrs[:episodeCount].to_i.times do |index|
-        season = synched_show.seasons.first_or_create!
-        season.episodes.first_or_create!(
-          number: (index + 1),
-          title: "Episode #{index + 1}",
-          duration: fetched_attrs[:episodeLength],
-          published: false,
-        )
-      end
 
       banner_file = Down.download(fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original))
       synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}")
@@ -101,7 +109,33 @@ module Shows
       synched_show
     end
 
-    def request_url
+    def override_episodes_for(show)
+      response = RestClient.get(request_episodes_url(show))
+      return unless response.code < 300 && response.code >= 200
+
+      data = JSON.parse(response.body).deep_symbolize_keys
+      return if data[:data].blank?
+
+      show.generate_banner_url!(force: true)
+
+      # Delete and replace all episods from the first season.
+      season = show.seasons.first_or_create!
+
+      season.episodes.destroy_all
+      data[:data].size.times do |index|
+        season.episodes.create!(
+          number: (index + 1),
+          title: "Episode #{index + 1}",
+          #duration: fetched_attrs[:episodeLength],
+          published: true,
+          thumbnail_url: show.banner_url,
+        )
+      end
+
+      show.update(synched_at: Time.now.utc, synched_by: requested_by.id)
+    end
+
+    def request_airing_url
       filters = { season: current_season[:season], seasonYear: current_season[:year] }
       page_info = { limit: 20, offset: current_page * 20 }
 
@@ -109,6 +143,10 @@ module Shows
       page_info_as_params = as_params(page_info, :page)
 
       "#{REQUEST_URL_BASE}?#{filters_as_params}&#{page_info_as_params}"
+    end
+
+    def request_episodes_url(show)
+      "#{REQUEST_URL_BASE}/#{show.reference_id}/relationships/episodes"
     end
 
     def current_season
