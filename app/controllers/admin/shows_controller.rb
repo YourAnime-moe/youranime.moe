@@ -24,7 +24,8 @@ module Admin
     end
 
     def sync
-      Sync::ShowsFromKitsuJob.perform_later(by_user: current_user.staff_user)
+      Sync::ShowsFromKitsuJob.perform_later(staff: current_user.staff_user)
+      sleep(1)
 
       flash[:warning] = 'Sit tight, grab a coffee: sync is in progress.'
       redirect_to(admin_shows_path)
@@ -32,7 +33,7 @@ module Admin
 
     def sync_episodes
       show = Show.find(params[:show_id])
-      Sync::EpisodesFromKitsuJob.perform_now(show, by_user: current_user.staff_user)
+      Sync::EpisodesFromKitsuJob.perform_later(show, staff: current_user.staff_user)
 
       redirect_to(admin_show_path(show))
     end

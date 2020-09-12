@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     # Episodes
     resources :episodes, only: %i[show update]
   end
+  get '/my/queue', to: 'queues#main'
 
   # User links
   scope :users do

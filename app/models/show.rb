@@ -2,6 +2,7 @@ require_relative 'active_storage'
 
 class Show < ApplicationRecord
   include ShowScopesConcern
+  include LikeableConcern
   include TanoshimuUtils::Concerns::RespondToTypes
   include TanoshimuUtils::Concerns::ResourceFetch
   include TanoshimuUtils::Concerns::HasTranslatableField
@@ -15,6 +16,7 @@ class Show < ApplicationRecord
   SHOW_TYPES = [ANIME, MOVIE]
 
   before_validation :init_values
+  can_be_liked_as :show
 
   has_and_belongs_to_many :starring, class_name: 'Actor'
   has_many :shows_tag_relations
@@ -43,6 +45,9 @@ class Show < ApplicationRecord
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
   validates_inclusion_of :show_type, in: SHOW_TYPES
 
+  scope :published, -> { includes(:seasons).where(published: true) }
+  scope :recent, -> { published.order(:published_on) }
+  #scope :latest, -> {  }
   scope :optimized, -> { includes(:ratings, :tags, :title_record, seasons: :episodes) }
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }

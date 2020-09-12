@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include LikeableConcern
   include TanoshimuUtils::Concerns::Identifiable
   include TanoshimuUtils::Concerns::RespondToTypes
   include TanoshimuUtils::Validators::UserLike
@@ -14,6 +15,7 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   before_save :ensure_hex
+  can_like_as :user
 
   has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
@@ -65,6 +67,24 @@ class User < ApplicationRecord
 
   def oauth?
     OAUTH_USER_TYPES.include?(user_type)
+  end
+
+  def add_show_to_main_queue(show)
+    return if main_queue.include?(show)
+
+    main_queue << show
+  end
+
+  def remove_show_from_main_queue(show)
+    main_queue - show
+  end
+
+  def has_show_in_main_queue?(show)
+    main_queue.include?(show)
+  end
+
+  def main_queue
+    @main_queue ||= queues.empty? ? queues.create! : queues.first
   end
 
   def self.from_google_omniauth(auth)

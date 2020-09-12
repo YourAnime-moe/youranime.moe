@@ -15,6 +15,19 @@
       </div>
     <% end %>
 
+    <% if @main_queue.any? %>
+      <div class="hf-section">
+        <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
+        <div class="columns is-tiny-gap no-margin shows">
+          <% @main_queue.each do |show| %>
+            <%= link_to(show, class: "column is-3") do %>
+              <%= show_thumb(show) %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
     <% if @trending.any? %>
       <div class="hf-section">
         <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path) %>

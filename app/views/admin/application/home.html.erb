@@ -106,7 +106,7 @@
     <div class="card events-card">
       <header class="card-header">
         <p class="card-header-title">
-          Most watched episodes
+          Latest job events
         </p>
         <a href="#" class="card-header-icon" aria-label="more options">
         <span class="icon">
@@ -118,13 +118,17 @@
         <div class="content">
           <table class="table is-fullwidth is-striped">
             <tbody>
-              <% @top_episodes.each do |episode| %>
+              <% @latest_events.each do |event| %>
               <tr>
                 <td>
-                  <%= episode.title %>
+                  <%= job_event_status_tag(event) %> <code><%= event.job_name %></code>
                   <p class="has-text-grey">
                     <small>
-                    <%= episode.views_count %> views - <%= episode.show.title %>
+                      <% if event.running? %>
+                        Started <%= time_ago_in_words(event.started_at) %> ago
+                      <% else %>
+                        Finished <%= time_ago_in_words(event.ended_at) %> ago
+                      <% end %>
                     </small>
                   </p>
                 </td>
@@ -135,7 +139,7 @@
         </div>
       </div>
       <footer class="card-footer">
-        <a href="#" class="card-footer-item">View All</a>
+        <%= link_to('View all', admin_job_events_path, class: 'card-footer-item') %>
       </footer>
     </div>
   </div>

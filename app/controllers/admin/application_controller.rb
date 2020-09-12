@@ -11,6 +11,7 @@ module Admin
       @currently_watching_count = 0
       @currently_logged_in_count = currently_logged_in.count
       @top_episodes = Episode.includes(season: :show).limit(10)
+      @latest_events = JobEvent.latest.limit(10)
       @top_shows = Show.includes(:title_record, :ratings).limit(10)
     end
 

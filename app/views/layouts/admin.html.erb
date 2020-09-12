@@ -22,7 +22,17 @@
   <body>
     <%= render 'admin/navigation_bar' %>
     <% flash.each do |key, value| %>
-      <div class="alert has-background-<%= key %>"><%= value %></div>
+      <div class="alert notification has-background-<%= key %>"><%= value %></div>
+    <% end %>
+
+    <% if JobEvent.running.any? %>
+      <div class="notification has-background-info">
+        <% if JobEvent.running.count == 1 %>
+          <%= content_tag(:code, JobEvent.running.first.job_name) %> is running. More info <%= link_to('here', admin_job_events_path) %>.
+        <% else %>
+          Several jobs are running. Check them out <%= link_to('here', admin_job_events_path) %>.
+        <% end %>
+      </div>
     <% end %>
 
     <section class="section">

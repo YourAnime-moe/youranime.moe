@@ -199,6 +199,48 @@ module ShowsHelper
     end
   end
 
+  def like_button(show, info: false)
+    colour = show.liked_by?(current_user) ? 'success' : 'light'
+    content_tag :button, id: 'like', class: "button is-icon is-#{colour}" do
+      content_tag :i, class: 'material-icons' do
+        'thumb_up'
+      end
+    end
+  end
+
+  def dislike_button(show, info: false)
+    colour = show.disliked_by?(current_user) ? 'danger' : 'light'
+    content_tag :button, id: 'dislike', class: "button is-icon is-#{colour}" do
+      content_tag :i, class: 'material-icons' do
+        'thumb_down'
+      end
+    end
+  end
+
+  def react_button(show, colour, icon, info: false)
+    content_tag :button, id: 'dislike', class: "button #{'is-icon' unless info} is-#{colour}" do
+      content_tag :i, class: 'material-icons' do
+        'thumb_down'
+      end
+    end
+  end
+
+  def queue_button(show)
+    show_added = current_user.has_show_in_main_queue?(show)
+    colour = show_added ? 'success' : 'light'
+    icon = show_added ? 'playlist_add_check' : 'playlist_add'
+
+    content_tag :button, id: 'dislike', class: "button is-icon is-#{colour}" do
+      content_tag :i, class: 'material-icons' do
+        icon
+      end
+    end
+  end
+
+  def queue_item(show)
+    show_thumb(show)
+  end
+
   private
 
   def valid_thumbable_class?(model)

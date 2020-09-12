@@ -10,6 +10,7 @@ class UsersController < AuthenticatedController
 
     ids = recent_shows_ids.uniq[0..(episodes.size.positive? ? 7 : 11)]
     @recent_shows = Show.published.includes(:title_record).order('created_at desc').where(id: ids).limit(8)
+    @main_queue = current_user.main_queue.shows.limit(4)
     @trending = Show.trending.includes(:title_record).limit(8)
     @episodes = force_array_to(6, episodes)
     @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
@@ -76,7 +77,7 @@ class UsersController < AuthenticatedController
   end
 
   def home_shows
-    shows = Show.recent(limit: 1000)
+    shows = Show.recent.limit(100)
     return shows if shows.any?
 
     Show.published

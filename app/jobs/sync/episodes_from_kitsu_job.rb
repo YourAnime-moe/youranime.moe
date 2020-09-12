@@ -1,7 +1,7 @@
 module Sync
-  class EpisodesFromKitsuJob < ApplicationJob
-    def perform(show, by_user:)
-      Shows::Sync.perform(sync_type: :episodes, show: show, requested_by: by_user)
+  class EpisodesFromKitsuJob < TrackableJob
+    def perform(show, staff:)
+      Shows::Sync.perform(sync_type: :episodes, show: show, requested_by: staff)
     end
   end
 end

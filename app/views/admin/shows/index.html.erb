@@ -12,7 +12,9 @@
       <input type="text" name="query" placeholder="Search by title, id, slug..." value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
     </div>
   <% end %>
-  <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
+  <% unless JobEvent.is_running_for_job?('Sync::ShowsFromKitsuJob') %>
+    <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
+  <% end %>
 </div>
 
 <%= will_paginate @shows, renderer: BulmaPagination::Rails %>

@@ -28,9 +28,12 @@ module Shows
 
     def sync_airing
       @current_page = 0
-      Rails.logger.info("[Shows::Sync] #{request_airing_url}")
+      [current_season, next_season].each do |season|
+        create_shows_then_next_page(season)
 
-      create_shows_then_next_page
+        # For each season, reset the page
+        @current_page = 0
+      end
     end
 
     def sync_episodes
@@ -41,12 +44,13 @@ module Shows
       override_episodes_for(show)
     end
 
-    def create_shows_then_next_page
+    def create_shows_then_next_page(season)
+      Rails.logger.info("[Shows::Sync] #{request_airing_url(season)}")
       there_is_data = true
       created_shows = []
 
       while there_is_data
-        response = RestClient.get(request_airing_url)
+        response = RestClient.get(request_airing_url(season))
         return unless response.code < 300 && response.code >= 200
 
         data = JSON.parse(response.body).deep_symbolize_keys
@@ -135,8 +139,8 @@ module Shows
       show.update(synched_at: Time.now.utc, synched_by: requested_by.id)
     end
 
-    def request_airing_url
-      filters = { season: current_season[:season], seasonYear: current_season[:year] }
+    def request_airing_url(season)
+      filters = { season: season[:season], seasonYear: season[:year] }
       page_info = { limit: 20, offset: current_page * 20 }
 
       filters_as_params = as_params(filters, :filter)

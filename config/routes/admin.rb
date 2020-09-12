@@ -13,27 +13,29 @@ end
 Rails.application.routes.draw do
   constraints StaffConstraint.new do
     get '/admin' => 'admin/application#home'
-  end
-  namespace :admin do
-    mount Sidekiq::Web => '/sidekiq'
+    namespace :admin do
+      mount Sidekiq::Web => '/sidekiq'
 
-    resources :shows do
-      post :process_csv, on: :collection
-      post :sync, on: :collection
-      post :sync_episodes
+      resources :shows do
+        post :process_csv, on: :collection
+        post :sync, on: :collection
+        post :sync_episodes
 
-      post :publish
-      post :unpublish
+        post :publish
+        post :unpublish
 
-      resources :seasons, path: :shows_seasons
+        resources :seasons, path: :shows_seasons
 
-      resources :episodes, except: [:new] do
-        post :subtitles, to: 'episodes#create_subs'
+        resources :episodes, except: [:new] do
+          post :subtitles, to: 'episodes#create_subs'
+        end
       end
-    end
 
-    resources :users, except: [:new] do
-      resources :sessions, only: [:index, :show]
+      resources :users, except: [:new] do
+        resources :sessions, only: [:index, :show]
+      end
+
+      resources :job_events, only: [:index]
     end
   end
 end

@@ -139,6 +139,8 @@ en:
       view-all: "All Shows"
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
+      main-queue: Main queue
+      main-queue-what: The shows you've added to your personal queue
       trending: Trending
       trending-what: The most popular here
       recent: Recently added

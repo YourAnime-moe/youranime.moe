@@ -26,7 +26,7 @@ module ShowScopesConcern
       find_by_sql([sql, current_user.id, limit])
     }
     scope :trending, lambda {
-      order(:popularity, :desc).where('popularity > 0')
+      order('popularity desc').where('popularity > 0')
     }
     scope :valid, lambda {
       roman_title_query = "(roman_title is not null and roman_title != '')"

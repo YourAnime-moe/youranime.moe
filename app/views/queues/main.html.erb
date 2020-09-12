@@ -1,0 +1,71 @@
+
+<% if @shows.empty? && @unavailable_shows.empty? %>
+  <div class="text-center">
+    <div class="vertical-center">
+      <div class="wrapper">
+        <h4 class="text-muted"><%= t('anime.shows.empty') %></h4>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div style="padding-bottom: 55px;">
+    <div class="text-center" style="margin: 40px; display: grid;">
+      <span class="title"><%= t('anime.shows.main-queue') %></span>
+      <span class="subtitle"><%= t('anime.shows.main-queue-what') %></span>
+    </div>
+    <div class="container">
+      <div class="columns is-multiline">
+        <% @shows.each do |show| %>
+          <div class="column is-6" style="margin-top: 20px;">
+            <% link_to(show_path(show)) do %>
+              <% queue_item(show) %>
+            <% end %>
+            <div style="display: flex">
+                <div style="width: 33%">
+                  <%= link_to(show) do %>
+                    <%= image_tag(show.banner_url) %>
+                  <% end %>
+                </div>
+
+                <div style="width: 67%; padding: .1rem 1rem">
+                  <%= link_to(show, from_queue: :true) do %>
+                    <strong><%= show.title %></strong>
+                  <% end %>
+                  <div style="margin: .5rem 0">
+                    <button class="button is-small is-success is-light">
+                      <i class="material-icons from-like-button">thumb_up</i> <%= show.likes.count %>
+                    </button>
+                    <button class="button is-small is-danger is-light">
+                      <i class="material-icons from-like-button">thumb_down</i> <%= show.dislikes.count %>
+                    </button>
+                  </div>
+                  <p>
+                    <small style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                      <%= show.description %>
+                    </small>
+                  </p>
+                  <div style="margin: .5rem 0">
+                    <% show_tags(show) %>
+                  </div>
+                </div>
+              </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% if @unavailable_shows.any? %>
+      <div class="text-center" style="margin-top: 60px; display: grid;">
+        <span class="subtitle">Unavailable shows</span>
+      </div>
+      <div class="container">
+        <div class="columns is-multiline">
+          <% @unavailable_shows.each do |show| %>
+            <div class="column is-3" style="margin-top: 20px;">
+              <%= show_thumb(show) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
