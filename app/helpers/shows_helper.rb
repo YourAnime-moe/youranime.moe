@@ -201,26 +201,23 @@ module ShowsHelper
 
   def like_button(show, info: false)
     colour = show.liked_by?(current_user) ? 'success' : 'light'
-    content_tag :button, id: 'like', class: "button is-icon is-#{colour}" do
-      content_tag :i, class: 'material-icons' do
-        'thumb_up'
-      end
-    end
+    react_button(show, colour, 'thumb_up', reaction: :like, info: info)
+  end
+
+  def love_button(show, info: false)
+    colour = show.liked_by?(current_user) ? 'pink' : 'light'
+    react_button(show, colour, 'favorite', reaction: :love, info: info)
   end
 
   def dislike_button(show, info: false)
     colour = show.disliked_by?(current_user) ? 'danger' : 'light'
-    content_tag :button, id: 'dislike', class: "button is-icon is-#{colour}" do
-      content_tag :i, class: 'material-icons' do
-        'thumb_down'
-      end
-    end
+    react_button(show, colour, 'thumb_down', reaction: :dislike, info: info)
   end
 
-  def react_button(show, colour, icon, info: false)
-    content_tag :button, id: 'dislike', class: "button #{'is-icon' unless info} is-#{colour}" do
+  def react_button(show, colour, icon, reaction:, info: false)
+    content_tag :button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction do
       content_tag :i, class: 'material-icons' do
-        'thumb_down'
+        icon
       end
     end
   end
@@ -230,7 +227,7 @@ module ShowsHelper
     colour = show_added ? 'success' : 'light'
     icon = show_added ? 'playlist_add_check' : 'playlist_add'
 
-    content_tag :button, id: 'dislike', class: "button is-icon is-#{colour}" do
+    content_tag :button, id: 'queue', class: "button is-icon is-#{colour}" do
       content_tag :i, class: 'material-icons' do
         icon
       end

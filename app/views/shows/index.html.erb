@@ -15,17 +15,15 @@
     <div class="container">
       <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
 
-      <% @shows_parts.each do |shows| %>
-        <div class="columns">
-          <% shows.each_with_index do |show| %>
-            <div class="column is-4" style="margin-top: 20px;">
-              <%= link_to(show_path(show)) do %>
-                <%= show_thumb(show) %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      <div class="columns is-multiline">
+        <% @shows.each do |show| %>
+          <div class="column is-4" style="margin-top: 20px;">
+            <%= link_to(show_path(show)) do %>
+              <%= show_thumb(show) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
 
       <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
     </div>

@@ -2,8 +2,8 @@ module Shows
   class Queue < ApplicationRecord
     belongs_to :user, inverse_of: :queues
 
-    has_many :shows_queue_relations
-    has_many :shows, -> { reverse_order }, through: :shows_queue_relations
+    has_many :shows_queue_relations, -> { reverse_order }
+    has_many :shows, through: :shows_queue_relations
     has_many :unavailable_shows, class_name: 'Show', through: :shows_queue_relations
 
     def <<(show)

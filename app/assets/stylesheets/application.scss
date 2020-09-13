@@ -24,6 +24,9 @@
    warning: #CCC06D
  );
 
+$pink: #ffb3b3;
+$pink-invert: #fff;
+
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @font-face {
@@ -109,6 +112,11 @@ body {
 
 .navbar-item {
   user-select: none;
+}
+
+.is-pink {
+  background-color: $pink !important;
+  color: $pink-invert !important;
 }
 
 .text-center {

@@ -11,8 +11,8 @@ Rails.application.routes.draw do
 
   # Shows
   resources :shows, only: %i[index show], param: :slug do
-    get :history, on: :collection
-    get :movies, on: :collection
+    post :react
+    post :queue
 
     # Episodes
     resources :episodes, only: %i[show update]
