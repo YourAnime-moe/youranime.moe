@@ -1,0 +1,7 @@
+<div class="columns is-tiny-gap no-margin shows">
+  <% @main_queue.each do |show| %>
+    <%= link_to(show, class: "column is-3") do %>
+      <%= show_thumb(show) %>
+    <% end %>
+  <% end %>
+</div>

@@ -15,18 +15,10 @@
       </div>
     <% end %>
 
-    <% if @main_queue.any? %>
-      <div class="hf-section">
-        <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
-        <div class="columns is-tiny-gap no-margin shows">
-          <% @main_queue.each do |show| %>
-            <%= link_to(show, class: "column is-3") do %>
-              <%= show_thumb(show) %>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+    <div class="hf-section">
+      <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
+      <div id="main_queue">Please wait!</div>
+    </div>
 
     <% if @trending.any? %>
       <div class="hf-section">
@@ -64,17 +56,26 @@
 
     <div class="hf-section">
       <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path) %>
-      <div class="thumbs-section">
-        <% @recent_shows.each_slice(4) do |shows_rows| %>
-          <div class="columns is-tiny-gap no-margin shows">
-            <% shows_rows.each do |show| %>
-              <%= link_to(show, class: "column is-3") do %>
-                <%= show_thumb(show, rules: @_rule) %>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+      <div id="recent_shows">Please wait...</div>
     </div>
   <% end %>
 </div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    loadPartial('recent_shows');
+    loadPartial('main_queue');
+
+    function loadPartial(id) {
+      const recentShowsCont = document.getElementById(id);
+
+      $.ajax({
+        url: `/users/${id}`,
+        method: 'get',
+        success: function(html) {
+          $(recentShowsCont).html(html);
+        }
+      });
+    }
+  });
+</script>

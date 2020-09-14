@@ -10,14 +10,14 @@
   <div style="padding-bottom: 55px;">
     <div class="text-center" style="margin: 40px; display: grid;">
       <span class="title"><%= t('anime.shows.view-all') %></span>
-      <small><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
+      <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
     <div class="container">
       <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
 
-      <div class="columns is-multiline">
+      <div class="columns is-multiline is-tiny-gap no-margin shows">
         <% @shows.each do |show| %>
-          <div class="column is-4" style="margin-top: 20px;">
+          <div class="column is-3" style="margin-top: 20px;">
             <%= link_to(show_path(show)) do %>
               <%= show_thumb(show) %>
             <% end %>

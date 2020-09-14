@@ -26,6 +26,16 @@ class ShowsController < AuthenticatedController
     end
   end
 
+  def search
+    results = params[:query].present? && params[:query].size >= 3 ? Show.search(params[:query]) : []
+
+    render json: results
+  end
+
+  def search_partial
+
+  end
+
   def react
     if (show = show_by_slug(params[:show_slug]))
       result = Shows::UpdateReaction.perform(show: show, user: current_user, reaction: params[:reaction])

@@ -130,6 +130,7 @@ class Show < ApplicationRecord
 
     Show.published_with_title.where('lower(titles.en) LIKE ?', by_title)
       .or(Show.published_with_title.where('lower(titles.jp) LIKE ?', by_title))
+      .or(Show.published_with_title.where('lower(titles.roman) LIKE ?', by_title))
   end
 
   def self.search_all(by_title)

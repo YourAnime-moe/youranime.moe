@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   # Shows
+  post :search, to: 'shows#search' # POST to protect my server :p
   resources :shows, only: %i[index show], param: :slug do
     post :react
     post :queue
@@ -24,6 +25,11 @@ Rails.application.routes.draw do
     get :settings, to: 'users#settings', as: :users_settings
     get :home, to: 'users#home', as: :users_home
     patch 'update/:id', to: 'users#update', as: :user_update
+
+    get :trending_shows, to: 'users#trending_shows_partial'
+    get :main_queue, to: 'users#main_queue_partial'
+    get :recommendations, to: 'users#recommendations_partial'
+    get :recent_shows, to: 'users#recent_shows_partial'
   end
 
   # Locale management
