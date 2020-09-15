@@ -35,4 +35,8 @@ class Staff < ApplicationRecord
     update!(user_id: new_user.id)
     new_user
   end
+
+  def self.system
+    find_by(username: 'system')
+  end
 end

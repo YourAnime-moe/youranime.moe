@@ -7,13 +7,13 @@
 
 <div style="display: flex; justify-content: space-between;" class="justify-content-between">
   <h1 class="title">Show List</h1>
+  <% unless JobEvent.is_running_for_job?('Sync::ShowsFromKitsuJob') %>
+    <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
+  <% end %>
   <%= form_tag(admin_shows_path, method: :get) do %>
     <div class="control">
       <input type="text" name="query" placeholder="Search by title, id, slug..." value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
     </div>
-  <% end %>
-  <% unless JobEvent.is_running_for_job?('Sync::ShowsFromKitsuJob') %>
-    <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
   <% end %>
 </div>
 

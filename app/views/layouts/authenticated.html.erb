@@ -32,4 +32,19 @@
   <footer>
      <%= render 'shared/footer' %>
   </footer>
+
+  <script type="text/javascript">
+    function loadPartial(id, url, callback) {
+      const recentShowsCont = document.getElementById(id);
+
+      $.ajax({
+        url: url,
+        method: 'get',
+        success: function(html) {
+          $(recentShowsCont).html(html);
+          if (callback) { callback(); }
+        }
+      });
+    }
+  </script>
 </html>

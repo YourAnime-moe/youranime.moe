@@ -128,6 +128,34 @@ module ShowsHelper
     end
   end
 
+  def show_skeleton
+    content_tag :div, class: 'columns is-tiny-gap no-margin shows' do
+      (content_tag(:div, class: "column is-3") do
+        show_skeleton_thumb
+      end + content_tag(:div, class: "column is-3") do
+        show_skeleton_thumb
+      end + content_tag(:div, class: "column is-3") do
+        show_skeleton_thumb
+      end + content_tag(:div, class: "column is-3") do
+        show_skeleton_thumb
+      end)
+    end
+  end
+
+  def show_skeleton_thumb
+    content_tag :div, class: "no-overflow" do
+      content_tag :div, role: 'skeleton' do
+        content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
+          content_tag :div, class: 'image-card-container focusable' do
+            content_tag :div, class: 'holder' do
+              show_skeleton_thumb_body
+            end
+          end
+        end
+      end
+    end
+  end
+
   def show_thumb(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
 
@@ -136,6 +164,9 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: "no-overflow #{rules[:class]}" do
       progress_bar = "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
+      sketelon = content_tag :div, role: 'skeleton' do
+        show_skeleton_thumb
+      end
       wrapper = content_tag :div, role: 'have-fun', style: 'display: none;' do
         content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
           content_tag :div, class: 'image-card-container focusable' do
@@ -145,7 +176,13 @@ module ShowsHelper
           end
         end
       end
-      wrapper + (progress_bar if show.class == Episode && progress.positive?)
+      sketelon + wrapper + (progress_bar if show.class == Episode && progress.positive?)
+    end
+  end
+
+  def show_skeleton_thumb_body
+    content_tag :div, class: 'overlay darken' do
+      image_tag('/tanoshimu-sketelon.png')
     end
   end
 

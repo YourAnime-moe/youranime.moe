@@ -47,7 +47,9 @@ class Show < ApplicationRecord
 
   scope :published, -> { includes(:seasons).where(published: true) }
   scope :recent, -> { published.order(:published_on) }
-  scope :trending, -> { published.order('popularity desc').where('popularity > 0') }
+  scope :trending, -> { published.order(:popularity).where('popularity > 0') }
+  scope :highly_rated, -> { published.includes(:ratings) }
+
   scope :optimized, -> { includes(:ratings, :tags, :title_record, seasons: :episodes) }
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }

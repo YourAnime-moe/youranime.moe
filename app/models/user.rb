@@ -54,7 +54,7 @@ class User < ApplicationRecord
   end
 
   def can_manage?
-    admin? || staff_user.present?
+    staff_user.present?
   end
 
   def progress_for(*)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_12_034156) do
+ActiveRecord::Schema.define(version: 2020_09_15_015017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(version: 2020_09_12_034156) do
     t.string "job_name", null: false
     t.datetime "started_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "ended_at"
-    t.bigint "user_id", null: false
     t.bigint "job_id"
     t.bigint "model_id"
     t.string "used_by_model"
@@ -102,7 +101,8 @@ ActiveRecord::Schema.define(version: 2020_09_12_034156) do
     t.string "failed_reason_text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_job_events_on_user_id"
+    t.bigint "staff_id", null: false
+    t.index ["staff_id"], name: "index_job_events_on_staff_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -137,6 +137,9 @@ ActiveRecord::Schema.define(version: 2020_09_12_034156) do
     t.string "reference_source"
     t.datetime "synched_at"
     t.bigint "synched_by"
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
+    t.integer "loves_count", default: 0, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
   end
 
@@ -183,6 +186,11 @@ ActiveRecord::Schema.define(version: 2020_09_12_034156) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email"
+  end
+
+  create_table "sync_requests", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tags", force: :cascade do |t|
@@ -273,6 +281,6 @@ ActiveRecord::Schema.define(version: 2020_09_12_034156) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "job_events", "users"
+  add_foreign_key "job_events", "staffs"
   add_foreign_key "uploads", "users"
 end

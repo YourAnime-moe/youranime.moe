@@ -8,6 +8,13 @@ def seed
 end
 
 def seed_users
+  Staff.create!(
+    username: 'system',
+    name: 'System User',
+    limited: false,
+    password: SecureRandom.hex,
+    email: 'system@youranime.moe',
+  )
   if Rails.env.development?
     Staff.create(
       username: 'admin',

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     post :react
     post :queue
 
+    get :action_buttons, to: :action_buttons_partial
+
     # Episodes
     resources :episodes, only: %i[show update]
   end

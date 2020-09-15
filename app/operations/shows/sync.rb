@@ -98,13 +98,17 @@ module Shows
         end
       end
 
+      synched_show.popularity = fetched_attrs[:popularityRank]
+
       synched_show.synched_at = Time.now.utc
       synched_show.synched_by = requested_by.id
       synched_show.reference_source = :kitsu
       synched_show.reference_id = data[:id]
 
+      synched_show.published = !synched_show.persisted? || synched_show.published?
       synched_show.save!
 
+      override_episodes_for(synched_show)
       banner_file = Down.download(fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original))
       synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}")
       synched_show.generate_banner_url!(force: true)
@@ -114,6 +118,9 @@ module Shows
     end
 
     def override_episodes_for(show)
+      #::Sync::Shows::ReactionCountJob.perform_later(show)
+      return if show.reference_id.blank?
+
       response = RestClient.get(request_episodes_url(show))
       return unless response.code < 300 && response.code >= 200
 

@@ -9,6 +9,10 @@ module Shows
     property! :user, accepts: User
     property! :reaction, accepts: REACTIONS, converts: :to_s
 
+    succeeded do
+      ::Sync::Shows::ReactionCountJob.perform_later(show)
+    end
+
     def execute
       update_reaction
     end

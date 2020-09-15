@@ -32,6 +32,14 @@ class ShowsController < AuthenticatedController
     render json: results
   end
 
+  def action_buttons
+    if (@show = show_by_slug(params[:show_slug])).present?
+      render template: 'shows/partial/action_buttons', layout: false
+    else
+      render text: 'not found', status: 404
+    end
+  end
+
   def search_partial
 
   end

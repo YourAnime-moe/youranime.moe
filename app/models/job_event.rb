@@ -5,7 +5,7 @@ class JobEvent < ApplicationRecord
   FAILED = 'failed'
   COMPLETE = 'complete'
 
-  belongs_to :user, class_name: 'Staff'
+  belongs_to :staff, class_name: 'Staff'
 
   scope :latest, -> { order(:started_at, :ended_at).reverse_order }
   scope :running, -> { latest.where(status: RUNNING) }

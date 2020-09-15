@@ -16,7 +16,7 @@ services:
 
   sidekiq:
     build: .
-    command: bundle exec sidekiq -q active_storage_analysis -q active_storage_purge -q batch_queue -q default
+    command: bundle exec sidekiq -q active_storage_analysis -q active_storage_purge -q batch_queue -q sync -q default
     volumes:
       - .:/app
       - gems:/gems

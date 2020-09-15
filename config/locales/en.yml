@@ -136,7 +136,8 @@ en:
       sub: sub
       empty: >
         Nothing has been added yet! Please come back a bit later.
-      view-all: "All Shows"
+      view-all: "All Shows and Games"
+      view-all-what: "Check out what's available on our platform."
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
       main-queue: Main queue
