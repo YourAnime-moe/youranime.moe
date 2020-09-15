@@ -134,6 +134,14 @@ en:
     shows:
       dub: dub
       sub: sub
+      anime: Anime
+      movie: Movie
+      game: Game
+      music: Music
+      tv: Anime series
+      special: ★ Special
+      ona: ONA
+      ova: OVA
       empty: >
         Nothing has been added yet! Please come back a bit later.
       view-all: "All Shows and Games"
@@ -143,7 +151,7 @@ en:
       main-queue: Main queue
       main-queue-what: The shows you've added to your personal queue
       trending: Trending
-      trending-what: The most popular here
+      trending-what: The most popular anime, movies, games etc.
       recent: Recently added
       recent-what: What we've recently added!
       recommend: For you

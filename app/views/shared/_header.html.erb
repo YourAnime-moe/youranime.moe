@@ -8,14 +8,14 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
+      <%= link_to(shows_path(by: :trending), class: 'navbar-item') do %>
+        <i class="material-icons">star</i>
+        <%= t('anime.shows.trending') %>
+      <% end %>
 
       <%= link_to(shows_path, class: 'navbar-item') do %>
         <i class="material-icons">play_arrow</i>
         <%= t('sidebar.anime-movies') %>
-      <% end %>
-
-      <% if current_user.can_manage? %>
-        <%= link_to(t('header.admin'), admin_path, class: 'navbar-item', target: :_blank) %>
       <% end %>
     </div>
 
@@ -37,10 +37,15 @@
             <i class="material-icons">bug_report</i>
           <% end %>
           <% unless Config.demo? %>
-            <%= link_to(users_settings_path, class: 'hide button is-primary is-icon') do %>
+            <% if current_user.can_manage? %>
+              <%= link_to(admin_path, class: 'button is-warning is-icon') do %>
+                <i class="material-icons">admin_panel_settings</i>
+              <% end %>
+            <% end %>
+            <% link_to(users_settings_path, class: 'button is-primary is-icon') do %>
               <i class="material-icons">settings</i>
             <% end %>
-            <%= link_to(my_queue_path, class: 'button is-success is-icon') do %>
+            <% link_to(my_queue_path, class: 'button is-success is-icon') do %>
               <i class="material-icons">add</i>
             <% end %>
             <%= link_to(my_queue_path, class: 'button is-dark is-icon') do %>

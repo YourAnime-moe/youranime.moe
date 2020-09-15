@@ -74,7 +74,7 @@ jp:
   sidebar:
     home-page: トップページ
     browse: 詳細検索
-    anime-movies: すべての動画
+    anime-movies: すべて
     feel-adventure: おまかせ
     for-you:
       title: あなたのみ
@@ -97,6 +97,14 @@ jp:
     shows:
       dub: 英語
       sub: 日本語
+      anime: アニメ
+      movie: 短編・長編
+      game: ゲーム
+      music: 音楽・曲
+      tv: テレビアニメ
+      special: ★ 特
+      ona: ONA
+      ova: OVA
       empty: >
         申し訳ございませんが、現在では検索基準の通りで結果はありません。後でお試しくださいますようお願いいたします。
       view-all: "すべてのショーとゲーム"
@@ -105,8 +113,10 @@ jp:
       coming-soon: "近日公開予定"
       main-queue: 自分だけのキュー
       main-queue-what: 自分が追加したショーのキューです
-      trending: 人気アニメ
-      trending-what: タノシムには流行しているアニメです
+      trending: 人気
+      trending-what: 今は流行しているアニメやゲームなどです
+      recent: 新たなコンテンツ
+      recent-what: タノシムに最近追加されたコンテンツです
       coming-on: "近日公開予定日付は"
       description: "概要"
       no-description: "- 概要なし -"

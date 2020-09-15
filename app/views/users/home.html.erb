@@ -29,7 +29,7 @@
     </div>
 
     <div class="hf-section">
-      <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path) %>
+      <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path(by: :trending)) %>
       <div id="trending_shows">
         <%= show_skeleton %>
         <%= show_skeleton %>
@@ -54,7 +54,7 @@
     <% end %>
 
     <div class="hf-section">
-      <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path) %>
+      <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path(by: :recent)) %>
       <div id="recent_shows">
         <%= show_skeleton %>
         <%= show_skeleton %>

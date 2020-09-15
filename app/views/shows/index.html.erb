@@ -9,8 +9,8 @@
 <% else %>
   <div style="padding-bottom: 55px;">
     <div class="text-center" style="margin: 40px; display: grid;">
-      <span class="title"><%= t('anime.shows.view-all') %></span>
-      <span class="subtitle"><%= t('anime.shows.view-all-what') %></span>
+      <span class="title"><%= @title %></span>
+      <span class="subtitle"><%= @title_subtitle %></span>
       <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
     <div class="container">

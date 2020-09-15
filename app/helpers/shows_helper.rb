@@ -17,11 +17,11 @@ module ShowsHelper
     end
   end
 
-  def sub_dub_rating_holder(show)
+  def show_info_holder(show)
     return content_tag(:div) unless show.class == Show
 
     content_tag :div, class: 'sub-dub-holder justify-content-between' do
-      show_sub_dub(show) +
+      show_type_badge(show) +
       show_rating(show)
     end
   end
@@ -65,15 +65,21 @@ module ShowsHelper
     badge(type: 'info', content: show.rating)
   end
 
-  def show_sub_dub(show)
+  def show_type_badge(show)
     return '' unless show.class == Show
 
-    if show.subbed_and_dubbed?
-      sub_tag + dub_tag
-    elsif show.only_dubbed?
-      dub_tag
+    if show.show_type == 'movie'
+      badge(type: :info, content: t('anime.shows.movie'))
+    elsif show.show_type == 'game'
+      badge(type: :warning, content: t('anime.shows.game'))
+    elsif show.show_type == 'music'
+      badge(type: :danger, content: t('anime.shows.music'), light: true)
+    elsif show.show_type == 'special'
+      badge(type: :light, content: t('anime.shows.special'))
+    elsif ['ONA', 'OVA'].include?(show.show_type)
+      badge(type: :primary, content: t("anime.shows.#{show.show_type.downcase}"), light: true)
     else
-      sub_tag
+      badge(type: :primary, content: t("anime.shows.#{show.show_type.downcase}"))
     end
   end
 
@@ -109,8 +115,8 @@ module ShowsHelper
     badge(type: 'danger', content: content)
   end
 
-  def badge(type: nil, content: nil)
-    content_tag :span, class: "tag is-#{type}" do
+  def badge(type: nil, content: nil, light: false)
+    content_tag :span, class: "tag is-#{type} #{'is-light' if light}" do
       content
     end
   end
@@ -202,7 +208,7 @@ module ShowsHelper
   def top_badges(show)
     content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
       sanitize(check_episode_available(show)) +
-        sub_dub_rating_holder(show) +
+        show_info_holder(show) +
         check_episode_cc(show)
     end
   end

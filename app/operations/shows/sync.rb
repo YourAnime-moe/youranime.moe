@@ -77,7 +77,7 @@ module Shows
       description_content = fetched_attrs[:synopsis] || fetched_attrs[:description]
 
       synched_show = if found_title_record.blank?
-        Show.new(show_type: data[:type]).tap do |show|
+        Show.new.tap do |show|
           show.title = Title.new(roman: fetched_attrs[:slug], en: english_title, jp: japanese_title)
           show.description = Description.new(en: description_content)
         end
@@ -99,6 +99,11 @@ module Shows
       end
 
       synched_show.popularity = fetched_attrs[:popularityRank]
+      if data[:type] == 'anime'
+        synched_show.show_type = fetched_attrs[:subtype]
+      else
+        synched_show.show_type = data[:type]
+      end
 
       synched_show.synched_at = Time.now.utc
       synched_show.synched_by = requested_by.id

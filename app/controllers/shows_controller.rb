@@ -3,9 +3,20 @@ class ShowsController < AuthenticatedController
   include ShowsHelper
 
   def index
-    set_title(before: t('anime.shows.view-all'))
+    title_key = if params[:by] == 'trending'
+      'trending'
+    elsif params[:by] == 'recent'
+      'recent'
+    else
+      'view-all'
+    end
+    @title = t("anime.shows.#{title_key}")
+    @title_subtitle = t("anime.shows.#{title_key}-what")
+
     @shows = fetch_shows.paginate(page: params[:page])
     @shows_count = @shows.count
+
+    set_title(before: @title)
   end
 
   def show
@@ -71,9 +82,16 @@ class ShowsController < AuthenticatedController
   def fetch_shows
     return Show.search(params[:query]) if params[:query].present?
 
-    Show.published
+    base_shows_scope = if params[:by] == 'trending'
+      Show.trending
+    elsif params[:by] == 'recent'
+      Show.recent
+    else
+      Show.published.order("titles.#{I18n.locale}")
+    end
+    
+    base_shows_scope
       .includes(:title_record, :ratings)
-      .order("titles.#{I18n.locale}")
   end
 
   def show_by_slug(slug)

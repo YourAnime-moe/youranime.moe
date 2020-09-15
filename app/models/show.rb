@@ -43,10 +43,10 @@ class Show < ApplicationRecord
 
   validates_presence_of :released_on, :banner_url
   validates_inclusion_of :recommended, :published, :featured, in: [true, false]
-  validates_inclusion_of :show_type, in: SHOW_TYPES
+  #validates_inclusion_of :show_type, in: SHOW_TYPES
 
   scope :published, -> { includes(:seasons).where(published: true) }
-  scope :recent, -> { published.order(:published_on) }
+  scope :recent, -> { published.order(:published_on).order('created_at desc') }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
 
