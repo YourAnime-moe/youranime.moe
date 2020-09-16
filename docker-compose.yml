@@ -43,7 +43,7 @@ services:
     environment:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
-      DEMO: 'true'
+      #DEMO: 'true'
     depends_on:
       - db
 

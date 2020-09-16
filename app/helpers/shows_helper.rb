@@ -68,18 +68,22 @@ module ShowsHelper
   def show_type_badge(show)
     return '' unless show.class == Show
 
-    if show.show_type == 'movie'
+    bagde_for_show_type(show.show_type)
+  end
+
+  def bagde_for_show_type(show_type)
+    if show_type == 'movie'
       badge(type: :info, content: t('anime.shows.movie'))
-    elsif show.show_type == 'game'
+    elsif show_type == 'game'
       badge(type: :warning, content: t('anime.shows.game'))
-    elsif show.show_type == 'music'
+    elsif show_type == 'music'
       badge(type: :danger, content: t('anime.shows.music'), light: true)
-    elsif show.show_type == 'special'
+    elsif show_type == 'special'
       badge(type: :light, content: t('anime.shows.special'))
-    elsif ['ONA', 'OVA'].include?(show.show_type)
-      badge(type: :primary, content: t("anime.shows.#{show.show_type.downcase}"), light: true)
+    elsif ['ONA', 'OVA'].include?(show_type)
+      badge(type: :primary, content: t("anime.shows.#{show_type.downcase}"), light: true)
     else
-      badge(type: :primary, content: t("anime.shows.#{show.show_type.downcase}"))
+      badge(type: :primary, content: t("anime.shows.#{show_type.downcase}"))
     end
   end
 
@@ -279,6 +283,21 @@ module ShowsHelper
 
   def queue_item(show)
     show_thumb(show)
+  end
+
+  def show_other_title(show)
+    show_title = if I18n.locale == :en
+      {lang: 'Japanese', title: show.title_record.jp}
+    else
+      {lang: '英語', title: show.title_record.en}
+    end
+
+    content_tag :div do
+      badge(type: :info, content: show_title[:lang]) +
+      content_tag(:span, class: 'subtitle', style: 'margin-left: 7px') do
+        show_title[:title]
+      end
+    end
   end
 
   private

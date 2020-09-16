@@ -26,7 +26,7 @@ class Show < ApplicationRecord
   has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
   has_many :episodes, through: :seasons
   has_many :published_episodes, through: :seasons
-  has_many :shows_queue_relations
+  has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
 
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
@@ -50,9 +50,10 @@ class Show < ApplicationRecord
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
 
-  scope :optimized, -> { includes(:ratings, :tags, :title_record, seasons: :episodes) }
+  scope :optimized, -> { includes(:ratings, :tags, :title_record, :queues, shows_queue_relations: :queue, seasons: :episodes) }
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }
+  scope :searchable, -> { joins(:title_record).optimized }
 
   def publish
     update!(published: true)
