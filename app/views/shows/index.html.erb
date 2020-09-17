@@ -13,7 +13,7 @@
       <span class="subtitle"><%= @title_subtitle %></span>
       <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
-    <div class="container">
+    <div class="container is-fluid">
       <div class="columns is-multiline">
         <% @shows.each do |show| %>
           <div class="column is-3" style="padding: 1px;">

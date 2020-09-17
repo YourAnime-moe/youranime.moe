@@ -120,8 +120,27 @@ class Show < ApplicationRecord
     0
   end
 
+  def duration
+    duration = episodes.pluck(:duration).first
+    return if duration.blank? || duration.zero?
+
+    duration
+  end
+
   def is?(show_type)
     self[:show_type] == show_type.to_s
+  end
+
+  def airing?
+    airing_status == 'airing'
+  end
+
+  def coming_soon?
+    airing_status == 'coming_soon'
+  end
+
+  def air_complete?
+    airing_status == 'unknown'
   end
 
   def slug

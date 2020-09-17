@@ -59,7 +59,7 @@ module Shows
         end
 
         data[:data].each do |show_data|
-          created_shows << create_or_update_show_for(show_data)
+          created_shows << create_or_update_show_for(show_data, season[:status])
         end
 
         @current_page += 1
@@ -68,7 +68,7 @@ module Shows
       created_shows
     end
 
-    def create_or_update_show_for(data)
+    def create_or_update_show_for(data, airing_status)
       fetched_attrs = data[:attributes]
       found_title_record = Title.find_by(roman: fetched_attrs[:slug])
 
@@ -109,6 +109,7 @@ module Shows
         synched_show
       end
 
+      synched_show.airing_status = airing_status
       synched_show.synched_at = Time.now.utc
       synched_show.synched_by = requested_by.id
       synched_show.reference_source = :kitsu
@@ -184,6 +185,7 @@ module Shows
       {
         year: current_date.year,
         season: season_name_from(current_date),
+        status: :airing,
       }
     end
 
@@ -197,6 +199,7 @@ module Shows
       {
         year: next_season_year,
         season: season_name_for(next_season_code),
+        status: :coming_soon,
       }
     end
 

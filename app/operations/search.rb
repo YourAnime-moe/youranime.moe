@@ -1,10 +1,13 @@
 class Search < ApplicationOperation
   property :search, accepts: String, converts: :downcase
   property :limit, accepts: Integer
+  property :format, accepts: [:whole, :shows], default: :whole, converts: :to_sym
 
   def execute
     return empty_search_result unless search.present? && search.size > 2
     final_results = shows_results.trending.order(:show_type)
+    return final_results if format == :shows
+
     show_types = final_results.pluck(:show_type).uniq
 
     show_types.map do |show_type|

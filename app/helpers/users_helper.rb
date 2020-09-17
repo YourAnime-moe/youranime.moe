@@ -76,6 +76,6 @@ module UsersHelper
     return model.thumbnail_url if model.is_a?(Episode)
 
     #model.banner.attached? ? model.banner : model.banner_url
-    model.banner_url
+    model.poster_url
   end
 end

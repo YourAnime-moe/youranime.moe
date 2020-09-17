@@ -22,6 +22,7 @@ module ShowsHelper
 
     content_tag :div, class: 'sub-dub-holder justify-content-between' do
       show_type_badge(show) +
+      show_airing_badge(show) +
       show_rating(show)
     end
   end
@@ -63,6 +64,13 @@ module ShowsHelper
     return '' unless show.kind_of?(Show) && !show.ratings.empty?
 
     badge(type: 'info', content: show.rating)
+  end
+
+  def show_airing_badge(show, force: false)
+    return '' unless show.kind_of?(Show) && !show.air_complete?
+    return '' if show.is?(:music) && !show.coming_soon? && !force
+
+    badge(type: 'light', content: t("anime.shows.airing_status.#{show.airing_status}"))
   end
 
   def show_type_badge(show)
@@ -204,7 +212,7 @@ module ShowsHelper
     rules ||= {}
     content_tag :div, class: 'overlay darken' do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}") +
+      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}", style: 'height: 0;') +
       sanitize(show_thumb_description(show)))
     end
   end
@@ -278,6 +286,14 @@ module ShowsHelper
       content_tag :i, class: 'material-icons' do
         icon
       end
+    end
+  end
+
+  def admin_button(show)
+    return unless current_user.can_manage?
+  
+    link_to admin_show_path(show), class: 'button is-rounded is-warning', target: :_blank do
+      'View on Admin panel'
     end
   end
 

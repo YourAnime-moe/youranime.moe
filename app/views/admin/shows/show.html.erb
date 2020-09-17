@@ -26,23 +26,21 @@
       <%= show_thumb(@show) %>
     </div>
     <div class="hf-section">
-      <h2 class="subtitle">Cover image</h2>
-      <%= image_tag(@show.poster_url) %>
-      <div style="margin-top: 10px">
-        <% if @show.published? %>
-          <%= link_to('View as a user', show_path(@show), class: 'button is-fullwidth', target: :_blank) %>
-        <% else %>
-          <%= link_to('Preview', show_path(@show, as_admin: true), class: 'button is-fullwidth', target: :_blank) %>
-        <% end %>
-      </div>
+      <% if @show.published? %>
+        <%= link_to('View as a user', show_path(@show), class: 'button is-fullwidth', target: :_blank) %>
+      <% else %>
+        <%= link_to('Preview', show_path(@show, as_admin: true), class: 'button is-fullwidth', target: :_blank) %>
+      <% end %>
     </div>
     <div class="hf-section">
+    
       <h2 class="subtitle">General info</h2>
       <div class="tile box">
         <div class="content">
           <p>Site ID: <code><%= @show.slug %></code></p>
           <p>Internal ID: <code><%= @show.id %></code></p>
-          <p>Status: <%= boolean_tag(@show.published?, true_text: 'Published', false_text: 'Unpublished', light: true) %></p>
+          <p>Published Status: <%= boolean_tag(@show.published?, true_text: 'Published', false_text: 'Unpublished', light: true) %></p>
+          <p>Airing Status: <%= value_tag(@show.airing_status) %></p>
           <p>Created: <%= @show.created_at.strftime('%b %d, %Y @ %H:%M:%S') %></p>
 
           <% if @show.synched? %>
@@ -77,6 +75,7 @@
           </small>
         </div>
       <% end %>
+
       <h2 class="subtitle">Edit show information</h2>
       <div class="tile is-child box">
         <%= form_with(model: @show) do |f| %>
@@ -103,6 +102,18 @@
         <% end %>
       </div>
     </div>
+
+    <div class="hf-section">
+      <h2 class="subtitle">Show cover</h2>
+      <div class="card">
+        <div class="holder">
+          <div class="overlay">
+            <%= image_tag(@show.poster_url) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h2 class="subtitle">Seasons and episodes</h2>
     <%= seasons_tabs(@show, admin: true) %>
     <div class="row no-margin">

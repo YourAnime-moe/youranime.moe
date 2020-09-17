@@ -76,7 +76,7 @@ class ShowsController < AuthenticatedController
   private
 
   def fetch_shows
-    return Show.search(params[:query]) if params[:query].present?
+    return Search.perform(search: params[:query], format: :shows) if params[:query].present?
 
     base_shows_scope = if params[:by] == 'trending'
       Show.trending

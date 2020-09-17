@@ -130,6 +130,10 @@ jp:
         episodes: "すべてのエピソード数：%{count}"
         featuring: "声優"
         average-run-time: "エピソードの平均時間は"
+      airing_status:
+        airing: 配信中
+        coming_soon: 配信予定
+        unknown: 不明
 
     movies:
       view-all: "すべての映画"

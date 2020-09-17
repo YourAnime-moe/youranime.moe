@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_16_215724) do
+ActiveRecord::Schema.define(version: 2020_09_17_024314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,8 @@ ActiveRecord::Schema.define(version: 2020_09_16_215724) do
     t.integer "dislikes_count", default: 0, null: false
     t.integer "loves_count", default: 0, null: false
     t.string "poster_url", default: "/img/404.jpg", null: false
+    t.integer "rank"
+    t.string "airing_status", default: "unknown", null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
   end
 

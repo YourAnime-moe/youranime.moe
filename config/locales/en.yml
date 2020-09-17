@@ -169,6 +169,10 @@ en:
         episodes: "%{count} episode(s)"
         featuring: "Featuring:"
         average-run-time: "Average run time"
+      airing_status:
+        airing: Airing now
+        coming_soon: Coming soon
+        unknown: Unknown
     movies:
       view-all: "All Movies"
 
