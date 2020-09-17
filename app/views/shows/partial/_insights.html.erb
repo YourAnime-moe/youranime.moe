@@ -1,0 +1,33 @@
+<nav class="level">
+  <div class="level-item has-text-centered">
+    <% if @show.is?(:movie) %>
+      <div>
+        <p class="heading">Duration</p>
+        <p class="title"><%= @show.episodes.pluck(:duration).first || '-' %></p>
+      </div>
+    <% elsif @show.is?(:game) %>
+      <div>
+        <p class="heading">Clips</p>
+        <p class="title"><%= @show.episodes.count %></p>
+      </div>
+    <% end %>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Likes</p>
+      <p class="title"><%= @show.likes.count %></p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Rank</p>
+      <p class="title">#1</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Rating</p>
+      <p class="title"><%= @show.rating %></p>
+    </div>
+  </div>
+</nav>

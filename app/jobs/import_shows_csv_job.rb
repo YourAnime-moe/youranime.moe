@@ -1,7 +1,7 @@
-class ImportShowsCsvJob < ApplicationJob
+class ImportShowsCsvJob < TrackableJob
   queue_as :default
 
-  def perform(upload, batches: 1000, range: nil)
+  def perform(upload, batches: 1000, range: nil, staff:)
     raise "Missing user" unless upload.user.present?
 
     Rails.logger.info("Upload #{upload.uuid} of type '#{upload.upload_type}' by #{upload.user.name}")
@@ -17,6 +17,7 @@ class ImportShowsCsvJob < ApplicationJob
           'Shows::SeedCsv',
           data: data,
           range: range,
+          staff: staff,
         )
       end
     end

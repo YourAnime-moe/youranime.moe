@@ -35,7 +35,9 @@ class Show < ApplicationRecord
   has_translatable_field :description
 
   has_one_attached :banner
+  has_one_attached :poster
   has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
+  has_resource :poster, default_url: '/img/404.jpg', expiry: 3.days
 
   respond_to_types SHOW_TYPES
 
@@ -116,6 +118,10 @@ class Show < ApplicationRecord
 
   def views_count
     0
+  end
+
+  def is?(show_type)
+    self[:show_type] == show_type.to_s
   end
 
   def slug

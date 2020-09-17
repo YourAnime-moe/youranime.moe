@@ -293,7 +293,7 @@ module ShowsHelper
     end
 
     content_tag :div do
-      badge(type: :info, content: show_title[:lang]) +
+      content_tag(:div, style: 'margin-bottom: 5px') { badge(type: :info, content: show_title[:lang]) } +
       content_tag(:span, class: 'subtitle', style: 'margin-left: 7px') do
         show_title[:title]
       end

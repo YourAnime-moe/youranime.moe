@@ -105,6 +105,10 @@ module Shows
         synched_show.show_type = data[:type]
       end
 
+      if synched_show.is?(:movie)
+        synched_show
+      end
+
       synched_show.synched_at = Time.now.utc
       synched_show.synched_by = requested_by.id
       synched_show.reference_source = :kitsu
@@ -113,16 +117,26 @@ module Shows
       synched_show.published = !synched_show.persisted? || synched_show.published?
       synched_show.save!
 
-      override_episodes_for(synched_show)
-      banner_file = Down.download(fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original))
-      synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}")
+      duration = synched_show.is?(:movie) ? fetched_attrs[:totalLength] || fetched_attrs[:episodeLength] : fetched_attrs[:episodeLength]
+      override_episodes_for(synched_show, duration: duration)
+
+      poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
+      banner_url = fetched_attrs.dig(:coverImage, :large) || fetched_attrs.dig(:coverImage, :original) || poster_url
+      poster_file = Down.download(poster_url)
+      banner_file = Down.download(banner_url)
+
+      synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}-banner")
+      synched_show.poster.attach(io: poster_file, filename: "show-#{synched_show.id}-poster")
       synched_show.generate_banner_url!(force: true)
+      synched_show.generate_poster_url!(force: true)
+
       banner_file.unlink
+      poster_file.unlink
 
       synched_show
     end
 
-    def override_episodes_for(show)
+    def override_episodes_for(show, duration: nil)
       #::Sync::Shows::ReactionCountJob.perform_later(show)
       return if show.reference_id.blank?
 
@@ -142,7 +156,7 @@ module Shows
         season.episodes.create!(
           number: (index + 1),
           title: "Episode #{index + 1}",
-          #duration: fetched_attrs[:episodeLength],
+          duration: duration,
           published: true,
           thumbnail_url: show.banner_url,
         )

@@ -46,6 +46,10 @@ module LikeableConcern
       send(:define_method, :disliked_by?) do |user|
         dislikes.where(user: user).exists?
       end
+
+      send(:define_method, :liked_by) do
+        User.where(id: likes.pluck(:user_id))
+      end
     end
   end
 

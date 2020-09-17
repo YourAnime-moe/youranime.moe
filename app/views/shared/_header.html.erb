@@ -41,7 +41,7 @@
           <% end %>
           <% unless Config.demo? %>
             <% if current_user.can_manage? %>
-              <%= link_to(admin_path, class: 'button is-warning is-icon') do %>
+              <%= link_to(admin_path, class: 'button is-warning is-icon', target: :_blank) do %>
                 <i class="material-icons">admin_panel_settings</i>
               <% end %>
             <% end %>
