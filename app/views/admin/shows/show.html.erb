@@ -24,6 +24,10 @@
     <div class="hf-section">
       <h2 class="subtitle">Thumbnail preview</h2>
       <%= show_thumb(@show) %>
+    </div>
+    <div class="hf-section">
+      <h2 class="subtitle">Cover image</h2>
+      <%= image_tag(@show.poster_url) %>
       <div style="margin-top: 10px">
         <% if @show.published? %>
           <%= link_to('View as a user', show_path(@show), class: 'button is-fullwidth', target: :_blank) %>

@@ -22,10 +22,13 @@
     <div style="justify-content: center; display: inline; padding-top: 10px; white-space: nowrap;">
       <%= form_tag shows_path, method: 'get' do -%>
         <div class="control">
-          <input style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
-          <button style="left: -54px;" type="submit" class="button is-icon">
-            <i class="material-icons">search</i>
-          </button>
+          <div class="autocomplete">
+            <input id="search-input" style="padding-right: 36px; left: -18px;" type="text" name="query" placeholder="<%= t('header.search') %>" value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
+            <button style="left: -54px;" type="submit" class="button is-icon">
+              <i class="material-icons">search</i>
+            </button>
+            <div id="search-results" class="autocomplete-items"></div>
+          </div>
         </div>
       <% end -%>
     </div>
@@ -38,7 +41,7 @@
           <% end %>
           <% unless Config.demo? %>
             <% if current_user.can_manage? %>
-              <%= link_to(admin_path, class: 'button is-warning is-icon') do %>
+              <%= link_to(admin_path, class: 'button is-warning is-icon', target: :_blank) do %>
                 <i class="material-icons">admin_panel_settings</i>
               <% end %>
             <% end %>
@@ -60,3 +63,27 @@
     </div>
   </div>
 </nav>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = $('#search-input');
+    const searchResults = $('#search-results');
+
+    searchInput.on('keydown', function(e) {
+      const query = $(this).val();
+
+      if (query.length > 2) {
+        $.ajax({
+          url: '/search',
+          data: { query: query },
+          success: function(html) {
+            searchResults.show();
+            searchResults.html(html);
+          }
+        });
+      } else {
+        searchResults.hide();
+      }
+    });
+  });
+</script>

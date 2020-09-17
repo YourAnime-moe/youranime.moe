@@ -107,6 +107,8 @@ class User < ApplicationRecord
   def self.demo
     where(username: 'demo').first_or_initialize do |user|
       user.name = 'Demo User'
+      user.password = SecureRandom.hex
+      user.email = 'demo@youranime.moe'
     end
   end
 

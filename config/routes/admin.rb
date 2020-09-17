@@ -6,7 +6,8 @@ class StaffConstraint
   def matches?(request)
     return unless request.session[:user_id].present?
 
-    Staff.where(id: request.session[:user_id]).present?
+    current_user = User.find_by(id: request.session[:user_id])
+    current_user.present? && current_user.can_manage?
   end
 end
 

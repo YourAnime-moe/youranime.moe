@@ -37,12 +37,6 @@ class ShowsController < AuthenticatedController
     end
   end
 
-  def search
-    results = params[:query].present? && params[:query].size >= 3 ? Show.search(params[:query]) : []
-
-    render json: results
-  end
-
   def action_buttons
     if (@show = show_by_slug(params[:show_slug])).present?
       render template: 'shows/partial/action_buttons', layout: false
@@ -52,7 +46,9 @@ class ShowsController < AuthenticatedController
   end
 
   def search_partial
+    @search_result = Search.perform(search: params[:query], limit: 10)
 
+    render template: 'shows/partial/search', layout: false
   end
 
   def react

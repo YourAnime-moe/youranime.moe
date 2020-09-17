@@ -2,7 +2,7 @@
   $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
-    $('div[target]').css('margin-bottom', '-70px');
+    $('div[target]').css('margin-bottom', '-100px');
     $('.show-body').fadeIn(2000);
   });
 </script>
@@ -11,56 +11,59 @@
   <div class="head" target="<%= @show.banner_url %>">
     <div class="overlay">
       <div class="content">
-        <div class="ui container pos-inherit grid">
-          <div class="show-title">
-            <h1 style="font-weight: bold;">
-              <%= @show.title %>
-            </h1>
-            <p>
-              <div id="action_buttons">
-                <%= like_button(@show) %>
-                <% love_button(@show) %>
-                <%= dislike_button(@show) %>
-                <%= queue_button(@show) %>
+        <div class="container pos-inherit">
+          <div class="columns">
+            <div class="column is-2">
+              <div class="show-title">
+                <%= image_tag(@show.poster_url, class: 'title-img level') %>
               </div>
-            </p>
-            <%= show_tags(@show) %>
+            </div>
+            <div class="column">
+              <div class="show-title">
+                <h1 style="font-weight: bold;">
+                  <%= @show.title %>
+                </h1>
+                <div id="action_buttons">
+                    <%= like_button(@show) %>
+                    <% love_button(@show) %>
+                    <%= dislike_button(@show) %>
+                    <%= queue_button(@show) %>
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="container">
-    <small>
-      <span style="margin-right: 10px;"><%= show_type_badge(@show) %></span>
-      <%= @show.description %>
-    </small>
-  </div>
+    <div class="columns">
+      <div class="column is-2">
+        <%= show_other_title(@show) %>
+      </div>
 
-  <div class="container padded">
-    <div class="hf-section">
-      <%= seasons_tabs(@show) %>
-    </div>
+      <div class="column">
 
-    <div class="hf-section">
-      <div class="row no-margin">
-        <div class="container-fluid">
-          <% @episodes.each do |episode_info| %>
-            <% episode_info[:episodes].each do |episodes| %>
-              <div class="columns hide" season="<%= episode_info[:season] %>">
-                <% episodes.each_with_index do |episode| %>
-                  <div class="column is-4" style="margin-top: 20px;">
-                    <%= link_to(episode) do %>
-                      <%= show_thumb(episode) %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-          <% end %>
+        <div class="container">
+          <div class="tabs is-centered">
+            <ul>
+              <li class="is-active"><a>General</a></li>
+              <li><a>Videos</a></li>
+              <li><a>Comments</a></li>
+            </ul>
+          </div>
+          <%= render 'shows/partial/insights' %>
+
+          <small>
+            <%= @show.description %>
+          </small>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="container padded">
+    
   </div>
 </div>
 

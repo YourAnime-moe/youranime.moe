@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
 
   # Shows
-  post :search, to: 'shows#search' # POST to protect my server :p
+  get :search, to: 'shows#search_partial' # POST to protect my server :p
   resources :shows, only: %i[index show], param: :slug do
     post :react
     post :queue

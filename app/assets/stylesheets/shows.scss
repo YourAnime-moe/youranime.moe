@@ -104,9 +104,12 @@ img.broken {
 }
 
 .title-img {
-     object-fit: cover;
-     width: 100%;
-     height: 500px;
+  object-fit: cover;
+  width: 200px;
+}
+
+.title-img.level {
+  margin-bottom: -2px;
 }
 
 .holder {
@@ -178,8 +181,8 @@ img.broken {
     }
 }
 
-@media (max-width: 400px) {
-    .title-img {
-        height: 300px;
-    }
+@media (max-width: 768px) {
+  .title-img {
+    display: none;
+  }
 }

@@ -66,7 +66,7 @@ module Shows
     end
 
     def create_show_instance!(title_params, entry, banner_io)
-      show = Show.new(published: true, published_on: Time.now.utc)
+      show = Show.new(published: true)
       show.title = Title.new(title_params)
       show.description = Description.new(en: "Description for #{show.title}") # description(entry)
       show.save!

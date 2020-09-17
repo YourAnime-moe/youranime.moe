@@ -26,7 +26,7 @@ class Show < ApplicationRecord
   has_many :seasons, inverse_of: :show, class_name: 'Shows::Season'
   has_many :episodes, through: :seasons
   has_many :published_episodes, through: :seasons
-  has_many :shows_queue_relations
+  has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
 
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
@@ -35,7 +35,9 @@ class Show < ApplicationRecord
   has_translatable_field :description
 
   has_one_attached :banner
+  has_one_attached :poster
   has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
+  has_resource :poster, default_url: '/img/404.jpg', expiry: 3.days
 
   respond_to_types SHOW_TYPES
 
@@ -50,9 +52,10 @@ class Show < ApplicationRecord
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
 
-  scope :optimized, -> { includes(:ratings, :tags, :title_record, seasons: :episodes) }
+  scope :optimized, -> { includes(:ratings, :tags, :title_record, :queues, shows_queue_relations: :queue, seasons: :episodes) }
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }
+  scope :searchable, -> { joins(:title_record).optimized }
 
   def publish
     update!(published: true)
@@ -115,6 +118,10 @@ class Show < ApplicationRecord
 
   def views_count
     0
+  end
+
+  def is?(show_type)
+    self[:show_type] == show_type.to_s
   end
 
   def slug
