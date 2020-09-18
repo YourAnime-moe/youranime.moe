@@ -18,11 +18,18 @@
     <div class="hf-section">
       <% if @main_queue.any? %>
         <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
-        <div class="columns is-tiny-gap no-margin shows">
+        <div class="columns is-tiny-gap no-margin shows" style="overflow: scroll">
           <% @main_queue.each do |show| %>
             <%= link_to(show, class: "column is-3") do %>
               <%= show_thumb(show) %>
             <% end %>
+          <% end %>
+          <% if @view_all_queue %>
+            <div class="column is-3" style="display: flex; place-content: center">
+              <%= link_to(my_queue_path, style: 'margin: auto;') do %>
+                <span>View my queue</span>
+              <% end %>
+            </div>
           <% end %>
         </div>
       <% end %>

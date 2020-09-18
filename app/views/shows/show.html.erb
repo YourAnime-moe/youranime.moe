@@ -2,7 +2,7 @@
   $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
-    $('div[target]').css('margin-bottom', '-100px');
+    $('div[target]').css('margin-bottom', '-70px');
     $('.show-body').fadeIn(2000);
   });
 </script>
@@ -53,8 +53,10 @@
           <div class="tabs">
             <ul>
               <li><a>General</a></li>
-              <li><a>Videos</a></li>
-              <li><a>Comments</a></li>
+              <% if @show.has_trailer? %>
+                <li><a>Videos</a></li>
+              <% end %>
+              <li><a>Comments (0)</a></li>
             </ul>
           </div>
           <%= render 'shows/partial/insights' %>

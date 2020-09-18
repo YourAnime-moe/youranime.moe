@@ -30,6 +30,9 @@ module TanoshimuNew
     # Sidekiq
     config.active_job.queue_adapter = :sidekiq
 
+    # Sync settings
+    config.allows_crawling = Rails.env.production? || ENV['SYNC_CRAWLING'].present?
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

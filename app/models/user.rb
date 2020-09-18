@@ -17,7 +17,11 @@ class User < ApplicationRecord
   before_save :ensure_hex
   can_like_as :user
 
-  has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
+  has_many :queues, -> {
+    includes(shows_queue_relations: {
+      show: [:description_record, :title_record, :ratings],
+    })
+  }, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
   has_many :ratings
   has_many :shows, through: :ratings

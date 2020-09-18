@@ -7,7 +7,9 @@ class UsersController < AuthenticatedController
   def home
     set_title(before: t('user.welcome', user: current_user.name))
     @trending = Show.trending.includes(:title_record).limit(8)
-    @main_queue = current_user.main_queue.shows.limit(4)
+    @main_queue = current_user.main_queue.shows
+    @view_all_queue = @main_queue.count > 10
+    @main_queue = @main_queue.limit(10)
     @episodes = {actual: []}
     @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
   end

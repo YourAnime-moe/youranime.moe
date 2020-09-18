@@ -1,6 +1,6 @@
 module Shows
   class Sync < ApplicationOperation
-    property! :sync_type, accepts: [:airing, :episodes]
+    property! :sync_type, accepts: [:airing, :episodes, :crawl]
     property! :requested_by, accepts: Staff
     property :show, accepts: Show
 
@@ -21,6 +21,7 @@ module Shows
     def execute
       return sync_airing if sync_type == :airing
       return sync_episodes if sync_type == :episodes
+      return crawl_shows if sync_type == :crawl
     end
 
     private
@@ -42,6 +43,36 @@ module Shows
 
       Rails.logger.info("[Shows::Sync] #{request_episodes_url(show)}")
       override_episodes_for(show)
+    end
+
+    def crawl_shows
+      raise 'Crawling is not allowed.' unless Rails.configuration.allows_crawling
+
+      @current_url = "https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=0"
+      @has_next = true
+
+      while @has_next
+        begin
+          response = RestClient.get(@current_url)
+          return unless response.code < 300 && response.code >= 200
+
+          data = JSON.parse(response.body).deep_symbolize_keys
+          if data[:data].blank?
+            return
+          end
+
+          data[:data].each do |show_data|
+            create_or_update_show_for(show_data, nil)
+          end
+
+          @has_next = data[:links][:last] != @current_url
+          @current_url = data[:links][:next]
+        rescue Down::Error => e
+          # ignore
+          Rails.logger.error(e)
+          puts e.backtrace
+        end
+      end
     end
 
     def create_shows_then_next_page(season)
@@ -109,7 +140,9 @@ module Shows
         synched_show
       end
 
-      synched_show.airing_status = airing_status
+      synched_show.airing_status = airing_status if airing_status
+      synched_show.youtube_trailer_id = fetched_attrs[:youtubeVideoId]
+
       synched_show.synched_at = Time.now.utc
       synched_show.synched_by = requested_by.id
       synched_show.reference_source = :kitsu
@@ -123,13 +156,19 @@ module Shows
 
       poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
       banner_url = fetched_attrs.dig(:coverImage, :large) || fetched_attrs.dig(:coverImage, :original) || poster_url
-      poster_file = Down.download(poster_url)
-      banner_file = Down.download(banner_url)
 
-      synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}-banner")
-      synched_show.poster.attach(io: poster_file, filename: "show-#{synched_show.id}-poster")
-      synched_show.generate_banner_url!(force: true)
-      synched_show.generate_poster_url!(force: true)
+
+      banner_file = try_downloading(banner_url)
+      if banner_file
+        synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}-banner")
+        synched_show.generate_banner_url!(force: true)
+      end
+
+      poster_file = try_downloading(poster_url)
+      if poster_file
+        synched_show.poster.attach(io: poster_file, filename: "show-#{synched_show.id}-poster")
+        synched_show.generate_poster_url!(force: true)
+      end
 
       banner_file.unlink
       poster_file.unlink
@@ -226,6 +265,12 @@ module Shows
 
     def as_params(array, param_type)
       array.map{ |k, v| "#{param_type}[#{k}]=#{v}" }.join('&')
+    end
+
+    def try_downloading(url)
+      Down.download(url)
+    rescue Down::Error
+      nil
     end
   end
 end

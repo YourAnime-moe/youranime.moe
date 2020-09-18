@@ -8,6 +8,8 @@ class Show < ApplicationRecord
   include TanoshimuUtils::Concerns::HasTranslatableField
   include TanoshimuUtils::Validators::PresenceOneOf
 
+  EMBED_YOUTUBE_BASE_URL = "https://www.youtube.com/embed"
+
   self.per_page = 48
 
   ANIME = 'anime'
@@ -141,6 +143,14 @@ class Show < ApplicationRecord
 
   def air_complete?
     airing_status == 'unknown'
+  end
+
+  def has_trailer?
+    youtube_trailer_url.present?
+  end
+
+  def youtube_trailer_url
+    youtube_trailer_id.presence && "#{EMBED_YOUTUBE_BASE_URL}/#{youtube_trailer_id}"
   end
 
   def slug

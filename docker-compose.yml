@@ -26,6 +26,7 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - RAILS_LOG_TO_STDOUT=enabled
+      - SYNC_CRAWLING=enabled
 
   web:
     build: .
@@ -44,7 +45,6 @@ services:
     environment:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
-      #DEMO: 'true'
     depends_on:
       - db
 

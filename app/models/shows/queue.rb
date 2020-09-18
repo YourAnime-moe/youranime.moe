@@ -31,6 +31,22 @@ module Shows
       shows.count
     end
 
+    def empty?
+      !any?
+    end
+
+    def any?
+      count > 0
+    end
+
+    def present?
+      any?
+    end
+
+    def blank?
+      empty?
+    end
+
     private
 
     def show_ids
