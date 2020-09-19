@@ -17,7 +17,7 @@
       <div class="columns is-multiline">
         <% @shows.each do |show| %>
           <div class="column is-3" style="padding: 1px;">
-            <%= link_to(show_path(show)) do %>
+            <%= link_to(show) do %>
               <%= show_thumb(show) %>
             <% end %>
           </div>

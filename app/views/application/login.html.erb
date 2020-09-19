@@ -58,7 +58,7 @@
                 <% if Config.misete_client_id.present? %>
                   <div style="margin-top: 20px">
                     <%= link_to '/auth/misete', method: :post, class: 'google-btn' do %>
-                      <%= t('welcome.login.misete-login') %>
+                      <i class="material-icons" style="font-size: 18px; padding-right: 5px;">lock</i><%= t('welcome.login.misete-login') %>
                     <% end %>
                   </div>
                 <% end %>

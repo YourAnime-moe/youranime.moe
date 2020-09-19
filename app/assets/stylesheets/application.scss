@@ -75,7 +75,7 @@ $pink-invert: #fff;
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }
@@ -84,7 +84,7 @@ $pink-invert: #fff;
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }
@@ -94,7 +94,7 @@ html, .dark-background-2 {
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }

@@ -15,9 +15,9 @@
     </div>
     <div class="container">
       <div class="columns is-multiline">
-        <% @queue.shows_queue_relations.each do |queue_item| %>
+        <% @queue.published_shows_queue_relations.each do |queue_item| %>
           <div class="column is-6" style="margin-top: 20px;">
-            <% link_to(show_path(queue_item.show)) do %>
+            <% link_to(queue_item.show) do %>
               <% queue_item(queue_item.show) %>
             <% end %>
             <div style="display: flex">

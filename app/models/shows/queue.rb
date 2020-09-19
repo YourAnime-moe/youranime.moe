@@ -47,6 +47,10 @@ module Shows
       empty?
     end
 
+    def published_shows_queue_relations
+      shows_queue_relations.where(show_id: Show.published)
+    end
+
     private
 
     def show_ids
