@@ -1,0 +1,12 @@
+<% if @show.has_links? %>
+  <h1 class="subtitle"><%= @show.title %> can be watched on:</h1>
+  <div class="columns is-multiline">
+    <% @show.links.each do |link| %>
+      <div class="column is-4">
+        <%= link_to_show_url(link) %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No links yet! Also, how to did you get there?</p>
+<% end %>

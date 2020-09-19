@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_225714) do
+ActiveRecord::Schema.define(version: 2020_09_19_042641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,19 +116,22 @@ ActiveRecord::Schema.define(version: 2020_09_17_225714) do
     t.index ["show_id", "value"], name: "index_ratings_on_show_id_and_value"
   end
 
+  create_table "show_urls", force: :cascade do |t|
+    t.string "url_type", null: false
+    t.string "value", null: false
+    t.bigint "show_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["show_id"], name: "index_show_urls_on_show_id"
+  end
+
   create_table "shows", force: :cascade do |t|
     t.string "show_type", default: "anime", null: false
-    t.boolean "dubbed", default: false, null: false
-    t.boolean "subbed", default: true, null: false
     t.boolean "published", default: false, null: false
     t.integer "views", default: 0, null: false
     t.integer "popularity", default: -1, null: false
     t.float "rating", default: 0.0, null: false
-    t.text "plot", default: "", null: false
     t.date "released_on", null: false
-    t.date "published_on"
-    t.boolean "featured", default: false, null: false
-    t.boolean "recommended", default: false, null: false
     t.string "banner_url", default: "/img/404.jpg", null: false
     t.integer "queue_id"
     t.datetime "created_at", precision: 6, null: false
@@ -144,6 +147,15 @@ ActiveRecord::Schema.define(version: 2020_09_17_225714) do
     t.integer "rank"
     t.string "airing_status", default: "unknown", null: false
     t.string "youtube_trailer_id"
+    t.boolean "top_entry", default: false, null: false
+    t.string "age_rating", default: "NR"
+    t.string "age_rating_guide"
+    t.string "show_category"
+    t.string "status", default: "finished"
+    t.date "starts_on"
+    t.date "ended_on"
+    t.boolean "nsfw", default: false, null: false
+    t.integer "episodes_count", default: 0, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
   end
 
@@ -286,5 +298,6 @@ ActiveRecord::Schema.define(version: 2020_09_17_225714) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "job_events", "staffs"
+  add_foreign_key "show_urls", "shows"
   add_foreign_key "uploads", "users"
 end

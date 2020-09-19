@@ -87,7 +87,7 @@ def seed_shows
   #(start..fin).each do |i|
   #  title = Title.new(en: "Show #{i}")
   #  description = Description.new(en: "This show was autogenetared. Number: #{i}")
-  #  Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
+  #  Show.create!(show_type: 'anime', published: true, released_on: Time.now, title: title, description: description)
   #end
 
   # seed_ratings
@@ -122,12 +122,8 @@ def seed_show(show_name, at: nil)
 
   show = Show.create!(
     show_type: 'anime',
-    dubbed: (at % 2).zero?,
-    subbed: (at % 3).zero?,
     released_on: Time.now.utc,
-    published_on: Time.now.utc,
     published: true,
-    plot: 'My plot',
     title: title,
     description: description
   )

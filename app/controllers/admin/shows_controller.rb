@@ -38,6 +38,13 @@ module Admin
       redirect_to(admin_show_path(show))
     end
 
+    def sync_now
+      show = Show.find(params[:show_id])
+      Sync::ShowFromKitsuJob.perform_now(show, staff: current_user.staff_user)
+
+      redirect_to(admin_show_path(show))
+    end
+
     def publish
       show = Show.find(params[:show_id])
       show.publish

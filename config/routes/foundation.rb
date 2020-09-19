@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
     get :action_buttons, to: :action_buttons_partial
 
+    get 'partial/:partial_name', to: 'shows#render_partial', as: :partial
+
     # Episodes
     resources :episodes, only: %i[show update]
   end

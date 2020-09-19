@@ -1,6 +1,6 @@
 module Shows
   class Sync < ApplicationOperation
-    property! :sync_type, accepts: [:airing, :episodes, :crawl]
+    property! :sync_type, accepts: [:airing, :episodes, :crawl, :show]
     property! :requested_by, accepts: Staff
     property :show, accepts: Show
 
@@ -22,6 +22,7 @@ module Shows
       return sync_airing if sync_type == :airing
       return sync_episodes if sync_type == :episodes
       return crawl_shows if sync_type == :crawl
+      return sync_show if sync_type == :show
     end
 
     private
@@ -43,6 +44,19 @@ module Shows
 
       Rails.logger.info("[Shows::Sync] #{request_episodes_url(show)}")
       override_episodes_for(show)
+    end
+
+    def sync_show
+      raise '`show` params is mandatory with sync_type: :show' unless show.present?
+      return unless show.synchable?
+
+      response = RestClient.get(request_show_url(show))
+      return unless response.code < 300 && response.code >= 200
+
+      data = JSON.parse(response.body).deep_symbolize_keys
+      return if data[:data].blank?
+
+      create_or_update_show_for(data[:data], nil, show_obj: show)
     end
 
     def crawl_shows
@@ -99,27 +113,13 @@ module Shows
       created_shows
     end
 
-    def create_or_update_show_for(data, airing_status)
+    def create_or_update_show_for(data, airing_status, show_obj: nil)
       fetched_attrs = data[:attributes]
-      found_title_record = Title.find_by(roman: fetched_attrs[:slug])
-
-      english_title = fetched_attrs.dig(:titles, :en) || fetched_attrs.dig(:titles, :en_us) || fetched_attrs.dig(:titles, :en_jp) || fetched_attrs[:canonicalTitle]
-      japanese_title = fetched_attrs.dig(:titles, :jp) || fetched_attrs.dig(:titles, :ja) || fetched_attrs.dig(:titles, :ja_jp)
-      description_content = fetched_attrs[:synopsis] || fetched_attrs[:description]
-
-      synched_show = if found_title_record.blank?
-        Show.new.tap do |show|
-          show.title = Title.new(roman: fetched_attrs[:slug], en: english_title, jp: japanese_title)
-          show.description = Description.new(en: description_content)
-        end
-      else
-        found_title_record.update(en: english_title, jp: japanese_title)
-        found_title_record.record
-      end
+      synched_show = show_obj.present? ? show_obj : find_show_from_attributes(fetched_attrs)
 
       if synched_show.persisted?
         if synched_show.description_record.present?
-          synched_show.description_record.update(en: description_content)
+          synched_show.description_record.update(en: fetched_attrs[:synopsis] || fetched_attrs[:description])
         else
           synched_show.description = Description.new(
             en: 'No description exists for this show yet.',
@@ -130,15 +130,14 @@ module Shows
       end
 
       synched_show.popularity = fetched_attrs[:popularityRank]
-      if data[:type] == 'anime'
-        synched_show.show_type = fetched_attrs[:subtype]
-      else
-        synched_show.show_type = data[:type]
-      end
-
-      if synched_show.is?(:movie)
-        synched_show
-      end
+      synched_show.show_type = data[:type]
+      synched_show.show_category = fetched_attrs[:subtype]
+      synched_show.age_rating = fetched_attrs[:ageRating]
+      synched_show.age_rating_guide = fetched_attrs[:ageRatingGuid]
+      synched_show.status = fetched_attrs[:status]
+      synched_show.starts_on = fetched_attrs[:startDate]
+      synched_show.ended_on = fetched_attrs[:endDate]
+      synched_show.nsfw = fetched_attrs[:nsfw].to_s == 'true'
 
       synched_show.airing_status = airing_status if airing_status
       synched_show.youtube_trailer_id = fetched_attrs[:youtubeVideoId]
@@ -152,31 +151,48 @@ module Shows
       synched_show.save!
 
       duration = synched_show.is?(:movie) ? fetched_attrs[:totalLength] || fetched_attrs[:episodeLength] : fetched_attrs[:episodeLength]
-      override_episodes_for(synched_show, duration: duration)
+      override_episodes_for(synched_show)
 
       poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
       banner_url = fetched_attrs.dig(:coverImage, :large) || fetched_attrs.dig(:coverImage, :original) || poster_url
-
 
       banner_file = try_downloading(banner_url)
       if banner_file
         synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}-banner")
         synched_show.generate_banner_url!(force: true)
+        banner_file.unlink
       end
 
       poster_file = try_downloading(poster_url)
       if poster_file
         synched_show.poster.attach(io: poster_file, filename: "show-#{synched_show.id}-poster")
         synched_show.generate_poster_url!(force: true)
+        poster_file.unlink
       end
 
-      banner_file.unlink
-      poster_file.unlink
+      set_streamer_urls_for(synched_show)
 
       synched_show
     end
 
-    def override_episodes_for(show, duration: nil)
+    def find_show_from_attributes(fetched_attrs)
+      found_title_record = Title.find_by(roman: fetched_attrs[:slug])
+      english_title = fetched_attrs.dig(:titles, :en) || fetched_attrs.dig(:titles, :en_us) || fetched_attrs.dig(:titles, :en_jp) || fetched_attrs[:canonicalTitle]
+      japanese_title = fetched_attrs.dig(:titles, :jp) || fetched_attrs.dig(:titles, :ja) || fetched_attrs.dig(:titles, :ja_jp)
+      description_content = fetched_attrs[:synopsis] || fetched_attrs[:description]
+
+      if found_title_record.blank?
+        Show.new.tap do |show|
+          show.title = Title.new(roman: fetched_attrs[:slug], en: english_title, jp: japanese_title)
+          show.description = Description.new(en: description_content)
+        end
+      else
+        found_title_record.update(en: english_title, jp: japanese_title)
+        found_title_record.record
+      end
+    end
+
+    def override_episodes_for(show)
       #::Sync::Shows::ReactionCountJob.perform_later(show)
       return if show.reference_id.blank?
 
@@ -192,17 +208,29 @@ module Shows
       season = show.seasons.first_or_create!
 
       season.episodes.destroy_all
-      data[:data].size.times do |index|
-        season.episodes.create!(
-          number: (index + 1),
-          title: "Episode #{index + 1}",
-          duration: duration,
-          published: true,
-          thumbnail_url: show.banner_url,
-        )
-      end
+      episodes_count = data[:meta].present? ? data[:meta][:count] : 0
+      show.update(
+        synched_at: Time.now.utc,
+        synched_by: requested_by.id,
+        episodes_count: episodes_count,
+      )
+    end
 
-      show.update(synched_at: Time.now.utc, synched_by: requested_by.id)
+    def set_streamer_urls_for(show)
+      return if show.reference_id.blank?
+
+      response = RestClient.get(request_streamer_url(show))
+      return unless response.code < 300 && response.code >= 200
+
+      data = JSON.parse(response.body).deep_symbolize_keys
+      return if data[:data].blank?
+
+      show.urls.destroy_all
+      data[:data].each do |streamer_url_data|
+        attrs = streamer_url_data[:attributes]
+
+        show.urls.create!(value: attrs[:url])
+      end
     end
 
     def request_airing_url(season)
@@ -215,8 +243,16 @@ module Shows
       "#{REQUEST_URL_BASE}?#{filters_as_params}&#{page_info_as_params}"
     end
 
+    def request_show_url(show)
+      "#{REQUEST_URL_BASE}/#{show.reference_id}"
+    end
+
     def request_episodes_url(show)
       "#{REQUEST_URL_BASE}/#{show.reference_id}/relationships/episodes"
+    end
+
+    def request_streamer_url(show)
+      "#{REQUEST_URL_BASE}/#{show.reference_id}/streaming-links?page[limit]=20&page[offset]=0"
     end
 
     def current_season

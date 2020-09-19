@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :shows do
         post :process_csv, on: :collection
         post :sync, on: :collection
+        post :sync_now
         post :sync_episodes
 
         post :publish

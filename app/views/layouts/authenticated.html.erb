@@ -43,6 +43,12 @@
         success: function(html) {
           $(recentShowsCont).html(html);
           if (callback) { callback(); }
+        },
+        error: function() {
+          $(recentShowsCont).html(
+            '<div class="notification is-danger">Sorry, something wrong on our side! Please try again later.</div>'
+          );
+          if (callback) { callback(); }
         }
       });
     }

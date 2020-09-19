@@ -73,6 +73,12 @@ class ShowsController < AuthenticatedController
     end
   end
 
+  def render_partial
+    @show = show_by_slug!(params[:show_slug])
+
+    render template: "/shows/partial/#{params[:partial_name]}", layout: false
+  end
+
   private
 
   def fetch_shows
@@ -91,7 +97,13 @@ class ShowsController < AuthenticatedController
   end
 
   def show_by_slug(slug)
-    (title = Title.find_by(roman: slug)) && title.record
+    show_by_slug!(slug)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def show_by_slug!(slug)
+    (title = Title.find_by!(roman: slug)) && title.record
   end
 
   def navigatable?(show)

@@ -95,14 +95,6 @@ module ShowsHelper
     end
   end
 
-  def dub_tag
-    badge(type: 'warning', content: t('anime.shows.dub'))
-  end
-
-  def sub_tag
-    badge(type: 'primary', content: t('anime.shows.sub'))
-  end
-
   def broken_tag
     content_tag(:span)
   
@@ -314,6 +306,30 @@ module ShowsHelper
         show_title[:title]
       end
     end
+  end
+
+  def link_to_show_url(show_url)
+    url_info = link_info(show_url)
+    background_colour = url_info[:colour]
+    text_colour = text_color(from: background_colour)
+
+    link_to(show_url.value, class: 'button is-fullwidth', style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
+      url_info[:name]
+    end
+  end
+
+  def link_info(show_url)
+    url_type = show_url.url_type
+    url = show_url.value
+
+    return {name: "Funimation", colour: '#410099'} if show_url.funimation?
+    return {name: "Crunchyroll", colour: '#f78c25'} if show_url.crunchyroll?
+    return {name: "Netflix", colour: '#e50914'} if show_url.netflix?
+    return {name: "VRV", colour: '#ffea62'} if show_url.vrv?
+    return {name: "Hulu", colour: '#1ce783'} if show_url.hulu?
+    return {name: "HIDIVE", colour: '#00aeef'} if show_url.hidive?
+    
+    {name: 'Unknown', colour: '#000000'}
   end
 
   private

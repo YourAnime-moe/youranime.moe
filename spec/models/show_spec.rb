@@ -38,26 +38,20 @@ RSpec.describe Show, type: :model do
     expect(show).not_to be_valid
   end
 
-  it 'is not published when there is no published on date' do
-    show = create_show(published_on: nil)
-
-    expect(show).not_to be_published
-  end
-
   [:minute, :hour, :day, :week, :month, :year].each do |unit|
     let(:date_range) { 1.send(unit) }
 
     it "is not published when published 1 #{unit} from now" do
       date = date_range.from_now.utc
 
-      show = FactoryBot.build(:show, published_on: date)
+      show = FactoryBot.build(:show, published: true)
       expect(show).not_to be_published
     end
 
     it "is published when published 1 #{unit} ago" do
       date = date_range.ago.utc
 
-      show = FactoryBot.build(:show, published_on: date)
+      show = FactoryBot.build(:show, published: true)
       expect(show).to be_published
     end
   end

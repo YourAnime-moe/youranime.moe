@@ -10,6 +10,7 @@
   <h1 class="title"><%= @show.title %></h1>
   <div>
     <% if @show.synchable? %>
+      <%= link_to('Sync show now', admin_show_sync_now_path(@show.id), class: 'button is-success is-light', data: {method: :post}) %>
       <%= link_to('Sync all episodes', admin_show_sync_episodes_path(@show.id), class: 'button is-warning is-light', data: {method: :post}) %>
     <% end %>
     <% if @show.published? %>
@@ -120,32 +121,14 @@
       <div class="container-fluid">
         <% @show.seasons.each do |season| %>
           <div class="is-hidden" season="<%= season.number %>">
-            <div class="hf-section is-hidden">
-              <div class="tile is-child box">
-                <%= link_to('Publish all episodes', '/', class: 'button is-small is-success is-light', data: {method: :post}) %>
-                <%= link_to('Unpublish all episodes', '/', class: 'button is-small is-danger is-light', data: {method: :post}) %>
-                <% #form_with(model: [:admin, season]) do |f| %>
-                  <div class="columns">
-                    <div class="column field">
-                      <% #f.label :name, 'Season name', class: 'label' %>
-                      <% #f.text_field(:name, class: 'input is-fullwidth', placeholder: "Default: #{season.default_name}") %>
-                    </div>
-                    <div class="column field">
-                      <% #f.label :number, 'Season number', class: 'label' %>
-                      <% #f.text_field(:number, class: 'input is-fullwidth') %>
-                    </div>
-                  </div>
-                <% #end %>
-              </div>
-            </div>
-            <div class="columns is-multiline">
-              <% season.episodes.each_with_index do |episode| %>
-                <% @model = episode %>
-                <div class="column is-4">
-                  <%= show_thumb(episode) %>
+            <nav class="level">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Episodes</p>
+                  <p class="title"><%= season.episodes.count %></p>
                 </div>
-              <% end %>
-            </div>
+              </div>
+            </nav>
           </div>
         <% end %>
       </div>

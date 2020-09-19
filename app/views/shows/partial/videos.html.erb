@@ -1,0 +1,7 @@
+<% if @show.has_videos? %>
+  <% if @show.has_trailer? %>
+    <h1 class="subtitle">YouTube trailer for <%= @show.title %></h1>
+
+    <iframe width="100%" height="600px" src="<%= @show.youtube_trailer_url %>" allowfullscreen></iframe>
+  <% end %>
+<% end %>

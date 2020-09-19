@@ -30,6 +30,7 @@ class Show < ApplicationRecord
   has_many :published_episodes, through: :seasons
   has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
+  has_many :urls, class_name: 'ShowUrl', inverse_of: :show
 
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
@@ -43,14 +44,12 @@ class Show < ApplicationRecord
 
   respond_to_types SHOW_TYPES
 
-  validate :dub_sub
-
   validates_presence_of :released_on, :banner_url
-  validates_inclusion_of :recommended, :published, :featured, in: [true, false]
+  validates_inclusion_of :top_entry, :published, in: [true, false]
   #validates_inclusion_of :show_type, in: SHOW_TYPES
 
   scope :published, -> { includes(:seasons).where(published: true) }
-  scope :recent, -> { published.order(:published_on).order('created_at desc') }
+  scope :recent, -> { published.order('created_at desc') }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
 
@@ -73,18 +72,6 @@ class Show < ApplicationRecord
 
   def unpublish_episodes
     episodes.update_all(published: false)
-  end
-
-  def only_subbed?
-    (!subbed? && !dubbed?) || subbed? && !dubbed?
-  end
-
-  def only_dubbed?
-    dubbed? && !subbed?
-  end
-
-  def subbed_and_dubbed?
-    subbed? && dubbed?
   end
 
   def synchable?
@@ -145,12 +132,28 @@ class Show < ApplicationRecord
     airing_status == 'unknown'
   end
 
+  def has_videos?
+    has_trailer?
+  end
+
   def has_trailer?
     youtube_trailer_url.present?
   end
 
   def youtube_trailer_url
     youtube_trailer_id.presence && "#{EMBED_YOUTUBE_BASE_URL}/#{youtube_trailer_id}"
+  end
+
+  def watchable?
+    urls.watchable.any?
+  end
+
+  def links
+    urls.non_watchable
+  end
+
+  def has_links?
+    links.any?
   end
 
   def slug
@@ -192,11 +195,5 @@ class Show < ApplicationRecord
     return if persisted?
 
     self.released_on = Time.now.utc
-  end
-
-  def dub_sub
-    if dubbed.nil? && subbed.nil?
-      errors.add(:subbed, 'must at least be selected')
-    end
   end
 end
