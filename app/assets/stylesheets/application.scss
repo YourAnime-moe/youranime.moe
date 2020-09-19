@@ -24,6 +24,9 @@
    warning: #CCC06D
  );
 
+$pink: #ffb3b3;
+$pink-invert: #fff;
+
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @font-face {
@@ -58,6 +61,11 @@
   display: flex !important;
 }
 
+.justify-content-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 .w-100 {
   width: 100% !important;
 }
@@ -67,7 +75,7 @@
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }
@@ -76,7 +84,7 @@
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }
@@ -86,7 +94,7 @@ html, .dark-background-2 {
   strong, strong:focus {
     color: #e0e0e0 !important;
   }
-  strong:hover {
+  strong:hover, a:hover {
     color: #fff !important;
   }
 }
@@ -104,6 +112,11 @@ body {
 
 .navbar-item {
   user-select: none;
+}
+
+.is-pink {
+  background-color: $pink !important;
+  color: $pink-invert !important;
 }
 
 .text-center {
@@ -148,6 +161,11 @@ img.logo {
 
 .material-icons.scale {
   font-size: 100%;
+}
+
+.material-icons.from-like-button {
+  font-size: 15px;
+  padding-right: .3rem;
 }
 
 .loading {
@@ -245,69 +263,6 @@ img.logo {
   font-style: italic;
 }
 
-.holder {
-  position: relative;
-  padding: 0 0 56.5%;
-  overflow: hidden;
-
-  .overlay {
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-  }
-
-  .overlay.darken::after {
-    display: block;
-    position: absolute;
-    background: -webkit-linear-gradient(top,rgba(0,0,0,.5) 0,rgba(0,0,0,.05) 50%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.5) 100%);
-    background: linear-gradient(to bottom,rgba(0,0,0,.5) 0,rgba(0,0,0,.05) 50%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.5) 100%);
-    height: 100%;
-    width: 100%;
-    content: '';
-  }
-
-  img {
-    z-index: 0;
-    position: absolute;
-    width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-  }
-}
-
-.thumb-overlay {
-  width: 100%;
-  height: 100%;
-}
-
-.image-card-container {
-  color: white;
-  position: relative;
-  -moz-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-
-  .description {
-    position: absolute;
-    bottom: 5px;
-    left: 10px;
-  }
-
-  .focusable {
-    .card-img-top {
-      max-width: 100% !important;
-
-      -moz-transition: all 0.3s;
-      -webkit-transition: all 0.3s;
-      transition: all 0.3s;
-    }
-    .card-img-top.descriptive {
-      background-image: linear-gradient(to bottom, rgba(255,0,0,0), black); /* Standard syntax (must be last) */
-    }
-  }
-}
-
 .wrapper {
   position: absolute;
   display: table;
@@ -376,6 +331,19 @@ img.logo {
   padding: 40px;
 }
 
+.padded-bottom {
+  padding-bottom: 40px;
+}
+.padded-top {
+  padding-top: 40px;
+}
+.padded-left {
+  padding-left: 40px;
+}
+.padded-right {
+  padding-right: 40px;
+}
+
 .logo {
   user-select: none;
 
@@ -385,6 +353,30 @@ img.logo {
     font-style: italic;
     color: #777 !important;
   }
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .tabs {

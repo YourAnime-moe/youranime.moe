@@ -30,6 +30,7 @@ fr:
       password: "Mot de passe"
       login: "Se connecter"
       google-login: Se connecter avec Google
+      misete-login: Misete Accounts
       google-or: Ou
       success:
         web-message: "Parfait ! Commençons à regarder des animés !"
@@ -117,6 +118,8 @@ fr:
       view-all: "Toutes les émissions"
       search-result: "Résultats de recherche : %{count} trouvé(s)"
       coming-soon: "À venir !"
+      main-queue: File principale
+      main-queue-what: Ce vous avez ajouté à votre file personelle
       trending: Populaire
       trending-what: Ce que tout le monde aime regarder
       coming-on: "Arrive le"

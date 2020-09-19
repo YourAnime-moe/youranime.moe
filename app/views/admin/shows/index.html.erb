@@ -1,0 +1,32 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><%= link_to('Home', admin_path) %></li>
+    <li class="is-active"><a href="../">Shows (<%= @shows_count %>)</a></li>
+  </ul>
+</nav>
+
+<div style="display: flex; justify-content: space-between;" class="justify-content-between">
+  <h1 class="title">Show List</h1>
+  <% unless JobEvent.is_running_for_job?('Sync::ShowsFromKitsuJob') %>
+    <%= link_to('Sync airing shows', sync_admin_shows_path, class: 'button is-warning is-light', data: {method: :post}) %>
+  <% end %>
+  <%= form_tag(admin_shows_path, method: :get) do %>
+    <div class="control">
+      <input type="text" name="query" placeholder="Search by title, id, slug..." value="<%= params[:query] %>" class="input is-rounded is-dark is-loading" autocomplete="off">
+    </div>
+  <% end %>
+</div>
+
+<%= will_paginate @shows, renderer: BulmaPagination::Rails %>
+
+<div class="columns is-multiline">
+  <% @shows.each do |show| %>
+    <div class="column is-2">
+      <%= link_to(admin_show_path(show)) do %>
+        <%= show_thumb(show) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= will_paginate @shows, renderer: BulmaPagination::Rails %>

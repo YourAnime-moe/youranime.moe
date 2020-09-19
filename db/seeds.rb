@@ -4,17 +4,41 @@ require 'mini_magick'
 def seed
   seed_users
   seed_show_tags
-  seed_shows
+  #seed_shows
 end
 
 def seed_users
+  Staff.create!(
+    username: 'system',
+    name: 'System User',
+    limited: false,
+    password: SecureRandom.hex,
+    email: 'system@youranime.moe',
+  )
   if Rails.env.development?
     Staff.create(
       username: 'admin',
       name: 'Admin User',
       limited: false,
-      password: 'password'
+      password: 'password',
+      email: 'admin@youranime.moe',
     ).to_user!
+
+    User.create(
+      username: 'futsuu',
+      name: 'Yamada Normy',
+      limited: false,
+      password: 'normal',
+      email: 'normal@youranime.moe',
+    )
+
+    User.create(
+      username: 'limited',
+      name: 'Limited User',
+      limited: true,
+      password: 'limited',
+      email: 'limited@youranime.moe',
+    )
   else
     User.create(
       username: 'demo',
@@ -63,7 +87,7 @@ def seed_shows
   #(start..fin).each do |i|
   #  title = Title.new(en: "Show #{i}")
   #  description = Description.new(en: "This show was autogenetared. Number: #{i}")
-  #  Show.create!(show_type: 'anime', published: true, published_on: Time.now, released_on: Time.now, plot: 'My plot', title: title, description: description)
+  #  Show.create!(show_type: 'anime', published: true, released_on: Time.now, title: title, description: description)
   #end
 
   # seed_ratings
@@ -98,12 +122,8 @@ def seed_show(show_name, at: nil)
 
   show = Show.create!(
     show_type: 'anime',
-    dubbed: (at % 2).zero?,
-    subbed: (at % 3).zero?,
     released_on: Time.now.utc,
-    published_on: Time.now.utc,
     published: true,
-    plot: 'My plot',
     title: title,
     description: description
   )

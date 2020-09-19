@@ -5,7 +5,7 @@ class User
     input :access_token, accepts: OmniAuth::AuthHash, type: :keyword, required: true
 
     def execute
-      user = User.from_omniauth(access_token)
+      user = User.from_google_omniauth(access_token)
       return user if user.persisted? && user.google?
       raise NotGoogleUser, 'welcome.google.not-google' if user.persisted?
 

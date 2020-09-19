@@ -32,8 +32,7 @@ class EpisodesController < AuthenticatedController
   end
 
   def ensure_show_available!
-    p "BOOOOOOOOOOM"
-    @show = shows.find_by(id: params[:show_id])
+    @show = shows.find_by_slug(params[:show_slug])
     if @show.nil?
       flash[:warning] = "Sorry but this show is not available at the moment."
       redirect_to shows_path
@@ -41,7 +40,7 @@ class EpisodesController < AuthenticatedController
   end
 
   def ensure_episode_available!
-    @episode = @show.episodes.where(id: params[:id], published: true).first
+    @episode = @show.published_episodes.where(number: params[:id]).first
     if @episode.nil?
       flash[:warning] = "Sorry, this episode is not available at the moment."
       redirect_to show_path(@show)

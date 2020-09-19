@@ -3,9 +3,9 @@ jp:
     name: "タノシム"
 
   lang:
-    lang: "日本語"
+    lang: "日本語 (ベータ版)"
     fr: "Français"
-    jp: "日本語"
+    jp: "日本語 (ベータ版)"
     en: "English"
 
   badge:
@@ -21,6 +21,7 @@ jp:
       login: "ログイン"
       google-or: それとも
       google-login: Googleでログイン
+      misete-login: Misete.ioでログイン
       success:
         web-message: "ログイン完了。アニメの時間だよ！"
       errors:
@@ -73,7 +74,7 @@ jp:
   sidebar:
     home-page: トップページ
     browse: 詳細検索
-    anime-movies: すべての動画
+    anime-movies: すべて
     feel-adventure: おまかせ
     for-you:
       title: あなたのみ
@@ -96,13 +97,26 @@ jp:
     shows:
       dub: 英語
       sub: 日本語
+      anime: アニメ
+      movie: 短編・長編
+      game: ゲーム
+      music: 音楽・曲
+      tv: テレビアニメ
+      special: ★ 特
+      ona: ONA
+      ova: OVA
       empty: >
         申し訳ございませんが、現在では検索基準の通りで結果はありません。後でお試しくださいますようお願いいたします。
-      view-all: "すべてのショー"
+      view-all: "すべてのショーとゲーム"
+      view-all-what: "アニメからゲームを全てこちらにご覧ください。"
       search-result: 検索の結果は%{count}件です
       coming-soon: "近日公開予定"
-      trending: 人気アニメ
-      trending-what: タノシムには流行しているアニメです
+      main-queue: 自分だけのキュー
+      main-queue-what: 自分が追加したショーのキューです
+      trending: 人気
+      trending-what: 今は流行しているアニメやゲームなどです
+      recent: 新たなコンテンツ
+      recent-what: タノシムに最近追加されたコンテンツです
       coming-on: "近日公開予定日付は"
       description: "概要"
       no-description: "- 概要なし -"
@@ -116,6 +130,10 @@ jp:
         episodes: "すべてのエピソード数：%{count}"
         featuring: "声優"
         average-run-time: "エピソードの平均時間は"
+      airing_status:
+        airing: 配信中
+        coming_soon: 配信予定
+        unknown: 不明
 
     movies:
       view-all: "すべての映画"

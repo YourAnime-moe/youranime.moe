@@ -7,8 +7,28 @@ class ApplicationController < ActionController::Base
   before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_users_home_if_logged_in, only: [:login]
 
+  def admin
+    render plain: 'admin panel!'
+  end
+
   def login
     set_title after: t('welcome.text'), before: t('welcome.login.login')
+  end
+
+  def misete_auth
+    @user = User::MiseteAuth.perform(
+      access_token: request.env['omniauth.auth']
+    )
+    if !@user.persisted?
+      set_title(before: t('welcome.user', user: @user.name))
+      render 'welcome_misete'
+    else
+      log_in(@user)
+      redirect_to '/', success: t('welcome.login.success.web-message')
+    end
+  rescue User::MiseteAuth::NotMiseteUser => e
+    Rails.logger.error e
+    redirect_to '/', danger: t('welcome.google.not-google')
   end
 
   def google_auth
@@ -43,6 +63,19 @@ class ApplicationController < ActionController::Base
     else
       Rails.logger.error @user.errors_string
       render 'welcome_google', alert: @user.errors_string
+    end
+  end
+
+  def misete_register
+    @user = User.new(misete_user_params)
+    @user.user_type = User::MISETE
+    @user.active = true
+    if @user.save
+      log_in(@user)
+      redirect_to '/', success: t('welcome.login.success.web-message')
+    else
+      Rails.logger.error @user.errors_string
+      render 'welcome_misete', alert: @user.errors_string
     end
   end
 
@@ -84,6 +117,16 @@ class ApplicationController < ActionController::Base
       :password_confirmation,
       :google_refresh_token,
       :google_token
+    )
+  end
+
+  def misete_user_params
+    params.require(:user).permit(
+      :name,
+      :username,
+      :email,
+      :password,
+      :password_confirmation,
     )
   end
 

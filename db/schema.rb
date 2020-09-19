@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_05_002343) do
+ActiveRecord::Schema.define(version: 2020_09_19_042641) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -43,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
 
   create_table "descriptions", force: :cascade do |t|
     t.string "used_by_model"
-    t.string "model_id"
+    t.bigint "model_id"
     t.string "en"
     t.string "fr"
     t.string "jp"
@@ -86,6 +89,22 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.index ["user_id"], name: "index_issues_on_user_id"
   end
 
+  create_table "job_events", force: :cascade do |t|
+    t.string "status", default: "running", null: false
+    t.string "job_name", null: false
+    t.datetime "started_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "ended_at"
+    t.bigint "job_id"
+    t.bigint "model_id"
+    t.string "used_by_model"
+    t.string "failed_reason_key"
+    t.string "failed_reason_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "staff_id", null: false
+    t.index ["staff_id"], name: "index_job_events_on_staff_id"
+  end
+
   create_table "ratings", force: :cascade do |t|
     t.integer "show_id", null: false
     t.integer "user_id", null: false
@@ -97,23 +116,46 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.index ["show_id", "value"], name: "index_ratings_on_show_id_and_value"
   end
 
+  create_table "show_urls", force: :cascade do |t|
+    t.string "url_type", null: false
+    t.string "value", null: false
+    t.bigint "show_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["show_id"], name: "index_show_urls_on_show_id"
+  end
+
   create_table "shows", force: :cascade do |t|
     t.string "show_type", default: "anime", null: false
-    t.boolean "dubbed", default: false, null: false
-    t.boolean "subbed", default: true, null: false
     t.boolean "published", default: false, null: false
     t.integer "views", default: 0, null: false
     t.integer "popularity", default: -1, null: false
     t.float "rating", default: 0.0, null: false
-    t.text "plot", default: "", null: false
     t.date "released_on", null: false
-    t.date "published_on"
-    t.boolean "featured", default: false, null: false
-    t.boolean "recommended", default: false, null: false
     t.string "banner_url", default: "/img/404.jpg", null: false
     t.integer "queue_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "reference_id"
+    t.string "reference_source"
+    t.datetime "synched_at"
+    t.bigint "synched_by"
+    t.integer "likes_count", default: 0, null: false
+    t.integer "dislikes_count", default: 0, null: false
+    t.integer "loves_count", default: 0, null: false
+    t.string "poster_url", default: "/img/404.jpg", null: false
+    t.integer "rank"
+    t.string "airing_status", default: "unknown", null: false
+    t.string "youtube_trailer_id"
+    t.boolean "top_entry", default: false, null: false
+    t.string "age_rating", default: "NR"
+    t.string "age_rating_guide"
+    t.string "show_category"
+    t.string "status", default: "finished"
+    t.date "starts_on"
+    t.date "ended_on"
+    t.boolean "nsfw", default: false, null: false
+    t.integer "episodes_count", default: 0, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
   end
 
@@ -159,6 +201,12 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email"
+  end
+
+  create_table "sync_requests", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tags", force: :cascade do |t|
@@ -170,7 +218,7 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
 
   create_table "titles", force: :cascade do |t|
     t.string "used_by_model"
-    t.string "model_id"
+    t.bigint "model_id"
     t.string "en"
     t.string "fr"
     t.string "jp"
@@ -184,6 +232,25 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.index ["roman"], name: "index_titles_on_roman"
   end
 
+  create_table "uploads", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "uuid", null: false
+    t.string "upload_type", null: false
+    t.string "upload_status", default: "pending", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_uploads_on_user_id"
+  end
+
+  create_table "user_likes", force: :cascade do |t|
+    t.bigint "show_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "value", null: false
+    t.boolean "is_disabled", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_type", null: false
@@ -191,13 +258,13 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
     t.boolean "deleted", default: false, null: false
     t.datetime "active_until", null: false
     t.datetime "deleted_on"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "device_id", default: "", null: false
     t.string "device_name", default: "", null: false
     t.string "device_location", default: "", null: false
     t.string "device_os", default: "", null: false
     t.boolean "device_unknown", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["deleted", "token"], name: "index_user_sessions_on_deleted_and_token"
     t.index ["token"], name: "index_user_sessions_on_token", unique: true
     t.index ["updated_at"], name: "index_user_sessions_on_updated_at"
@@ -230,4 +297,7 @@ ActiveRecord::Schema.define(version: 2019_11_05_002343) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "job_events", "staffs"
+  add_foreign_key "show_urls", "shows"
+  add_foreign_key "uploads", "users"
 end

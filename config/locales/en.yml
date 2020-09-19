@@ -26,7 +26,7 @@ en:
   lang:
     lang: "English"
     fr: "Français"
-    jp: "日本語"
+    jp: "日本語 (ベータ版)"
     en: "English"
 
   welcome:
@@ -37,6 +37,7 @@ en:
       password: "Your password"
       login: "Login"
       google-login: Sign in with Google
+      misete-login: Misete Accounts
       google-or: Or
       success:
         web-message: "Login successful! Time to watch anime!"
@@ -133,13 +134,24 @@ en:
     shows:
       dub: dub
       sub: sub
+      anime: Anime
+      movie: Movie
+      game: Game
+      music: Music
+      tv: Anime series
+      special: ★ Special
+      ona: ONA
+      ova: OVA
       empty: >
         Nothing has been added yet! Please come back a bit later.
-      view-all: "All Shows"
+      view-all: "All Shows and Games"
+      view-all-what: "Check out what's available on our platform."
       search-result: Found %{count} show(s)
       coming-soon: "Coming soon!"
+      main-queue: Main queue
+      main-queue-what: The shows you've added to your personal queue
       trending: Trending
-      trending-what: The most popular here
+      trending-what: The most popular anime, movies, games etc.
       recent: Recently added
       recent-what: What we've recently added!
       recommend: For you
@@ -157,6 +169,10 @@ en:
         episodes: "%{count} episode(s)"
         featuring: "Featuring:"
         average-run-time: "Average run time"
+      airing_status:
+        airing: Airing now
+        coming_soon: Coming soon
+        unknown: Unknown
     movies:
       view-all: "All Movies"
 

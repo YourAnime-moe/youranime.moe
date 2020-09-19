@@ -3,82 +3,120 @@ class ShowsController < AuthenticatedController
   include ShowsHelper
 
   def index
-    set_title(before: t('anime.shows.view-all'))
-    if params[:query].present?
-      @shows = Show.search(params[:query])
+    title_key = if params[:by] == 'trending'
+      'trending'
+    elsif params[:by] == 'recent'
+      'recent'
     else
-      @shows = Title.order(I18n.locale).map(&:record).select{|show| show.published?}
+      'view-all'
     end
+    @title = t("anime.shows.#{title_key}")
+    @title_subtitle = t("anime.shows.#{title_key}-what")
+
+    @shows = fetch_shows.paginate(page: params[:page])
     @shows_count = @shows.count
-    @additional_main_class = 'no-margin no-padding' if @shows.blank?
-    @shows_parts = @shows.each_slice(3).to_a
+
+    set_title(before: @title)
   end
 
   def show
-    @show = Show.find_by(id: params[:id].to_i)
-    if @show.nil? || !@show.published?
-      flash[:warning] = "This show is not available yet. Please try again later."
-      redirect_to shows_path
-    else
-      set_title(:before => @show.title)
-      @episodes = @show.seasons.includes(:episodes).map do |season| 
-        {
-          season: season.number,
-          episodes: season.episodes.each_slice(3).to_a
-        }
+    if (@show = show_by_slug(params[:slug])).present?
+      if navigatable?(@show)
+        set_title(:before => @show.title)
+        @episodes = episodes_map(@show)
+        @additional_main_class = 'no-margin no-padding'
+      else
+        flash[:warning] = "This show is not available yet. Check back later!"
+        redirect_to shows_path
       end
-      @additional_main_class = 'no-margin no-padding'
+    elsif (show = Show.find_by(id: params[:slug]))
+      redirect_to(show_path(show.title_record.roman))
+    else
+      flash[:warning] = "This show does not exist. Please try again later."
+      redirect_to shows_path
     end
   end
 
-  def view_all
-    @anime_current = "current"
-    @shows = Show.all
-  end
-
-  def history
-    @anime_current = "current"
-    episodes = current_user.get_episodes_watched
-    if episodes.empty?
-      flash[:warning] = "Sorry, we don't know which epsiodes you've watched yet."
-      redirect_to '/'
-      return
+  def action_buttons
+    if (@show = show_by_slug(params[:show_slug])).present?
+      render template: 'shows/partial/action_buttons', layout: false
+    else
+      render text: 'not found', status: 404
     end
-    @episodes = episodes.map { |e| Episode.find(e) }
-    @episodes.select!(&:published?)
-    @episodes.reverse!
-    set_title before: t('header.history') #, after: "What have you watched so far?"
   end
 
-  def search
-    @search = true
+  def search_partial
+    @search_result = Search.perform(search: params[:query], limit: 10)
+
+    render template: 'shows/partial/search', layout: false
   end
 
-  def tags
-    set_title before: t('tags.title')
-  end
-
-  def render_img
-    id = params[:id]
-    if id.blank?
-      render text: "No show id was provided."
-      return
+  def react
+    if (show = show_by_slug(params[:show_slug]))
+      result = Shows::UpdateReaction.perform(show: show, user: current_user, reaction: params[:reaction])
+      render json: { success: true, result: result }
+    else
+      render json: { error: true }, status: 422
     end
-    show = Show.find_by(id: id)
-    if show.nil?
-      render text: "Show number #{id} does not exist."
-      return
+  end
+  
+  def queue
+    if (show = show_by_slug(params[:show_slug]))
+      result = if current_user.has_show_in_main_queue?(show)
+        current_user.remove_show_from_main_queue(show) && :removed
+      else
+        current_user.add_show_to_main_queue(show) && :added
+      end
+      render json: { success: true, result: result }
+    else
+      render json: { error: true }, status: 422
     end
+  end
 
-    path = show.get_new_image_path
+  def render_partial
+    @show = show_by_slug!(params[:show_slug])
 
-    url = URI.parse(path)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.request(req)
-    }
+    render template: "/shows/partial/#{params[:partial_name]}", layout: false
+  end
 
-    send_data res.body, filename: "#{show.title}"
+  private
+
+  def fetch_shows
+    return Search.perform(search: params[:query], format: :shows) if params[:query].present?
+
+    base_shows_scope = if params[:by] == 'trending'
+      Show.trending
+    elsif params[:by] == 'recent'
+      Show.recent
+    else
+      Show.published.order("titles.#{I18n.locale}")
+    end
+    
+    base_shows_scope
+      .includes(:title_record, :ratings)
+  end
+
+  def show_by_slug(slug)
+    show_by_slug!(slug)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def show_by_slug!(slug)
+    (title = Title.find_by!(roman: slug)) && title.record
+  end
+
+  def navigatable?(show)
+    show.published? || params[:as_admin] == 'true' && current_user.staff_user.present?
+  end
+
+  def episodes_map(show)
+    show.seasons.includes(:episodes).map do |season| 
+      {
+        season: season.number,
+        episodes: season.published_episodes.each_slice(3).to_a
+      }
+    end
   end
 
 end

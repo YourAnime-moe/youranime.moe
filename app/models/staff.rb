@@ -28,10 +28,15 @@ class Staff < ApplicationRecord
       name: name,
       active: true,
       limited: false,
-      password: password
+      password: password,
+      email: email,
     )
 
     update!(user_id: new_user.id)
     new_user
+  end
+
+  def self.system
+    find_by(username: 'system')
   end
 end

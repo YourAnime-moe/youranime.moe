@@ -6,12 +6,8 @@ FactoryBot.define do
     description
     title
 
-    plot do
-      "This anime is about this girl and this guy."
-    end
-
     trait :published do
-      published_on { 1.year.ago }
+      published { true }
     end
   end
 end

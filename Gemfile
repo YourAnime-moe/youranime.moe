@@ -39,6 +39,7 @@ gem 'jbuilder'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'coffee-rails'
+gem 'rest-client'
 
 # Use of Twitter Bootstrap, jQuery things and Materialize SASS
 gem 'jquery-ui-rails'
@@ -60,6 +61,7 @@ gem "aws-sdk-s3", require: false
 
 # Pagination
 gem 'will_paginate'
+gem 'will_paginate-bulma'
 
 # Image processing
 gem 'image_processing', '~> 1.2'
@@ -88,6 +90,12 @@ gem 'debride'
 
 # My gems
 gem 'tanoshimu_utils'
+
+# Downloading files
+gem 'down', '~> 5.0'
+
+# Sidekiq
+gem 'sidekiq'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

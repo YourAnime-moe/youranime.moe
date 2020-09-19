@@ -26,10 +26,22 @@ module Config
 
     def google_client_id	
       ENV['GOOGLE_OAUTH_CLIENT_ID']	
-    end	
+    end
+
+    def misete_client_id
+      ENV['MISETE_OAUTH_CLIENT_ID']
+    end
+
+    def google_oauth_enabled?
+      ENV['DISABLE_GOOGLE_LOGIN'].blank?
+    end
+
+    def oauth_enabled?
+      google_client_id.present? || misete_client_id.present?
+    end
 
     def uses_disk_storage?	
-      Rails.application.config.active_storage.service == :local	
+      Rails.application.config.active_storage.service == :local
     end
   end
 end

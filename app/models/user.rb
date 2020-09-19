@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include LikeableConcern
   include TanoshimuUtils::Concerns::Identifiable
   include TanoshimuUtils::Concerns::RespondToTypes
   include TanoshimuUtils::Validators::UserLike
@@ -6,18 +7,26 @@ class User < ApplicationRecord
   REGULAR = 'regular'
   GOOGLE = 'google'
   ADMIN = 'admin'
+  MISETE = 'misete'
 
-  USER_TYPES = [REGULAR, GOOGLE, ADMIN].freeze
+  OAUTH_USER_TYPES = [GOOGLE, MISETE].freeze
+  USER_TYPES = [REGULAR, GOOGLE, ADMIN, MISETE].freeze
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   before_save :ensure_hex
+  can_like_as :user
 
-  has_many :queues, class_name: 'Shows::Queue', inverse_of: :user
+  has_many :queues, -> {
+    includes(shows_queue_relations: {
+      show: [:description_record, :title_record, :ratings],
+    })
+  }, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
   has_many :ratings
   has_many :shows, through: :ratings
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
+  has_many :uploads, inverse_of: :user
   
   has_one :staff_user, class_name: 'Staff'
   has_secure_password
@@ -49,7 +58,7 @@ class User < ApplicationRecord
   end
 
   def can_manage?
-    admin? || staff_user.present?
+    staff_user.present?
   end
 
   def progress_for(*)
@@ -60,7 +69,29 @@ class User < ApplicationRecord
     Show.joins(:ratings).where('user_id = ?', id)
   end
 
-  def self.from_omniauth(auth)
+  def oauth?
+    OAUTH_USER_TYPES.include?(user_type)
+  end
+
+  def add_show_to_main_queue(show)
+    return if main_queue.include?(show)
+
+    main_queue << show
+  end
+
+  def remove_show_from_main_queue(show)
+    main_queue - show
+  end
+
+  def has_show_in_main_queue?(show)
+    main_queue.include?(show)
+  end
+
+  def main_queue
+    @main_queue ||= queues.empty? ? queues.create! : queues.first
+  end
+
+  def self.from_google_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
       user.name = auth.info.name
       user.email = auth.info.email
@@ -68,9 +99,20 @@ class User < ApplicationRecord
     end
   end
 
+  def self.from_misete_omniauth(auth)
+    where(email: auth.info.email).first_or_initialize do |user|
+      user.name = auth.info.first_name + " " + auth.info.last_name
+      user.email = auth.info.email
+      user.username = auth.info.email
+      user.limited = !auth.info.active || auth.info.blocked
+    end
+  end
+
   def self.demo
     where(username: 'demo').first_or_initialize do |user|
       user.name = 'Demo User'
+      user.password = SecureRandom.hex
+      user.email = 'demo@youranime.moe'
     end
   end
 

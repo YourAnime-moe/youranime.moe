@@ -11,49 +11,64 @@
   <div class="head" target="<%= @show.banner_url %>">
     <div class="overlay">
       <div class="content">
-        <div class="ui container pos-inherit grid">
-          <div class="show-title">
-            <h1 style="font-weight: bold;">
-              <%= @show.title %>
-            </h1>
-            <%= show_tags(@show) %>
+        <div class="container pos-inherit">
+          <div class="columns">
+            <div class="column is-2">
+              <div class="show-title">
+                <%= image_tag(@show.poster_url, class: 'title-img level') %>
+              </div>
+            </div>
+            <div class="column">
+              <div class="show-title">
+                <h1 style="font-weight: bold;">
+                  <%= @show.title %>
+                </h1>
+                <div id="action_buttons">
+                  <%= like_button(@show) %>
+                  <%= dislike_button(@show) %>
+                  <%= queue_button(@show) %>
+                  <%= admin_button(@show) %>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="container">
-    <small>
-      <span style="margin-right: 10px;"><%= show_sub_dub(@show) %></span>
-      <%= @show.description %>
-    </small>
-  </div>
+    <div class="columns">
+      <div class="column is-2">
+        <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
+          <%= show_airing_badge(@show, force: true) %>
+        </div>
+        <div style="margin-top: 10px">
+          <%= show_other_title(@show) %>
+        </div>
+      </div>
 
-  <div class="container padded">
-    <div class="hf-section">
-      <%= seasons_tabs(@show) %>
-    </div>
-
-    <div class="hf-section">
-      <div class="row no-margin">
-        <div class="container-fluid">
-          <% @episodes.each do |episode_info| %>
-            <% episode_info[:episodes].each do |episodes| %>
-              <div class="columns hide" season="<%= episode_info[:season] %>">
-                <% episodes.each_with_index do |episode| %>
-                  <% @_rule = {class: nil} %>
-                  <% @_thumb_info = {} %>
-                  <% @model = episode %>
-                  <div class="column is-4" style="margin-top: 20px;">
-                    <%= render 'shows/partial/_thumbs' %>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-          <% end %>
+      <div class="column">
+        <div class="container padded-bottom">
+          <div class="tabs">
+            <ul>
+              <li><a tab="general" href="#"><i style="width: 30px" class="material-icons">help</i>General</a></li>
+              <% if @show.watchable? %>
+                <li><a tab="watch_now" href="#"><i style="width: 30px" class="material-icons">play_arrow</i>Watch now</a></li>
+              <% elsif @show.has_videos? %>
+                <li><a tab="videos"><i style="width: 30px" class="material-icons">fast_forward</i>Videos</a></li>
+              <% end %>
+              <% if @show.has_links? %>
+                <li><a tab="links"><i style="width: 30px" class="material-icons">link</i>Links (<%= @show.links.count %>)</a></li>
+              <% end %>
+              <li><a tab="comments"><i style="width: 30px" class="material-icons">comments</i>Comments (0)</a></li>
+            </ul>
+          </div>
+          <div id="content" class="container"></div>
         </div>
       </div>
     </div>
+
+    <p class="padded has-text-centered">・・・</p>
   </div>
 </div>
 
@@ -71,5 +86,75 @@
       $target.parent().addClass('is-active');
       $('div[season="' + season + '"]').removeClass('hide');
     });
+
+    $('#queue').on('click', function(e) {
+      $.ajax({
+        method: 'post',
+        url: '<%= show_queue_path(@show, format: :json) %>',
+        success: function(result) {
+          if (result.result == 'added') {
+            $('#queue').addClass('is-success')  
+              .children('.material-icons')
+              .html('playlist_add_check');
+          } else if (result.result == 'removed') {
+            $('#queue').removeClass('is-success')
+              .children('.material-icons')
+              .html('playlist_add');
+          }
+        }
+      });
+    });
+
+    const enableReactToShow = function() {
+      $('button[reaction]').on('click', reactToShow);
+    }
+    const reactToShow = function(e) {
+      console.log('clicked');
+      const $target = $(this);
+      const reactionType = $target.attr('reaction');
+
+      $.ajax({
+        method: 'post',
+        url: '<%= show_react_path(@show, format: :json) %>',
+        data: { reaction: reactionType },
+        success: function(result) {
+          loadPartial('action_buttons', '<%= show_action_buttons_path(@show) %>', enableReactToShow);
+        },
+      });
+    };
+    const handleTabsAndHistory = function() {
+      $('a[tab]').on('click', function(e) {
+        e.preventDefault();
+        const $target = $(this);
+        const clickedOnActive = $target.parents('li').hasClass('is-active');
+
+        $('a[tab]').parents('li').removeClass('is-active');
+        const partialName = $target.attr('tab');
+        loadPartial('content', `/shows/<%= @show.slug %>/partial/${partialName}`, function() {
+          if (clickedOnActive) {
+            window.history.replaceState({tab: partialName}, document.title, `?tab=${partialName}`);
+          } else {
+            window.history.pushState({tab: partialName}, document.title, `?tab=${partialName}`);
+          }
+          $target.parents('li').addClass('is-active');
+        });
+      });
+      loadPartial('content', '<%= show_partial_path(@show, params[:tab] || 'general') %>', function() {
+        const currentTab = '<%= params[:tab] || 'general' %>';
+        $('a[tab]').parents('li').removeClass('is-active');
+        $(`a[tab="${currentTab}"]`).parents('li').addClass('is-active');
+        window.history.replaceState({tab: currentTab}, document.title, `?tab=${currentTab}`);
+      });
+      window.onpopstate = function(event) {
+        const newTab = event.state && event.state.tab || 'general';
+        loadPartial('content', `/shows/<%= @show.slug %>/partial/${newTab}`, function() {
+          $('a[tab]').parents('li').removeClass('is-active');
+          $(`a[tab="${newTab}"]`).parents('li').addClass('is-active')
+        });
+      };
+    }
+
+    handleTabsAndHistory();
+    enableReactToShow();
   });
 </script>

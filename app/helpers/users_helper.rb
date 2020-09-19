@@ -49,13 +49,33 @@ module UsersHelper
       image_tag(url, alt: current_user.name, size: size, **options)
     end
   end
+  
+  def user_emoji
+    emoji = if Config.demo?
+      'signal_cellular_off'
+    elsif current_user.can_manage?
+      'admin_panel_settings'
+    elsif current_user.limited?
+      'signal_cellular_null'
+    elsif current_user.oauth?
+      'link'
+    else
+      'signal_cellular_4_bar'
+    end
+
+    content_tag :span do
+      content_tag :i, class: 'material-icons', style: 'font-size: 18px' do
+        emoji
+      end
+    end
+  end
 
   private
 
   def fetch_image(model)
-    return model.thumbnail_url! if model.is_a?(Episode)
+    return model.thumbnail_url if model.is_a?(Episode)
 
     #model.banner.attached? ? model.banner : model.banner_url
-    model.banner_url
+    model.poster_url
   end
 end

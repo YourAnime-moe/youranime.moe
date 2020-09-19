@@ -1,0 +1,56 @@
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><%= link_to('Home', admin_path) %></li>
+    <li class="is-active"><a href="../">Job events</a></li>
+  </ul>
+</nav>
+
+<div style="display: flex; justify-content: space-between;" class="justify-content-between">
+  <h1 class="title">Job events</h1>
+</div>
+
+<div class="table-container">
+  <table class="table is-fullwidth">
+    <thead>
+      <th>Event ID</th>
+      <th>Job ID</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Started on</th>
+      <th>Ended on</th>
+      <th>Run by</th>
+      <th>Data model</th>
+      <th>Failure reason</th>
+      <th>Failure text</th>
+    </thead>
+
+    <tbody>
+      <% @events.each do |job_event| %>
+        <tr>
+          <td><%= job_event.id %></td>
+          <td><%= job_event.job_id %></td>
+          <td><%= content_tag(:code, job_event.job_name) %></td>
+          <td><%= job_event_status_tag(job_event) %></td>
+          <td><%= job_event.started_at %></td>
+          <td><%= job_event.ended_at %></td>
+          <td><%= job_event.staff.name %></td>
+          <td>
+            <% if job_event.record_name %>
+              <%= link_to(job_event.record_name, [:admin, job_event.record]) %>
+            <% else %>
+              N/A
+            <% end %>
+          </td>
+          <td>
+            <% if job_event.failed_reason_key.present? %> 
+              <%= content_tag(:code, job_event.failed_reason_key) %>
+            <% else %>
+              <span>-</span>
+            <% end %>
+          </td>
+          <td><%= job_event.failed_reason_text || '-' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -24,7 +24,14 @@ module TanoshimuNew
     # Misc
     config.is_demo = ENV['DEMO'].to_s.downcase.strip == 'true'
     config.is_using_disk_storage = config.active_storage.service == :local
+    config.uses_disk_storage = config.active_storage.service == :local
     config.google_client_id = ENV['GOOGLE_OAUTH_CLIENT_ID']
+
+    # Sidekiq
+    config.active_job.queue_adapter = :sidekiq
+
+    # Sync settings
+    config.allows_crawling = Rails.env.production? || ENV['SYNC_CRAWLING'].present?
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

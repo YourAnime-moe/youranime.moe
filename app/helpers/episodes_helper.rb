@@ -20,4 +20,8 @@ module EpisodesHelper
   def restricted?(episode)
     !!current_user.google? && episode.respond_to?(:restricted?) && episode.restricted?
   end
+
+  def broken?(episode)
+    episode.respond_to?(:video) && !episode.video?
+  end
 end

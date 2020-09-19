@@ -36,4 +36,8 @@ class Episode < ApplicationRecord
 
     show.episodes.find_by(['episodes.number > ?', number])
   end
+
+  def views_count
+    0
+  end
 end

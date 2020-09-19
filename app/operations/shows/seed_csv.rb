@@ -2,20 +2,18 @@ require 'csv'
 
 module Shows
   class SeedCsv < ApplicationOperation
+    class AlreadyExistsError < StandardError
+    end
+
     attr_reader :errors
     attr_reader :remaining
 
-    property! :io, accepts: File
-    property! :banners_root, accepts: String
-    property :range, accepts: Range
-    property :locales, accepts: Array, default: -> { [:en, :jp, :fr] }
+    property! :data, accepts: Array
+    property :locales, accepts: Array, default: -> { [:en, :jp] }
 
     before do
+      Rails.logger.info("[Shows::SeedCsv] Processing #{data.size}")
       @failed_shows = []
-      treat_io
-
-      # Check if the directory exists
-      Dir.entries(banners_root)
     end
 
     halted do
@@ -39,50 +37,48 @@ module Shows
     attr_reader :data
     attr_reader :failed_shows
 
-    def treat_io
-      return @data if @data
-
-      raw_data = io.read
-      csv = CSV.new(raw_data,
-        headers: true,
-        header_converters: :symbol,
-        converters: :all
-      )
-
-      @data = csv.to_a.map { |row| row.to_hash }
-    end
-
     def shows_data
-      @shows_data ||= range ? data[range] : data
+      data
     end
 
     def create_show(entry)
       @remaining ||= []
 
-      banner_io = File.open("#{banners_root}/#{entry[:filename]}")
+      banner_io = try_fetching_image_tempfile(entry)
       title_params = title_params(entry)
 
       show = create_show!(title_params, entry, banner_io)
-      failed_shows << show if show.persisted?
-    rescue => e
+      if show.persisted?
+        show.generate_banner_url!(force: true)
+      else
+        failed_shows << show
+      end
+    rescue AlreadyExistsError => e
       remaining << { raw: entry, parsed: entry }
       Rails.logger.error("Error while creating show with params #{entry.to_h}: `#{e}`")
     end
 
     def create_show!(title_params, entry, banner_io)
       # Japanese title is guarenteed to be unique# Japanese title is guarenteed to be unique
-      raise "#{title_params[:en]} already exists" if Title.where(jp: title_params[:jp]).present?
+      raise AlreadyExistsError.new("#{title_params[:en]} already exists") if Title.where(en: title_params[:en]).present?
 
       create_show_instance!(title_params, entry, banner_io)
     end
 
     def create_show_instance!(title_params, entry, banner_io)
-      show = Show.new(published: true, published_on: Time.now.utc)
+      show = Show.new(published: true)
       show.title = Title.new(title_params)
-      show.description = description(entry)
+      show.description = Description.new(en: "Description for #{show.title}") # description(entry)
       show.save!
-      show.banner.attach(io: banner_io, filename: entry[:filename]) if show.persisted?
+      show.banner.attach(io: banner_io, filename: "uploaded-for-show-#{show.id}") if show.persisted? && banner_io
       show
+    end
+
+    def try_fetching_image_tempfile(entry)
+      Down.download(entry[:image_url])
+    rescue => e
+      Rails.logger.error(e)
+      nil
     end
 
     def title_params(entry)

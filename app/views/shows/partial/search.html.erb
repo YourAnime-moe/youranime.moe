@@ -1,0 +1,14 @@
+<div class="autocomplete-items">
+  <% @search_result.each do |result| %>
+    <p style="margin-right: 10px;"><%= bagde_for_show_type(result[0]) %></p>
+    <% result[1].each do |show| %>
+      <div>
+        <%= link_to(show) do %>
+          <%= show.title %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+

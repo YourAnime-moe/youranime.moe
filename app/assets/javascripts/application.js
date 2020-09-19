@@ -97,6 +97,7 @@ function abortAjaxQueue() {
 
 window.fadeIn = function(obj) {
   $(obj).show();
+  $(obj).parents().children('[role="skeleton"]').hide();
   $(obj).parents('[role="have-fun"]').fadeIn(1000);
   $('[role="progress"].progress').css("display", "flex");
 };
