@@ -26,7 +26,11 @@ module Config
 
     def google_client_id	
       ENV['GOOGLE_OAUTH_CLIENT_ID']	
-    end	
+    end
+
+    def google_oauth_enabled?
+      ENV['DISABLE_GOOGLE_LOGIN'].blank?
+    end
 
     def uses_disk_storage?	
       Rails.application.config.active_storage.service == :local
