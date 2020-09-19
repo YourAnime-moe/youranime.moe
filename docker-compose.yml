@@ -45,6 +45,7 @@ services:
     environment:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
+      DISABLE_GOOGLE_LOGIN: '1'
     depends_on:
       - db
 
