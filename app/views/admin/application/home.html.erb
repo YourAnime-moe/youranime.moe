@@ -127,7 +127,8 @@
                       <% if event.running? %>
                         Started <%= time_ago_in_words(event.started_at) %> ago
                       <% else %>
-                        Finished <%= time_ago_in_words(event.ended_at) %> ago
+                        Finished <%= time_ago_in_words(event.ended_at) %> ago -
+                        Ran for <%= distance_of_time_in_words(event.ended_at - event.started_at) %>
                       <% end %>
                     </small>
                   </p>

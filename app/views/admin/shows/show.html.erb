@@ -58,6 +58,7 @@
 
           <hr>
           <p>Likes/dislikes: <%= value_tag("#{@show.likes.count} like(s)", colour: :success) %><%= value_tag("#{@show.dislikes.count} dislike(s)", colour: :danger) %>
+          <p>Popularity (lower is better): <code><%= @show.popularity %></code></p>
           <p>Avg. Rating: <code><%= @show.rating %></code></p>
           <p>Ratings count: <code><%= @show.ratings.count %></code></p>
           <p>Queues count: <code><%= @show.queues.count %></code></p>

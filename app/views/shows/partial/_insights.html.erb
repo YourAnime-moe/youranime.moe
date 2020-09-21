@@ -2,8 +2,8 @@
   <div class="level-item has-text-centered">
     <% if @show.is?(:movie) %>
       <div>
-        <p class="heading">Duration</p>
-        <p class="title"><%= @show.duration || '-' %></p>
+        <p class="heading">Duration (mins)</p>
+        <p class="title"><%= @show.duration.to_i || '-' %></p>
       </div>
     <% elsif @show.is?(:game) %>
       <div>
