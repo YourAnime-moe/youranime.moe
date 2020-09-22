@@ -18,6 +18,8 @@ module EpisodesHelper
   end
 
   def restricted?(episode)
+    return false unless logged_in?
+
     !!current_user.google? && episode.respond_to?(:restricted?) && episode.restricted?
   end
 

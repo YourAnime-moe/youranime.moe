@@ -66,9 +66,14 @@ module ShowsHelper
     badge(type: 'info', content: show.rating)
   end
 
+  def can_display_airing_badge?(show)
+    return false if !show.kind_of?(Show) || show.is?(:music)
+
+    !show.air_complete? || show.coming_soon?
+  end
+
   def show_airing_badge(show, force: false)
-    return '' unless show.kind_of?(Show) && !show.air_complete?
-    return '' if show.is?(:music) && !show.coming_soon? && !force
+    return '' unless force || can_display_airing_badge?(show)
 
     badge(type: 'light', content: t("anime.shows.airing_status.#{show.airing_status}"))
   end
@@ -332,6 +337,18 @@ module ShowsHelper
     {name: 'Unknown', colour: '#000000'}
   end
 
+  def sort_shows_by_tabs
+    content_tag :div, class: 'tabs padded-bottom' do
+      content_tag :ul do
+        content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
+          content_tag(:li, class: active_class_for(blank: true)) { link_to(t('anime.shows.view-all'), shows_path) } +
+          content_tag(:li, class: active_class_for('coming-soon')) { link_to(t('anime.shows.coming-soon'), shows_path(by: 'coming-soon')) } + 
+          content_tag(:li, class: active_class_for('airing')) { link_to(t('anime.shows.airing-now'), shows_path(by: :airing)) } + 
+          content_tag(:li, class: active_class_for('recent')) { link_to(t('anime.shows.recent'), shows_path(by: :recent)) }
+      end
+    end
+  end
+
   private
 
   def valid_thumbable_class?(model)
@@ -345,5 +362,15 @@ module ShowsHelper
 
   def check_admin?(admin)
     admin && current_user.staff_user.present?
+  end
+
+  def active_class_for(value=nil, blank: false)
+    condition = if blank
+      params[:by].blank?
+    elsif value.present?
+      params[:by] == value.to_s
+    end
+
+    condition ? 'is-active' : ''
   end
 end

@@ -7,6 +7,18 @@ module Config
   mattr_accessor :videojs	
   @@videojs = nil
 
+  WINTER_SEASON = :winter
+  SPRING_SEASON = :spring
+  SUMMER_SEASON = :summer
+  FALL_SEASON = :fall
+
+  SEASON_CODES = {
+    WINTER_SEASON => 0,
+    SPRING_SEASON => 1,
+    SUMMER_SEASON => 2,
+    FALL_SEASON => 3,
+  }.freeze
+
   class << self
     def slack_client
       return @slack_client unless @slack_client.nil?
@@ -42,6 +54,58 @@ module Config
 
     def uses_disk_storage?	
       Rails.application.config.active_storage.service == :local
+    end
+
+    def current_season
+      current_date = Time.now.utc
+      season_name = season_name_from(current_date)
+
+      {
+        year: current_date.year,
+        season: season_name,
+        status: :airing,
+        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: current_date.year),
+      }
+    end
+
+    def next_season
+      current_date = Time.now.utc
+      current_season_code = season_code_from(current_date)
+
+      next_season_code = (current_season_code + 1) % SEASON_CODES.count
+      next_season_year = current_season_code < next_season_code ? current_date.year : current_date.year + 1
+
+      season_name = season_name_for(next_season_code)
+
+      {
+        year: next_season_year,
+        season: season_name,
+        status: :coming_soon,
+        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: current_date.year),
+      }
+    end
+
+    private
+
+    def season_code_from(date)
+      case date.month
+      when 1..3
+        SEASON_CODES[WINTER_SEASON]
+      when 4..6
+        SEASON_CODES[SPRING_SEASON]
+      when 7..9
+        SEASON_CODES[SUMMER_SEASON]
+      when 10..12
+        SEASON_CODES[FALL_SEASON]
+      end
+    end
+
+    def season_name_from(date)
+      season_name_for(season_code_from(date))
+    end
+
+    def season_name_for(code)
+      SEASON_CODES.key(code)
     end
   end
 end

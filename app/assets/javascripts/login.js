@@ -73,12 +73,15 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 			components[9],
 			components[16]
 		];
+		const urlParams = new URLSearchParams(window.location.search);
+		const nextParam = urlParams.get('next') || undefined;
 		$.ajax({
 			url: '/login',
 			method: 'post',
 			data: {
 				username: one,
 				password: two,
+				next: nextParam,
 				fingerprint: {
 					print: handleFingerprint(components),
 					items: items

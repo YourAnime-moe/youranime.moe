@@ -8,7 +8,7 @@
       </div>
     </div>
   <% else %>
-    <% if @episodes[:actual].size > 0 %>
+    <% if logged_in? && @episodes[:actual].size > 0 %>
       <div class="hf-section" style="margin-bottom: 50px;">
         <div class="tanoshimu-list-title"><%= t('anime.episodes.continue-watching') %></div>
         <%= render 'users/partial/continue' %>
@@ -16,7 +16,7 @@
     <% end %>
 
     <div class="hf-section">
-      <% if @main_queue.any? %>
+      <% if logged_in? && @main_queue.any? %>
         <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
         <div class="columns is-tiny-gap no-margin shows" style="overflow: scroll">
           <% @main_queue.each do |show| %>
@@ -36,6 +36,14 @@
     </div>
 
     <div class="hf-section">
+      <%= hf_header(t('anime.shows.airing-now'), subtitle: t('anime.shows.airing-now-what', season: Config.current_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: :airing)) %>
+      <div id="airing_now">
+        <%= show_skeleton %>
+        <%= show_skeleton %>
+      </div>
+    </div>
+
+    <div class="hf-section">
       <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path(by: :trending)) %>
       <div id="trending_shows">
         <%= show_skeleton %>
@@ -43,7 +51,7 @@
       </div>
     </div>
 
-    <% if @recommendations.any? %>
+    <% if logged_in? && @recommendations.any? %>
       <div class="hf-section">
         <%= hf_header(t('anime.shows.recommend'), subtitle: t('anime.shows.recommend-what'), link_title: t('anime.other.more'), link: shows_path) %>
         <div class="thumbs-section">
@@ -61,6 +69,14 @@
     <% end %>
 
     <div class="hf-section">
+      <%= hf_header(t('anime.shows.coming-soon'), subtitle: t('anime.shows.coming-soon-what', season: Config.next_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: 'coming-soon')) %>
+      <div id="coming_soon">
+        <%= show_skeleton %>
+        <%= show_skeleton %>
+      </div>
+    </div>
+
+    <div class="hf-section">
       <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path(by: :recent)) %>
       <div id="recent_shows">
         <%= show_skeleton %>
@@ -72,7 +88,9 @@
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
-    loadPartial('recent_shows', '/users/recent_shows');
-    loadPartial('trending_shows', '/users/trending_shows');
+    loadPartial('recent_shows', '/recent_shows');
+    loadPartial('trending_shows', '/trending_shows');
+    loadPartial('airing_now', '/airing_now');
+    loadPartial('coming_soon', '/coming_soon');
   });
 </script>

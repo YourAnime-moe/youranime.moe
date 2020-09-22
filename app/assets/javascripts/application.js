@@ -103,14 +103,6 @@ window.fadeIn = function(obj) {
 };
 
 $(document).ready(function() {
-    //$(".button-collapse").sidenav();
-    //$('.modal').modal();
-    //$(".dropdown-trigger").dropdown();
-    //$('select').formSelect();
-    //$('.datepicker').datepicker();
-
-    // $('.dropdown-toggle').dropdown();
-
     var current_lang = navigator.language || navigator.userLanguage || 'en';
     var lang_is_loading = false;
     if (current_lang == 'ja') {
@@ -132,16 +124,6 @@ $(document).ready(function() {
         switchTo(elem.getAttribute('locale-switcher'), true);
       }
     });
-
-    /* $('[role="have-fun"]').on('click', function(e) {
-      console.log('click!');
-      if ($(this).attr('show')) {
-        window.location.href = "/shows?id=" + $(this).attr('show');
-      }
-      if ($(this).attr('episode')) {
-        window.location.href = "/shows/episodes?id=" + $(this).attr('episode');
-      }
-    }); */
 });
 
 function switchTo(locale, force) {
@@ -160,6 +142,25 @@ function switchTo(locale, force) {
       }
     }
   })
+}
+
+function loadPartial(id, url, callback) {
+  const recentShowsCont = document.getElementById(id);
+
+  $.ajax({
+    url: url,
+    method: 'get',
+    success: function(html) {
+      $(recentShowsCont).html(html);
+      if (callback) { callback(); }
+    },
+    error: function() {
+      $(recentShowsCont).html(
+        '<div class="notification is-danger">Sorry, something wrong on our side! Please try again later.</div>'
+      );
+      if (callback) { callback(); }
+    }
+  });
 }
 
 if (window.requestIdleCallback) {

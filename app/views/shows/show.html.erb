@@ -23,12 +23,14 @@
                 <h1 style="font-weight: bold;">
                   <%= @show.title %>
                 </h1>
-                <div id="action_buttons">
-                  <%= like_button(@show) %>
-                  <%= dislike_button(@show) %>
-                  <%= queue_button(@show) %>
-                  <%= admin_button(@show) %>
-                </div>
+                <% if logged_in? %>
+                  <div id="action_buttons">
+                    <%= like_button(@show) %>
+                    <%= dislike_button(@show) %>
+                    <%= queue_button(@show) %>
+                    <%= admin_button(@show) %>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
@@ -39,9 +41,11 @@
   <div class="container">
     <div class="columns">
       <div class="column is-2">
-        <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
-          <%= show_airing_badge(@show, force: true) %>
-        </div>
+        <% if can_display_airing_badge?(@show) %>
+          <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
+            <%= show_airing_badge(@show, force: true) %>
+          </div>
+        <% end %>
         <div style="margin-top: 10px">
           <%= show_other_title(@show) %>
         </div>

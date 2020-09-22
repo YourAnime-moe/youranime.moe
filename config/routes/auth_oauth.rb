@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post '/welcome/misete/user' => 'application#misete_register'
 
   # Authentication
-  get '/login' => 'application#root'
+  get '/login', to: 'application#login'
   get '/logout' => 'application#logout'
   post '/login' => 'application#login_post'
 end

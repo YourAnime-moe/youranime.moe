@@ -29,6 +29,10 @@ en:
     jp: "日本語 (ベータ版)"
     en: "English"
 
+  auth:
+    logged-in: "You, %{name}, are logged in as <strong class='css-truncate-target'>%{username}</strong>."
+    not-logged-in: "You are <strong>not</strong> logged in."
+
   welcome:
     title: "Tanoshimu"
     catch-phrase: "Welcome! Please enter your username and password below."
@@ -131,6 +135,12 @@ en:
       updated: "This show has successfully been updated!"
 
   anime:
+    season:
+      format: '%{name} %{year}'
+      winter: Winter
+      spring: Spring
+      summer: Summer
+      fall: Fall
     shows:
       dub: dub
       sub: sub
@@ -152,6 +162,10 @@ en:
       main-queue-what: The shows you've added to your personal queue
       trending: Trending
       trending-what: The most popular anime, movies, games etc.
+      airing-now: Airing now
+      airing-now-what: Most popular shows airing in %{season}
+      coming-soon: Coming soon
+      coming-soon-what: What's coming out next season (%{season})
       recent: Recently added
       recent-what: What we've recently added!
       recommend: For you

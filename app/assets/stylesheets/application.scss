@@ -397,6 +397,15 @@ img.logo {
   }
 }
 
+.pagination-link {
+  color: #aaa !important;
+  border-radius: 100% !important;
+}
+
+.pagination-next, .pagination-previous {
+  color: #aaa !important;
+}
+
 @media (max-width: 992px) {
     .mobile {
         display: block;

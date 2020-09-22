@@ -1,14 +1,29 @@
 class ApplicationController < ActionController::Base
   helper Webpacker::Helper
+
   include ApplicationHelper
   include LocaleConcern
+  include PartialsConcern
 
   before_action :find_locale
   before_action :check_is_in_maintenance_mode!, except: [:logout]
-  before_action :redirect_to_users_home_if_logged_in, only: [:login]
+  before_action :redirect_to_home_if_logged_in, only: [:login]
 
-  def admin
-    render plain: 'admin panel!'
+  layout :application_layout
+
+  def home
+    @trending = Show.trending.includes(:title_record).limit(8)
+    if logged_in?
+      @episodes = {actual: []}
+      @main_queue = current_user.main_queue.shows
+      @view_all_queue = @main_queue.count > 10
+      @main_queue = @main_queue.limit(10)
+      @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
+      
+      set_title(before: t('user.welcome', user: current_user.name))
+    else
+      set_title(before: t('user.welcome', user: 'dear person'))
+    end
   end
 
   def login
@@ -28,7 +43,7 @@ class ApplicationController < ActionController::Base
     end
   rescue User::MiseteAuth::NotMiseteUser => e
     Rails.logger.error e
-    redirect_to '/', danger: t('welcome.google.not-google')
+    redirect_to(redirect_to_url, danger: t('welcome.google.not-google'))
   end
 
   def google_auth
@@ -40,7 +55,7 @@ class ApplicationController < ActionController::Base
       render 'welcome_google'
     else
       log_in(@user)
-      redirect_to '/', success: t('welcome.login.success.web-message')
+      redirect_to(redirect_to_url, success: t('welcome.login.success.web-message'))
     end
   rescue User::GoogleAuth::NotGoogleUser => e
     Rails.logger.error e
@@ -81,7 +96,7 @@ class ApplicationController < ActionController::Base
 
   def logout
     log_out
-    redirect_to '/'
+    redirect_to redirect_to_url
   end
 
   def login_post
@@ -91,7 +106,7 @@ class ApplicationController < ActionController::Base
       fingerprint: params[:fingerprint]
     )
     log_in(user)
-    render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
+    render json: { new_url: redirect_to_url, message: t('welcome.login.success.web-message'), success: true }
   rescue User::Login::LoginError => e
     render json: { message: e.message }
   end
@@ -100,12 +115,26 @@ class ApplicationController < ActionController::Base
     render json: { success: true, locale: I18n.locale }
   end
 
+  protected
+
+  def ensure_logged_in!
+    current_user.sessions.create(active_until: 1.week.from_now) if logged_in? && current_user.auth_token.nil?
+    return if logged_in?
+
+    next_url = NextLinkFinder.perform(path: request.fullpath)
+    redirect_to "/?next=#{CGI.escape(next_url)}"
+  end
+
   private
 
-  def redirect_to_users_home_if_logged_in
+  def redirect_to_url
+    params[:next].present? ? params[:next] : '/'
+  end
+
+  def redirect_to_home_if_logged_in
     return unless logged_in?
 
-    redirect_to '/users/home'
+    redirect_to(home_path)
   end
 
   def google_user_params
@@ -144,5 +173,11 @@ class ApplicationController < ActionController::Base
         }
       end
     end
+  end
+
+  def application_layout
+    return 'no_headers' if params[:action] == 'login'
+
+    logged_in? ? 'authenticated' : 'application'
   end
 end

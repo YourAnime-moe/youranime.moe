@@ -1,0 +1,60 @@
+
+<nav class="navbar is-spaced is-dark becomes-transparent" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <%= image_tag 'tanoshimu', class: 'logo' %><h1 class="hide logo-title"><%= t('app.name') %></h1>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <%= link_to(shows_path(by: :trending), class: 'navbar-item') do %>
+        <i class="material-icons">star</i>
+        <%= t('anime.shows.trending') %>
+      <% end %>
+
+      <%= link_to(shows_path, class: 'navbar-item') do %>
+        <i class="material-icons">play_arrow</i>
+        <%= t('sidebar.anime-movies') %>
+      <% end %>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
+            <i class="material-icons">bug_report</i>
+          <% end %>
+          <%= link_to(login_then_redirect_path, class: 'button is-success') do %>
+            <i class="material-icons md-18">lock</i>
+            <span style="margin-left: 5px"><%= t('welcome.login.login') %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = $('#search-input');
+    const searchResults = $('#search-results');
+
+    searchInput.on('keydown', function(e) {
+      const query = $(this).val();
+
+      if (query.length > 2) {
+        $.ajax({
+          url: '/search',
+          data: { query: query },
+          success: function(html) {
+            searchResults.show();
+            searchResults.html(html);
+          }
+        });
+      } else {
+        searchResults.hide();
+      }
+    });
+  });
+</script>
