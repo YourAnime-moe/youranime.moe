@@ -1,6 +1,6 @@
-<% if @trending.any? %>
+<% if @shows.any? %>
   <div class="thumbs-section">
-    <% @trending.each_slice(4) do |shows_rows| %>
+    <% @shows.each_slice(4) do |shows_rows| %>
       <div class="columns is-tiny-gap no-margin shows">
         <% shows_rows.each do |show| %>
           <%= link_to(show, class: "column is-3") do %>

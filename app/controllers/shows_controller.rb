@@ -4,15 +4,21 @@ class ShowsController < ApplicationController
   before_action :ensure_logged_in!, except: [:index, :show, :render_partial]
 
   def index
-    title_key = if params[:by] == 'trending'
-      'trending'
-    elsif params[:by] == 'recent'
-      'recent'
+    shows_scope_info = shows_by
+
+    fetch_shows = if params[:query].present? && logged_in?
+      shows = Search.perform(search: params[:query], format: :shows)
+      @title = t("anime.shows.search")
+      @title_subtitle = t("anime.shows.search-result", count: shows.count)
+
+      shows
     else
-      'view-all'
+      title_key = shows_scope_info[:title]
+      @title = t("anime.shows.#{title_key}")
+      @title_subtitle = t("anime.shows.#{title_key}-what", **titles_options)
+
+      shows_scope_info[:scope]
     end
-    @title = t("anime.shows.#{title_key}")
-    @title_subtitle = t("anime.shows.#{title_key}-what")
 
     @shows = fetch_shows.paginate(page: params[:page])
     @shows_count = @shows.count
@@ -82,21 +88,22 @@ class ShowsController < ApplicationController
 
   private
 
-  def fetch_shows
-    if params[:query].present? && logged_in?
-      return Search.perform(search: params[:query], format: :shows)
-    end
+  def shows_by
+    return { scope: Show.trending, title: 'trending' } if params[:by] == 'trending'
+    return { scope: Show.recent, title: 'recent' } if params[:by] == 'recent'
+    return { scope: Show.airing, title: 'airing-now' } if params[:by] == 'airing'
+    return { scope: Show.coming_soon, title: 'coming-soon' } if params[:by] == 'coming-soon'
 
-    base_shows_scope = if params[:by] == 'trending'
-      Show.trending
-    elsif params[:by] == 'recent'
-      Show.recent
-    else
-      Show.published.order("titles.#{I18n.locale}")
-    end
-    
-    base_shows_scope
-      .includes(:title_record, :ratings)
+    { scope: Show.published_with_title.order("titles.#{I18n.locale}"), title: 'view-all' }
+  end
+
+  def titles_options
+    return {} unless ['coming-soon', 'airing'].include?(params[:by])
+
+    return { season: Config.current_season[:localized] } if params[:by] == 'airing'
+    return { season: Config.next_season[:localized] } if params[:by] == 'coming-soon'
+
+    {}
   end
 
   def show_by_slug(slug)

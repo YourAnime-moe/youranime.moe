@@ -25,7 +25,7 @@
           <% link_to(new_issue_path, class: 'button is-warning is-icon') do %>
             <i class="material-icons">bug_report</i>
           <% end %>
-          <%= link_to(login_path, class: 'button is-success') do %>
+          <%= link_to(login_then_redirect_path, class: 'button is-success') do %>
             <i class="material-icons md-18">lock</i>
             <span style="margin-left: 5px"><%= t('welcome.login.login') %></span>
           <% end %>

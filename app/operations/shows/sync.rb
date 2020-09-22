@@ -6,18 +6,6 @@ module Shows
 
     REQUEST_URL_BASE = 'https://kitsu.io/api/edge/anime'
 
-    WINTER_SEASON = :winter
-    SPRING_SEASON = :spring
-    SUMMER_SEASON = :summer
-    FALL_SEASON = :fall
-
-    SEASON_CODES = {
-      WINTER_SEASON => 0,
-      SPRING_SEASON => 1,
-      SUMMER_SEASON => 2,
-      FALL_SEASON => 3,
-    }.freeze
-
     def execute
       return sync_airing if sync_type == :airing
       return sync_episodes if sync_type == :episodes
@@ -256,47 +244,11 @@ module Shows
     end
 
     def current_season
-      current_date = Time.now.utc
-      {
-        year: current_date.year,
-        season: season_name_from(current_date),
-        status: :airing,
-      }
+      Config.current_season
     end
 
     def next_season
-      current_date = Time.now.utc
-      current_season_code = season_code_from(current_date)
-
-      next_season_code = (current_season_code + 1) % SEASON_CODES.count
-      next_season_year = current_season_code < next_season_code ? current_date.year : current_date.year + 1
-
-      {
-        year: next_season_year,
-        season: season_name_for(next_season_code),
-        status: :coming_soon,
-      }
-    end
-
-    def season_code_from(date)
-      case date.month
-      when 1..3
-        SEASON_CODES[WINTER_SEASON]
-      when 4..6
-        SEASON_CODES[SPRING_SEASON]
-      when 7..9
-        SEASON_CODES[SUMMER_SEASON]
-      when 10..12
-        SEASON_CODES[FALL_SEASON]
-      end
-    end
-
-    def season_name_from(date)
-      season_name_for(season_code_from(date))
-    end
-
-    def season_name_for(code)
-      SEASON_CODES.key(code)
+      Config.next_season
     end
 
     def as_params(array, param_type)

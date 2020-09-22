@@ -14,6 +14,7 @@
       <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
     </div>
     <div class="container is-fluid">
+      <%= sort_shows_by_tabs %>
       <div class="columns is-multiline">
         <% @shows.each do |show| %>
           <div class="column is-3" style="padding: 1px;">

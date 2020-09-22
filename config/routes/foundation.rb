@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   get :main_queue, to: 'application#main_queue_partial'
   get :recommendations, to: 'application#recommendations_partial'
   get :recent_shows, to: 'application#recent_shows_partial'
+  get :airing_now, to: 'application#airing_now_partial'
+  get :coming_soon, to: 'application#coming_soon_partial'
 
   # User links
   scope :users do

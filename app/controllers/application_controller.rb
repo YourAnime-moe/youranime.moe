@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
     end
   rescue User::MiseteAuth::NotMiseteUser => e
     Rails.logger.error e
-    redirect_to '/', danger: t('welcome.google.not-google')
+    redirect_to(redirect_to_url, danger: t('welcome.google.not-google'))
   end
 
   def google_auth
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
       render 'welcome_google'
     else
       log_in(@user)
-      redirect_to '/', success: t('welcome.login.success.web-message')
+      redirect_to(redirect_to_url, success: t('welcome.login.success.web-message'))
     end
   rescue User::GoogleAuth::NotGoogleUser => e
     Rails.logger.error e
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
 
   def logout
     log_out
-    redirect_to '/'
+    redirect_to redirect_to_url
   end
 
   def login_post
@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
       fingerprint: params[:fingerprint]
     )
     log_in(user)
-    render json: { new_url: '/', message: t('welcome.login.success.web-message'), success: true }
+    render json: { new_url: redirect_to_url, message: t('welcome.login.success.web-message'), success: true }
   rescue User::Login::LoginError => e
     render json: { message: e.message }
   end
@@ -126,6 +126,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def redirect_to_url
+    params[:next].present? ? params[:next] : '/'
+  end
 
   def redirect_to_home_if_logged_in
     return unless logged_in?

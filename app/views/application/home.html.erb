@@ -36,6 +36,14 @@
     </div>
 
     <div class="hf-section">
+      <%= hf_header(t('anime.shows.airing-now'), subtitle: t('anime.shows.airing-now-what', season: Config.current_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: :airing)) %>
+      <div id="airing_now">
+        <%= show_skeleton %>
+        <%= show_skeleton %>
+      </div>
+    </div>
+
+    <div class="hf-section">
       <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path(by: :trending)) %>
       <div id="trending_shows">
         <%= show_skeleton %>
@@ -61,6 +69,14 @@
     <% end %>
 
     <div class="hf-section">
+      <%= hf_header(t('anime.shows.coming-soon'), subtitle: t('anime.shows.coming-soon-what', season: Config.next_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: 'coming-soon')) %>
+      <div id="coming_soon">
+        <%= show_skeleton %>
+        <%= show_skeleton %>
+      </div>
+    </div>
+
+    <div class="hf-section">
       <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path(by: :recent)) %>
       <div id="recent_shows">
         <%= show_skeleton %>
@@ -74,5 +90,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     loadPartial('recent_shows', '/recent_shows');
     loadPartial('trending_shows', '/trending_shows');
+    loadPartial('airing_now', '/airing_now');
+    loadPartial('coming_soon', '/coming_soon');
   });
 </script>

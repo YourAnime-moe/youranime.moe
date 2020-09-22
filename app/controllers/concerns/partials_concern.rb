@@ -4,20 +4,17 @@ module PartialsConcern
   extend ActiveSupport::Concern
 
   def trending_shows_partial
-    @trending = Show.trending.includes(:title_record).limit(8)
-
+    @shows = Show.trending.includes(:title_record).limit(8)
     render template: 'users/trending_shows', layout: false
   end
 
   def main_queue_partial
     @main_queue = current_user.main_queue.shows.limit(4)
-
     render template: 'users/main_queue', layout: false
   end
 
   def recommendations_partial
     @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
-
     render template: 'users/recommendations', layout: false
   end
 
@@ -27,6 +24,17 @@ module PartialsConcern
     @recent_shows = Show.recent.includes(:title_record).where(id: ids).limit(8)
 
     render template: 'users/recent_shows', layout: false
+  end
+
+  def airing_now_partial
+    @shows = Show.airing.limit(8)
+    render template: 'users/trending_shows', layout: false
+  end
+
+  def coming_soon_partial
+    @shows = Show.coming_soon.limit(8)
+
+    render template: 'users/trending_shows', layout: false
   end
 
   private

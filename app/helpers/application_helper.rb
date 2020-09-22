@@ -82,6 +82,14 @@ module ApplicationHelper
     brigthness > 125 ? '#000' : '#fff'
   end
 
+  def login_then_redirect_path
+    login_path(next: NextLinkFinder.perform(path: request.fullpath))
+  end
+
+  def logout_then_redirect_path
+    logout_path(next: NextLinkFinder.perform(path: request.fullpath))
+  end
+
   private
 
   def _logout

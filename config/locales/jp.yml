@@ -98,6 +98,12 @@ jp:
       updated: "このショーは変更されました。"
 
   anime:
+    season:
+      format: '%{year}%{name}'
+      winter: 冬
+      spring: 春
+      summer: 夏
+      fall: 秋
     shows:
       dub: 英語
       sub: 日本語
@@ -119,6 +125,10 @@ jp:
       main-queue-what: 自分が追加したショーのキューです
       trending: 人気
       trending-what: 今は流行しているアニメやゲームなどです
+      airing-now: 新着・配信中
+      airing-now-what: '%{season}に新しいショーや既に配信しているショーです。'
+      coming-soon: 配信予定の作品
+      coming-soon-what: '%{season}には配信予定ものです。'
       recent: 新たなコンテンツ
       recent-what: タノシムに最近追加されたコンテンツです
       coming-on: "近日公開予定日付は"

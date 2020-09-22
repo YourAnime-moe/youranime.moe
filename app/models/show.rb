@@ -50,6 +50,8 @@ class Show < ApplicationRecord
 
   scope :published, -> { includes(:seasons).where(published: true) }
   scope :recent, -> { published.order('created_at desc') }
+  scope :airing, -> { trending.where(airing_status: :airing) }
+  scope :coming_soon, -> { trending.where(airing_status: :coming_soon) }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
 
