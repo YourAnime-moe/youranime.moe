@@ -29,6 +29,10 @@ en:
     jp: "日本語 (ベータ版)"
     en: "English"
 
+  auth:
+    logged-in: "You, %{name}, are logged in as <strong class='css-truncate-target'>%{username}</strong>."
+    not-logged-in: "You are <strong>not</strong> logged in."
+
   welcome:
     title: "Tanoshimu"
     catch-phrase: "Welcome! Please enter your username and password below."

@@ -24,7 +24,9 @@
         <% end %>
       </div>
 
-      <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
+      <div class="padded">
+        <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
+      </div>
     </div>
   </div>
 <% end %>

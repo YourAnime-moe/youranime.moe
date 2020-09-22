@@ -1,6 +1,7 @@
-class ShowsController < AuthenticatedController
-
+class ShowsController < ApplicationController
   include ShowsHelper
+
+  before_action :ensure_logged_in!, except: [:index, :show, :render_partial]
 
   def index
     title_key = if params[:by] == 'trending'
@@ -82,7 +83,9 @@ class ShowsController < AuthenticatedController
   private
 
   def fetch_shows
-    return Search.perform(search: params[:query], format: :shows) if params[:query].present?
+    if params[:query].present? && logged_in?
+      return Search.perform(search: params[:query], format: :shows)
+    end
 
     base_shows_scope = if params[:by] == 'trending'
       Show.trending
@@ -107,7 +110,11 @@ class ShowsController < AuthenticatedController
   end
 
   def navigatable?(show)
-    show.published? || params[:as_admin] == 'true' && current_user.staff_user.present?
+    if logged_in?
+      show.published? || params[:as_admin] == 'true' && current_user.staff_user.present?
+    else
+      show.published?
+    end
   end
 
   def episodes_map(show)

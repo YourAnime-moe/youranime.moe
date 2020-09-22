@@ -12,6 +12,10 @@ jp:
     src: "https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png"
     alt: "Google Play で手に入れよう"
 
+  auth:
+    logged-in: "%{name}様は<strong class='css-truncate-target'>%{username}</strong>としてログイン中です。"
+    not-logged-in: "お客様は、ログインして<strong>いません</strong>。"
+
   welcome:
     title: "タノシム"
     catch-phrase: "ようこそ、「タノシム」へ。ユーザ名とパスワードを入力してください。"
@@ -220,3 +224,7 @@ jp:
   errors:
     internal:
       login: "申し訳ありませんが、「タノシム」のサーバーで問題が発生しましたので、あとでやり直してください。"
+
+  will_paginate:
+    previous_label: ← 前
+    next_label: 次 →

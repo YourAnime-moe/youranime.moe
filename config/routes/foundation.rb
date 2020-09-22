@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root 'application#login'
+  root 'application#home'
+  get '/home', to: 'application#home', as: :home
   get '/google' => 'application#welcome_google'
 
   resources :issues, only: %i[index new] do
@@ -24,16 +25,15 @@ Rails.application.routes.draw do
   end
   get '/my/queue', to: 'queues#main'
 
+  get :trending_shows, to: 'application#trending_shows_partial'
+  get :main_queue, to: 'application#main_queue_partial'
+  get :recommendations, to: 'application#recommendations_partial'
+  get :recent_shows, to: 'application#recent_shows_partial'
+
   # User links
   scope :users do
     get :settings, to: 'users#settings', as: :users_settings
-    get :home, to: 'users#home', as: :users_home
     patch 'update/:id', to: 'users#update', as: :user_update
-
-    get :trending_shows, to: 'users#trending_shows_partial'
-    get :main_queue, to: 'users#main_queue_partial'
-    get :recommendations, to: 'users#recommendations_partial'
-    get :recent_shows, to: 'users#recent_shows_partial'
   end
 
   # Locale management

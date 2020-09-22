@@ -32,25 +32,4 @@
   <footer>
      <%= render 'shared/footer' %>
   </footer>
-
-  <script type="text/javascript">
-    function loadPartial(id, url, callback) {
-      const recentShowsCont = document.getElementById(id);
-
-      $.ajax({
-        url: url,
-        method: 'get',
-        success: function(html) {
-          $(recentShowsCont).html(html);
-          if (callback) { callback(); }
-        },
-        error: function() {
-          $(recentShowsCont).html(
-            '<div class="notification is-danger">Sorry, something wrong on our side! Please try again later.</div>'
-          );
-          if (callback) { callback(); }
-        }
-      });
-    }
-  </script>
 </html>

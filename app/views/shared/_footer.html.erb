@@ -1,8 +1,12 @@
 <footer class="footer dark-background-1">
   <div class="content has-text-centered">
     <p>
-      <%= t('header.signed-in', username: current_user.username).html_safe %>
-      <%= user_emoji %>
+      <% if logged_in? %>
+        <%= raw t('auth.logged-in', name: current_user.name, username: current_user.username) %>
+        <%= user_emoji %>
+      <% else %>
+        <%= raw t('auth.not-logged-in') %>
+      <% end %>
     </p>
   </div>
   <div class="content has-text-centered">
@@ -11,7 +15,7 @@
   <div class="content has-text-centered">
     <p>
       <small>
-        &copy; 2016-2019 Tanoshimu (Have Fun) - Anime Akinyele by <a href="https://www.akinyele.ca"><strong>Akinyele Cafe-Febrissy</strong></a>
+        &copy; 2016-<%= DateTime.now.year %> Tanoshimu (Have Fun) - YourAnime.moe by <a href="https://www.akinyele.ca"><strong>Akinyele Cafe-Febrissy</strong></a>
       </small>
     </p>
   </div>
