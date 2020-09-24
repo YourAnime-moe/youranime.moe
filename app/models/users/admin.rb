@@ -7,5 +7,9 @@ module Users
     def can_comment?
       false
     end
+
+    def can_manage?
+      true
+    end
   end
 end

@@ -1,6 +1,6 @@
 module Users
   class Google < Oauth
-    def user_type
+    def provider
       Oauth::GOOGLE
     end
   end

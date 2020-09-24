@@ -15,6 +15,10 @@ module ApplicationHelper
     end
   end
 
+  def logged_in_as_admin?
+    logged_in? && current_user.can_manage?
+  end
+
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.zone.now

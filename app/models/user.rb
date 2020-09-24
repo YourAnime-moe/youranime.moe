@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :uploads, inverse_of: :user
   has_one :staff_user, class_name: 'Staff'
 
+  validate :valid_user_type
   validates :email, uniqueness: true
   validates :first_name, presence: true
   validates_format_of :email, with: EMAIL_REGEX, if: :email?
@@ -67,7 +68,7 @@ class User < ApplicationRecord
   end
 
   def can_manage?
-    staff_user.present?
+    false
   end
 
   def self.from_google_omniauth(auth)
@@ -75,16 +76,6 @@ class User < ApplicationRecord
       user.name = auth.info.name
       user.email = auth.info.email
       user.username = auth.info.email
-    end
-  end
-
-  def self.from_misete_omniauth(auth)
-    where(email: auth.info.email).first_or_initialize do |user|
-      user.first_name = auth.info.first_name
-      user.last_name = auth.info.last_name
-      user.email = auth.info.email
-      user.username = auth.info.email
-      user.limited = !auth.info.active || auth.info.blocked
     end
   end
 
@@ -110,5 +101,11 @@ class User < ApplicationRecord
     code = code.to_s(16).upcase
 
     self[:hex] = '#' << '00000'[0, 6 - code.size] + code
+  end
+
+  def valid_user_type
+    unless type != User.name
+      errors.add(:type, "must not be of type #{User.name}")
+    end
   end
 end
