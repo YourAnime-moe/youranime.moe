@@ -5,8 +5,8 @@ module Admin
     before_action :ensure_title
 
     def home
-      @users_count = User.where.not(user_type: [User::GOOGLE, User::MISETE]).count
-      @oauth_users_count = User.where(user_type: [User::GOOGLE, User::MISETE]).count
+      @users_count = Users::Regular.count
+      @oauth_users_count = Users::Oauth.count
       @shows_count = Show.published.count
       @currently_watching_count = 0
       @currently_logged_in_count = currently_logged_in.count

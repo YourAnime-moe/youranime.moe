@@ -219,6 +219,8 @@ en:
 
   user:
     welcome: "Welcome, %{user}"
+    format:
+      name: '%{first} %{last}'
     settings:
       form:
         submit: Submit

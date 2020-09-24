@@ -1,16 +1,7 @@
 class User < ApplicationRecord
   include LikeableConcern
+  include HasSessionsConcern
   include TanoshimuUtils::Concerns::Identifiable
-  include TanoshimuUtils::Concerns::RespondToTypes
-  include TanoshimuUtils::Validators::UserLike
-
-  REGULAR = 'regular'
-  GOOGLE = 'google'
-  ADMIN = 'admin'
-  MISETE = 'misete'
-
-  OAUTH_USER_TYPES = [GOOGLE, MISETE].freeze
-  USER_TYPES = [REGULAR, GOOGLE, ADMIN, MISETE].freeze
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
@@ -27,50 +18,18 @@ class User < ApplicationRecord
   has_many :shows, through: :ratings
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   has_many :uploads, inverse_of: :user
-  
   has_one :staff_user, class_name: 'Staff'
-  has_secure_password
 
-  respond_to_types USER_TYPES
-
-  validate_like_user user_types: USER_TYPES
   validates :email, uniqueness: true
+  validates :first_name, presence: true
   validates_format_of :email, with: EMAIL_REGEX, if: :email?
 
-  def sessions
-    @sessions ||= Users::Session.where(user_id: id, user_type: user_type)
-  end
-
-  def active_sessions
-    sessions.where(deleted: false).order('created_at desc')
-  end
-
-  def auth_token
-    @auth_token ||= active_sessions.first&.token
-  end
-
-  def delete_auth_token!
-    active_sessions.first&.delete!
-  end
-
-  def delete_all_auth_token!
-    active_sessions.each { |session| session.delete! }
-  end
-
-  def can_manage?
-    staff_user.present?
-  end
-
-  def progress_for(*)
-    0
+  def name
+    I18n.t('user.format.name', first: first_name, last: last_name).strip
   end
 
   def rated_shows
     Show.joins(:ratings).where('user_id = ?', id)
-  end
-
-  def oauth?
-    OAUTH_USER_TYPES.include?(user_type)
   end
 
   def add_show_to_main_queue(show)
@@ -91,6 +50,26 @@ class User < ApplicationRecord
     @main_queue ||= queues.empty? ? queues.create! : queues.first
   end
 
+  def can_login?
+    false
+  end
+
+  def can_like?
+    false
+  end
+
+  def oauth?
+    false
+  end
+
+  def can_comment?
+    false
+  end
+
+  def can_manage?
+    staff_user.present?
+  end
+
   def self.from_google_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
       user.name = auth.info.name
@@ -101,7 +80,8 @@ class User < ApplicationRecord
 
   def self.from_misete_omniauth(auth)
     where(email: auth.info.email).first_or_initialize do |user|
-      user.name = auth.info.first_name + " " + auth.info.last_name
+      user.first_name = auth.info.first_name
+      user.last_name = auth.info.last_name
       user.email = auth.info.email
       user.username = auth.info.email
       user.limited = !auth.info.active || auth.info.blocked

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_19_042641) do
+ActiveRecord::Schema.define(version: 2020_09_23_183711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -275,22 +275,24 @@ ActiveRecord::Schema.define(version: 2020_09_19_042641) do
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "identification", null: false
-    t.string "name", null: false
     t.string "email"
     t.string "user_type", default: "regular", null: false
     t.boolean "active", default: true, null: false
     t.boolean "limited", default: true, null: false
     t.string "hex", default: "#000000", null: false
-    t.string "google_token"
-    t.string "google_refresh_token"
+    t.string "oauth_token"
+    t.string "oauth_refresh_token"
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "first_name", default: "", null: false
+    t.string "last_name"
+    t.string "type", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["google_refresh_token"], name: "index_users_on_google_refresh_token"
-    t.index ["google_token"], name: "index_users_on_google_token"
     t.index ["hex"], name: "index_users_on_hex", unique: true
     t.index ["identification"], name: "index_users_on_identification", unique: true
+    t.index ["oauth_refresh_token"], name: "index_users_on_oauth_refresh_token"
+    t.index ["oauth_token"], name: "index_users_on_oauth_token"
     t.index ["updated_at"], name: "index_users_on_updated_at"
     t.index ["username", "email"], name: "index_users_on_username_and_email"
     t.index ["username"], name: "index_users_on_username", unique: true

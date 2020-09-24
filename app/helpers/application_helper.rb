@@ -25,6 +25,16 @@ module ApplicationHelper
     _logout if logged_in?
   end
 
+  def viewing_as_admin?
+    Config.viewing_as_admin_from?(request)
+  end
+
+  def header_appearance
+    viewing_as_admin? ? \
+      'admin' : \
+      'is-dark'
+  end
+
   def is_maintenance_activated?
     ENV['TANOSHIMU_MAINTENANCE'] == 'true'
   end

@@ -6,10 +6,10 @@ module Admin
     include ::UsersHelper
 
     USER_TYPES_MAP = {
-      google: 'Google User',
-      misete: 'Misete User',
-      regular: 'Regular',
-      admin: 'Admin',
+      Users::Google.name => 'Google User',
+      Users::Misete.name => 'Misete User',
+      Users::Regular.name => 'Regular',
+      Users::Admin.name => 'Admin',
     }.with_indifferent_access.freeze
 
     def user_color(user)
@@ -19,9 +19,9 @@ module Admin
     end
 
     def user_type(user)
-      user_type_text = USER_TYPES_MAP[user.user_type]
+      user_type_text = USER_TYPES_MAP[user.type]
 
-      if user.staff_user.present?
+      if user.can_manage?
         value_tag("[Staff] - #{user_type_text}")
       else
         value_tag(user_type_text)

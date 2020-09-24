@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  namespace :api, defaults: { format: :json } do
+  constraints subdomain: :api do
     get '/', to: "v1/default_action#home"
-    namespace :v1 do
+    namespace :v1, defaults: { format: :json } do
       resources :session, only: %i[create show destroy], param: :token
       resources :shows, only: %i[index show] do
         resources :episodes, only: [:index]

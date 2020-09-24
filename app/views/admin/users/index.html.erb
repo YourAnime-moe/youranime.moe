@@ -22,7 +22,7 @@
             <td><%= user.username %></td>
             <td><%= user.name %></td>
             <td><%= user.email.presence || '-' %></td>
-            <td><%= user_type(user) %></td>
+            <td title="<%= user.type %>"><%= user_type(user) %></td>
             <td><%= user_color(user) %></td>
             <td><%= user_status(user) %></td>
           </tr>
