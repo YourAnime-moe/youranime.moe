@@ -46,6 +46,7 @@ services:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
       DISABLE_GOOGLE_LOGIN: '1'
+      GOOGLE_OAUTH_REDIRECT_HOST: http://tanoshimu.aki
     depends_on:
       - db
 

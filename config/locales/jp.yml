@@ -32,6 +32,7 @@ jp:
         wrong-password: "申し訳ありませんが、%{user}様のパスワードが正しくありません。"
         cannot-login: "%{provider}で登録いたしましたのでパスワードでログインすることができません。そちらのサービスでログインしてみてください。"
         unknown-user: "申し訳ありませんが、お客様のユーザ名「%{attempt}」が見つかりませんでした。"
+        cannot-manage: "管理者の方以外は、ログインできません。"
         no-username: "ユーザ名を入力してください。"
         no-password: "パスワードを入力してください。"
         no-credentials: "ユーザ名とパスワードを入力してください。"

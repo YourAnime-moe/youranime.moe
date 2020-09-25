@@ -6,6 +6,7 @@ class User
     input :password, accepts: String, type: :keyword, required: true
     input :fingerprint, type: :keyword, required: true
     input :maintenance, type: :keyword, required: false
+    input :request, type: :keyword, required: false
 
     before do
       raise LoginError.new('welcome.login.errors.no-credentials') if username.blank? && password.blank?
@@ -17,6 +18,7 @@ class User
     def execute
       check_user_unknown!
       check_wrong_password!
+      check_if_admin_if_viewing_as_admin!
       check_if_maintenance_and_not_admin_user!
       check_user_deactivated!
 
@@ -49,6 +51,15 @@ class User
     def check_wrong_password!
       raise LoginError.new('welcome.login.errors.cannot-login', provider: user.provider_name) unless user.can_login?
       raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
+    end
+
+    def check_if_admin_if_viewing_as_admin!
+      return unless request.present?
+      return unless Config.viewing_as_admin_from?(request)
+
+      unless user.can_manage?
+        raise LoginError.new('welcome.login.errors.cannot-manage')
+      end
     end
 
     def check_if_maintenance_and_not_admin_user!

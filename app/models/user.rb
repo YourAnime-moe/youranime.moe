@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   validate :valid_user_type
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, if: :email?
   validates :first_name, presence: true
   validates_format_of :email, with: EMAIL_REGEX, if: :email?
 

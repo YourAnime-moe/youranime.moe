@@ -62,5 +62,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Local hosts
-  config.hosts << /(\w+.)?tanoshimu\.aki/
+  config.hosts << /((\w+.)+)?tanoshimu\.aki/
 end

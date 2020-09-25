@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   include LocaleConcern
   include PartialsConcern
 
-  before_action :ensure_logged_in_as_admin!, except: [:home]
   before_action :find_locale
   before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_home_if_logged_in, only: [:login]
@@ -119,7 +118,8 @@ class ApplicationController < ActionController::Base
     user = User::Login.perform(
       username: params[:username].strip.downcase,
       password: params[:password].strip,
-      fingerprint: params[:fingerprint]
+      fingerprint: params[:fingerprint],
+      request: request,
     )
     log_in(user)
     render json: { new_url: redirect_to_url, message: t('welcome.login.success.web-message'), success: true }
@@ -141,12 +141,11 @@ class ApplicationController < ActionController::Base
     redirect_to "/?next=#{CGI.escape(next_url)}"
   end
 
-  def ensure_logged_in_as_admin!
+  def ensure_logging_in_as_admin
     return unless viewing_as_admin?
-    return if logged_in_as_admin?
+    return if logged_in?
 
-    next_url = NextLinkFinder.perform(path: request.fullpath)
-    redirect_to "/login?next=#{CGI.escape(next_url)}"
+    raise User::Login::LoginError, 'cannot login as regular user'
   end
 
   private

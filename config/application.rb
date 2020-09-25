@@ -26,7 +26,7 @@ module TanoshimuNew
     config.is_using_disk_storage = config.active_storage.service == :local
     config.uses_disk_storage = config.active_storage.service == :local
     config.google_client_id = ENV['GOOGLE_OAUTH_CLIENT_ID']
-    config.manageable_subdomains = ['admin']
+    config.manageable_subdomains = ['admin', 'admin.stg']
 
     # Sidekiq
     config.active_job.queue_adapter = :sidekiq
