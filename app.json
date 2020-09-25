@@ -1,0 +1,16 @@
+{
+  "name": "YourAnime.moe",
+  "description": "Your anime. Your alone",
+  "keywords": ["anime", "games", "share"],
+  "website": "https://www.youranime.moe",
+  "repository": "https://github.com/thedrummeraki/tanoshimu",
+  "scripts": {
+    "postdeploy": "bundle exec rails db:migrate db:seed"
+  },
+  "addons": [
+    {
+      "plan": "rediscloud",
+      "as": "REDISCLOUD"
+    }
+  ]
+}
