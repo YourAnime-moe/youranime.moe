@@ -9,11 +9,11 @@ module Users
     private
 
     def authenticate!
-      oauth_user = OauthUser.from_omniauth(access_token)
+      oauth_user = Users::Oauth.from_omniauth(access_token)
       update_user(oauth_user)
 
       return oauth_user if oauth_user.valid_oauth_user?
-      raise OauthUser::InvalidOauthUser unless oauth_user.oauth?
+      raise Users::Oauth::InvalidOauthUser unless oauth_user.oauth?
       raise Users::Session::InactiveError if oauth_user.persisted? && !oauth_user.active?
 
       prepare_oauth_user(oauth_user)

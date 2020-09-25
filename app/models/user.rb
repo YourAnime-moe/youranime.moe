@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  before_save :ensure_hex
+  before_save :ensure_hex, unless: :hex
   can_like_as :user
 
   has_many :queues, -> {
@@ -19,6 +19,8 @@ class User < ApplicationRecord
   has_many :sessions, class_name: 'Users::Session', inverse_of: :user
   has_many :uploads, inverse_of: :user
   has_one :staff_user, class_name: 'Staff'
+
+  has_one_attached :avatar
 
   validate :valid_user_type
   validates :email, uniqueness: true

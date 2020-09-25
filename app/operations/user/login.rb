@@ -10,7 +10,7 @@ class User
     before do
       raise LoginError.new('welcome.login.errors.no-credentials') if username.blank? && password.blank?
       raise LoginError.new('welcome.login.errors.no-username') if username.blank?
-      raise LoginError.new('welcome.login.errors.no-password') if password.blank?
+      raise LoginError.new('welcome.login.errors.no-password') if password.blank? 
       raise LoginError.new('fingerprint.missing') if fingerprint.blank?
     end
 
@@ -47,6 +47,7 @@ class User
     end
 
     def check_wrong_password!
+      raise LoginError.new('welcome.login.errors.cannot-login', provider: user.provider_name) unless user.can_login?
       raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
     end
 

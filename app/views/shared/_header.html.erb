@@ -45,8 +45,12 @@
                 <i class="material-icons">admin_panel_settings</i>
               <% end %>
             <% end %>
-            <% link_to(users_settings_path, class: 'button is-primary is-icon') do %>
-              <i class="material-icons">settings</i>
+            <% if current_user.oauth? %>
+              <% if current_user.misete? %>
+                <%= link_to(ENV['MISETE_OAUTH_HOST'], class: 'button is-primary is-icon', target: :_blank) do %>
+                  <i class="material-icons">settings</i>
+                <% end %>
+              <% end %>
             <% end %>
             <% link_to(my_queue_path, class: 'button is-success is-icon') do %>
               <i class="material-icons">add</i>

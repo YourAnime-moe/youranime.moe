@@ -30,6 +30,7 @@ jp:
         web-message: "ログイン完了。アニメの時間だよ！"
       errors:
         wrong-password: "申し訳ありませんが、%{user}様のパスワードが正しくありません。"
+        cannot-login: "%{provider}で登録いたしましたのでパスワードでログインすることができません。そちらのサービスでログインしてみてください。"
         unknown-user: "申し訳ありませんが、お客様のユーザ名「%{attempt}」が見つかりませんでした。"
         no-username: "ユーザ名を入力してください。"
         no-password: "パスワードを入力してください。"

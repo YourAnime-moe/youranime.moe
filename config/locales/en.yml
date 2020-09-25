@@ -47,6 +47,7 @@ en:
         web-message: "Login successful! Time to watch anime!"
       errors:
         wrong-password: "We are sorry %{user}, but your password is incorrect."
+        cannot-login: "You registered with %{provider} so you do not have a password. Please try logging in from there."
         unknown-user: "We are sorry, but no user with username \"%{attempt}\" exists in our system."
         no-username: "Please enter your username."
         no-password: "Please enter your password."

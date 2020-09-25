@@ -13,8 +13,7 @@ module Users
       user.first_name = oauth.info.first_name
       user.last_name = oauth.info.last_name
       user.active = oauth.info.active
-      user.blocked = oauth.info.blocked
-      user.color_hex = oauth.info.color_hex
+      user.hex = oauth.info.color_hex
 
       avatar_file = Down.download(oauth.info.image)
       user.avatar.attach(io: avatar_file, filename: "#{user.username}-avatar")

@@ -31,6 +31,21 @@ class ApplicationController < ActionController::Base
     set_title after: t('welcome.text'), before: t('welcome.login.login')
   end
 
+  def oauth_auth
+    @user = Users::OauthAuth.perform(
+      access_token: request.env['omniauth.auth'],
+    )
+
+    @user.save!
+    log_in(@user)
+  rescue Users::Oauth::InvalidOauthUser => e
+    Rails.logger.error(e)
+  rescue Users::Session::InactiveError => e
+    Rails.logger.error(e)
+  ensure
+    redirect_to root_path
+  end
+
   def misete_auth
     @user = User::MiseteAuth.perform(
       access_token: request.env['omniauth.auth']

@@ -4,10 +4,11 @@ module OauthConcern
   PROVIDERS_MAP = {}
 
   class_methods do
-    def has_provider(name, klass, by)
+    def has_provider(name, klass, show_name: nil, by:)
       PROVIDERS_MAP[name.to_s] = {
         class: klass.to_s,
         identifier: by,
+        name: show_name,
       }
     end
 
@@ -20,5 +21,9 @@ module OauthConcern
       info[:class] = oauth_class
       info
     end
+  end
+
+  def provider_name
+    self.class.provider_info(provider)[:name]
   end
 end

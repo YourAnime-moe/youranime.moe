@@ -3,14 +3,16 @@ module Users
     include OauthConcern
     include TanoshimuUtils::Concerns::RespondToTypes
 
-    has_provider :misete, 'Users::Misete', by: :username
-    has_provider :google, 'Users::Google', by: :email
+    has_provider :misete, 'Users::Misete', by: :username, show_name: 'Misete Accounts'
+    has_provider :google, 'Users::Google', by: :email, show_name: 'Google'
 
     GOOGLE = 'google'
     MISETE = 'misete'
     OAUTH_USER_TYPES = [GOOGLE, MISETE].freeze
 
     respond_to_types OAUTH_USER_TYPES
+
+    class InvalidOauthUser < StandardError; end
 
     class << self
       def from_omniauth(auth)
