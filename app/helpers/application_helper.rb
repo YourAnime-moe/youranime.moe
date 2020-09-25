@@ -15,6 +15,10 @@ module ApplicationHelper
     end
   end
 
+  def logged_in_as_admin?
+    logged_in? && current_user.can_manage?
+  end
+
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.zone.now
@@ -23,6 +27,16 @@ module ApplicationHelper
 
   def log_out
     _logout if logged_in?
+  end
+
+  def viewing_as_admin?
+    Config.viewing_as_admin_from?(request)
+  end
+
+  def header_appearance
+    viewing_as_admin? ? \
+      'admin' : \
+      'is-dark'
   end
 
   def is_maintenance_activated?

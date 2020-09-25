@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include LocaleConcern
   include PartialsConcern
 
+  before_action :ensure_logged_in_as_admin!, except: [:home]
   before_action :find_locale
   before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_home_if_logged_in, only: [:login]
@@ -28,6 +29,21 @@ class ApplicationController < ActionController::Base
 
   def login
     set_title after: t('welcome.text'), before: t('welcome.login.login')
+  end
+
+  def oauth_auth
+    @user = Users::OauthAuth.perform(
+      access_token: request.env['omniauth.auth'],
+    )
+
+    @user.save!
+    log_in(@user)
+  rescue Users::Oauth::InvalidOauthUser => e
+    Rails.logger.error(e)
+  rescue Users::Session::InactiveError => e
+    Rails.logger.error(e)
+  ensure
+    redirect_to root_path
   end
 
   def misete_auth
@@ -123,6 +139,14 @@ class ApplicationController < ActionController::Base
 
     next_url = NextLinkFinder.perform(path: request.fullpath)
     redirect_to "/?next=#{CGI.escape(next_url)}"
+  end
+
+  def ensure_logged_in_as_admin!
+    return unless viewing_as_admin?
+    return if logged_in_as_admin?
+
+    next_url = NextLinkFinder.perform(path: request.fullpath)
+    redirect_to "/login?next=#{CGI.escape(next_url)}"
   end
 
   private

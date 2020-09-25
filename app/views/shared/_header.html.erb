@@ -1,5 +1,5 @@
 
-<nav class="navbar is-spaced is-dark becomes-transparent" role="navigation" aria-label="main navigation">
+<nav class="navbar is-spaced <%= header_appearance %> becomes-transparent" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
       <%= image_tag 'tanoshimu', class: 'logo' %><h1 class="hide logo-title"><%= t('app.name') %></h1>
@@ -40,13 +40,17 @@
             <i class="material-icons">bug_report</i>
           <% end %>
           <% unless Config.demo? %>
-            <% if current_user.can_manage? %>
+            <% if viewing_as_admin? && current_user.can_manage? %>
               <%= link_to(admin_path, class: 'button is-warning is-icon', target: :_blank) do %>
                 <i class="material-icons">admin_panel_settings</i>
               <% end %>
             <% end %>
-            <% link_to(users_settings_path, class: 'button is-primary is-icon') do %>
-              <i class="material-icons">settings</i>
+            <% if current_user.oauth? %>
+              <% if current_user.misete? %>
+                <%= link_to(ENV['MISETE_OAUTH_HOST'], class: 'button is-primary is-icon', target: :_blank) do %>
+                  <i class="material-icons">settings</i>
+                <% end %>
+              <% end %>
             <% end %>
             <% link_to(my_queue_path, class: 'button is-success is-icon') do %>
               <i class="material-icons">add</i>

@@ -104,6 +104,10 @@ html, .dark-background-2 {
   background: -webkit-linear-gradient(top, #262626, #26262600);
 }
 
+.navbar.becomes-transparent.admin {
+  background: -webkit-linear-gradient(top, #9d4e4e, #26262600);
+}
+
 body {
   font-family: "Poppins" !important;
   font-size: 1rem !important;

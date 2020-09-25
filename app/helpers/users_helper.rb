@@ -55,10 +55,10 @@ module UsersHelper
       'signal_cellular_off'
     elsif current_user.can_manage?
       'admin_panel_settings'
-    elsif current_user.limited?
-      'signal_cellular_null'
     elsif current_user.oauth?
       'link'
+    elsif current_user.limited?
+      'signal_cellular_null'
     else
       'signal_cellular_4_bar'
     end

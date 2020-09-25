@@ -56,6 +56,10 @@ module Config
       Rails.application.config.active_storage.service == :local
     end
 
+    def viewing_as_admin_from?(request)
+      Rails.application.config.manageable_subdomains.include?(request.subdomain)
+    end
+
     def current_season
       current_date = Time.now.utc
       season_name = season_name_from(current_date)
