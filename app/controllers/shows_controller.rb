@@ -118,7 +118,7 @@ class ShowsController < ApplicationController
 
   def navigatable?(show)
     if logged_in?
-      show.published? || params[:as_admin] == 'true' && current_user.staff_user.present?
+      show.published? || params[:as_admin] == 'true' && current_user.can_manage?
     else
       show.published?
     end

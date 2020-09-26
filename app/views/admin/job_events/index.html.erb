@@ -33,7 +33,7 @@
           <td><%= job_event_status_tag(job_event) %></td>
           <td><%= job_event.started_at %></td>
           <td><%= job_event.ended_at %></td>
-          <td><%= job_event.staff.name %></td>
+          <td><%= job_event.staff&.name || '-' %></td>
           <td>
             <% if job_event.record_name %>
               <%= link_to(job_event.record_name, [:admin, job_event.record]) %>

@@ -1,5 +1,7 @@
 class TrackableJob < ApplicationJob
-  # Call perform_[now/later](model?, staff: Staff)
+  # How to use this:
+  # 1) Extend the job to keep track of to 'TrackableJob'
+  # 2) Call perform_[now/later](model?, staff: Users::Admin) on that job
 
   around_perform do |job, block|
     event = before_perform(job)
@@ -22,7 +24,7 @@ class TrackableJob < ApplicationJob
 
     JobEvent.create!(
       job_id: job.job_id,
-      staff: staff_from_args(job) || Staff.system,
+      staff: staff_from_args(job) || Users::Admin.system,
       model_id: model&.id,
       used_by_model: model&.class&.table_name,
       job_name: self.class.name,
@@ -35,7 +37,7 @@ class TrackableJob < ApplicationJob
   end
 
   def staff_from_args(job)
-    fetch_arg_from_args(job, Staff, :staff)
+    fetch_arg_from_args(job, Users::Admin, :staff)
   end
 
   def model_from_args!(job)

@@ -1,7 +1,7 @@
 module Shows
   class Sync < ApplicationOperation
     property! :sync_type, accepts: [:airing, :episodes, :crawl, :show]
-    property! :requested_by, accepts: Staff
+    property! :requested_by, accepts: Users::Admin
     property :show, accepts: Show
 
     REQUEST_URL_BASE = 'https://kitsu.io/api/edge/anime'

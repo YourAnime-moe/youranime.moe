@@ -361,7 +361,7 @@ module ShowsHelper
   end
 
   def check_admin?(admin)
-    admin && current_user.staff_user.present?
+    admin && current_user.can_manage?
   end
 
   def active_class_for(value=nil, blank: false)
