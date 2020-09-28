@@ -67,9 +67,9 @@ module ShowsHelper
   end
 
   def can_display_airing_badge?(show)
-    return false if !show.kind_of?(Show) || show.is?(:music)
+    return false if !show.kind_of?(Show) || show.is?(:music) || show.no_air_status?
 
-    !show.air_complete? || show.coming_soon?
+    show.air_complete? || show.coming_soon? || show.airing?
   end
 
   def show_airing_badge(show, force: false)

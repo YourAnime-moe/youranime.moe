@@ -24,7 +24,7 @@ class TrackableJob < ApplicationJob
 
     JobEvent.create!(
       job_id: job.job_id,
-      staff: staff_from_args(job) || Users::Admin.system,
+      user: staff_from_args(job) || Users::Admin.system,
       model_id: model&.id,
       used_by_model: model&.class&.table_name,
       job_name: self.class.name,

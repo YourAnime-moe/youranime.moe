@@ -131,6 +131,10 @@ class Show < ApplicationRecord
   end
 
   def air_complete?
+    airing_status == 'complete'
+  end
+
+  def no_air_status?
     airing_status == 'unknown'
   end
 

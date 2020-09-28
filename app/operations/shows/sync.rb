@@ -127,7 +127,7 @@ module Shows
       synched_show.ended_on = fetched_attrs[:endDate]
       synched_show.nsfw = fetched_attrs[:nsfw].to_s == 'true'
 
-      synched_show.airing_status = airing_status if airing_status
+      synched_show.airing_status = airing_status_for(synched_show, default: airing_status)
       synched_show.youtube_trailer_id = fetched_attrs[:youtubeVideoId]
 
       synched_show.synched_at = Time.now.utc
@@ -241,6 +241,31 @@ module Shows
 
     def request_streamer_url(show)
       "#{REQUEST_URL_BASE}/#{show.reference_id}/streaming-links?page[limit]=20&page[offset]=0"
+    end
+
+    def airing_status_for(show, default: 'unknown')
+      return default if show.starts_on.blank?
+
+      today_s_date = DateTime.now.utc
+      if show.starts_on < today_s_date
+        # it's already started
+        if show.ended_on.present? && show.ended_on != show.starts_on
+          # we know the ended date
+          if show.ended_on < today_s_date
+            # it's already over
+            'complete'
+          else
+            # if it's not over... it's airing
+            'airing'
+          end
+        else
+          # odds it's still airing?
+          # TODO: more tests
+          'airing'
+        end
+      else
+        'coming_soon'
+      end
     end
 
     def current_season
