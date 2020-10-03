@@ -25,8 +25,10 @@
                 </h1>
                 <% if logged_in? %>
                   <div id="action_buttons">
-                    <%= like_button(@show) %>
-                    <%= dislike_button(@show) %>
+                    <% unless logged_in_as_admin? %>
+                      <%= like_button(@show) %>
+                      <%= dislike_button(@show) %>
+                    <% end %>
                     <%= queue_button(@show) %>
                     <%= admin_button(@show) %>
                   </div>

@@ -159,6 +159,7 @@ en:
       view-all: "All Shows and Games"
       view-all-what: "Check out what's available on our platform."
       search-result: Found %{count} show(s)
+      search: Search results
       coming-soon: "Coming soon!"
       main-queue: Main queue
       main-queue-what: The shows you've added to your personal queue

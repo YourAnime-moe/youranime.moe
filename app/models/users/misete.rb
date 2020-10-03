@@ -12,7 +12,7 @@ module Users
     def self.update_user_info(user, oauth)
       user.first_name = oauth.info.first_name
       user.last_name = oauth.info.last_name
-      user.active = oauth.info.active
+      user.limited = !oauth.info.active
       user.hex = oauth.info.color_hex
 
       avatar_file = Down.download(oauth.info.image)

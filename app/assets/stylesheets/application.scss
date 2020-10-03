@@ -106,6 +106,14 @@ html, .dark-background-2 {
 
 .navbar.becomes-transparent.admin {
   background: -webkit-linear-gradient(top, #9d4e4e, #26262600);
+
+  .navbar-item {
+    color: white;
+  }
+
+  strong:hover, a:hover {
+    color: black !important;
+  }
 }
 
 body {
