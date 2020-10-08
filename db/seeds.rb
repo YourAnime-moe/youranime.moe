@@ -2,55 +2,56 @@
 require 'mini_magick'
 
 def seed
-  seed_users
+  User.transaction { seed_users }
   seed_show_tags
   #seed_shows
 end
 
 def seed_users
-  Staff.create!(
-    username: 'system',
-    name: 'System User',
-    limited: false,
-    password: SecureRandom.hex,
-    email: 'system@youranime.moe',
-  )
+  Users::Admin.system
+
   if Rails.env.development?
-    Staff.create(
+    Users::Admin.create(
       username: 'admin',
-      name: 'Admin User',
+      first_name: 'Admin',
+      last_name: 'User',
       limited: false,
       password: 'password',
       email: 'admin@youranime.moe',
-    ).to_user!
+    )
 
-    User.create(
+    Users::Regular.create(
       username: 'futsuu',
-      name: 'Yamada Normy',
+      first_name: 'Yamada',
+      last_name: 'Normy',
       limited: false,
       password: 'normal',
       email: 'normal@youranime.moe',
     )
 
-    User.create(
+    Users::Regular.create(
       username: 'limited',
-      name: 'Limited User',
+      first_name: 'Limited',
+      last_name: 'User',
       limited: true,
       password: 'limited',
       email: 'limited@youranime.moe',
     )
   else
-    User.create(
+    Users::Regular.create(
       username: 'demo',
       password: 'demo',
       limited: true,
-      name: 'Demo User'
+      first_name: 'Demo',
+      last_name: 'User',
     )
-    Staff.create(
+    Users::Admin.create(
       username: 'admin',
-      name: 'Admin User',
-      password: 'this is my boss password',
+      first_name: 'Admin',
+      last_name: 'User',
       limited: false,
+      password: Rails.application.credentials.admin_password,
+      email: 'admin@youranime.moe',
     )
   end
   #(1..249).each do |i|

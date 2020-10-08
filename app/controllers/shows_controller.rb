@@ -93,6 +93,7 @@ class ShowsController < ApplicationController
     return { scope: Show.recent, title: 'recent' } if params[:by] == 'recent'
     return { scope: Show.airing, title: 'airing-now' } if params[:by] == 'airing'
     return { scope: Show.coming_soon, title: 'coming-soon' } if params[:by] == 'coming-soon'
+    return { scope: Show.with_links, title: 'with-links' } if params[:by] == 'watch-online'
 
     { scope: Show.published_with_title.order("titles.#{I18n.locale}"), title: 'view-all' }
   end

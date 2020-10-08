@@ -340,7 +340,8 @@ module ShowsHelper
   def sort_shows_by_tabs
     content_tag :div, class: 'tabs padded-bottom' do
       content_tag :ul do
-        content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
+        content_tag(:li, class: active_class_for('watch-online')) { link_to(t('anime.shows.watch-online'), shows_path(by: 'watch-online')) } +
+          content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
           content_tag(:li, class: active_class_for(blank: true)) { link_to(t('anime.shows.view-all'), shows_path) } +
           content_tag(:li, class: active_class_for('coming-soon')) { link_to(t('anime.shows.coming-soon'), shows_path(by: 'coming-soon')) } + 
           content_tag(:li, class: active_class_for('airing')) { link_to(t('anime.shows.airing-now'), shows_path(by: :airing)) } + 

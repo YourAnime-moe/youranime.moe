@@ -9,7 +9,7 @@ class SimplifyUserModel < ActiveRecord::Migration[6.0]
       first_name = user.name.split(' ')[0]
       last_name = user.name.split(' ')[1]
 
-      user.update(first_name: first_name, last_name: last_name)
+      user.update!(first_name: first_name, last_name: last_name)
     end
 
     remove_column :users, :name, :string
@@ -22,7 +22,7 @@ class SimplifyUserModel < ActiveRecord::Migration[6.0]
     add_column :users, :name, :string
 
     User.find_each do |user|
-      user.update(name: "#{user.first_name} #{user.last_name}")
+      user.update!(name: "#{user.first_name} #{user.last_name}")
     end
 
     remove_column :users, :first_name, :string

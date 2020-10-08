@@ -23,6 +23,6 @@ class AddTypeToUsers < ActiveRecord::Migration[6.0]
     else
       Users::Regular
     end
-    user.update!(type: klass_name.name)
+    User.update_all(id: user.id, type: klass_name.name)
   end
 end

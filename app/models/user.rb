@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  before_save :ensure_hex, unless: :hex
+  before_save :ensure_hex, unless: :hex_initialized?
   can_like_as :user
 
   has_many :queues, -> {
@@ -90,6 +90,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def hex_initialized?
+    hex? && self[:hex] != '#000000'
+  end
 
   def ensure_hex
     return if hex && hex != self.class.new.hex
