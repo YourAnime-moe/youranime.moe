@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  constraints subdomain: :api do
+  constraints subdomain: 'api' do
     get '/', to: "v1/default_action#home"
     namespace :v1, defaults: { format: :json } do
       resources :session, only: %i[create show destroy], param: :token
