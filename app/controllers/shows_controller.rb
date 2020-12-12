@@ -45,7 +45,7 @@ class ShowsController < ApplicationController
   end
 
   def action_buttons
-    if (@show = show_by_slug(params[:show_slug])).present?
+    if (@show = show_by_slug(params[:show_slug])).present? || current_user.can_like?
       render template: 'shows/partial/action_buttons', layout: false
     else
       render text: 'not found', status: 404
@@ -59,7 +59,7 @@ class ShowsController < ApplicationController
   end
 
   def react
-    if (show = show_by_slug(params[:show_slug]))
+    if (show = show_by_slug(params[:show_slug])) && current_user.can_like?
       result = Shows::UpdateReaction.perform(show: show, user: current_user, reaction: params[:reaction])
       render json: { success: true, result: result }
     else
