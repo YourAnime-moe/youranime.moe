@@ -23,6 +23,7 @@ module ShowsHelper
     content_tag :div, class: 'sub-dub-holder justify-content-between' do
       show_type_badge(show) +
       show_airing_badge(show) +
+      show_nsfw_badge(show) +
       show_rating(show)
     end
   end
@@ -70,6 +71,12 @@ module ShowsHelper
     return false if !show.kind_of?(Show) || show.is?(:music) || show.no_air_status?
 
     show.air_complete? || show.coming_soon? || show.airing?
+  end
+
+  def show_nsfw_badge(show)
+    return '' unless show.kind_of?(Show) && show.nsfw?
+
+    badge(type: 'danger', content: 'NSFW')
   end
 
   def show_airing_badge(show, force: false)
@@ -267,6 +274,8 @@ module ShowsHelper
   end
 
   def react_button(show, colour, icon, reaction:, info: false)
+    return unless current_user.can_like?
+
     content_tag :button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction do
       content_tag :i, class: 'material-icons' do
         icon

@@ -4,7 +4,7 @@ require 'mini_magick'
 def seed
   User.transaction { seed_users }
   seed_show_tags
-  #seed_shows
+  seed_shows_later
 end
 
 def seed_users
@@ -69,6 +69,10 @@ def seed_show_tags
   Utils.valid_tags.each do |tag|
     Tag.create(value: tag)
   end
+end
+
+def seed_shows_later
+  Sync::ShowsFromKitsuJob.perform_later(staff: Users::Admin.system)
 end
 
 def seed_shows

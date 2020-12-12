@@ -1,8 +1,10 @@
 module Shows
   class Sync < ApplicationOperation
-    property! :sync_type, accepts: [:airing, :episodes, :crawl, :show]
+    property! :sync_type, accepts: [:airing, :episodes, :crawl, :show, :shows]
     property! :requested_by, accepts: Users::Admin
     property :show, accepts: Show
+    property :by_season, accepts: [:fall, :winter, :spring, :summer]
+    property :by_year, accepts: Integer
 
     REQUEST_URL_BASE = 'https://kitsu.io/api/edge/anime'
 
@@ -11,10 +13,16 @@ module Shows
       return sync_episodes if sync_type == :episodes
       return crawl_shows if sync_type == :crawl
       return sync_show if sync_type == :show
+      return sync_shows if sync_type == :shows
     end
 
     private
     attr_accessor :current_page
+
+    def sync_shows
+      @current_page = 0
+      create_shows_then_next_page({season: by_season, year: by_year})
+    end
 
     def sync_airing
       @current_page = 0

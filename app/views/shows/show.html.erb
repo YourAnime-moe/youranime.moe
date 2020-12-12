@@ -43,9 +43,10 @@
   <div class="container">
     <div class="columns">
       <div class="column is-2">
-        <% if can_display_airing_badge?(@show) %>
+        <% if can_display_airing_badge?(@show) || show.nsfw? %>
           <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
             <%= show_airing_badge(@show, force: true) %>
+            <%= show_nsfw_badge(@show) %>
           </div>
         <% end %>
         <div style="margin-top: 10px">

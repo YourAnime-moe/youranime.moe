@@ -125,19 +125,27 @@ class Show < ApplicationRecord
   end
 
   def airing?
-    airing_status == 'airing'
+    status == 'current'
   end
 
   def coming_soon?
-    airing_status == 'coming_soon'
+    status == 'planned'
   end
 
   def air_complete?
-    airing_status == 'complete'
+    status == 'completed' || status == 'finished'
+  end
+
+  def dropped?
+    status == 'dropped'
+  end
+
+  def on_hold?
+    status == 'on_hold'
   end
 
   def no_air_status?
-    airing_status == 'unknown'
+    status.blank? || airing_status == 'unknown'
   end
 
   def has_videos?
