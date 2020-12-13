@@ -110,6 +110,10 @@ class Episode < ActiveRecord::Base
         parts.join '/'
     end
 
+    def image_path
+        'https://img1.ak.crunchyroll.com/i/spire1-tmb/1c0efc486cf747b74d985852857df7d51255463035_wide.jpg'
+    end
+
     def get_new_image_path(ext: 'jpg')
         return self.path if self.path.nil? or self.path.start_with? "http"
         video_path = self.path

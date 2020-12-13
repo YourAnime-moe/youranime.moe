@@ -115,7 +115,7 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     pg (0.19.0)
-    puma (3.6.2)
+    puma (3.12.6)
     rack (2.0.1)
     rack-cache (1.6.1)
       rack (>= 0.4)
@@ -241,7 +241,7 @@ DEPENDENCIES
   omniauth
   omniauth-oauth2
   pg
-  puma (~> 3.0)
+  puma (~> 3.7)
   rack-cache
   rails (~> 5.0.1)
   rails_12factor
@@ -259,4 +259,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.14.6
+   1.17.3

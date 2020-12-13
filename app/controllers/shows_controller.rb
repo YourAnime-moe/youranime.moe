@@ -1,3 +1,5 @@
+require 'net/https'
+
 class ShowsController < AuthenticatedController
 
     def view
@@ -106,7 +108,7 @@ class ShowsController < AuthenticatedController
             return
         end
 
-        path = show.get_new_image_path
+        path = show.image_path #show.get_new_image_path
 
         url = URI.parse(path)
         req = Net::HTTP::Get.new(url.to_s)
