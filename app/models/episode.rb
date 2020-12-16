@@ -108,6 +108,10 @@ class Episode < ActiveRecord::Base
         80
     end
 
+    def image_path
+        'https://img1.ak.crunchyroll.com/i/spire1-tmb/1c0efc486cf747b74d985852857df7d51255463035_wide.jpg'
+    end
+
     def add_comment(comment)
         unless comment.instance_of? Hash
             return {success: false, message: "Invalid data was received."}

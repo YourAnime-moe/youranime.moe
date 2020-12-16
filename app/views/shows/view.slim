@@ -10,7 +10,7 @@
         .col-md-3
             .mobile
                 .text-center
-                    img src="#{Config.path(@show.image_path)}"
+                    img src="#{@show.image_path}"
 
     .row style="margin-top: 2%"
         .col-md-2.description.text-center
@@ -37,7 +37,7 @@
                 - @episodes = @show.split_episodes
                 = render 'shows/episodes'
             .col-md-3.desktop
-                img src="#{Config.path(@show.image_path)}"
+                img src="#{@show.image_path}"
         - else
             .col-md-10
                 - if @show.has_description?
