@@ -38,12 +38,7 @@ gem 'jbuilder'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
-gem 'coffee-rails'
 gem 'rest-client'
-
-# Use of Twitter Bootstrap, jQuery things and Materialize SASS
-gem 'jquery-ui-rails'
-gem 'material_icons'
 
 # Single Sign on
 gem 'omniauth-rails_csrf_protection'
