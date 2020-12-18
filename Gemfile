@@ -18,7 +18,7 @@ gem "activejob"
 gem 'rollbar'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
