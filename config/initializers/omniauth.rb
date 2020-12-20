@@ -9,6 +9,16 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :misete, ENV['MISETE_OAUTH_CLIENT_ID'], ENV['MISETE_OAUTH_CLIENT_SECRET'], scope: 'email'
 end
 
+def production_url
+  heroku_url || 'https://youranime.moe' 
+end
+
+def heroku_url
+  return unless ENV['HEROKU_APP_NAME']
+
+  "https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com"
+end
+
 OmniAuth.config.full_host = ENV.fetch("GOOGLE_OAUTH_REDIRECT_HOST") {
-  Rails.env.production? ? 'https://youranime.moe' : 'http://localhost:3000'
+  Rails.env.production? ? production_url : 'http://localhost:3000'
 }

@@ -23,6 +23,7 @@ module ShowsHelper
     content_tag :div, class: 'sub-dub-holder justify-content-between' do
       show_type_badge(show) +
       show_airing_badge(show) +
+      show_nsfw_badge(show) +
       show_rating(show)
     end
   end
@@ -70,6 +71,12 @@ module ShowsHelper
     return false if !show.kind_of?(Show) || show.is?(:music) || show.no_air_status?
 
     show.air_complete? || show.coming_soon? || show.airing?
+  end
+
+  def show_nsfw_badge(show)
+    return '' unless show.kind_of?(Show) && show.nsfw?
+
+    badge(type: 'danger', content: 'NSFW')
   end
 
   def show_airing_badge(show, force: false)
@@ -267,6 +274,8 @@ module ShowsHelper
   end
 
   def react_button(show, colour, icon, reaction:, info: false)
+    return unless current_user.can_like?
+
     content_tag :button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction do
       content_tag :i, class: 'material-icons' do
         icon
@@ -327,12 +336,9 @@ module ShowsHelper
     url_type = show_url.url_type
     url = show_url.value
 
-    return {name: "Funimation", colour: '#410099'} if show_url.funimation?
-    return {name: "Crunchyroll", colour: '#f78c25'} if show_url.crunchyroll?
-    return {name: "Netflix", colour: '#e50914'} if show_url.netflix?
-    return {name: "VRV", colour: '#ffea62'} if show_url.vrv?
-    return {name: "Hulu", colour: '#1ce783'} if show_url.hulu?
-    return {name: "HIDIVE", colour: '#00aeef'} if show_url.hidive?
+    if show_url.platform.present?
+      return {name: show_url.platform.to_s.capitalize, colour: show_url.colour}
+    end
     
     {name: 'Unknown', colour: '#000000'}
   end
@@ -340,7 +346,8 @@ module ShowsHelper
   def sort_shows_by_tabs
     content_tag :div, class: 'tabs padded-bottom' do
       content_tag :ul do
-        content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
+        content_tag(:li, class: active_class_for('watch-online')) { link_to(t('anime.shows.watch-online'), shows_path(by: 'watch-online')) } +
+          content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
           content_tag(:li, class: active_class_for(blank: true)) { link_to(t('anime.shows.view-all'), shows_path) } +
           content_tag(:li, class: active_class_for('coming-soon')) { link_to(t('anime.shows.coming-soon'), shows_path(by: 'coming-soon')) } + 
           content_tag(:li, class: active_class_for('airing')) { link_to(t('anime.shows.airing-now'), shows_path(by: :airing)) } + 

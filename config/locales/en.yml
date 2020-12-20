@@ -112,7 +112,7 @@ en:
   sidebar:
     home-page: Home page
     browse: Browse
-    anime-movies: All videos
+    anime-movies: Browse all...
     feel-adventure: Feel Adventurous?
     for-you:
       title: For you
@@ -173,6 +173,8 @@ en:
       recent-what: What we've recently added!
       recommend: For you
       recommend-what: We think you'll like these shows
+      with-links: Support the industry
+      with-links-what: You can support the industry by watching the show legally online
       coming-on: "Coming on"
       description: "Description"
       no-description: "- No available description -"
@@ -212,6 +214,16 @@ en:
     other:
       more: "More..."
       reset: "Reset"
+
+    platforms:
+      youtube: YouTube
+      netflix: Netflix
+      funimation: Funimation
+      crunchyroll: Crunchyroll
+      vrv: VRV
+      hulu: Hulu
+      hidive: HIDIVE
+      animelab: AnimeLab
 
   time:
     seasons:

@@ -31,6 +31,7 @@ class Show < ApplicationRecord
   has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
   has_many :urls, class_name: 'ShowUrl', inverse_of: :show
+  has_many :links, -> { non_watchable }, class_name: 'ShowUrl'
 
   has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
@@ -59,6 +60,7 @@ class Show < ApplicationRecord
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }
   scope :searchable, -> { joins(:title_record).optimized }
+  scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:airing_status).trending }
 
   def publish
     update!(published: true)
@@ -87,7 +89,7 @@ class Show < ApplicationRecord
   def synched_by_user
     return unless synched?
 
-    Staff.find_by(id: synched_by)
+    Users::Admin.find_by(id: synched_by)
   end
 
   def weighted_rating(minimum_score_count=25)
@@ -123,19 +125,27 @@ class Show < ApplicationRecord
   end
 
   def airing?
-    airing_status == 'airing'
+    status == 'current'
   end
 
   def coming_soon?
-    airing_status == 'coming_soon'
+    status == 'planned' || status == 'upcoming'
   end
 
   def air_complete?
-    airing_status == 'complete'
+    status == 'completed' || status == 'finished'
+  end
+
+  def dropped?
+    status == 'dropped'
+  end
+
+  def on_hold?
+    status == 'on_hold'
   end
 
   def no_air_status?
-    airing_status == 'unknown'
+    status.blank? || airing_status == 'unknown'
   end
 
   def has_videos?
@@ -152,10 +162,6 @@ class Show < ApplicationRecord
 
   def watchable?
     urls.watchable.any?
-  end
-
-  def links
-    urls.non_watchable
   end
 
   def has_links?
