@@ -18,7 +18,7 @@ gem "activejob"
 gem 'rollbar'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -38,12 +38,7 @@ gem 'jbuilder'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
-gem 'coffee-rails'
 gem 'rest-client'
-
-# Use of Twitter Bootstrap, jQuery things and Materialize SASS
-gem 'jquery-ui-rails'
-gem 'material_icons'
 
 # Single Sign on
 gem 'omniauth-rails_csrf_protection'
@@ -96,6 +91,9 @@ gem 'down', '~> 5.0'
 
 # Sidekiq
 gem 'sidekiq'
+
+# ViewComponent
+gem "view_component", require: "view_component/engine"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

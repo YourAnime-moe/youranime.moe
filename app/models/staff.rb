@@ -22,8 +22,7 @@ class Staff < ApplicationRecord
   def to_user!
     return user if user.present?
 
-    new_user = User.create!(
-      user_type: User::REGULAR,
+    new_user = Users::Admin.create!(
       username: username,
       name: name,
       active: true,
