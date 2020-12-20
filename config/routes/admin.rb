@@ -4,7 +4,6 @@ require 'sidekiq/web'
 
 class StaffConstraint
   def matches?(request)
-    return unless Config.viewing_as_admin_from?(request)
     return unless request.session[:user_id].present?
 
     current_user = User.find_by(id: request.session[:user_id])

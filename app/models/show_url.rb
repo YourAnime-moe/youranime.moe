@@ -1,6 +1,17 @@
 class ShowUrl < ApplicationRecord
   WATCHABLE_URL_TYPES = ['youtube', 'youtu'].freeze
 
+  COLOUR_MAP = {
+    funimation: '#410099',
+    crunchyroll: '#f78c25',
+    netflix: '#e50914',
+    vrv: '#ffea62',
+    hulu: '#1ce783',
+    hidive: '#00aeef',
+    animelab: '#350079',
+    unknown: '#aaaaaa',
+  }
+
   belongs_to :show, inverse_of: :urls
   before_validation :ensure_url_type, unless: :url_type
 
@@ -38,6 +49,27 @@ class ShowUrl < ApplicationRecord
 
   def hidive?
     has_domain? 'hidive.com'
+  end
+
+  def animelab?
+    has_domain? 'animelab.com'
+  end
+
+  def platform
+    return :youtube if youtube?
+    return :netflix if netflix?
+    return :funimation if funimation?
+    return :crunchyroll if crunchyroll?
+    return :vrv if vrv?
+    return :hulu if hulu?
+    return :hidive if hidive?
+    return :animelab if animelab?
+
+    :unknown
+  end
+
+  def colour
+    COLOUR_MAP[platform]
   end
 
   private

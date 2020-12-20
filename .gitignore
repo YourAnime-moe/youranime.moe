@@ -50,3 +50,4 @@ vendor/
 !vendor/.keep
 
 *.gem
+*.diff

@@ -129,7 +129,7 @@ class Show < ApplicationRecord
   end
 
   def coming_soon?
-    status == 'planned'
+    status == 'planned' || status == 'upcoming'
   end
 
   def air_complete?

@@ -336,12 +336,9 @@ module ShowsHelper
     url_type = show_url.url_type
     url = show_url.value
 
-    return {name: "Funimation", colour: '#410099'} if show_url.funimation?
-    return {name: "Crunchyroll", colour: '#f78c25'} if show_url.crunchyroll?
-    return {name: "Netflix", colour: '#e50914'} if show_url.netflix?
-    return {name: "VRV", colour: '#ffea62'} if show_url.vrv?
-    return {name: "Hulu", colour: '#1ce783'} if show_url.hulu?
-    return {name: "HIDIVE", colour: '#00aeef'} if show_url.hidive?
+    if show_url.platform.present?
+      return {name: show_url.platform.to_s.capitalize, colour: show_url.colour}
+    end
     
     {name: 'Unknown', colour: '#000000'}
   end

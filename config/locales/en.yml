@@ -215,6 +215,16 @@ en:
       more: "More..."
       reset: "Reset"
 
+    platforms:
+      youtube: YouTube
+      netflix: Netflix
+      funimation: Funimation
+      crunchyroll: Crunchyroll
+      vrv: VRV
+      hulu: Hulu
+      hidive: HIDIVE
+      animelab: AnimeLab
+
   time:
     seasons:
       spring: "Spring"
