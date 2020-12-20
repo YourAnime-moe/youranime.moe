@@ -19,7 +19,7 @@
         <% @shows.each do |show| %>
           <div class="column is-3" style="padding: 1px;">
             <%= link_to(show) do %>
-              <%= show_thumb(show) %>
+              <%= render ShowThumbnailComponent.new(show: show) %>
             <% end %>
           </div>
         <% end %>

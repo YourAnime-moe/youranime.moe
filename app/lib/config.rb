@@ -85,7 +85,7 @@ module Config
         year: next_season_year,
         season: season_name,
         status: :coming_soon,
-        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: current_date.year),
+        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: next_season_year),
       }
     end
 

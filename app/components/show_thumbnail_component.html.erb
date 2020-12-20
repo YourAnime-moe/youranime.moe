@@ -1,0 +1,26 @@
+<div class="no-overflow">
+  <div role="have-fun" style="display: none;">
+    <div class="card shadow-sm borderless d-flex align-items-stretch">
+      <div class="image-card-container focusable">
+        <div class="holder">
+          <div class="overlay darken">
+            <div class="justify-content-between d-flex top-tags-holder">
+              <div class="sub-dub-holder justify-content-between">
+                <%= render BadgeComponent.new(**badge_options) %>
+                <% if can_display_airing_badge? %>
+                  <%= render BadgeComponent.new(type: 'light', content: t("anime.shows.airing_status.#{@show.airing_status}")) %>
+                <% end %>
+              </div>
+            </div>
+            <%= image_tag(@show.poster_url, onload: 'fadeIn(this)', class: "card-img-top descriptive") %>
+            <div class="hf-thumb-info description" style="width: 95%;">
+              <span class="truncate">
+                <%= @show.title %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
