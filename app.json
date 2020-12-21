@@ -12,5 +12,15 @@
       "plan": "rediscloud",
       "as": "REDISCLOUD"
     }
-  ]
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    },
+    "workers": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
 }
