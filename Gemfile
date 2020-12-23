@@ -1,18 +1,19 @@
+# frozen_string_literal: true
 source 'https://rubygems.org'
 
 ruby '2.6.6'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
 # Suggested updates
+gem 'activejob'
+gem 'activestorage'
+gem 'loofah'
 gem 'nokogiri'
-gem "activestorage"
-gem "rack"
-gem "loofah"
-gem "activejob"
+gem 'rack'
 
 # Rollbar
 gem 'rollbar'
@@ -41,9 +42,12 @@ gem 'bcrypt'
 gem 'rest-client'
 
 # Single Sign on
-gem 'omniauth-rails_csrf_protection'
-gem 'omniauth-oauth2'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-oauth2'
+gem 'omniauth-rails_csrf_protection'
+
+# Shopify's code styles
+gem 'rubocop-shopify', require: false
 
 # Slack client
 gem 'slack-ruby-client'
@@ -52,7 +56,7 @@ gem 'slack-ruby-client'
 gem 'coveralls', require: false
 
 # AWS S3 SDK
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
 
 # Pagination
 gem 'will_paginate'
@@ -74,11 +78,11 @@ gem 'active_operation'
 gem 'aasm'
 
 # Code quality
+gem 'debride'
+gem 'fasterer'
+gem 'reek'
 gem 'rubocop', require: false
 gem 'ruby-lint'
-gem 'reek'
-gem 'fasterer'
-gem 'debride'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -93,7 +97,7 @@ gem 'down', '~> 5.0'
 gem 'sidekiq'
 
 # ViewComponent
-gem "view_component", require: "view_component/engine"
+gem 'view_component', require: 'view_component/engine'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -104,28 +108,28 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
+  gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
   gem 'pry'
   gem 'pry-rails'
+  gem 'sqlite3'
 end
 
 group :test do
+  gem 'factory_bot'
   gem 'rspec'
   gem 'rspec_junit_formatter'
-  gem 'factory_bot'
 end
 
 group :production do
   gem 'pg'
+  gem 'rack-cache', require: 'rack/cache'
   gem 'rails_12factor'
-  gem 'rack-cache', :require => 'rack/cache'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

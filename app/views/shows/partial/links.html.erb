@@ -1,4 +1,4 @@
-<% if @show.has_links? %>
+<% if @show.links.any? %>
   <h1 class="subtitle"><%= @show.title %> can be watched on:</h1>
   <div class="columns is-multiline">
     <% @show.links.each do |link| %>

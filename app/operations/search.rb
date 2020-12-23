@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Search < ApplicationOperation
   property :search, accepts: String, converts: :downcase
   property :limit, accepts: Integer
@@ -20,7 +21,7 @@ class Search < ApplicationOperation
   def shows_results
     @shows_results ||= search_shows_by_title
       .or(search_shows_by_genre)
-      #.or(search_shows_by_tags)
+    # .or(search_shows_by_tags)
   end
 
   def search_shows_by_title
@@ -40,7 +41,7 @@ class Search < ApplicationOperation
   end
 
   def empty_search_result
-    {shows: []}
+    { shows: [] }
   end
 
   def like_search

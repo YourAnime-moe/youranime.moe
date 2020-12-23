@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 require 'mini_magick'
 
 def seed
@@ -54,7 +55,7 @@ def seed_users
       email: 'admin@youranime.moe',
     )
   end
-  #(1..249).each do |i|
+  # (1..249).each do |i|
   #  User.create!(
   #    username: "user#{i}",
   #    password: 'password',
@@ -62,7 +63,7 @@ def seed_users
   #    limited: true,
   #    email: "user#{i}@email.com"
   #  )
-  #end
+  # end
 end
 
 def seed_show_tags
@@ -84,20 +85,20 @@ def seed_shows
     seed_episodes(show, show_name)
   end
 
-  `bundle exec rails seed:all:media`
+  %x(bundle exec rails seed:all:media)
 
   # Seed an additional 500 shows
-  #start = Show.count + 1
-  #fin = 500 + start
-  #(start..fin).each do |i|
+  # start = Show.count + 1
+  # fin = 500 + start
+  # (start..fin).each do |i|
   #  title = Title.new(en: "Show #{i}")
   #  description = Description.new(en: "This show was autogenetared. Number: #{i}")
   #  Show.create!(show_type: 'anime', published: true, released_on: Time.now, title: title, description: description)
-  #end
+  # end
 
   # seed_ratings
 
-  Rails.logger.info "Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners"
+  Rails.logger.info("Note: Don't forget to run `rails seed:shows:banners` to populate the show's banners")
 end
 
 def seed_episodes(show, key)
@@ -112,7 +113,7 @@ def seed_episodes(show, key)
   end
 end
 
-def seed_show(show_name, at: nil)
+def seed_show(show_name)
   title = Title.new(
     en: "Title for #{show_name}",
     fr: "Titre pour #{show_name}",
@@ -143,7 +144,7 @@ def seed_show(show_name, at: nil)
 end
 
 def seed_ratings
-  ids = Show.ids.sample 100
+  ids = Show.ids.sample(100)
   shows = Show.where(id: ids)
 
   shows.each do |show|

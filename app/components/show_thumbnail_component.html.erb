@@ -8,11 +8,11 @@
               <div class="sub-dub-holder justify-content-between">
                 <%= render BadgeComponent.new(**badge_options) %>
                 <% if can_display_airing_badge? %>
-                  <%= render BadgeComponent.new(type: 'light', content: t("anime.shows.airing_status.#{@show.airing_status}")) %>
+                  <%= render BadgeComponent.new(type: 'light', content: t("anime.shows.airing_status.#{@show.status}")) %>
+                <% end %>
 
-                  <% @show.links.each do |link| %>
-                    <%= render BadgeComponent.new(content: t("anime.platforms.#{link.platform}"), background: link.colour, colour: Utils.text_color(from: link.colour)) %>
-                  <% end %>
+                <% @show.links.each do |link| %>
+                  <%= render BadgeComponent.new(content: t("anime.platforms.#{link.platform}"), background: link.colour, colour: Utils.text_color(from: link.colour)) %>
                 <% end %>
               </div>
             </div>

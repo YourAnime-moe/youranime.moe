@@ -1,4 +1,18 @@
 <div class="container">
   <%= render 'shows/partial/insights' %>
+  
   <small><%= @show.description %></small>
+
+  <% if @show.info_links.any? %>
+    <p style="margin-top: 1rem">
+      <h1 class="subtitle">More info on <%= @show.title %>:</h1>
+      <div class="columns is-multiline">
+        <% @show.info_links.each do |link| %>
+          <div class="column is-4">
+            <%= link_to_show_url(link) %>
+          </div>
+        <% end %>
+      </div>
+    </p>
+  <% end %>
 </div>

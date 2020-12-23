@@ -20,7 +20,7 @@ module ShowsHelper
   def show_info_holder(show)
     return content_tag(:div) unless show.class == Show
 
-    content_tag :div, class: 'sub-dub-holder justify-content-between' do
+    content_tag(:div, class: 'sub-dub-holder justify-content-between') do
       show_type_badge(show) +
       show_airing_badge(show) +
       show_nsfw_badge(show) +
@@ -35,18 +35,16 @@ module ShowsHelper
       if episode.video?
         content_tag(:span)
       else
-        content_tag :div, class: 'sub-dub-holder' do
+        content_tag(:div, class: 'sub-dub-holder') do
           broken_tag
         end
       end
-    else
-      if current_user.google?
-        content_tag :div, class: 'sub-dub-holder' do
-          restricted_tag
-        end
-      else
-        content_tag(:span)
+    elsif current_user.google?
+      content_tag(:div, class: 'sub-dub-holder') do
+        restricted_tag
       end
+    else
+      content_tag(:span)
     end
   end
 
@@ -56,25 +54,25 @@ module ShowsHelper
 
     return content_tag(:spam) if restricted?(episode)
 
-    content_tag :div, class: 'captions-holder' do
+    content_tag(:div, class: 'captions-holder') do
       badge(type: 'info', content: 'captions')
     end
   end
 
   def show_rating(show)
-    return '' unless show.kind_of?(Show) && !show.ratings.empty?
+    return '' unless show.is_a?(Show) && !show.ratings.empty?
 
     badge(type: 'info', content: show.rating)
   end
 
   def can_display_airing_badge?(show)
-    return false if !show.kind_of?(Show) || show.is?(:music) || show.no_air_status?
+    return false if !show.is_a?(Show) || show.is?(:music)
 
     show.air_complete? || show.coming_soon? || show.airing?
   end
 
   def show_nsfw_badge(show)
-    return '' unless show.kind_of?(Show) && show.nsfw?
+    return '' unless show.is_a?(Show) && show.nsfw?
 
     badge(type: 'danger', content: 'NSFW')
   end
@@ -82,7 +80,7 @@ module ShowsHelper
   def show_airing_badge(show, force: false)
     return '' unless force || can_display_airing_badge?(show)
 
-    badge(type: 'light', content: t("anime.shows.airing_status.#{show.airing_status}"))
+    badge(type: 'light', content: t("anime.shows.airing_status.#{show.status}"))
   end
 
   def show_type_badge(show)
@@ -109,15 +107,15 @@ module ShowsHelper
 
   def broken_tag
     content_tag(:span)
-  
-    #content = content_tag(:span) do
+
+    # content = content_tag(:span) do
     #  content_tag(:i, class: 'material-icons', style: 'font-size: 12px;') do
     #    'close'
     #  end + content_tag(:span) do
     #    " #{t('anime.episodes.broken')}"
     #  end
-    #end
-    #badge(type: 'danger', content: content)
+    # end
+    # badge(type: 'danger', content: content)
   end
 
   def restricted_tag
@@ -132,7 +130,7 @@ module ShowsHelper
   end
 
   def badge(type: nil, content: nil, light: false)
-    content_tag :span, class: "tag is-#{type} #{'is-light' if light}" do
+    content_tag(:span, class: "tag is-#{type} #{'is-light' if light}") do
       content
     end
   end
@@ -143,15 +141,15 @@ module ShowsHelper
     rules ||= {}
     return '' if show.nil? || hide_title
 
-    content_tag :div, class: "hf-thumb-info description #{rules[:display]}", style: 'width: 95%' do
-      content_tag :span, class: 'truncate' do
+    content_tag(:div, class: "hf-thumb-info description #{rules[:display]}", style: 'width: 95%') do
+      content_tag(:span, class: 'truncate') do
         show.title
       end
     end
   end
 
   def show_skeleton
-    content_tag :div, class: 'columns is-tiny-gap no-margin shows' do
+    content_tag(:div, class: 'columns is-tiny-gap no-margin shows') do
       (content_tag(:div, class: "column is-3") do
         show_skeleton_thumb
       end + content_tag(:div, class: "column is-3") do
@@ -165,11 +163,11 @@ module ShowsHelper
   end
 
   def show_skeleton_thumb
-    content_tag :div, class: "no-overflow" do
-      content_tag :div, role: 'skeleton' do
-        content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
-          content_tag :div, class: 'image-card-container focusable' do
-            content_tag :div, class: 'holder' do
+    content_tag(:div, class: "no-overflow") do
+      content_tag(:div, role: 'skeleton') do
+        content_tag(:div, class: 'card shadow-sm borderless d-flex align-items-stretch') do
+          content_tag(:div, class: 'image-card-container focusable') do
+            content_tag(:div, class: 'holder') do
               show_skeleton_thumb_body
             end
           end
@@ -184,15 +182,15 @@ module ShowsHelper
     # progress = (current_user.progress_for(show) if show.class == Episode) || 0
     progress = 0
     rules ||= {}
-    content_tag :div, class: "no-overflow #{rules[:class]}" do
+    content_tag(:div, class: "no-overflow #{rules[:class]}") do
       progress_bar = "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
-      sketelon = content_tag :div, role: 'skeleton' do
+      sketelon = content_tag(:div, role: 'skeleton') do
         show_skeleton_thumb
       end
-      wrapper = content_tag :div, role: 'have-fun', style: 'display: none;' do
-        content_tag :div, class: 'card shadow-sm borderless d-flex align-items-stretch' do
-          content_tag :div, class: 'image-card-container focusable' do
-            content_tag :div, class: 'holder' do
+      wrapper = content_tag(:div, role: 'have-fun', style: 'display: none;') do
+        content_tag(:div, class: 'card shadow-sm borderless d-flex align-items-stretch') do
+          content_tag(:div, class: 'image-card-container focusable') do
+            content_tag(:div, class: 'holder') do
               show_thumb_body(show, rules: rules)
             end
           end
@@ -203,7 +201,7 @@ module ShowsHelper
   end
 
   def show_skeleton_thumb_body
-    content_tag :div, class: 'overlay darken' do
+    content_tag(:div, class: 'overlay darken') do
       image_tag('/tanoshimu-sketelon.png')
     end
   end
@@ -214,15 +212,16 @@ module ShowsHelper
     img_url = resource_url_for(show)
 
     rules ||= {}
-    content_tag :div, class: 'overlay darken' do
+    content_tag(:div, class: 'overlay darken') do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)', class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}", style: 'height: 0;') +
+      image_for(show, id: show.id, onload: 'fadeIn(this)',
+class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}", style: 'height: 0;') +
       sanitize(show_thumb_description(show)))
     end
   end
 
   def top_badges(show)
-    content_tag :div, class: 'justify-content-between d-flex top-tags-holder' do
+    content_tag(:div, class: 'justify-content-between d-flex top-tags-holder') do
       sanitize(check_episode_available(show)) +
         show_info_holder(show) +
         check_episode_cc(show)
@@ -236,8 +235,8 @@ module ShowsHelper
     return '' if show_seasons.empty? && !check_admin?(admin)
 
     seasons_tabs = show_seasons.map do |season|
-      content_tag :li, class: ('is-active' if season.number == 1) do
-        content_tag :a, href: "#season-#{season.number}", data: {season: season.number.to_s} do
+      content_tag(:li, class: ('is-active' if season.number == 1)) do
+        content_tag(:a, href: "#season-#{season.number}", data: { season: season.number.to_s }) do
           season.name.presence || season.default_name
         end
       end
@@ -245,14 +244,14 @@ module ShowsHelper
 
     if admin
       seasons_tabs << content_tag(:li) do
-        content_tag :a, href: '#new-season', data: {season: 'new'} do
+        content_tag(:a, href: '#new-season', data: { season: 'new' }) do
           "Add new season"
         end
       end
     end
 
-    content_tag :div, class: 'tabs is-boxed' do
-      content_tag :ul do
+    content_tag(:div, class: 'tabs is-boxed') do
+      content_tag(:ul) do
         sanitize(seasons_tabs.join(''), attributes: %w(href data-season class))
       end
     end
@@ -273,11 +272,11 @@ module ShowsHelper
     react_button(show, colour, 'thumb_down', reaction: :dislike, info: info)
   end
 
-  def react_button(show, colour, icon, reaction:, info: false)
+  def react_button(_show, colour, icon, reaction:, info: false)
     return unless current_user.can_like?
 
-    content_tag :button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction do
-      content_tag :i, class: 'material-icons' do
+    content_tag(:button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction) do
+      content_tag(:i, class: 'material-icons') do
         icon
       end
     end
@@ -288,8 +287,8 @@ module ShowsHelper
     colour = show_added ? 'success' : 'light'
     icon = show_added ? 'playlist_add_check' : 'playlist_add'
 
-    content_tag :button, id: 'queue', class: "button is-icon is-#{colour}" do
-      content_tag :i, class: 'material-icons' do
+    content_tag(:button, id: 'queue', class: "button is-icon is-#{colour}") do
+      content_tag(:i, class: 'material-icons') do
         icon
       end
     end
@@ -297,8 +296,8 @@ module ShowsHelper
 
   def admin_button(show)
     return unless current_user.can_manage?
-  
-    link_to admin_show_path(show), class: 'button is-rounded is-warning', target: :_blank do
+
+    link_to(admin_show_path(show), class: 'button is-rounded is-warning', target: :_blank) do
       'View on Admin panel'
     end
   end
@@ -309,12 +308,12 @@ module ShowsHelper
 
   def show_other_title(show)
     show_title = if I18n.locale == :en
-      {lang: 'Japanese', title: show.title_record.jp}
+      { lang: 'Japanese', title: show.title_record.jp }
     else
-      {lang: '英語', title: show.title_record.en}
+      { lang: '英語', title: show.title_record.en }
     end
 
-    content_tag :div do
+    content_tag(:div) do
       content_tag(:div, style: 'margin-bottom: 5px') { badge(type: :info, content: show_title[:lang]) } +
       content_tag(:span, class: 'subtitle', style: 'margin-left: 7px') do
         show_title[:title]
@@ -327,7 +326,8 @@ module ShowsHelper
     background_colour = url_info[:colour]
     text_colour = text_color(from: background_colour)
 
-    link_to(show_url.value, class: 'button is-fullwidth', style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
+    link_to(show_url.value, class: 'button is-fullwidth',
+style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
       url_info[:name]
     end
   end
@@ -337,21 +337,31 @@ module ShowsHelper
     url = show_url.value
 
     if show_url.platform.present?
-      return {name: show_url.platform.to_s.capitalize, colour: show_url.colour}
+      return { name: t("anime.platforms.#{show_url.platform}"), colour: show_url.colour }
     end
-    
-    {name: 'Unknown', colour: '#000000'}
+
+    { name: 'Unknown', colour: '#000000' }
   end
 
   def sort_shows_by_tabs
-    content_tag :div, class: 'tabs padded-bottom' do
-      content_tag :ul do
-        content_tag(:li, class: active_class_for('watch-online')) { link_to(t('anime.shows.watch-online'), shows_path(by: 'watch-online')) } +
-          content_tag(:li, class: active_class_for('trending')) { link_to(t('anime.shows.trending'), shows_path(by: :trending)) } +
+    content_tag(:div, class: 'tabs padded-bottom') do
+      content_tag(:ul) do
+        content_tag(:li, class: active_class_for('watch-online')) do
+          link_to(t('anime.shows.watch-online'), shows_path(by: 'watch-online'))
+        end +
+          content_tag(:li, class: active_class_for('trending')) do
+            link_to(t('anime.shows.trending'), shows_path(by: :trending))
+          end +
           content_tag(:li, class: active_class_for(blank: true)) { link_to(t('anime.shows.view-all'), shows_path) } +
-          content_tag(:li, class: active_class_for('coming-soon')) { link_to(t('anime.shows.coming-soon'), shows_path(by: 'coming-soon')) } + 
-          content_tag(:li, class: active_class_for('airing')) { link_to(t('anime.shows.airing-now'), shows_path(by: :airing)) } + 
-          content_tag(:li, class: active_class_for('recent')) { link_to(t('anime.shows.recent'), shows_path(by: :recent)) }
+          content_tag(:li, class: active_class_for('coming-soon')) do
+            link_to(t('anime.shows.coming-soon'), shows_path(by: 'coming-soon'))
+          end +
+          content_tag(:li, class: active_class_for('airing')) do
+            link_to(t('anime.shows.airing-now'), shows_path(by: :airing))
+          end +
+          content_tag(:li, class: active_class_for('recent')) do
+            link_to(t('anime.shows.recent'), shows_path(by: :recent))
+          end
       end
     end
   end
@@ -371,7 +381,7 @@ module ShowsHelper
     admin && current_user.can_manage?
   end
 
-  def active_class_for(value=nil, blank: false)
+  def active_class_for(value = nil, blank: false)
     condition = if blank
       params[:by].blank?
     elsif value.present?
