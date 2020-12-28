@@ -7,29 +7,30 @@ class Show
     before do
       puts 'Generating URLs for Shows...'
       message = "[#{Time.zone.now}] Preparing Show URL generation..."
-      Rails.logger.info message
-      #Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
+      Rails.logger.info(message)
+      # Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
 
       @shows = Show.published
-      Rails.logger.info "Analyzing #{@shows.count} show(s)..."
+      Rails.logger.info("Analyzing #{@shows.count} show(s)...")
     end
 
     def execute
       printf('Generating for shows: ')
       @successful_ids = []
-      @shows.each do |show|
+      @shows.find_each do |show|
         result = show.generate_banner_url!(force: force) && show.generate_poster_url!(force: force)
         @successful_ids << show.id if result && show.banner? && show.poster?
+        printf(result ? '.' : 'F')
       end
       puts "#{@successful_ids.join(', ')} done."
     end
 
     succeeded do
-      #Config.slack_client&.chat_postMessage(
+      # Config.slack_client&.chat_postMessage(
       #  channel: '#tasks',
       #  text: "[#{Time.zone.now}] URL for #{@successful_ids.count} show(s) generation complete."
-      #)
-      Rails.logger.info 'Done.'
+      # )
+      Rails.logger.info('Done.')
     end
   end
 end

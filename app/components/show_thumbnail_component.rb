@@ -2,6 +2,7 @@
 
 class ShowThumbnailComponent < ViewComponent::Base
   def initialize(show:)
+    super
     @show = show
   end
 

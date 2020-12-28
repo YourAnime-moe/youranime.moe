@@ -123,7 +123,11 @@
 
     <h2 class="subtitle">Where can users get more info?</h2>
     <% if @show.urls.any? %>
-
+      <ul style="margin-bottom: 1rem;">
+        <% @show.urls.each do |show_url| %>
+          <li>- <%= link_to("Link to #{t("anime.platforms.#{show_url.platform}")}", show_url.value) %></li>
+        <% end %>
+      </ul>
     <% else %>
       <p>- No links exist as of yet -</p>
     <% end %>

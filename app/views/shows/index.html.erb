@@ -1,33 +1,33 @@
-<% if @shows.empty? %>
-  <div class="text-center">
-    <div class="vertical-center">
-      <div class="wrapper">
-        <h4 class="text-muted"><%= t('anime.shows.empty') %></h4>
-      </div>
-    </div>
+<div style="padding-bottom: 55px;">
+  <div class="text-center" style="margin: 40px; display: grid;">
+    <span class="title"><%= @title %></span>
+    <span class="subtitle"><%= @title_subtitle %></span>
+    <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
   </div>
-<% else %>
-  <div style="padding-bottom: 55px;">
-    <div class="text-center" style="margin: 40px; display: grid;">
-      <span class="title"><%= @title %></span>
-      <span class="subtitle"><%= @title_subtitle %></span>
-      <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
-    </div>
-    <div class="container is-fluid">
-      <%= sort_shows_by_tabs %>
-      <div class="columns is-multiline">
-        <% @shows.each do |show| %>
-          <div class="column is-3" style="padding: 1px;">
-            <%= link_to(show) do %>
-              <%= render ShowThumbnailComponent.new(show: show) %>
-            <% end %>
+  <div class="container is-fluid">
+    <%= render 'shows/partial/tabs' %>
+    <% if @shows.empty? %>
+      <div class="text-center">
+        <div class="vertical-center" style="min-height: 50vh">
+          <div class="wrapper">
+            <h4 class="text-muted"><%= t('anime.shows.empty') %></h4>
           </div>
-        <% end %>
+        </div>
       </div>
-
-      <div class="padded">
-        <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
-      </div>
+    <% else %>
+    <div class="columns is-multiline">
+      <% @shows.each do |show| %>
+        <div class="column is-3" style="padding: 1px;">
+          <%= link_to(show) do %>
+            <%= render ShowThumbnailComponent.new(show: show) %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
+
+    <div class="padded">
+      <%= will_paginate @shows, renderer: BulmaPagination::Rails if @shows.respond_to?(:total_pages) %>
+    </div>
+    <% end %>
   </div>
-<% end %>
+</div>

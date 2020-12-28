@@ -6,7 +6,7 @@ module Kitsu
     protected
 
     def find_or_create_show!(show_options, show_source)
-      if (show = Show.find_by(reference_id: show_options[:id]))
+      show = if (show = Show.find_by(reference_id: show_options[:id]))
         show
       else
         new_show = build_show_from(show_options[:attributes])
@@ -15,10 +15,11 @@ module Kitsu
         new_show.show_type = show_options[:type]
         new_show.save!
 
-        try_adding_images(show_options, new_show)
-
         new_show
       end
+
+      try_adding_images(show, show_options[:attributes])
+      show
     end
 
     # Accepts: results.data.attributes
@@ -160,6 +161,12 @@ module Kitsu
           ref_id: result[:id],
           tag_type: search_results[:type],
         }
+      end
+    end
+
+    def refresh_show_urls!(show)
+      show.urls.each do |show_url|
+        show_url.refresh!
       end
     end
 

@@ -1,0 +1,14 @@
+<div class="tabs padded-bottom">
+  <ul>
+    <% if @search_results %>
+      <li class="is-active">
+        <a>Search for "<%= params[:query] %>"</a>
+      </li>
+    <% end %>
+    <% ShowUrl.popular_platforms.each do |platform| %>
+      <li class="<%= active_class_for(platform) %>">
+        <%= link_to(t("anime.platforms.#{platform}"), shows_path(by: platform)) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

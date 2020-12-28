@@ -3,8 +3,10 @@ module Shows
   module Kitsu
     module Sync
       class ShowsPerPage < ::Kitsu::ApplicationOperation
-        property! :kitsu_api_params, accepts: Hash
+        property! :params, accepts: Hash
         property! :requested_by, accepts: Users::Admin
+        property :per_page, converts: :to_i, default: 20
+        property :max_page, converts: :to_i, default: 10 # pass 0 to get all results
 
         def perform
           fetch_all_shows
@@ -25,10 +27,13 @@ module Shows
               show = find_or_create_show!(results, :kitsu)
               streaming_platforms_from_anilist!(results, show)
 
+              sync_show_images!(show)
+
               shows << show
             end
 
-            break if kitsu_api_params.empty?
+            break if params.empty?
+            break if limit_reached?
 
             @current_page += 1
           end
@@ -47,6 +52,23 @@ module Shows
 
           @included = @search_results[:included]
           @search_results
+        end
+
+        def kitsu_api_params
+          params.merge!({
+            page: {
+              limit: per_page,
+              offset: @current_page * per_page,
+            },
+          })
+        end
+
+        def offset
+          @current_page * per_page
+        end
+
+        def limit_reached?
+          max_page > 0 && max_page <= @current_page
         end
       end
     end

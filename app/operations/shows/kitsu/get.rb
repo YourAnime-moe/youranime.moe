@@ -18,6 +18,7 @@ module Shows
         end
 
         sync_show_images!(show)
+        refresh_show_urls!(show)
 
         raise NSFWError if show.nsfw? && !allows_nsfw?
         show
@@ -48,7 +49,7 @@ module Shows
         new_show.reference_id = search_results[:id]
         new_show.reference_source = :kitsu
         new_show.show_type = search_results[:type]
-        new_show.url = search_results.dig(:links, :self)
+        # new_show.url = search_results.dig(:links, :self)
         new_show.save!
 
         streaming_platforms_from_anilist!(search_results, new_show)

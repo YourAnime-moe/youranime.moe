@@ -4,7 +4,7 @@
       <div class="columns is-tiny-gap no-margin shows">
         <% shows_rows.each do |show| %>
           <%= link_to(show, class: "column is-3") do %>
-            <%= show_thumb(show, rules: @_rule) %>
+            <%= render ShowThumbnailComponent.new(show: show) %>
           <% end %>
         <% end %>
       </div>

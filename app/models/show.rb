@@ -27,7 +27,7 @@ class Show < ApplicationRecord
   before_validation :init_values
   can_be_liked_as :show
 
-  has_and_belongs_to_many :starring, class_name: 'Actor'
+  # has_and_belongs_to_many :starring, class_name: 'Actor'
   has_many :shows_tag_relations
   has_many :tags, -> { distinct }, through: :shows_tag_relations
 
@@ -58,7 +58,7 @@ class Show < ApplicationRecord
   # validates_inclusion_of :show_type, in: SHOW_TYPES
 
   scope :published, -> { includes(:seasons).where(published: true) }
-  scope :recent, -> { published.order('created_at desc') }
+  scope :recent, -> { published.order('shows.created_at desc') }
   scope :airing, -> { trending.where(status: AIRING_STATUSES) }
   scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
@@ -99,6 +99,10 @@ class Show < ApplicationRecord
 
   def synched?
     synchable? && synched_at?
+  end
+
+  def kitsu?
+    reference_source == 'kitsu'
   end
 
   def synched_by_user
@@ -216,6 +220,16 @@ class Show < ApplicationRecord
     find_kitsu!(reference_id)
   rescue
     nil
+  end
+
+  def self.find_slug(slug, reference_source: nil)
+    options = { slug: slug, reference_source: reference_source }.compact
+
+    find_by(options)
+  end
+
+  def self.where_platform(platform)
+    joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending
   end
 
   private

@@ -31,8 +31,11 @@
   </div>
   <div class="level-item has-text-centered">
     <div>
-      <p class="heading">Rating</p>
-      <p class="title"><%= @show.rating %></p>
+      <p class="heading">Age rating</p>
+      <p class="title" style="padding-bottom: 0;">
+        <%= @show.age_rating %>
+      </p>
+      <small><%= @show.age_rating_guide %></small>
     </div>
   </div>
 </nav>

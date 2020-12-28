@@ -344,8 +344,18 @@ style: "background: #{background_colour}; color: #{text_colour}", target: :_blan
   end
 
   def sort_shows_by_tabs
+    search_tab = if params[:query].present?
+      content_tag(:li, class: active_class_for('search')) do
+        content_tag(:span) do
+          "Search for \"#{params[:query]}\""
+        end
+      end
+    else
+      content_tag(:div)
+    end
     content_tag(:div, class: 'tabs padded-bottom') do
       content_tag(:ul) do
+        search_tab +
         content_tag(:li, class: active_class_for('watch-online')) do
           link_to(t('anime.shows.watch-online'), shows_path(by: 'watch-online'))
         end +
