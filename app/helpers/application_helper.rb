@@ -80,9 +80,9 @@ module ApplicationHelper
     title_markup = content_tag(:div, class: 'tanoshimu-list-title') do
       content_tag(:span) { title } + subtitle_markup
     end
-    link_markup = link_to(link_title, link, class: 'button is-rounded is-dark')
+    link_markup = link_to(link_title, link, class: 'button is-rounded is-dark') if link_title && link
     content_tag(:div, class: 'justified w-100') do
-      title_markup + link_markup
+      title_markup + link_markup.to_s
     end
   end
 
@@ -94,6 +94,10 @@ module ApplicationHelper
     brigthness = ((r*299)+(g*587)+(b*114))/1000
 
     brigthness > 125 ? '#000' : '#fff'
+  end
+
+  def current_platform
+    (ShowUrl.where(url_type: params[:by]).any? && params[:by]).presence
   end
 
   def login_then_redirect_path

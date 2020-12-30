@@ -7,6 +7,7 @@ module Shows
         property! :requested_by, accepts: Users::Admin
         property :per_page, converts: :to_i, default: 20
         property :max_page, converts: :to_i, default: 10 # pass 0 to get all results
+        property :raw, accepts: [true, false], default: false
 
         def perform
           fetch_all_shows
@@ -23,22 +24,24 @@ module Shows
             break if shows_options.empty?
 
             shows_options.each do |results|
-              results.merge!({ synched_by: requested_by.id })
-              show = find_or_create_show!(results, :kitsu)
-              streaming_platforms_from_anilist!(results, show)
+              result = if raw
+                results
+              else
+                results.merge!({ synched_by: requested_by.id })
+                show = find_or_create_show!(results, :kitsu)
+                streaming_platforms_from_anilist!(results, show)
 
-              sync_show_images!(show)
+                sync_show_images!(show)
+                show  
+              end
 
-              shows << show
+              shows << result
             end
 
             break if params.empty?
             break if limit_reached?
 
             @current_page += 1
-          end
-
-          shows.each do |show|
           end
 
           shows

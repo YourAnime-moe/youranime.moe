@@ -15,6 +15,9 @@
       </div>
     <% end %>
 
+    <% if logged_in? %>
+      <%= hf_header(t('welcome.user', user: current_user.name)) %>
+    <% end %>
     <div class="hf-section">
       <% if logged_in? && @main_queue.any? %>
         <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
@@ -44,7 +47,7 @@
               <% shows_rows.each do |show| %>
                 <%= link_to(show, class: "column is-3") do %>
                   <% show_thumb(show, rules: @_rule) %>
-                  <%= render ShowThumbnailComponent.new(show: show) %>
+                  <%= render ShowThumbnailComponent.new(show: show, focus_platform: platform) %>
                 <% end %>
               <% end %>
             </div>

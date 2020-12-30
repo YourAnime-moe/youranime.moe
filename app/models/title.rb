@@ -7,6 +7,8 @@ class Title < ApplicationRecord
 
   translates :value, through: [:en, :fr, :jp], default: :en
 
+  scope :with_slug, -> { where.not(roman: nil) }
+
   scope :search, lambda { |query, limit: nil|
     return all if query.empty?
 

@@ -48,6 +48,10 @@ module Kitsu
       show.urls = show_urls if show_urls.present?
 
       show_urls
+    rescue ActiveRecord::NotNullViolation
+      show.urls.delete_all
+
+      show.urls = show_urls
     end
 
     def anilist_id_from(search_results)
@@ -90,9 +94,9 @@ module Kitsu
 
     def show_title_options(results)
       {
-        en: results.dig(:titles, :en) || results.dig(:titles, :en_us) || results.dig(:titles, :en_jp),
+        en: results.dig(:titles, :en).presence || results.dig(:titles, :en_us).presence || results.dig(:titles, :en_jp).presence,
         jp: results.dig(:titles,
-:jp) || results.dig(:titles, :ja) || results.dig(:titles, :ja_jp) || results.dig(:titles, :jp_ja),
+:jp).presence || results.dig(:titles, :ja).presence || results.dig(:titles, :ja_jp).presence || results.dig(:titles, :jp_ja).presence,
         roman: results[:slug],
         # canonical: results[:canonicalTitle],
         # abbreviated: '', # results[:abbreviatedTitles]&.join(', '),

@@ -100,6 +100,7 @@ class ShowsController < ApplicationController
 
   def shows_by
     return { scope: Show.trending, title: 'trending' } if params[:by] == 'trending'
+    return { scope: Show.as_music, title: 'music' } if params[:by] == 'music'
     return { scope: Show.recent, title: 'recent' } if params[:by] == 'recent'
     return { scope: Show.airing, title: 'airing-now' } if params[:by] == 'airing'
     return { scope: Show.coming_soon, title: 'coming-soon' } if params[:by] == 'coming-soon'
@@ -109,7 +110,7 @@ class ShowsController < ApplicationController
       return { scope: Show.where_platform(params[:by]), platform: true }
     end
 
-    { scope: Show.published_with_title.order("titles.#{I18n.locale}"), title: 'view-all' }
+    { scope: Show.ordered, title: 'view-all' }
   end
 
   def titles_options
@@ -128,7 +129,7 @@ class ShowsController < ApplicationController
   end
 
   def show_by_slug!(slug)
-    show = (title = Title.find_by!(roman: slug)) && title.record
+    show = Show.find_by_slug!(slug)
     # Shows::Kitsu::Get.perform(kitsu_id: show.reference_id) if show.kitsu?
 
     show

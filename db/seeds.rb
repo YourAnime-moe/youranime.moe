@@ -73,7 +73,9 @@ def seed_show_tags
 end
 
 def seed_shows_later
-  Sync::ShowsFromKitsuJob.perform_later(staff: Users::Admin.system)
+  %i(current next).each do |season|
+    Sync::ShowsFromKitsuJob.perform_later(season, staff: Users::Admin.system)
+  end
 end
 
 def seed_shows

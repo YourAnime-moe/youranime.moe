@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class ShowThumbnailComponent < ViewComponent::Base
-  def initialize(show:)
+  def initialize(show:, focus_platform: nil)
     super
     @show = show
+    @focus_platform = focus_platform
   end
 
   def title
@@ -15,7 +16,29 @@ class ShowThumbnailComponent < ViewComponent::Base
   end
 
   def show_type
-    @show.show_type
+    @show.show_category
+  end
+
+  def badges
+    options = []
+
+    options << badge_options
+    options << { type: :light, content: t("anime.shows.airing_status.#{@show.status}") } unless @show.air_complete?
+
+    if @focus_platform
+      platform_colour = ShowUrl.colour_for(@focus_platform)
+      options << { background: platform_colour, colour: Utils.text_color(from: platform_colour), content: t("anime.platforms.#{@focus_platform}") }
+
+      links_scope = @show.links.unless(url_type: @focus_platform)
+      options << { type: :link, content: "+#{links_scope.count}" } if links_scope.any?
+    elsif @show.links.count == 1
+      link = @show.links.first
+      options << { background: link.colour, colour: Utils.text_color(from: link.colour), content: t("anime.platforms.exclusively", on: t("anime.platforms.#{link.platform}")) }
+    elsif @show.links.count > 1
+      options << { type: :link, content: t("anime.platforms.streamable", count: @show.links.count) }
+    end
+
+    options
   end
 
   def badge_options

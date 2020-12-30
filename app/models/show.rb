@@ -37,11 +37,11 @@ class Show < ApplicationRecord
   has_many :published_episodes, through: :seasons
   has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
-  has_many :urls, class_name: 'ShowUrl', inverse_of: :show
+  has_many :urls, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
   has_many :links, -> { streamable.non_watchable }, class_name: 'ShowUrl'
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
 
-  has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
+  has_one :title_record, -> { with_slug }, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
   has_translatable_field :title
   has_translatable_field :description
@@ -63,6 +63,8 @@ class Show < ApplicationRecord
   scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
+  scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
+  scope :as_music, -> { ordered.where(show_category: :music) }
 
   scope :optimized, -> {
                       includes(:ratings,
@@ -205,11 +207,16 @@ class Show < ApplicationRecord
   end
 
   def self.find_by_slug(slug)
+    find_by_slug!
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def self.find_by_slug!(slug)
     Show
       .optimized
       .joins(:title_record)
-      .where('titles.roman' => slug)
-      .first
+      .find_by!('titles.roman' => slug)
   end
 
   def self.find_kitsu!(reference_id)

@@ -191,6 +191,11 @@ en:
       airing_status:
         airing: Airing now
         coming_soon: Coming soon
+        current: Airing now
+        finished: Finished
+        tba: T.B.A.
+        unreleased: Unreleased
+        upcoming: Coming soon
         unknown: Unknown
     movies:
       view-all: "All Movies"
@@ -230,6 +235,9 @@ en:
       adultswim: Adult Swim
       official: Official site
       twitter: Twitter page
+
+      exclusively: "Exclusively on %{on}"
+      streamable: "%{count} platforms"
 
   time:
     seasons:

@@ -45,6 +45,14 @@ class ShowUrl < ApplicationRecord
         .reverse_order
         .pluck(:url_type)
     end
+
+    def colour_for(platform)
+      COLOUR_MAP[platform.to_sym]
+    end
+
+    def refresh_all!
+      all.each { |show_url| show_url.refresh! }
+    end
   end
 
   def platform
@@ -72,6 +80,8 @@ class ShowUrl < ApplicationRecord
   end
 
   def refresh!
+    return if self[:url_type].to_s == 'official' 
+
     self[:url_type] = nil
     save!
   end

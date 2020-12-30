@@ -30,7 +30,10 @@ module Shows
         return unless force_update || show.status != 'airing'
 
         results = search_results[:attributes]
+
         show.assign_attributes(show_options(results))
+        show.title = Title.new(show_title_options(results))
+        show.description = Description.new({ en: (results[:synopsis].presence || results[:description].presence || '- No description -') })
         # show.cover.assign_attributes(results[:coverImage].except(:meta)) if results[:coverImage]
         # show.poster.assign_attributes(results[:posterImage].except(:meta)) if results[:posterImage]
         show.save!
@@ -74,7 +77,9 @@ module Shows
 
       def needs_update?(show)
         force_update ||
+          (show.persisted? && !show.valid?) ||
           show.status == 'airing' ||
+          show.urls.empty? ||
           # show.tags.empty? ||
           show.nsfw? ||
           !show.banner.attached? ||

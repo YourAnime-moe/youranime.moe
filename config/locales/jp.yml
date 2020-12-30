@@ -175,6 +175,25 @@ jp:
       more: "もっと見る"
       reset: "リセットする"
 
+    platforms:
+      youtube: ユーチューブ
+      netflix: Netflix
+      funimation: ファニメーション
+      crunchyroll: クランチロール
+      vrv: VRV
+      hulu: Hulu
+      hidive: HIDIVE
+      animelab: AnimeLab
+      vimeo: Vimeo
+      prime: PrimeVideo
+      tubi: Tubi
+      adultswim: Adult Swim
+      official: 公式サイト
+      twitter: 公式ツイッター
+
+      exclusively: "%{on}で配信中"
+      streamable: "配信メディアは%{count}件"
+
   user:
     welcome: "ようこそ、%{user}様"
     format:
