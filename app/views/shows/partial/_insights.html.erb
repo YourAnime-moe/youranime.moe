@@ -13,7 +13,7 @@
     <% else %>
       <div>
         <p class="heading">Episodes</p>
-        <p class="title"><%= @show.episodes.count %></p>
+        <p class="title"><%= @show.episodes_count %></p>
       </div>
     <% end %>
   </div>
@@ -26,13 +26,16 @@
   <div class="level-item has-text-centered">
     <div>
       <p class="heading">Rank</p>
-      <p class="title"><%= @show.rank? ? "##{@show.rank}" : '-' %></p>
+      <p class="title"><%= @show.popularity? ? "##{@show.popularity}" : '-' %></p>
     </div>
   </div>
   <div class="level-item has-text-centered">
     <div>
-      <p class="heading">Rating</p>
-      <p class="title"><%= @show.rating %></p>
+      <p class="heading">Age rating</p>
+      <p class="title" style="padding-bottom: 0;">
+        <%= @show.age_rating %>
+      </p>
+      <small><%= @show.age_rating_guide %></small>
     </div>
   </div>
 </nav>

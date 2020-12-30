@@ -138,11 +138,11 @@
         $('a[tab]').parents('li').removeClass('is-active');
         const partialName = $target.attr('tab');
         loadPartial('content', `/shows/<%= @show.slug %>/partial/${partialName}`, function() {
-          if (clickedOnActive) {
+          /*if (clickedOnActive) {
             window.history.replaceState({tab: partialName}, document.title, `?tab=${partialName}`);
           } else {
             window.history.pushState({tab: partialName}, document.title, `?tab=${partialName}`);
-          }
+          }*/
           $target.parents('li').addClass('is-active');
         });
       });
@@ -150,7 +150,7 @@
         const currentTab = '<%= params[:tab] || 'general' %>';
         $('a[tab]').parents('li').removeClass('is-active');
         $(`a[tab="${currentTab}"]`).parents('li').addClass('is-active');
-        window.history.replaceState({tab: currentTab}, document.title, `?tab=${currentTab}`);
+        // window.history.replaceState({tab: currentTab}, document.title, `?tab=${currentTab}`);
       });
       window.onpopstate = function(event) {
         const newTab = event.state && event.state.tab || 'general';

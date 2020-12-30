@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'active_storage'
 
 class Show < ApplicationRecord
@@ -16,11 +17,17 @@ class Show < ApplicationRecord
   MOVIE = 'movie'
 
   SHOW_TYPES = [ANIME, MOVIE]
+  AIRING_STATUSES = %w(current)
+  FINISHED_STATUES = %w(finished)
+  COMING_SOON_STATUSES = %w(coming_soon)
+
+  DEFAULT_BANNER_URL = '/img/404.jpg'
+  DEFAULT_POSTER_URL = '/img/404.jpg'
 
   before_validation :init_values
   can_be_liked_as :show
 
-  has_and_belongs_to_many :starring, class_name: 'Actor'
+  # has_and_belongs_to_many :starring, class_name: 'Actor'
   has_many :shows_tag_relations
   has_many :tags, -> { distinct }, through: :shows_tag_relations
 
@@ -30,37 +37,47 @@ class Show < ApplicationRecord
   has_many :published_episodes, through: :seasons
   has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
-  has_many :urls, class_name: 'ShowUrl', inverse_of: :show
-  has_many :links, -> { non_watchable }, class_name: 'ShowUrl'
+  has_many :urls, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
+  has_many :links, -> { streamable.non_watchable }, class_name: 'ShowUrl'
+  has_many :info_links, -> { info }, class_name: 'ShowUrl'
 
-  has_one :title_record, class_name: 'Title', foreign_key: :model_id, required: true
+  has_one :title_record, -> { with_slug }, class_name: 'Title', foreign_key: :model_id, required: true
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
   has_translatable_field :title
   has_translatable_field :description
 
   has_one_attached :banner
   has_one_attached :poster
-  has_resource :banner, default_url: '/img/404.jpg', expiry: 3.days
-  has_resource :poster, default_url: '/img/404.jpg', expiry: 3.days
+  has_resource :banner, default_url: DEFAULT_BANNER_URL, expiry: 3.days
+  has_resource :poster, default_url: DEFAULT_POSTER_URL, expiry: 3.days
 
   respond_to_types SHOW_TYPES
 
   validates_presence_of :released_on, :banner_url
   validates_inclusion_of :top_entry, :published, in: [true, false]
-  #validates_inclusion_of :show_type, in: SHOW_TYPES
+  # validates_inclusion_of :show_type, in: SHOW_TYPES
 
   scope :published, -> { includes(:seasons).where(published: true) }
-  scope :recent, -> { published.order('created_at desc') }
-  scope :airing, -> { trending.where(airing_status: :airing) }
-  scope :coming_soon, -> { trending.where(airing_status: :coming_soon) }
+  scope :recent, -> { published.order('shows.created_at desc') }
+  scope :airing, -> { trending.where(status: AIRING_STATUSES) }
+  scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
+  scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
+  scope :as_music, -> { ordered.where(show_category: :music) }
 
-  scope :optimized, -> { includes(:ratings, :tags, :title_record, :queues, shows_queue_relations: :queue, seasons: :episodes) }
+  scope :optimized, -> {
+                      includes(:ratings,
+                        :tags,
+                        :title_record,
+                        :queues,
+                        shows_queue_relations: :queue,
+                        seasons: :episodes)
+                    }
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }
   scope :searchable, -> { joins(:title_record).optimized }
-  scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:airing_status).trending }
+  scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:status).trending }
 
   def publish
     update!(published: true)
@@ -79,11 +96,15 @@ class Show < ApplicationRecord
   end
 
   def synchable?
-    reference_id.present?
+    reference_id.present? && reference_source.present?
   end
 
   def synched?
     synchable? && synched_at?
+  end
+
+  def kitsu?
+    reference_source == 'kitsu'
   end
 
   def synched_by_user
@@ -92,7 +113,7 @@ class Show < ApplicationRecord
     Users::Admin.find_by(id: synched_by)
   end
 
-  def weighted_rating(minimum_score_count=25)
+  def weighted_rating(minimum_score_count = 25)
     ratings_count = ratings.count.to_f
     return 0 if ratings_count < minimum_score_count
 
@@ -125,23 +146,15 @@ class Show < ApplicationRecord
   end
 
   def airing?
-    status == 'current'
+    AIRING_STATUSES.include?(status)
   end
 
   def coming_soon?
-    status == 'planned' || status == 'upcoming'
+    COMING_SOON_STATUSES.include?(status)
   end
 
   def air_complete?
-    status == 'completed' || status == 'finished'
-  end
-
-  def dropped?
-    status == 'dropped'
-  end
-
-  def on_hold?
-    status == 'on_hold'
+    FINISHED_STATUES.include?(status)
   end
 
   def no_air_status?
@@ -194,11 +207,36 @@ class Show < ApplicationRecord
   end
 
   def self.find_by_slug(slug)
+    find_by_slug!(slug)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def self.find_by_slug!(slug)
     Show
       .optimized
       .joins(:title_record)
-      .where('titles.roman' => slug)
-      .first
+      .find_by!('titles.roman' => slug)
+  end
+
+  def self.find_kitsu!(reference_id)
+    find_by!(reference_id: reference_id, reference_source: 'kitsu')
+  end
+
+  def self.find_kitsu(reference_id)
+    find_kitsu!(reference_id)
+  rescue
+    nil
+  end
+
+  def self.find_slug(slug, reference_source: nil)
+    options = { slug: slug, reference_source: reference_source }.compact
+
+    find_by(options)
+  end
+
+  def self.where_platform(platform)
+    joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending
   end
 
   private

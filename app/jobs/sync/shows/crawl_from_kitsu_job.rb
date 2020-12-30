@@ -3,8 +3,8 @@ module Sync
     class CrawlFromKitsuJob < TrackableJob
       queue_as :sync
 
-      def perform(staff:)
-        ::Shows::Sync.perform(sync_type: :crawl, requested_by: staff)
+      def perform(range, staff:)
+        ::Shows::Kitsu::Sync::Crawl.perform(years: range)
       end
     end
   end

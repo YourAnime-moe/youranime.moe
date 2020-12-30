@@ -8,20 +8,16 @@
       </div>
     </div>
   <% else %>
-    <% if logged_in? && @episodes[:actual].size > 0 %>
-      <div class="hf-section" style="margin-bottom: 50px;">
-        <div class="tanoshimu-list-title"><%= t('anime.episodes.continue-watching') %></div>
-        <%= render 'users/partial/continue' %>
-      </div>
+    <% if logged_in? %>
+      <%= hf_header(t('welcome.user', user: current_user.name)) %>
     <% end %>
-
     <div class="hf-section">
       <% if logged_in? && @main_queue.any? %>
-        <%= hf_header(t('anime.shows.main-queue'), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
+        <%= hf_header(t('anime.shows.main-queue', count: @main_queue.count), subtitle: t('anime.shows.main-queue-what'), link_title: t('anime.other.more'), link: my_queue_path) %>
         <div class="columns is-tiny-gap no-margin shows" style="overflow: scroll">
-          <% @main_queue.each do |show| %>
-            <%= link_to(show, class: "column is-3") do %>
-              <%= show_thumb(show) %>
+          <% @main_queue.each do |queue_item| %>
+            <%= link_to(queue_item.show, class: "column is-3") do %>
+              <%= render ShowThumbnailComponent.new(show: queue_item) %>
             <% end %>
           <% end %>
           <% if @view_all_queue %>
@@ -35,21 +31,23 @@
       <% end %>
     </div>
 
-    <div class="hf-section">
-      <%= hf_header(t('anime.shows.airing-now'), subtitle: t('anime.shows.airing-now-what', season: Config.current_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: :airing)) %>
-      <div id="airing_now">
-        <%= show_skeleton %>
-        <%= show_skeleton %>
+    <% ShowUrl.popular_platforms[0...5].each do |platform| %>
+      <div class="hf-section">
+        <%= hf_header(t("anime.platforms.#{platform}"), link_title: t('anime.other.more'), link: shows_path(by: platform)) %>
+        <div id="<%= platform %>">
+          <% Show.where_platform(platform).limit(8).each_slice(4) do |shows_rows| %>
+            <div class="columns is-tiny-gap no-margin shows">
+              <% shows_rows.each do |show| %>
+                <%= link_to(show, class: "column is-3") do %>
+                  <% show_thumb(show, rules: @_rule) %>
+                  <%= render ShowThumbnailComponent.new(show: show, focus_platform: platform) %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
-
-    <div class="hf-section">
-      <%= hf_header(t('anime.shows.trending'), subtitle: t('anime.shows.trending-what'), link_title: t('anime.other.more'), link: shows_path(by: :trending)) %>
-      <div id="trending_shows">
-        <%= show_skeleton %>
-        <%= show_skeleton %>
-      </div>
-    </div>
+    <% end %>
 
     <% if logged_in? && @recommendations.any? %>
       <div class="hf-section">
@@ -67,22 +65,6 @@
         </div>
       </div>
     <% end %>
-
-    <div class="hf-section">
-      <%= hf_header(t('anime.shows.coming-soon'), subtitle: t('anime.shows.coming-soon-what', season: Config.next_season[:localized]), link_title: t('anime.other.more'), link: shows_path(by: 'coming-soon')) %>
-      <div id="coming_soon">
-        <%= show_skeleton %>
-        <%= show_skeleton %>
-      </div>
-    </div>
-
-    <div class="hf-section">
-      <%= hf_header(t('anime.shows.recent'), subtitle: t('anime.shows.recent-what'), link_title: t('anime.other.more'), link: shows_path(by: :recent)) %>
-      <div id="recent_shows">
-        <%= show_skeleton %>
-        <%= show_skeleton %>
-      </div>
-    </div>
   <% end %>
 </div>
 

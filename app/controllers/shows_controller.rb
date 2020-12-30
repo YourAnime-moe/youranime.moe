@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ShowsController < ApplicationController
   include ShowsHelper
 
@@ -10,12 +11,19 @@ class ShowsController < ApplicationController
       shows = Search.perform(search: params[:query], format: :shows)
       @title = t("anime.shows.search")
       @title_subtitle = t("anime.shows.search-result", count: shows.count)
+      @search_results = true
 
       shows
     else
-      title_key = shows_scope_info[:title]
-      @title = t("anime.shows.#{title_key}")
-      @title_subtitle = t("anime.shows.#{title_key}-what", **titles_options)
+      if shows_scope_info[:platform]
+        shows = shows_scope_info[:scope]
+        @title = t("anime.platforms.#{params[:by]}")
+        @title_subtitle = t("anime.shows.search-result", count: shows.count)
+      else
+        title_key = shows_scope_info[:title]
+        @title = t("anime.shows.#{title_key}")
+        @title_subtitle = t("anime.shows.#{title_key}-what", **titles_options)
+      end
 
       shows_scope_info[:scope]
     end
@@ -28,45 +36,47 @@ class ShowsController < ApplicationController
 
   def show
     if (@show = show_by_slug(params[:slug])).present?
+      Shows::Kitsu::Get.perform(kitsu_id: @show.reference_id) if @show.kitsu?
+
       if navigatable?(@show)
-        set_title(:before => @show.title)
+        set_title(before: @show.title)
         @episodes = episodes_map(@show)
         @additional_main_class = 'no-margin no-padding'
       else
         flash[:warning] = "This show is not available yet. Check back later!"
-        redirect_to shows_path
+        redirect_to(shows_path)
       end
     elsif (show = Show.find_by(id: params[:slug]))
       redirect_to(show_path(show.title_record.roman))
     else
       flash[:warning] = "This show does not exist. Please try again later."
-      redirect_to shows_path
+      redirect_to(shows_path)
     end
   end
 
   def action_buttons
     if (@show = show_by_slug(params[:show_slug])).present? || current_user.can_like?
-      render template: 'shows/partial/action_buttons', layout: false
+      render(template: 'shows/partial/action_buttons', layout: false)
     else
-      render text: 'not found', status: 404
+      render(text: 'not found', status: 404)
     end
   end
 
   def search_partial
     @search_result = Search.perform(search: params[:query], limit: 10)
 
-    render template: 'shows/partial/search', layout: false
+    render(template: 'shows/partial/search', layout: false)
   end
 
   def react
     if (show = show_by_slug(params[:show_slug])) && current_user.can_like?
       result = Shows::UpdateReaction.perform(show: show, user: current_user, reaction: params[:reaction])
-      render json: { success: true, result: result }
+      render(json: { success: true, result: result })
     else
-      render json: { error: true }, status: 422
+      render(json: { error: true }, status: 422)
     end
   end
-  
+
   def queue
     if (show = show_by_slug(params[:show_slug]))
       result = if current_user.has_show_in_main_queue?(show)
@@ -74,28 +84,33 @@ class ShowsController < ApplicationController
       else
         current_user.add_show_to_main_queue(show) && :added
       end
-      render json: { success: true, result: result }
+      render(json: { success: true, result: result })
     else
-      render json: { error: true }, status: 422
+      render(json: { error: true }, status: 422)
     end
   end
 
   def render_partial
     @show = show_by_slug!(params[:show_slug])
 
-    render template: "/shows/partial/#{params[:partial_name]}", layout: false
+    render(template: "/shows/partial/#{params[:partial_name]}", layout: false)
   end
 
   private
 
   def shows_by
     return { scope: Show.trending, title: 'trending' } if params[:by] == 'trending'
+    return { scope: Show.as_music, title: 'music' } if params[:by] == 'music'
     return { scope: Show.recent, title: 'recent' } if params[:by] == 'recent'
     return { scope: Show.airing, title: 'airing-now' } if params[:by] == 'airing'
     return { scope: Show.coming_soon, title: 'coming-soon' } if params[:by] == 'coming-soon'
     return { scope: Show.with_links, title: 'with-links' } if params[:by] == 'watch-online'
 
-    { scope: Show.published_with_title.order("titles.#{I18n.locale}"), title: 'view-all' }
+    if ShowUrl.popular_platforms.include?(params[:by])
+      return { scope: Show.where_platform(params[:by]), platform: true }
+    end
+
+    { scope: Show.ordered, title: 'view-all' }
   end
 
   def titles_options
@@ -114,7 +129,10 @@ class ShowsController < ApplicationController
   end
 
   def show_by_slug!(slug)
-    (title = Title.find_by!(roman: slug)) && title.record
+    show = Show.find_by_slug!(slug)
+    # Shows::Kitsu::Get.perform(kitsu_id: show.reference_id) if show.kitsu?
+
+    show
   end
 
   def navigatable?(show)
@@ -126,12 +144,11 @@ class ShowsController < ApplicationController
   end
 
   def episodes_map(show)
-    show.seasons.includes(:episodes).map do |season| 
+    show.seasons.includes(:episodes).map do |season|
       {
         season: season.number,
-        episodes: season.published_episodes.each_slice(3).to_a
+        episodes: season.published_episodes.each_slice(3).to_a,
       }
     end
   end
-
 end

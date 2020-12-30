@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   class Queue < ApplicationRecord
     belongs_to :user, inverse_of: :queues
@@ -7,7 +8,7 @@ module Shows
     has_many :unavailable_shows, class_name: 'Show', through: :shows_queue_relations
 
     def <<(show)
-      return unless show.kind_of?(Show)
+      return unless show.is_a?(Show)
       return false unless persisted?
 
       return show if reload.shows.include?(show)
@@ -16,9 +17,9 @@ module Shows
       shows_queue_relations.create!(show_id: show.id)
     end
 
-    def -(show)
-      return unless show.kind_of?(Show)
-      return unless include?(show)
+    def -(other)
+      return unless other.is_a?(Show)
+      return unless include?(other)
 
       shows_queue_relations.find_by(show: show).destroy
     end
@@ -59,5 +60,5 @@ module Shows
       @loaded = true
       @show_ids ||= shows_queue_relations.pluck(:show_id)
     end
-  end  
+  end
 end

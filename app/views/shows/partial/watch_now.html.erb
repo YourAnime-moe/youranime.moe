@@ -1,6 +1,6 @@
 <% if @show.watchable? %>
   <div class="container">
     <h2 class="subtitle">You are watching <%= @show.title %>...</h2>
-    <iframe width="100%" height="600px" src="<%= @show.youtube_trailer_url %>" allowfullscreen></iframe>
+    <iframe width="100%" height="600px" src="<%= @show.urls.watchable.first.value %>" allowfullscreen></iframe>
   </div>
 <% end %>

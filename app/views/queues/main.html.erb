@@ -10,7 +10,7 @@
 <% else %>
   <div style="padding-bottom: 55px;">
     <div class="text-center" style="margin: 40px; display: grid;">
-      <span class="title"><%= t('anime.shows.main-queue') %></span>
+      <span class="title"><%= t('anime.shows.main-queue', count: @queue.count) %></span>
       <span class="subtitle"><%= t('anime.shows.main-queue-what') %></span>
     </div>
     <div class="container">

@@ -2,8 +2,9 @@ module Sync
   class ShowsFromKitsuJob < TrackableJob
     queue_as :sync
 
-    def perform(staff:)
-      processed_shows = ::Shows::Sync.perform(sync_type: :airing, requested_by: staff)
+    def perform(season, staff:)
+      Rails.logger.info("[Sync::ShowsFromtKitsuJob] Syncing #{season} season...")
+      processed_shows = ::Shows::Kitsu::Sync::Airing.perform(season: season)
       Rails.logger.info("[Sync::ShowsFromtKitsuJob] Processed #{processed_shows.count} show(s)!")
     end
   end

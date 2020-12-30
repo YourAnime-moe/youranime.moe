@@ -1,0 +1,30 @@
+<div class="tabs padded-bottom">
+  <ul>
+    <% if @search_results %>
+      <li class="is-active">
+        <a>Search for "<%= params[:query] %>"</a>
+      </li>
+    <% end %>
+    <li class="<%= active_class_for(:trending) %>">
+      <%= link_to(shows_path(by: :trending)) do %>
+        <span>
+          <i class="material-icons" style="font-size: 18px; padding-right: 5px;">trending_up</i>
+          <%= t("anime.shows.trending") %>
+        </span>
+      <% end %>
+    </li>
+    <li class="<%= active_class_for(:music) %>">
+      <%= link_to(shows_path(by: :music)) do %>
+        <span>
+          <i class="material-icons" style="font-size: 18px; padding-right: 5px;">music_note</i>
+          <%= t("anime.shows.music") %>
+        </span>
+      <% end %>
+    </li>
+    <% ShowUrl.popular_platforms.each do |platform| %>
+      <li class="<%= active_class_for(platform) %>">
+        <%= link_to(t("anime.platforms.#{platform}"), shows_path(by: platform)) %>
+      </li>
+    <% end %>
+  </ul>
+</div>
