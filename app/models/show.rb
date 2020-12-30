@@ -236,7 +236,7 @@ class Show < ApplicationRecord
   end
 
   def self.where_platform(platform)
-    joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending
+    joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).airing.or(coming_soon).trending
   end
 
   private
