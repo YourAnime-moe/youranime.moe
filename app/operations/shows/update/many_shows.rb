@@ -9,6 +9,8 @@ module Shows
             kitsu_id: show.id,
             force_update: true,
           ) if show.kitsu?
+        rescue => e
+          Rails.logger.error("[Shows::Update::ManyShows] failure: #{e}")
         end
       end
     end
