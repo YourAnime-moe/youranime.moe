@@ -2,6 +2,30 @@
 
 namespace :sync do
   namespace :shows do
+    namespace :update do
+      task later: :environment do
+        Show.find_in_batches.each do |batch|
+          show_ids = batch.map(&:id)
+
+          ::Sync::Shows::UpdateShowsJob.perform_later(
+            show_ids,
+            staff: Users::Admin.system,
+          )
+        end
+      end
+
+      task now: :environment do
+        Show.find_in_batches.each do |batch|
+          show_ids = batch.map(&:id)
+
+          ::Sync::Shows::UpdateShowsJob.perform_now(
+            show_ids,
+            staff: Users::Admin.system,
+          )
+        end
+      end
+    end
+
     namespace :kitsu do
       desc 'Fetch and update the currently airing and upcoming shows from kitsu.io'
       task later: :environment do
