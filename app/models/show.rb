@@ -207,7 +207,7 @@ class Show < ApplicationRecord
   end
 
   def self.find_by_slug(slug)
-    find_by_slug!
+    find_by_slug!(slug)
   rescue ActiveRecord::RecordNotFound
     nil
   end

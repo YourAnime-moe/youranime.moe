@@ -161,7 +161,7 @@ en:
       search-result: Found %{count} show(s)
       search: Search results
       coming-soon: "Coming soon!"
-      main-queue: Main queue
+      main-queue: Main queue (%{count})
       main-queue-what: The shows you've added to your personal queue
       trending: Trending
       trending-what: The most popular anime, movies, games etc.
@@ -220,6 +220,11 @@ en:
       more: "More..."
       reset: "Reset"
 
+    queue:
+      added-ago: Added %{time_ago} ago
+      added-yesterday: Add yesterday
+      added-on: Added on %{date}
+
     platforms:
       youtube: YouTube
       netflix: Netflix
@@ -245,6 +250,8 @@ en:
       summer: "Summer"
       fall: "Fall"
       winter: "Winter"
+    date:
+      simple-format: '%b %d, %Y'
 
   user:
     welcome: "Welcome, %{user}"

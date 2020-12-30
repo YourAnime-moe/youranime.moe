@@ -13,7 +13,7 @@
     <% else %>
       <div>
         <p class="heading">Episodes</p>
-        <p class="title"><%= @show.episodes.count %></p>
+        <p class="title"><%= @show.episodes_count %></p>
       </div>
     <% end %>
   </div>
@@ -26,7 +26,7 @@
   <div class="level-item has-text-centered">
     <div>
       <p class="heading">Rank</p>
-      <p class="title"><%= @show.rank? ? "##{@show.rank}" : '-' %></p>
+      <p class="title"><%= @show.popularity? ? "##{@show.popularity}" : '-' %></p>
     </div>
   </div>
   <div class="level-item has-text-centered">

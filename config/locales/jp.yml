@@ -124,7 +124,7 @@ jp:
       search-result: 検索の結果は%{count}件です
       search: 検索結果
       coming-soon: "近日公開予定"
-      main-queue: 自分だけのキュー
+      main-queue: 自分だけのキュー（%{count}件）
       main-queue-what: 自分が追加したショーのキューです
       trending: 人気
       trending-what: 今は流行しているアニメやゲームなどです

@@ -42,7 +42,7 @@
           <p>Internal ID: <code><%= @show.id %></code></p>
           <p>Published Status: <%= boolean_tag(@show.published?, true_text: 'Published', false_text: 'Unpublished', light: true) %></p>
           <p>Status: <%= value_tag(@show.status) %></p>
-          <p>Starts on: <%= @show.starts_on.strftime('%b %d, %Y') %></p>
+          <p>Starts on: <%= @show.starts_on&.strftime('%b %d, %Y') || '-' %></p>
           <p>Ended on: <%= @show.ended_on&.strftime('%b %d, %Y') || '-' %></p>
           <p>Created: <%= @show.created_at.strftime('%b %d, %Y @ %H:%M:%S') %></p>
 

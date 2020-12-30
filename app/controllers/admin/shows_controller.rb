@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Admin
   class ShowsController < ApplicationController
     def index
@@ -7,7 +8,7 @@ module Admin
         @shows = if params[:query].present?
           Show.search_all(params[:query])
         else
-          Show.optimized.reverse_order#.order("titles.#{I18n.locale}")
+          Show.optimized.reverse_order # .order("titles.#{I18n.locale}")
         end
         @shows_count = @shows.count
         @shows = @shows.paginate(page: params[:page])
@@ -16,7 +17,9 @@ module Admin
     end
 
     def show
-      if (@show = Show.find_by_slug(params[:show_id] || params[:id]))
+      slug_or_id = params[:show_id] || params[:id]
+      if (@show = Show.find_by_slug(slug_or_id) || Show.find_by(id: slug_or_id))
+        Shows::Kitsu::Get.perform(kitsu_id: @show.reference_id, force_update: true) if @show.kitsu?
         render('show')
       else
         redirect_to(admin_shows_path, notice: 'This show does not exist!')
@@ -65,7 +68,7 @@ module Admin
         file: params[:shows_data].tempfile,
       )
 
-      redirect_to admin_shows_path
+      redirect_to(admin_shows_path)
     end
 
     private

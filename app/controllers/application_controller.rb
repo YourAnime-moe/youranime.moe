@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ApplicationController < ActionController::Base
   helper Webpacker::Helper
 
@@ -14,12 +15,11 @@ class ApplicationController < ActionController::Base
   def home
     @trending = Show.trending.includes(:title_record).limit(8)
     if logged_in?
-      @episodes = {actual: []}
-      @main_queue = current_user.main_queue.shows
+      @main_queue = current_user.main_queue.shows_queue_relations
       @view_all_queue = @main_queue.count > 10
       @main_queue = @main_queue.limit(10)
       @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
-      
+
       set_title(before: t('user.welcome', user: current_user.name))
     else
       set_title(before: t('user.welcome', user: 'dear person'))
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login
-    set_title after: t('welcome.text'), before: t('welcome.login.login')
+    set_title(after: t('welcome.text'), before: t('welcome.login.login'))
   end
 
   def oauth_auth
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   rescue Users::Session::InactiveError => e
     Rails.logger.error(e)
   ensure
-    redirect_to root_path
+    redirect_to(root_path)
   end
 
   def misete_auth
@@ -51,13 +51,13 @@ class ApplicationController < ActionController::Base
     )
     if !@user.persisted?
       set_title(before: t('welcome.user', user: @user.name))
-      render 'welcome_misete'
+      render('welcome_misete')
     else
       log_in(@user)
-      redirect_to '/', success: t('welcome.login.success.web-message')
+      redirect_to('/', success: t('welcome.login.success.web-message'))
     end
   rescue User::MiseteAuth::NotMiseteUser => e
-    Rails.logger.error e
+    Rails.logger.error(e)
     redirect_to(redirect_to_url, danger: t('welcome.google.not-google'))
   end
 
@@ -67,14 +67,14 @@ class ApplicationController < ActionController::Base
     )
     if !@user.persisted?
       set_title(before: t('welcome.user', user: @user.name))
-      render 'welcome_google'
+      render('welcome_google')
     else
       log_in(@user)
       redirect_to(redirect_to_url, success: t('welcome.login.success.web-message'))
     end
   rescue User::GoogleAuth::NotGoogleUser => e
-    Rails.logger.error e
-    redirect_to '/', danger: t('welcome.google.not-google')
+    Rails.logger.error(e)
+    redirect_to('/', danger: t('welcome.google.not-google'))
   end
 
   def welcome_google
@@ -89,10 +89,10 @@ class ApplicationController < ActionController::Base
     @user.active = true
     if @user.save
       log_in(@user)
-      redirect_to '/', success: t('welcome.login.success.web-message')
+      redirect_to('/', success: t('welcome.login.success.web-message'))
     else
-      Rails.logger.error @user.errors_string
-      render 'welcome_google', alert: @user.errors_string
+      Rails.logger.error(@user.errors_string)
+      render('welcome_google', alert: @user.errors_string)
     end
   end
 
@@ -102,16 +102,16 @@ class ApplicationController < ActionController::Base
     @user.active = true
     if @user.save
       log_in(@user)
-      redirect_to '/', success: t('welcome.login.success.web-message')
+      redirect_to('/', success: t('welcome.login.success.web-message'))
     else
-      Rails.logger.error @user.errors_string
-      render 'welcome_misete', alert: @user.errors_string
+      Rails.logger.error(@user.errors_string)
+      render('welcome_misete', alert: @user.errors_string)
     end
   end
 
   def logout
     log_out
-    redirect_to redirect_to_url
+    redirect_to(redirect_to_url)
   end
 
   def login_post
@@ -122,13 +122,13 @@ class ApplicationController < ActionController::Base
       request: request,
     )
     log_in(user)
-    render json: { new_url: redirect_to_url, message: t('welcome.login.success.web-message'), success: true }
+    render(json: { new_url: redirect_to_url, message: t('welcome.login.success.web-message'), success: true })
   rescue User::Login::LoginError => e
-    render json: { message: e.message }
+    render(json: { message: e.message })
   end
 
   def locale
-    render json: { success: true, locale: I18n.locale }
+    render(json: { success: true, locale: I18n.locale })
   end
 
   protected
@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
     return if logged_in?
 
     next_url = NextLinkFinder.perform(path: request.fullpath)
-    redirect_to "/?next=#{CGI.escape(next_url)}"
+    redirect_to("/?next=#{CGI.escape(next_url)}")
   end
 
   def ensure_logging_in_as_admin
@@ -186,14 +186,14 @@ class ApplicationController < ActionController::Base
     return unless maintenance_activated?
 
     respond_to do |format|
-      format.html { render 'maintenance_activated' }
+      format.html { render('maintenance_activated') }
       format.json do
-        render json: {
+        render(json: {
           success: false,
           message: 'HaveFun (Tanoshimu) is currently in maintenance mode.\
             We appologize for the inconvience.',
-          maintenance: true
-        }
+          maintenance: true,
+        })
       end
     end
   end

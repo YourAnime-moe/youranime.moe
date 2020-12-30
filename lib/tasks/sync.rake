@@ -18,13 +18,13 @@ namespace :sync do
 
     namespace :crawl do
       desc 'Crawls all shows (and updates) all available shows from kitsu.io'
-      task :later, [:start, :end] => [:environment] do |task, args|
+      task :later, [:start, :end] => [:environment] do |_, args|
         Sync::Shows::CrawlFromKitsuJob.perform_later(
           ((args[:start].to_i)..(args[:end].to_i)),
           staff: Users::Admin.system,
         )
       end
-      task :now, [:start, :end] => [:environment] do |task, args|
+      task :now, [:start, :end] => [:environment] do |_, args|
         Sync::Shows::CrawlFromKitsuJob.perform_now(
           ((args[:start].to_i)..(args[:end].to_i)),
           staff: Users::Admin.system,

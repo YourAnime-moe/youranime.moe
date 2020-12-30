@@ -93,10 +93,11 @@ module Kitsu
     end
 
     def show_title_options(results)
+      titles = results[:titles]
+
       {
-        en: results.dig(:titles, :en).presence || results.dig(:titles, :en_us).presence || results.dig(:titles, :en_jp).presence,
-        jp: results.dig(:titles,
-:jp).presence || results.dig(:titles, :ja).presence || results.dig(:titles, :ja_jp).presence || results.dig(:titles, :jp_ja).presence,
+        en: any_of(titles, :en),
+        jp: any_of(titles, :jp) || any_of(titles, :ja),
         roman: results[:slug],
         # canonical: results[:canonicalTitle],
         # abbreviated: '', # results[:abbreviatedTitles]&.join(', '),
@@ -169,13 +170,21 @@ module Kitsu
     end
 
     def refresh_show_urls!(show)
-      show.urls.each do |show_url|
-        show_url.refresh!
-      end
+      show.urls.each(&:refresh!)
     end
 
     def allows_nsfw?
       with_user.present? && with_user.allows_nsfw?
+    end
+
+    private
+
+    def any_of(titles, starting_with)
+      titles.each do |key, value|
+        next if value.blank?
+        return value if key.start_with?(starting_with.to_s)
+      end
+      nil
     end
   end
 end

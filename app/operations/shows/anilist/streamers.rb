@@ -21,7 +21,7 @@ module Shows
           url = node['href'].strip
           next unless url.present?
 
-          link = ShowUrl.find_by(value: url)
+          link = ShowUrl.find_by(value: url, show: show)
           next link if link.present?
 
           if node.text.downcase =~ /official site/

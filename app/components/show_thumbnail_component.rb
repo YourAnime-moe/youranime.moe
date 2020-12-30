@@ -1,9 +1,16 @@
 # frozen_string_literal: true
 
 class ShowThumbnailComponent < ViewComponent::Base
+  include ActionView::Helpers::DateHelper
+
   def initialize(show:, focus_platform: nil)
     super
-    @show = show
+    @show = if show.is_a?(ShowsQueueRelation)
+      @queue_item = show
+      show.show
+    else
+      show
+    end
     @focus_platform = focus_platform
   end
 
@@ -25,17 +32,40 @@ class ShowThumbnailComponent < ViewComponent::Base
     options << badge_options
     options << { type: :light, content: t("anime.shows.airing_status.#{@show.status}") } unless @show.air_complete?
 
+    if @queue_item.present?
+      options << {
+        type: :warning,
+        content: queue_item_added_date_or_ago,
+      }
+    end
+
     if @focus_platform
       platform_colour = ShowUrl.colour_for(@focus_platform)
-      options << { background: platform_colour, colour: Utils.text_color(from: platform_colour), content: t("anime.platforms.#{@focus_platform}") }
+      options << {
+        background: platform_colour,
+        colour: Utils.text_color(from: platform_colour),
+        content: t("anime.platforms.#{@focus_platform}"),
+      }
 
       links_scope = @show.links.unless(url_type: @focus_platform)
-      options << { type: :link, content: "+#{links_scope.count}" } if links_scope.any?
+      options << {
+        type: :link,
+        content: "+#{links_scope.count}",
+      } if links_scope.any?
     elsif @show.links.count == 1
       link = @show.links.first
-      options << { background: link.colour, colour: Utils.text_color(from: link.colour), content: t("anime.platforms.exclusively", on: t("anime.platforms.#{link.platform}")) }
+      options << {
+        background: link.colour,
+        colour: Utils.text_color(from: link.colour),
+        content: t("anime.platforms.exclusively",
+          on: t("anime.platforms.#{link.platform}")),
+      }
     elsif @show.links.count > 1
-      options << { type: :link, content: t("anime.platforms.streamable", count: @show.links.count) }
+      options << {
+        type: :link,
+        content: t("anime.platforms.streamable",
+          count: @show.links.count),
+      }
     end
 
     options
@@ -63,5 +93,23 @@ class ShowThumbnailComponent < ViewComponent::Base
 
   def can_display_airing_badge?
     !@show.is?(:music)
+  end
+
+  private
+
+  def queue_item_added_date_or_ago
+    return unless @queue_item.present?
+
+    date = @queue_item.created_at
+
+    if (Time.now - date) < 24 * 60 * 60
+      t('anime.queue.added-ago', time_ago: time_ago_in_words(date))
+    elsif (Time.now - date) < 48 * 60 * 60
+      t('anime.queue.added-yesterday')
+    else
+      t('anime.queue.added-on', date: date.strftime(
+        t('time.date.simple-format'),
+      ))
+    end
   end
 end
