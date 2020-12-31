@@ -65,6 +65,8 @@ class Show < ApplicationRecord
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
   scope :as_music, -> { ordered.where(show_category: :music) }
+  scope :streamable_on, -> (platform) { joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending }
+  scope :actively_streamable_on, -> (platform) { streamable_on(platform).airing.or(coming_soon) }
 
   scope :optimized, -> {
                       includes(:ratings,
@@ -233,10 +235,6 @@ class Show < ApplicationRecord
     options = { slug: slug, reference_source: reference_source }.compact
 
     find_by(options)
-  end
-
-  def self.where_platform(platform)
-    joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).airing.or(coming_soon).trending
   end
 
   private

@@ -35,7 +35,7 @@
       <div class="hf-section">
         <%= hf_header(t("anime.platforms.#{platform}"), link_title: t('anime.other.more'), link: shows_path(by: platform)) %>
         <div id="<%= platform %>">
-          <% Show.where_platform(platform).limit(8).each_slice(4) do |shows_rows| %>
+          <% Show.actively_streamable_on(platform).limit(8).each_slice(4) do |shows_rows| %>
             <div class="columns is-tiny-gap no-margin shows">
               <% shows_rows.each do |show| %>
                 <%= link_to(show, class: "column is-3") do %>
