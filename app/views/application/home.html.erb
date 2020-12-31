@@ -33,6 +33,7 @@
 
     <% ShowUrl.popular_platforms[0...5].each do |platform| %>
       <div class="hf-section">
+        <% #image_tag(ShowUrl.img_asset_filename_for(platform), style: 'width: 16rem; height: 4rem;') %>
         <%= hf_header(t("anime.platforms.#{platform}"), link_title: t('anime.other.more'), link: shows_path(by: platform)) %>
         <div id="<%= platform %>">
           <% Show.actively_streamable_on(platform).limit(8).each_slice(4) do |shows_rows| %>

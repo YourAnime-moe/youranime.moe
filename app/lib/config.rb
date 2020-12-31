@@ -60,16 +60,20 @@ module Config
       Rails.application.config.manageable_subdomains.include?(request.subdomain)
     end
 
-    def current_season
-      current_date = Time.now.utc
-      season_name = season_name_from(current_date)
+    def season_for(date)
+      return unless date.present?
+
+      season_name = season_name_from(date)
 
       {
-        year: current_date.year,
+        year: date.year,
         season: season_name,
-        status: :airing,
-        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: current_date.year),
+        localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: date.year),
       }
+    end
+
+    def current_season
+      season_for(Time.now.utc).merge({ status: :airing })
     end
 
     def next_season
@@ -88,8 +92,6 @@ module Config
         localized: I18n.t('anime.season.format', name: I18n.t("anime.season.#{season_name}"), year: next_season_year),
       }
     end
-
-    private
 
     def season_code_from(date)
       case date.month

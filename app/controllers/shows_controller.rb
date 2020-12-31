@@ -40,8 +40,6 @@ class ShowsController < ApplicationController
 
       if navigatable?(@show)
         set_title(before: @show.title)
-        @episodes = episodes_map(@show)
-        @additional_main_class = 'no-margin no-padding'
       else
         flash[:warning] = "This show is not available yet. Check back later!"
         redirect_to(shows_path)
@@ -92,6 +90,7 @@ class ShowsController < ApplicationController
 
   def render_partial
     @show = show_by_slug!(params[:show_slug])
+    @current_season = Config.season_for(@show.starts_on)
 
     render(template: "/shows/partial/#{params[:partial_name]}", layout: false)
   end

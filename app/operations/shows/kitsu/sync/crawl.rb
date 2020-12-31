@@ -12,6 +12,7 @@ module Shows
                 filter: {
                   seasonYear: year.to_s,
                 },
+                include: 'mappings,genres',
               },
               per_page: 20,
               max_page: 0,

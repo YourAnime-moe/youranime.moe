@@ -1,35 +1,30 @@
 # frozen_string_literal: true
 class ShowUrl < ApplicationRecord
-  WATCHABLE_URL_TYPES = %w[youtube youtu].freeze
-  STREAMABLE_URL_TYPES = %i(funimation crunchyroll netflix vrv hulu hidive animelab prime vimeo tubi adultswim)
-  INFO_URL_TYPES = %i(twitter official)
-
-  COLOUR_MAP = {
-    funimation: '#410099',
-    crunchyroll: '#f78c25',
-    netflix: '#e50914',
-    vrv: '#ffea62',
-    hulu: '#1ce783',
-    hidive: '#00aeef',
-    animelab: '#350079',
-    prime: '#266f92',
-    vimeo: '#eef1f2',
-    tubi: '#26262d',
-    adultswim: '#000000',
-
-    twitter: '#1DA1F2',
-    official: '#bbbbbb',
-
-    unknown: '#aaaaaa',
-  }.freeze
+  include HasPlatformConcern
 
   belongs_to :show, inverse_of: :urls
   before_validation :ensure_url_type, unless: :url_type
 
-  scope :watchable, -> { where(url_type: WATCHABLE_URL_TYPES) }
-  scope :non_watchable, -> { where.not(url_type: WATCHABLE_URL_TYPES) }
-  scope :streamable, -> { where(url_type: STREAMABLE_URL_TYPES) }
-  scope :info, -> { where(url_type: INFO_URL_TYPES) }
+  has_platform :adultswim, colour: '#000000', detect_from: /adultswim.com/, img: 'adultswim.png', info_url: 'funimation.com'
+  has_platform :animelab, colour: '#350079', detect_from: /animelab.com/, img: 'animelab.png', info_url: 'funimation.com'
+  has_platform :crunchyroll, colour: '#f78c25', detect_from: /crunchyroll.com/, img: 'crunchyroll.svg', info_url: 'funimation.com'
+  has_platform :funimation, colour: '#410099', detect_from: /funimation.com/, img: 'funimation.svg', info_url: 'funimation.com'
+  has_platform :hidive, colour: '#00aeef', detect_from: /hidive.com/, img: 'hidive.svg', info_url: 'funimation.com'
+  has_platform :hulu, colour: '#1ce783', detect_from: /hulu./, img: 'hulu.png', info_url: 'funimation.com'
+  has_platform :netflix, colour: '#e50914', detect_from: /netflix.com/, img: 'netflix.svg', info_url: 'funimation.com'
+  has_platform :prime, colour: '#266f92', detect_from: [/amazon/, /primevideo.com/], img: 'primevideo.png', info_url: 'funimation.com'
+  has_platform :tubi, colour: '#26262d', detect_from: /tubitv.com/, img: 'tubi.png', info_url: 'funimation.com'
+  has_platform :vimeo, colour: '#eef1f2', detect_from: /vimeo/, img: 'vimeo.svg', info_url: 'funimation.com', streamable: false, watchable: true
+  has_platform :vrv, colour: '#ffea62', detect_from: /vrv.co/, img: 'vrv.svg', info_url: 'funimation.com'
+  has_platform :youtube, colour: '#ff0000', detect_from: [/youtube.com/, /youtu.be/], img: 'youtube.png', info_url: 'youtube.com', streamable: false, watchable: true
+
+  has_info_link :official, colour: '#bbbbbb'
+  has_info_link :twitter, colour: '#1DA1F2'
+
+  scope :watchable, -> { where(url_type: watchable_url_types) }
+  scope :non_watchable, -> { where.not(url_type: watchable_url_types) }
+  scope :streamable, -> { where(url_type: streamable_url_types) }
+  scope :info, -> { where(url_type: info_url_types) }
 
   with_options presence: true do
     validates :url_type
@@ -46,37 +41,9 @@ class ShowUrl < ApplicationRecord
         .pluck(:url_type)
     end
 
-    def colour_for(platform)
-      COLOUR_MAP[platform.to_sym]
-    end
-
     def refresh_all!
       all.each { |show_url| show_url.refresh! }
     end
-  end
-
-  def platform
-    return :youtube if has_domain?('youtube.com', 'youtu.be')
-    return :netflix if has_domain?('netflix.com')
-    return :funimation if has_domain?('funimation.com')
-    return :crunchyroll if has_domain?('crunchyroll.com')
-    return :vrv if has_domain?('vrv.co')
-    return :hulu if has_domain?(/hulu./)
-    return :hidive if has_domain?('hidive.com')
-    return :animelab if has_domain?('animelab.com')
-    return :twitter if has_domain?('twitter.com')
-    return :prime if has_domain?(/amazon/, 'primevideo.com')
-    return :vimeo if has_domain?(/vimeo/)
-    return :tubi if has_domain?('tubitv.com')
-    return :adultswim if has_domain?('adultswim.com')
-
-    return :official if url_type == 'official'
-
-    :unknown
-  end
-
-  def colour
-    COLOUR_MAP[platform]
   end
 
   def refresh!
@@ -87,16 +54,6 @@ class ShowUrl < ApplicationRecord
   end
 
   private
-
-  def has_domain?(*domains)
-    domains.select do |domain|
-      if domain.is_a?(Regexp)
-        value =~ domain
-      else
-        value.include?(domain)
-      end
-    end.any?
-  end
 
   def ensure_url_type
     return if url_type.present? || !value.present?
