@@ -32,7 +32,7 @@ module Shows
                 streaming_platforms_from_anilist!(results, show)
 
                 sync_show_images!(show)
-                show  
+                show
               end
 
               shows << result

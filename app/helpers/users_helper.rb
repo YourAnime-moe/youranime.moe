@@ -8,7 +8,7 @@ module UsersHelper
       { id: 2, class: '', display: '' },
       { id: 3, class: 'd-md-blocks', display: '' },
       { id: 4, class: 'd-none d-xl-block', display: '' },
-      { id: 5, class: 'd-none d-xl-block', display: '' }
+      { id: 5, class: 'd-none d-xl-block', display: '' },
     ]
   end
 
@@ -29,7 +29,7 @@ module UsersHelper
 
     {
       cut: array + ([nil] * (size - current_size)),
-      actual: array
+      actual: array,
     }
   end
 
@@ -49,7 +49,7 @@ module UsersHelper
       image_tag(url, alt: current_user.name, size: size, **options)
     end
   end
-  
+
   def user_emoji
     emoji = if Config.demo?
       'signal_cellular_off'
@@ -63,8 +63,8 @@ module UsersHelper
       'signal_cellular_4_bar'
     end
 
-    content_tag :span do
-      content_tag :i, class: 'material-icons', style: 'font-size: 18px' do
+    content_tag(:span) do
+      content_tag(:i, class: 'material-icons', style: 'font-size: 18px') do
         emoji
       end
     end
@@ -75,7 +75,7 @@ module UsersHelper
   def fetch_image(model)
     return model.thumbnail_url if model.is_a?(Episode)
 
-    #model.banner.attached? ? model.banner : model.banner_url
+    # model.banner.attached? ? model.banner : model.banner_url
     model.poster_url
   end
 end

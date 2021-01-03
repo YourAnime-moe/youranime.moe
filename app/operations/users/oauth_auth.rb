@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Users
   class OauthAuth < ApplicationOperation
     property! :access_token, accepts: OmniAuth::AuthHash

@@ -11,7 +11,7 @@ class BadgeComponent < ViewComponent::Base
 
   def attributes
     classes = []
-    classes << "#{@type}" if @type
+    classes << @type.to_s if @type
     classes << 'is-light' if @light
 
     classes.join(' ')

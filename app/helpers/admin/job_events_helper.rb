@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Admin
   module JobEventsHelper
     def job_event_status_tag(job_event)

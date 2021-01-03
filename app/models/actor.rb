@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Actor < ApplicationRecord
   validates_presence_of :last_name
 
@@ -6,7 +7,7 @@ class Actor < ApplicationRecord
 
   def name(format: DEFAULT_FORMAT)
     return unless valid?
-    
+
     properties = format.scan(FORMAT_RE).flatten
 
     invalid_properties = []

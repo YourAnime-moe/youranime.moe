@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Users::Like < ApplicationRecord
   belongs_to :show, inverse_of: :reactions
   belongs_to :user, inverse_of: :reactions

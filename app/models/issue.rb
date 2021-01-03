@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Issue < ApplicationRecord
   include AASM
 
@@ -9,11 +10,11 @@ class Issue < ApplicationRecord
   ARCHIVED = :archived
 
   STATUSES = [OPEN, PENDING, IN_PROGRESS, RESOLVED, CLOSED, ARCHIVED].freeze
-  PAGE_URL_FORMAT = /\A\/[\/\w-]+\z/
+  PAGE_URL_FORMAT = %r{\A/[/\w-]+\z}
 
   validates :title, presence: true
   validates :description, presence: true
-  validates_inclusion_of :status, in: STATUSES.map{|s| s.to_s}, message: '%{value} is not a valid status'
+  validates_inclusion_of :status, in: STATUSES.map { |s| s.to_s }, message: '%{value} is not a valid status'
 
   belongs_to :user, inverse_of: :issues
   validates_format_of :page_url, with: PAGE_URL_FORMAT, if: :page_url?

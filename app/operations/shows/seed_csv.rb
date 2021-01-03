@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'csv'
 
 module Shows
@@ -21,12 +22,12 @@ module Shows
         { error: show.errors.full_messages, show_id: show.id }
       end
     end
-    
+
     def execute
       shows_data.each do |entry|
         create_show(entry)
       end
-      
+
       success = failed_shows.empty?
       halt unless success
       success
@@ -60,12 +61,12 @@ module Shows
 
     def create_show!(title_params, entry, banner_io)
       # Japanese title is guarenteed to be unique# Japanese title is guarenteed to be unique
-      raise AlreadyExistsError.new("#{title_params[:en]} already exists") if Title.where(en: title_params[:en]).present?
+      raise AlreadyExistsError, "#{title_params[:en]} already exists" if Title.where(en: title_params[:en]).present?
 
       create_show_instance!(title_params, entry, banner_io)
     end
 
-    def create_show_instance!(title_params, entry, banner_io)
+    def create_show_instance!(title_params, _entry, banner_io)
       show = Show.new(published: true)
       show.title = Title.new(title_params)
       show.description = Description.new(en: "Description for #{show.title}") # description(entry)
@@ -96,11 +97,11 @@ module Shows
     end
 
     def parse_translatable_params(entry, type)
-      entry.map {|k, v| [mappings_for(type)[k], v]}.to_h
+      entry.map { |k, v| [mappings_for(type)[k], v] }.to_h
     end
 
     def mappings_for(type)
-      locales.map {|k, v| [:"#{type}_#{k}", k]}.to_h
+      locales.map { |k, _v| [:"#{type}_#{k}", k] }.to_h
     end
 
     def released_on(entry)
@@ -110,5 +111,5 @@ module Shows
     end
 
     def create_episodes(show, count); end
-  end  
+  end
 end

@@ -6,7 +6,7 @@ module EpisodesHelper
   end
 
   def episode_tag(episode)
-    content_tag :video, controls: false, muted: true, autoplay: true, id: 'video-obj', src: @episode.video_url do
+    content_tag(:video, controls: false, muted: true, autoplay: true, id: 'video-obj', src: @episode.video_url) do
       html_subs = episode.subtitles.select { |sub| sub.src.attached? }.map do |s|
         <<-HTML
           <track kind="subtitles" load-src="#{url_for(s.src)}" srclang="#{s.lang}" label="#{s.name}">

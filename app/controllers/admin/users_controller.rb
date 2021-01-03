@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Admin
   class UsersController < ApplicationController
     include Admin::UsersHelper
@@ -15,6 +16,4 @@ module Admin
     def update
     end
   end
-
-  private
 end

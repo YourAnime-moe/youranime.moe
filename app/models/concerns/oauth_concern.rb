@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module OauthConcern
   extend ActiveSupport::Concern
 
@@ -15,7 +16,7 @@ module OauthConcern
     def provider_info(provider)
       info = PROVIDERS_MAP[provider.to_s]
       oauth_class = info && info[:class]
-      oauth_class = oauth_class.constantize unless oauth_class.kind_of?(Class)
+      oauth_class = oauth_class.constantize unless oauth_class.is_a?(Class)
       raise "Invalid OAuth provider: #{provider}" if oauth_class.nil?
 
       info[:class] = oauth_class

@@ -8,8 +8,8 @@ module LikeableConcern
       has_many(:reactions, -> { enabled }, class_name: 'Users::Like', inverse_of: name)
       has_many(:disabled_reactions, -> { disabled }, class_name: 'Users::Like', inverse_of: name)
       has_many(:all_reactions, class_name: 'Users::Like', inverse_of: name)
-      has_many(:likes, -> { likes }, class_name: 'Users::Like', inverse_of: name )
-      has_many(:dislikes, -> { dislikes }, class_name: 'Users::Like', inverse_of: name )
+      has_many(:likes, -> { likes }, class_name: 'Users::Like', inverse_of: name)
+      has_many(:dislikes, -> { dislikes }, class_name: 'Users::Like', inverse_of: name)
 
       send(:define_method, :like!) do |show|
         create_or_update_reaction_to(show, positive: true)
@@ -36,8 +36,8 @@ module LikeableConcern
 
     def can_be_liked_as(name)
       has_many(:reactions, -> { enabled }, class_name: 'Users::Like', inverse_of: name)
-      has_many(:likes, -> { likes }, class_name: 'Users::Like', inverse_of: name )
-      has_many(:dislikes, -> { dislikes }, class_name: 'Users::Like', inverse_of: name )
+      has_many(:likes, -> { likes }, class_name: 'Users::Like', inverse_of: name)
+      has_many(:dislikes, -> { dislikes }, class_name: 'Users::Like', inverse_of: name)
 
       send(:define_method, :liked_by?) do |user|
         likes.where(user: user).exists?

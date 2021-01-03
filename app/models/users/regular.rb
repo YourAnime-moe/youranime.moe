@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Users
   class Regular < ThatCanLogin
     def can_like?

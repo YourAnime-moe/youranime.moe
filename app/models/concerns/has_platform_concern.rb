@@ -5,9 +5,9 @@ module HasPlatformConcern
 
   class_methods do
     def has_platform(name, colour:, detect_from: nil, img: nil, info_url: nil, streamable: true, watchable: false)
-      @@platforms_info ||= Hash.new
-      @@watchable_url_types ||= Array.new
-      @@streamable_url_types ||= Array.new
+      @@platforms_info ||= {}
+      @@watchable_url_types ||= []
+      @@streamable_url_types ||= []
 
       name = name.to_sym
       @@watchable_url_types << name if watchable
@@ -29,8 +29,8 @@ module HasPlatformConcern
     end
 
     def has_info_link(name, colour)
-      @@platforms_info ||= Hash.new
-      @@info_url_types ||= Array.new
+      @@platforms_info ||= {}
+      @@info_url_types ||= []
 
       name = name.to_sym
       @@info_url_types << name.to_sym
@@ -46,13 +46,13 @@ module HasPlatformConcern
 
     def colour_for(platform)
       return unless @@platforms_info.present?
-      
+
       @@platforms_info.dig(platform.to_sym, :colour)
     end
 
     def img_asset_filename_for(platform)
       return unless @@platforms_info.present?
-      
+
       @@platforms_info.dig(platform.to_sym, :img)
     end
 
@@ -96,7 +96,7 @@ module HasPlatformConcern
   def colour
     info_for(:colour, default: '#aaaaaa')
   end
-  alias :color :colour
+  alias_method :color, :colour
 
   def platform_info
     if unknown?
@@ -121,7 +121,7 @@ module HasPlatformConcern
 
     condition = binding.local_variable_get(:if) || -> (info) { has_domain?(*info[:detect_from]) }
 
-    @@platforms_info.each do |name, info|
+    @@platforms_info.each do |_name, info|
       return info[key] if condition.call(info)
     end
 

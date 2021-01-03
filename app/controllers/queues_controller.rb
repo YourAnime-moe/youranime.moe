@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class QueuesController < AuthenticatedController
   def main
     @queue = current_user.main_queue

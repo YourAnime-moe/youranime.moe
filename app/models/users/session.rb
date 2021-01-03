@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Users
   class Session < ApplicationRecord
     before_destroy :prevent_destroy!
@@ -49,16 +50,14 @@ module Users
     private
 
     def prevent_destroy!
-      throw :abort
+      throw(:abort)
     end
 
     def ensure_token
-      return if self.token.present?
+      return if token.present?
 
       self.token = SecureRandom.hex
-      until self.class.where(token: self.token)
-        self.token = SecureRandom.hex
-      end
+      self.token = SecureRandom.hex until self.class.where(token: token)
     end
 
     def user_present

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Title < ApplicationRecord
   include TanoshimuUtils::Concerns::Translatable
   include TanoshimuUtils::Concerns::GetRecord
@@ -24,7 +25,7 @@ class Title < ApplicationRecord
   }
 
   private
-  
+
   def title_present
     errors.add(:value, 'must be present (one of en, fr, jp)') unless value.present?
   end

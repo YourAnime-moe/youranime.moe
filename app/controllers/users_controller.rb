@@ -33,11 +33,11 @@ class UsersController < AuthenticatedController
       flash[:danger] = "Sorry, we can't seem to be able to update \"#{user.name}\"."
     end
     # end
-    redirect_to '/users/settings'
+    redirect_to('/users/settings')
   end
 
   def short_settings
-    redirect_to '/users/settings'
+    redirect_to('/users/settings')
   end
 
   private

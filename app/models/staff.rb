@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Staff < ApplicationRecord
   include TanoshimuUtils::Concerns::Identifiable
   include TanoshimuUtils::Concerns::RespondToTypes

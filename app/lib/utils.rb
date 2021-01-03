@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'i18n'
 
 class Utils
@@ -12,11 +13,11 @@ class Utils
   end
 
   def self.text_color(from:)
-    data = from.match(%r{([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})})
+    data = from.match(/([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})/)
     return unless data.size >= 4
 
     r, g, b = [data[1], data[2], data[3]].map(&:hex)
-    brigthness = ((r*299)+(g*587)+(b*114))/1000
+    brigthness = ((r * 299) + (g * 587) + (b * 114)) / 1000
 
     brigthness > 125 ? '#000' : '#fff'
   end

@@ -4,7 +4,7 @@ module Config
   class Error < StandardError
   end
 
-  mattr_accessor :videojs	
+  mattr_accessor :videojs
   @@videojs = nil
 
   WINTER_SEASON = :winter
@@ -27,7 +27,7 @@ module Config
       begin
         @slack_client.auth_test
       rescue Slack::Web::Api::Errors::SlackError
-        warn 'Could not auth to Slack. Are you connected?'
+        warn('Could not auth to Slack. Are you connected?')
         @slack_client = nil
       end
     end
@@ -36,8 +36,8 @@ module Config
       ENV['DEMO'].to_s.downcase.strip == 'true'
     end
 
-    def google_client_id	
-      ENV['GOOGLE_OAUTH_CLIENT_ID']	
+    def google_client_id
+      ENV['GOOGLE_OAUTH_CLIENT_ID']
     end
 
     def misete_client_id
@@ -52,7 +52,7 @@ module Config
       google_client_id.present? || misete_client_id.present?
     end
 
-    def uses_disk_storage?	
+    def uses_disk_storage?
       Rails.application.config.active_storage.service == :local
     end
 

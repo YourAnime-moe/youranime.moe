@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   class Sync < ApplicationOperation
     property! :sync_type, accepts: [:airing, :episodes, :crawl, :show, :shows]
@@ -17,11 +18,12 @@ module Shows
     end
 
     private
+
     attr_accessor :current_page
 
     def sync_shows
       @current_page = 0
-      create_shows_then_next_page({season: by_season, year: by_year})
+      create_shows_then_next_page({ season: by_season, year: by_year })
     end
 
     def sync_airing
@@ -173,8 +175,10 @@ module Shows
 
     def find_show_from_attributes(fetched_attrs)
       found_title_record = Title.find_by(roman: fetched_attrs[:slug])
-      english_title = fetched_attrs.dig(:titles, :en) || fetched_attrs.dig(:titles, :en_us) || fetched_attrs.dig(:titles, :en_jp) || fetched_attrs[:canonicalTitle]
-      japanese_title = fetched_attrs.dig(:titles, :jp) || fetched_attrs.dig(:titles, :ja) || fetched_attrs.dig(:titles, :ja_jp)
+      english_title = fetched_attrs.dig(:titles,
+:en) || fetched_attrs.dig(:titles, :en_us) || fetched_attrs.dig(:titles, :en_jp) || fetched_attrs[:canonicalTitle]
+      japanese_title = fetched_attrs.dig(:titles,
+:jp) || fetched_attrs.dig(:titles, :ja) || fetched_attrs.dig(:titles, :ja_jp)
       description_content = fetched_attrs[:synopsis] || fetched_attrs[:description]
 
       if found_title_record.blank?
@@ -285,7 +289,7 @@ module Shows
     end
 
     def as_params(array, param_type)
-      array.map{ |k, v| "#{param_type}[#{k}]=#{v}" }.join('&')
+      array.map { |k, v| "#{param_type}[#{k}]=#{v}" }.join('&')
     end
 
     def try_downloading(url)
