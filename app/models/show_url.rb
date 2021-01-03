@@ -49,7 +49,7 @@ info_url: 'youtube.com', streamable: false, watchable: true
     end
 
     def refresh_all!
-      all.each { |show_url| show_url.refresh! }
+      all.each(&:refresh!)
     end
   end
 

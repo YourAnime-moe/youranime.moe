@@ -7,7 +7,7 @@ class TrackableJob < ApplicationJob
   around_perform do |job, block|
     event = before_perform(job)
     begin
-      block.call if block
+      block&.call
 
       after_perform(event)
     rescue => e

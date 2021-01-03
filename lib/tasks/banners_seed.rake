@@ -30,11 +30,11 @@ def seed_banners(wait_for = 2)
     filename = banners[i]
     next if filename.nil?
 
-    p "Attaching #{filename} to #{show.title}..."
+    p("Attaching #{filename} to #{show.title}...")
     show.banner.attach(io: banner_files[i], filename: filename)
 
-    p "Waiting #{wait_for} seconds"
-    sleep wait_for
+    p("Waiting #{wait_for} seconds")
+    sleep(wait_for)
   end
 end
 
@@ -45,13 +45,13 @@ def seed_thumbnails(wait_for = 2)
 
     key = info.split('.')[0]
     episodes(key).each_with_index do |episode_filename, i|
-      p "Attaching #{episode_filename} to #{show.title}..."
+      p("Attaching #{episode_filename} to #{show.title}...")
 
       file = thumbnail_files(key)[i]
       show.episodes[i].thumbnail.attach(io: file, filename: episode_filename)
 
-      p "Waiting #{wait_for} seconds"
-      sleep wait_for
+      p("Waiting #{wait_for} seconds")
+      sleep(wait_for)
     end
   end
 end
@@ -80,4 +80,3 @@ end
 def files_at(*args)
   Dir.entries(Rails.root.join(*args))
 end
-

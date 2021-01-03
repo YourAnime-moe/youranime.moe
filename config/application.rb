@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'boot'
 
 require 'rails/all'
@@ -9,7 +10,7 @@ Bundler.require(*Rails.groups)
 module TanoshimuNew
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults(6.0)
     config.autoload_paths << Rails.root.join('app/lib')
     config.autoload_paths << Rails.root.join('app/operations')
     config.autoload_paths << Rails.root.join('lib/tasks')

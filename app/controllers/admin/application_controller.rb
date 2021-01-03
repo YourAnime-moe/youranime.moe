@@ -19,11 +19,7 @@ module Admin
     private
 
     def currently_logged_in
-      Users::Session.all.select do |session|
-        session.active?
-      end.map do |session|
-        session.user
-      end.uniq
+      Users::Session.all.select(&:active?).map(&:user).uniq
     end
 
     def ensure_title

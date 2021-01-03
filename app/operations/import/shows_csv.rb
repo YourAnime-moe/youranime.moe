@@ -36,7 +36,7 @@ module Import
         header_converters: :symbol,
         converters: :all,)
 
-      @data = csv.to_a.map { |row| row.to_hash }
+      @data = csv.to_a.map(&:to_hash)
     end
 
     def data_in_batches

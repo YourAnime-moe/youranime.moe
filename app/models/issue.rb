@@ -14,7 +14,7 @@ class Issue < ApplicationRecord
 
   validates :title, presence: true
   validates :description, presence: true
-  validates_inclusion_of :status, in: STATUSES.map { |s| s.to_s }, message: '%{value} is not a valid status'
+  validates_inclusion_of :status, in: STATUSES.map(&:to_s), message: '%{value} is not a valid status'
 
   belongs_to :user, inverse_of: :issues
   validates_format_of :page_url, with: PAGE_URL_FORMAT, if: :page_url?

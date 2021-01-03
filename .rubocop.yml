@@ -1,6 +1,14 @@
 inherit_gem:
   rubocop-shopify: rubocop.yml
 
+AllCops:
+  Exclude:
+    - bin/**/*
+    - db/schema.rb
+    - db/migrate/**/*
+    - node_modules/**/*
+    - tmp/**/*
+
 Style/Encoding:
   Enabled: false
 

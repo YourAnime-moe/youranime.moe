@@ -258,7 +258,7 @@ module Shows
     def airing_status_for(show, default: 'unknown')
       return default if show.starts_on.blank?
 
-      today_s_date = DateTime.now.utc
+      today_s_date = Time.now.utc
       if show.starts_on < today_s_date
         # it's already started
         if show.ended_on.present? && show.ended_on != show.starts_on
