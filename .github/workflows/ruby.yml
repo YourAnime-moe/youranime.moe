@@ -49,6 +49,7 @@ jobs:
         run: |
           bin/rails db:create
           bin/rails db:migrate
+          bundle exec rubocop
 
       - name: Run tests
         run: bin/rails test
