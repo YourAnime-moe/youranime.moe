@@ -24,7 +24,7 @@ class ImportShowsCsvJob < TrackableJob
     end
 
     upload.update(upload_status: :waiting)
-  rescue => e
+  rescue
     upload.update(upload_status: :failed_exception)
   ensure
     Rails.logger.info("Upload #{upload.uuid} complete with status '#{upload.upload_status}'")
@@ -35,7 +35,7 @@ class ImportShowsCsvJob < TrackableJob
   def shows_data_for(file)
     file.rewind if file.is_a?(Tempfile) # ensure a tempfile is always readable
 
-    csv = CSV.new(file.read,
+    CSV.new(file.read,
       headers: true,
       header_converters: :symbol,
       converters: :all,)

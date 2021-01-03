@@ -44,11 +44,11 @@ class JobEvent < ApplicationRecord
     status == RUNNING
   end
 
-  def self.is_running_for_job?(job_name)
+  def self.running_for_job?(job_name)
     running.where(job_name: job_name).exists?
   end
 
-  def self.is_running_for_model?(model)
+  def self.running_for_model?(model)
     running.where(model_id: model.id, used_by_model: model.class.table_name).exists?
   end
 end

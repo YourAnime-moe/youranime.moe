@@ -23,3 +23,6 @@ Metrics/CyclomaticComplexity:
 
 Metrics/PerceivedComplexity:
   Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false

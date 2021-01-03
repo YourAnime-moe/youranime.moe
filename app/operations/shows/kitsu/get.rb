@@ -33,7 +33,9 @@ module Shows
 
         show.assign_attributes(show_options(results))
         show.title = Title.new(show_title_options(results))
-        show.description = Description.new({ en: (results[:synopsis].presence || results[:description].presence || '- No description -') })
+        show.description = Description.new({
+          en: (results[:synopsis].presence || results[:description].presence || '- No description -'),
+        })
         # show.cover.assign_attributes(results[:coverImage].except(:meta)) if results[:coverImage]
         # show.poster.assign_attributes(results[:posterImage].except(:meta)) if results[:posterImage]
         show.save!

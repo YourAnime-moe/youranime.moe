@@ -42,13 +42,9 @@ module ApplicationHelper
     end
   end
 
-  def is_maintenance_activated?
-    ENV['TANOSHIMU_MAINTENANCE'] == 'true'
-  end
-
   def maintenance_activated?(user: nil)
     user = current_user || user
-    if !user.nil? && is_maintenance_activated?
+    if !user.nil? && ENV['TANOSHIMU_MAINTENANCE'].present?
       !user.admin?
     else
       false

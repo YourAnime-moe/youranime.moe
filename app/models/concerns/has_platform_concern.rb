@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable Style/ClassVars
 
 module HasPlatformConcern
   extend ActiveSupport::Concern

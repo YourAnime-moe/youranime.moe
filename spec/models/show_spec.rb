@@ -43,14 +43,14 @@ RSpec.describe(Show, type: :model) do
     let(:date_range) { 1.send(unit) }
 
     it "is not published when published 1 #{unit} from now" do
-      date = date_range.from_now.utc
+      # date = date_range.from_now.utc
 
       show = FactoryBot.build(:show, published: true)
       expect(show).not_to(be_published)
     end
 
     it "is published when published 1 #{unit} ago" do
-      date = date_range.ago.utc
+      # date = date_range.ago.utc
 
       show = FactoryBot.build(:show, published: true)
       expect(show).to(be_published)

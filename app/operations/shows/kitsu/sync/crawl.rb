@@ -8,7 +8,7 @@ module Shows
         def perform
           shows = []
           years.each do |year|
-            Shows::Kitsu::Sync::ShowsPerPage.perform(
+            synced_shows = Shows::Kitsu::Sync::ShowsPerPage.perform(
               params: {
                 filter: {
                   seasonYear: year.to_s,
@@ -19,7 +19,11 @@ module Shows
               max_page: 0,
               requested_by: Users::Admin.system,
             )
+
+            shows.concat(synced_shows)
           end
+
+          shows
         end
       end
     end

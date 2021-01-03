@@ -5,7 +5,7 @@ module Config
   end
 
   mattr_accessor :videojs
-  @@videojs = nil
+  @videojs = nil
 
   WINTER_SEASON = :winter
   SPRING_SEASON = :spring

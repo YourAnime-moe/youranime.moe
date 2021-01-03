@@ -148,17 +148,15 @@ module ShowsHelper
     end
   end
 
+  def show_skeleton_wrapper
+    content_tag(:div, class: "column is-3") do
+      show_skeleton_thumb
+    end
+  end
+
   def show_skeleton
     content_tag(:div, class: 'columns is-tiny-gap no-margin shows') do
-      (content_tag(:div, class: "column is-3") do
-        show_skeleton_thumb
-      end + content_tag(:div, class: "column is-3") do
-        show_skeleton_thumb
-      end + content_tag(:div, class: "column is-3") do
-        show_skeleton_thumb
-      end + content_tag(:div, class: "column is-3") do
-        show_skeleton_thumb
-      end)
+      4.times { show_skeleton_wrapper }
     end
   end
 
@@ -183,7 +181,8 @@ module ShowsHelper
     progress = 0
     rules ||= {}
     content_tag(:div, class: "no-overflow #{rules[:class]}") do
-      progress_bar = "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
+      progress_bar =
+        "<progress class='progress is-primary is-small' value='#{progress}' max='100'>3</progress>".html_safe
       sketelon = content_tag(:div, role: 'skeleton') do
         show_skeleton_thumb
       end
@@ -209,13 +208,19 @@ module ShowsHelper
   def show_thumb_body(show, rules: nil)
     return '' unless valid_thumbable_class?(show)
 
-    img_url = resource_url_for(show)
+    not_avail_class = 'not-avail' if restricted?(show)
+    broken_class = 'broken' if broken?(show)
 
     rules ||= {}
     content_tag(:div, class: 'overlay darken') do
       (top_badges(show) +
-      image_for(show, id: show.id, onload: 'fadeIn(this)',
-class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:display]} #{'broken' if broken?(show)}", style: 'height: 0;') +
+      image_for(
+        show,
+        id: show.id,
+        onload: 'fadeIn(this)',
+        class: "card-img-top descriptive #{not_avail_class} #{rules[:display]} #{broken_class}",
+        style: 'height: 0;'
+      ) +
       sanitize(show_thumb_description(show)))
     end
   end
@@ -333,9 +338,6 @@ style: "background: #{background_colour}; color: #{text_colour}", target: :_blan
   end
 
   def link_info(show_url)
-    url_type = show_url.url_type
-    url = show_url.value
-
     if show_url.platform.present?
       return { name: t("anime.platforms.#{show_url.platform}"), colour: show_url.colour }
     end

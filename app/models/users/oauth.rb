@@ -40,7 +40,6 @@ module Users
     def initialize(*args)
       super
       self.user_type = provider
-      self
     end
 
     def provider

@@ -15,12 +15,11 @@ module Users
       User.where(user_type: user_type, id: user_id).first
     end
 
-    def user=(user)
-      return unless user.respond_to?(:user_type)
+    def user=(other)
+      return unless other.respond_to?(:user_type)
 
-      self.user_type = user.user_type
-      self.user_id = user.id
-      user
+      self.user_type = other.user_type
+      self.user_id = other.id
     end
 
     def expired?

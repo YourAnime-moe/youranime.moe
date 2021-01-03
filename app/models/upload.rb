@@ -8,7 +8,6 @@ class Upload < ApplicationRecord
   def initialize(*args)
     super
     self.uuid = SecureRandom.uuid
-    self
   end
 
   def upload_filename

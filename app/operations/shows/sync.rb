@@ -148,7 +148,10 @@ module Shows
       synched_show.published = !synched_show.persisted? || synched_show.published?
       synched_show.save!
 
-      duration = synched_show.is?(:movie) ? fetched_attrs[:totalLength] || fetched_attrs[:episodeLength] : fetched_attrs[:episodeLength]
+      # synched_show.is?(:movie) ?
+      #   fetched_attrs[:totalLength] || fetched_attrs[:episodeLength] :
+      #   fetched_attrs[:episodeLength]
+
       override_episodes_for(synched_show)
 
       poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
@@ -168,7 +171,7 @@ module Shows
         poster_file.unlink
       end
 
-      set_streamer_urls_for(synched_show)
+      streamer_urls_for!(synched_show)
 
       synched_show
     end
@@ -216,7 +219,7 @@ module Shows
       )
     end
 
-    def set_streamer_urls_for(show)
+    def streamer_urls_for!(show)
       return if show.reference_id.blank?
 
       response = RestClient.get(request_streamer_url(show))
