@@ -16,6 +16,7 @@ module Shows
             },
             max_page: 0,
             requested_by: Users::Admin.system,
+            update_if_found: true,
           )
         end
 

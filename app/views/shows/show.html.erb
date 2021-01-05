@@ -67,7 +67,7 @@
               <% if @show.has_links? %>
                 <li><a tab="links"><i style="width: 30px" class="material-icons">link</i>Links (<%= @show.links.count %>)</a></li>
               <% end %>
-              <li><a tab="comments"><i style="width: 30px" class="material-icons">comments</i>Comments (0)</a></li>
+              <li style="display: none;"><a tab="comments"><i style="width: 30px" class="material-icons">comments</i>Comments (0)</a></li>
             </ul>
           </div>
           <div id="content" class="container"></div>
@@ -94,13 +94,18 @@
       $('div[season="' + season + '"]').removeClass('hide');
     });
 
-    $('#queue').on('click', function(e) {
+    const enableInteractButtonsToShow = function() {
+      $('button[reaction]').on('click', reactToShow);
+      $('#queue').on('click', onInteractWithQueue);
+    }
+    const onInteractWithQueue = function(e) {
       $.ajax({
         method: 'post',
         url: '<%= show_queue_path(@show, format: :json) %>',
         success: function(result) {
           if (result.result == 'added') {
             $('#queue').addClass('is-success')  
+              .removeClass('is-light')
               .children('.material-icons')
               .html('playlist_add_check');
           } else if (result.result == 'removed') {
@@ -110,11 +115,7 @@
           }
         }
       });
-    });
-
-    const enableReactToShow = function() {
-      $('button[reaction]').on('click', reactToShow);
-    }
+    };
     const reactToShow = function(e) {
       console.log('clicked');
       const $target = $(this);
@@ -125,7 +126,7 @@
         url: '<%= show_react_path(@show, format: :json) %>',
         data: { reaction: reactionType },
         success: function(result) {
-          loadPartial('action_buttons', '<%= show_action_buttons_path(@show) %>', enableReactToShow);
+          loadPartial('action_buttons', '<%= show_action_buttons_path(@show) %>', enableInteractButtonsToShow);
         },
       });
     };
@@ -162,6 +163,6 @@
     }
 
     handleTabsAndHistory();
-    enableReactToShow();
+    enableInteractButtonsToShow();
   });
 </script>

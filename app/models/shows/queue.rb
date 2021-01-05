@@ -21,7 +21,7 @@ module Shows
       return unless other.is_a?(Show)
       return unless include?(other)
 
-      shows_queue_relations.find_by(show: show).destroy
+      shows_queue_relations.find_by(show: other).destroy
     end
 
     def include?(show)

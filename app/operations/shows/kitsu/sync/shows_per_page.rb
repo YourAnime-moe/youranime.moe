@@ -8,6 +8,7 @@ module Shows
         property :per_page, converts: :to_i, default: 20
         property :max_page, converts: :to_i, default: 10 # pass 0 to get all results
         property :raw, accepts: [true, false], default: false
+        property :update_if_found, accepts: [true, false], default: false
 
         def perform
           fetch_all_shows
@@ -31,8 +32,12 @@ module Shows
                 show = find_or_create_show!(results, :kitsu)
                 streaming_platforms_from_anilist!(results, show)
 
+                if show.slug.nil?
+                  byebug
+                end
+
                 sync_show_images!(show)
-                show  
+                show
               end
 
               shows << result

@@ -101,6 +101,11 @@ window.fadeIn = function(obj) {
   $('[role="progress"].progress').css("display", "flex");
 };
 
+window.fadeInError = function(obj) {
+  window.fadeIn(obj);
+  obj.src = '/img/404.jpg';
+}
+
 $(document).ready(function() {
     var current_lang = navigator.language || navigator.userLanguage || 'en';
     var lang_is_loading = false;

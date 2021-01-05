@@ -53,7 +53,8 @@
             <p>Sync source: <code><%= @show.reference_source.presence || 'N/A' %></code></p>
             <p>Sync request by <b><%= @show.synched_by_user&.name %></b></p>
             <% if @show.reference_id && @show.reference_source %>
-              <%= link_to("Link to #{@show.reference_source}", "https://kitsu.io/anime/#{@show.reference_id}", target: :_blank) %>
+              <p><%= link_to("Link to #{@show.reference_source}", "https://kitsu.io/anime/#{@show.reference_id}", target: :_blank) %></p>
+              <p><%= link_to("API link to #{@show.reference_source}", "https://kitsu.io/api/edge/anime/#{@show.reference_id}", target: :_blank) %></p>
             <% end %>
           <% end %>
 

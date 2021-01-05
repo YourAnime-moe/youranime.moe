@@ -6,7 +6,7 @@ module Kitsu
     protected
 
     def find_or_create_show!(show_options, show_source)
-      show = if (show = Show.find_by(reference_id: show_options[:id]))
+      show = if (show = find_show(show_options))
         show
       else
         new_show = build_show_from(show_options[:attributes])
@@ -170,7 +170,7 @@ module Kitsu
     end
 
     def refresh_show_urls!(show)
-      show.urls.each(&:refresh!)
+      show.urls.refresh_all!
     end
 
     def allows_nsfw?
@@ -178,6 +178,13 @@ module Kitsu
     end
 
     private
+
+    def find_show(show_options)
+      ::Shows::Kitsu::Get.perform(
+        kitsu_id: show_options[:id],
+        force_update: try(:update_if_found).present?,
+      )
+    end
 
     def any_of(titles, starting_with)
       titles.each do |key, value|

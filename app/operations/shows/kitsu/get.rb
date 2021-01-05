@@ -27,13 +27,17 @@ module Shows
       private
 
       def update_show_from_kitsu!(show)
-        return unless force_update || show.status != 'airing'
-
         results = search_results[:attributes]
 
         show.assign_attributes(show_options(results))
-        show.title = Title.new(show_title_options(results))
-        show.description = Description.new({ en: (results[:synopsis].presence || results[:description].presence || '- No description -') })
+        show.title_record.update(show_title_options(results))
+
+        show.description_record.update({
+          en: (
+            results[:synopsis].presence || results[:description].presence || '- No description -'
+          ),
+        })
+
         # show.cover.assign_attributes(results[:coverImage].except(:meta)) if results[:coverImage]
         # show.poster.assign_attributes(results[:posterImage].except(:meta)) if results[:posterImage]
         show.save!

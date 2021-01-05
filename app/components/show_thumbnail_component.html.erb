@@ -11,7 +11,7 @@
                 <% end %>
               </div>
             </div>
-            <%= image_tag(@show.poster_url, onload: 'fadeIn(this)', class: "card-img-top descriptive") %>
+            <%= image_tag(@show.poster_url, onload: 'fadeIn(this)', onerror: 'fadeInError(this)', class: "card-img-top descriptive") %>
             <div class="hf-thumb-info description" style="width: 95%;">
               <span class="truncate">
                 <%= @show.title %>

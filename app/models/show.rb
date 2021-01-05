@@ -41,8 +41,10 @@ class Show < ApplicationRecord
   has_many :links, -> { streamable.non_watchable }, class_name: 'ShowUrl'
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
 
-  has_one :title_record, -> { with_slug }, class_name: 'Title', foreign_key: :model_id, required: true
-  has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true
+  has_one :title_record, -> {
+                           with_slug
+                         }, class_name: 'Title', foreign_key: :model_id, required: true, dependent: :destroy
+  has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true, dependent: :destroy
   has_translatable_field :title
   has_translatable_field :description
 

@@ -322,13 +322,12 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
   end
 
   def link_to_show_url(show_url)
-    url_info = link_info(show_url)
-    background_colour = url_info[:colour]
+    background_colour = show_url.colour
     text_colour = text_color(from: background_colour)
 
     link_to(show_url.value, class: 'button is-fullwidth',
 style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
-      url_info[:name]
+      t("anime.platforms.#{show_url.platform}")
     end
   end
 
