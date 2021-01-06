@@ -85,7 +85,7 @@ module Kitsu
         age_rating_guide: results[:ageRatingGuide],
         status: results[:status],
         show_category: results[:subtype] || results[:showType],
-        popularity: results[:popularityRank],
+        popularity: results[:popularityRank] || -1,
         nsfw: nsfw,
         published: !nsfw,
         synched_at: Time.now.utc,
