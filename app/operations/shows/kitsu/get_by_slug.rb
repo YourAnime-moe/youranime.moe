@@ -2,7 +2,7 @@
 module Shows
   module Kitsu
     class GetBySlug < ApplicationOperation
-      property! :slug, converts: -> |slug| { slug.to_s.strip.downcase }
+      property! :slug, converts: -> (slug) { slug.to_s.strip.downcase }
       property :force_update, accepts: [true, false], default: false
 
       def perform

@@ -30,16 +30,23 @@ module Shows
         results = search_results[:attributes]
 
         show.assign_attributes(show_options(results))
-        show.title_record.update(show_title_options(results))
+        if show.title_record
+          show.title_record.update(show_title_options(results))
+        else
+          show.build_title_record(show_title_options(results))
+        end
 
-        show.description_record.update({
+        show_description_options = {
           en: (
             results[:synopsis].presence || results[:description].presence || '- No description -'
           ),
-        })
+        }
+        if show.description_record
+          show.description_record.update(show_description_options)
+        else
+          show.build_description_record(show_description_options)
+        end
 
-        # show.cover.assign_attributes(results[:coverImage].except(:meta)) if results[:coverImage]
-        # show.poster.assign_attributes(results[:posterImage].except(:meta)) if results[:posterImage]
         show.save!
 
         streaming_platforms_from_anilist!(search_results, show)
@@ -82,7 +89,9 @@ module Shows
       def needs_update?(show)
         force_update ||
           (show.persisted? && !show.valid?) ||
-          show.status == 'airing' ||
+          show.airing? ||
+          show.coming_soon? ||
+          show.no_air_status? ||
           show.urls.empty? ||
           # show.tags.empty? ||
           show.nsfw? ||

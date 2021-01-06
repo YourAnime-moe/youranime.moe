@@ -234,9 +234,9 @@ class Show < ApplicationRecord
   end
 
   def self.find_slug(slug, reference_source: nil)
-    options = { slug: slug, reference_source: reference_source }.compact
+    options = { 'titles.roman' => slug, :reference_source => reference_source }.compact
 
-    find_by(options)
+    with_title.find_by(options)
   end
 
   private
