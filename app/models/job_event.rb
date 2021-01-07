@@ -11,6 +11,7 @@ class JobEvent < ApplicationRecord
   scope :running, -> { latest.where(status: RUNNING) }
   scope :complete, -> { latest.where(status: COMPLETE) }
   scope :failed, -> { latest.where(status: FAILED) }
+  scope :finished, -> { complete.or(failed) }
 
   def mark_as_complete!
     update(status: COMPLETE, ended_at: Time.now.utc)

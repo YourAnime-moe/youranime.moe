@@ -6,7 +6,45 @@
 </nav>
 
 <div style="display: flex; justify-content: space-between;" class="justify-content-between">
-  <h1 class="title">Job events</h1>
+  <h1 class="title">Running jobs</h1>
+</div>
+
+<div class="table-container" style="padding-bottom: 1rem;">
+  <table class="table is-fullwidth">
+    <thead>
+      <th>Event ID</th>
+      <th>Job ID</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Started on</th>
+      <th>Run by</th>
+      <th>Data model</th>
+    </thead>
+
+    <tbody>
+      <% JobEvent.running.each do |job_event| %>
+        <tr>
+          <td><%= job_event.id %></td>
+          <td><%= job_event.job_id %></td>
+          <td><%= content_tag(:code, job_event.job_name) %></td>
+          <td><%= job_event_status_tag(job_event) %></td>
+          <td><%= job_event.started_at %></td>
+          <td><%= job_event.user&.name || '-' %></td>
+          <td>
+            <% if job_event.record_name %>
+              <%= link_to(job_event.record_name, [:admin, job_event.record]) %>
+            <% else %>
+              N/A
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div style="display: flex; justify-content: space-between;" class="justify-content-between">
+  <h1 class="title">All other job events</h1>
 </div>
 
 <div class="table-container">
@@ -25,7 +63,7 @@
     </thead>
 
     <tbody>
-      <% @events.each do |job_event| %>
+      <% JobEvent.finished.each do |job_event| %>
         <tr>
           <td><%= job_event.id %></td>
           <td><%= job_event.job_id %></td>
