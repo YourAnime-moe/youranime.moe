@@ -63,12 +63,13 @@ class Show < ApplicationRecord
   scope :recent, -> { published.order('shows.created_at desc') }
   scope :airing, -> { trending.where(status: AIRING_STATUSES) }
   scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
+  scope :active, -> { trending.where(status: AIRING_STATUSES + COMING_SOON_STATUSES) }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
   scope :as_music, -> { ordered.where(show_category: :music) }
   scope :streamable_on, -> (platform) { joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending }
-  scope :actively_streamable_on, -> (platform) { streamable_on(platform).airing.or(coming_soon) }
+  scope :actively_streamable_on, -> (platform) { streamable_on(platform).active }
 
   scope :optimized, -> {
                       includes(:ratings,
