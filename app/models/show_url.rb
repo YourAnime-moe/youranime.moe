@@ -19,15 +19,15 @@ info_url: 'funimation.com'
   has_platform :prime, colour: '#266f92', detect_from: [/amazon/, /primevideo.com/], img: 'primevideo.png',
 info_url: 'funimation.com'
   has_platform :tubi, colour: '#26262d', detect_from: /tubitv.com/, img: 'tubi.png', info_url: 'funimation.com'
-  has_platform :vimeo, colour: '#eef1f2', detect_from: /vimeo/, img: 'vimeo.svg', info_url: 'funimation.com',
-streamable: false, watchable: true
+  has_platform :vimeo, colour: '#eef1f2', detect_from: /vimeo/, img: 'vimeo.svg', info_url: 'funimation.com'
   has_platform :vrv, colour: '#ffea62', detect_from: /vrv.co/, img: 'vrv.svg', info_url: 'funimation.com'
   has_platform :youtube, colour: '#ff0000', detect_from: [/youtube.com/, /youtu.be/], img: 'youtube.png',
-info_url: 'youtube.com', streamable: false, watchable: true
+info_url: 'youtube.com'
 
   has_info_link :official, colour: '#bbbbbb'
   has_info_link :twitter, colour: '#1DA1F2', detect_from: 'twitter.com'
 
+  scope :ordered, -> { order(:url_type) }
   scope :watchable, -> { where(url_type: watchable_url_types) }
   scope :non_watchable, -> { where.not(url_type: watchable_url_types) }
   scope :streamable, -> { where(url_type: streamable_url_types) }

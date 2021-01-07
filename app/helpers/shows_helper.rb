@@ -375,6 +375,28 @@ style: "background: #{background_colour}; color: #{text_colour}", target: :_blan
     end
   end
 
+  def popularity_colour(show)
+    return unless show.popularity?
+
+    if show.popularity < 48
+      '#24c100' # dark-green
+    elsif show.popularity < 100
+      '#2df200' # green
+    elsif show.popularity < 500
+      '#89ff00' # light-green
+    elsif show.popularity < 1000
+      '#c9ff00' # yellow-green
+    elsif show.popularity < 5000
+      '#ffe700' # yellow
+    elsif show.popularity < 10000
+      '#FFA500' # orange
+    elsif show.popularity < 15000
+      '#ff6700' # red
+    else
+      '#ff0000'
+    end
+  end
+
   private
 
   def valid_thumbable_class?(model)

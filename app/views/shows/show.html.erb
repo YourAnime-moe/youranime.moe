@@ -59,13 +59,10 @@
           <div class="tabs">
             <ul>
               <li><a tab="general" href="#"><i style="width: 30px" class="material-icons">help</i>General</a></li>
-              <% if @show.watchable? %>
+              <% if @show.has_trailer? %>
                 <li><a tab="watch_now" href="#"><i style="width: 30px" class="material-icons">play_arrow</i>Watch now</a></li>
               <% elsif @show.has_videos? %>
                 <li><a tab="videos"><i style="width: 30px" class="material-icons">fast_forward</i>Videos</a></li>
-              <% end %>
-              <% if @show.has_links? %>
-                <li><a tab="links"><i style="width: 30px" class="material-icons">link</i>Links (<%= @show.links.count %>)</a></li>
               <% end %>
               <li style="display: none;"><a tab="comments"><i style="width: 30px" class="material-icons">comments</i>Comments (0)</a></li>
             </ul>

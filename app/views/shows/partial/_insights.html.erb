@@ -34,7 +34,14 @@
   <div class="level-item has-text-centered">
     <div>
       <p class="heading">Rank</p>
-      <p class="title"><%= @show.popularity? ? "##{@show.popularity}" : '-' %></p>
+      <% if @show.popularity? %>
+        <p class="title" style="padding-bottom: 0; color: <%= popularity_colour(@show) %> !important">
+          <%= @show.popularity.ordinalize %>
+        </p>
+        <small>most popular</small>
+      <% else %>
+        <p class="title">-</p>
+      <% end %>
     </div>
   </div>
   <div class="level-item has-text-centered">

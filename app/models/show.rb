@@ -19,7 +19,7 @@ class Show < ApplicationRecord
   SHOW_TYPES = [ANIME, MOVIE]
   AIRING_STATUSES = %w(current)
   FINISHED_STATUES = %w(finished)
-  COMING_SOON_STATUSES = %w(coming_soon)
+  COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased)
 
   DEFAULT_BANNER_URL = '/img/404.jpg'
   DEFAULT_POSTER_URL = '/img/404.jpg'
@@ -37,8 +37,8 @@ class Show < ApplicationRecord
   has_many :published_episodes, through: :seasons
   has_many :shows_queue_relations, inverse_of: :show
   has_many :queues, through: :shows_queue_relations
-  has_many :urls, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
-  has_many :links, -> { streamable.non_watchable }, class_name: 'ShowUrl'
+  has_many :urls, -> { ordered }, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
+  has_many :links, -> { ordered.streamable.non_watchable }, class_name: 'ShowUrl'
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
 
   has_one :title_record, -> {
@@ -82,6 +82,10 @@ class Show < ApplicationRecord
   scope :with_title, -> { joins(:title_record).optimized }
   scope :searchable, -> { joins(:title_record).optimized }
   scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:status).trending }
+
+  # scope :missing_banner, -> { where(banner_url: DEFAULT_BANNER_URL) }
+  # scope :missing_poster, -> { where(poster_url: DEFAULT_POSTER_URL) }
+  scope :needing_update, -> { where.not(status: FINISHED_STATUES) }
 
   def publish
     update!(published: true)
@@ -193,6 +197,18 @@ class Show < ApplicationRecord
 
   def to_param
     slug
+  end
+
+  def needs_update?
+    (persisted? && !valid?) ||
+      airing? ||
+      coming_soon? ||
+      no_air_status? ||
+      urls.empty? ||
+      # tags.empty? ||
+      nsfw? ||
+      !banner.attached? ||
+      !poster.attached?
   end
 
   def self.search(by_title)

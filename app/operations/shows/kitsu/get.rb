@@ -87,16 +87,7 @@ module Shows
       end
 
       def needs_update?(show)
-        force_update ||
-          (show.persisted? && !show.valid?) ||
-          show.airing? ||
-          show.coming_soon? ||
-          show.no_air_status? ||
-          show.urls.empty? ||
-          # show.tags.empty? ||
-          show.nsfw? ||
-          !show.banner.attached? ||
-          !show.poster.attached?
+        force_update || show.needs_update?
       end
     end
   end
