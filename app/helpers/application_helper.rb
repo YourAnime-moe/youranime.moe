@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ApplicationHelper
   def current_user
     if Config.demo? && (demo_user = User.demo)
@@ -22,7 +23,7 @@ module ApplicationHelper
   def log_in(user)
     session[:user_id] = user.id
     session[:user_login_time] = Time.zone.now
-    Rails.logger.info "User #{user.name} is now logged"
+    Rails.logger.info("User #{user.name} is now logged")
   end
 
   def log_out
@@ -34,9 +35,11 @@ module ApplicationHelper
   end
 
   def header_appearance
-    viewing_as_admin? ? \
-      'admin' : \
+    if viewing_as_admin?
+      'admin'
+    else
       'is-dark'
+    end
   end
 
   def is_maintenance_activated?
@@ -87,11 +90,11 @@ module ApplicationHelper
   end
 
   def text_color(from:)
-    data = from.match(%r{([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})})
+    data = from.match(/([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})/)
     return unless data.size >= 4
 
     r, g, b = [data[1], data[2], data[3]].map(&:hex)
-    brigthness = ((r*299)+(g*587)+(b*114))/1000
+    brigthness = ((r * 299) + (g * 587) + (b * 114)) / 1000
 
     brigthness > 125 ? '#000' : '#fff'
   end
@@ -108,6 +111,19 @@ module ApplicationHelper
     logout_path(next: NextLinkFinder.perform(path: request.fullpath))
   end
 
+  def airing_in(starts_on)
+    difference = (starts_on - Time.now.to_date).to_i
+    return if difference < 0
+
+    return { title: 'time.airing.today.title', content: 'time.airing.today.content' } if difference == 0
+
+    if difference == 1
+      return { title: 'time.airing.tomorrow.title', content: 'time.airing.tomorrow.content' }
+    end
+
+    { title: 'time.airing.future.title', content: 'time.airing.future.content', count: difference }
+  end
+
   private
 
   def _logout
@@ -117,6 +133,7 @@ module ApplicationHelper
     session.delete(:current_show_id)
     return if Config.slack_client.nil?
 
-    Config.slack_client.chat_postMessage(channel: '#sign-ins', text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.zone.now}.")
+    Config.slack_client.chat_postMessage(channel: '#sign-ins',
+text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.zone.now}.")
   end
 end

@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
       @main_queue = @main_queue.limit(10)
       @recommendations = Shows::Recommend.perform(user: current_user, limit: 8)
 
+      @airing_today = Shows::Airing.perform(date: Time.now).trending.limit(8)
+      @airing_tomorrow = Shows::Airing.perform(date: 1.day.from_now).trending.limit(8)
+      @aired_yesterday = Shows::Airing.perform(date: 1.day.ago).trending.limit(8)
+
       set_title(before: t('user.welcome', user: current_user.name))
     else
       set_title(before: t('user.welcome', user: 'dear person'))

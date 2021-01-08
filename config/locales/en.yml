@@ -252,6 +252,17 @@ en:
       winter: "Winter"
     date:
       simple-format: '%b %d, %Y'
+    airing:
+      today:
+        title: 'Airing'
+        content: 'today'
+      tomorrow:
+        title: 'Airing'
+        content: 'tomorrow'
+      future:
+        title: 'Airing in about'
+        content: '%{count} days'
+      date-format: '%b %d'
 
   user:
     welcome: "Welcome, %{user}"

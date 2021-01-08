@@ -68,17 +68,24 @@ class Show < ApplicationRecord
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
   scope :as_music, -> { ordered.where(show_category: :music) }
-  scope :streamable_on, -> (platform) { joins(:links).where('show_urls.url_type' => sanitize_sql(platform)).trending }
+  scope :streamable_on, -> (platform) do
+    optimized.joins(:links)
+      .where('show_urls.url_type' => sanitize_sql(platform))
+      .trending
+  end
   scope :actively_streamable_on, -> (platform) { streamable_on(platform).active }
+  scope :tv, -> { where(show_category: 'TV') }
 
-  scope :optimized, -> {
-                      includes(:ratings,
-                        :tags,
-                        :title_record,
-                        :queues,
-                        shows_queue_relations: :queue,
-                        seasons: :episodes)
-                    }
+  scope :optimized, -> do
+    includes(:ratings,
+      :tags,
+      :title_record,
+      :links,
+      :urls,
+      :queues,
+      shows_queue_relations: :queue,
+      seasons: :episodes)
+  end
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }
   scope :searchable, -> { joins(:title_record).optimized }
@@ -191,9 +198,7 @@ class Show < ApplicationRecord
   end
 
   def slug
-    return unless title.present?
-
-    title_record.roman
+    title_record&.roman
   end
 
   def to_param
