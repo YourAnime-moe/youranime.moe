@@ -64,10 +64,12 @@ module ApplicationHelper
   end
 
   def set_title(before: nil, after: nil)
-    @app_title = t('app.name') if @app_title.nil?
-    @app_title = "#{before} | #{@app_title}" unless before.nil?
-    @app_title << " | #{after}" unless after.nil?
-    @app_title
+    title_parts = []
+    title_parts << before if before.present?
+    title_parts << t('app.name')
+    title_parts << after if after.present?
+
+    @app_title = title_parts.join(' ~ ')
   end
 
   def episode_path(episode, *_args, **options)

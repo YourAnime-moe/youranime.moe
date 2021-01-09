@@ -45,7 +45,7 @@
             </div>
 
             <div class="text-center" style="margin-top: 20px;">
-              <% if Config.oauth_enabled? && !viewing_as_admin? %>
+              <% if Config.oauth_enabled? %>
                 <p style="margin-bottom: 10px;" style="color: #e0e0e0;">- <%= t('welcome.login.google-or') %> -</p>
                 <% if Config.google_client_id.present? && Config.google_oauth_enabled? %>
                   <div>
@@ -67,6 +67,9 @@
           </form>
           <div class="hf-section">
             <%= render 'shared/language_change' %>
+          </div>
+          <div class="hf-section">
+            <small><p>Request ID: </p><code class="request-id"><%= request_id %></code></small>
           </div>
         </div>
       </div>

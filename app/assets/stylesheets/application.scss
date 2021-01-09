@@ -436,6 +436,11 @@ img.logo {
   color: #aaa !important;
 }
 
+.request-id {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 992px) {
   .mobile {
     display: block;
