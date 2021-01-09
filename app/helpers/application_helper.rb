@@ -124,6 +124,10 @@ module ApplicationHelper
     { title: 'time.airing.future.title', content: 'time.airing.future.content', count: difference }
   end
 
+  def request_id
+    request.uuid
+  end
+
   private
 
   def _logout
