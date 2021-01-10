@@ -2,10 +2,39 @@
   $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
-    $('div[target]').css('margin-bottom', '-70px');
+    $('div[target]').css('margin-bottom', '-100px');
     $('.show-body').fadeIn(2000);
   });
 </script>
+
+<style>
+  <% @show.links.each do |show_url| %>
+    .chip.<%= show_url.platform %> {
+      background-color: <%= show_url.color %>;
+      color: <%= Utils.text_color(from: show_url.color) %>;
+      text-decoration: underline;
+    }
+    .chip.<%= show_url.platform %>:hover {
+      background-color: <%= show_url.color %>50;
+    }
+    .chip.status {
+      background-color: #eee;
+      color: #111;
+    }
+    .chip.anime {
+      background-color: #00d1b2;
+      color: #fff;
+    }
+    .chip.music {
+      background-color: #feecf0;
+      color: #cc0f35;
+    }
+    .chip.movie {
+      background-color: #3298dc;
+      color: #fff;
+    }
+  <% end %>
+</style>
 
 <div class="show-body" style="display: none;">
   <div class="head" target="<%= @show.banner_url %>">
@@ -16,13 +45,7 @@
             <div class="column is-2">
               <div class="show-title">
                 <%= image_tag(@show.poster_url, class: 'title-img level') %>
-              </div>
-            </div>
-            <div class="column">
-              <div class="show-title">
-                <h1 style="font-weight: bold;">
-                  <%= @show.title %>
-                </h1>
+
                 <% if logged_in? %>
                   <div id="action_buttons">
                     <% unless logged_in_as_admin? %>
@@ -35,6 +58,25 @@
                 <% end %>
               </div>
             </div>
+            <div class="column">
+              <div class="show-title">
+                <h1 style="font-weight: bold;">
+                  <span class="selectable"><%= @show.title %></span>
+                  <%= show_other_title(@show) %>
+                </h1>
+                <p class="description clamped"><%= @show.description %></p>
+
+                <% if @show.links.any? %>
+                  <div class="columns is-multiline">
+                    <% @show.links.each do |link| %>
+                      <div class="column is-4">
+                        <%= link_to_show_url(link) %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -43,14 +85,18 @@
   <div class="container">
     <div class="columns">
       <div class="column is-2">
-        <% if can_display_airing_badge?(@show) || @show.nsfw? %>
-          <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
-            <%= show_airing_badge(@show, force: true) %>
-            <%= show_nsfw_badge(@show) %>
-          </div>
-        <% end %>
-        <div style="margin-top: 10px">
-          <%= show_other_title(@show) %>
+        <div class="chip-holder">
+          <% if can_display_airing_badge?(@show) %>
+            <div class="chip <%= @show.show_type %>"><small><%= @show.show_type %></small></div>
+            <div class="chip <%= @show.show_category %>"><small><%= @show.show_category %></small></div>
+            <div class="chip status"><small><%= @show.status %></small></div>
+          <% end %>
+          <% @show.tags.each do |tag| %>
+            <div class="chip"><small><%= tag.value %></small></div>
+          <% end %>
+          <% @show.links.each do |show_url| %>
+            <div class="chip <%= show_url.platform %>"><small><%= show_url.platform %></small></div>
+          <% end %>
         </div>
       </div>
 

@@ -36,7 +36,7 @@ class ShowsController < ApplicationController
 
   def show
     if (@show = show_by_slug(params[:slug])).present?
-      Shows::Kitsu::Get.perform(kitsu_id: @show.reference_id) if @show.kitsu?
+      Shows::Kitsu::Get.perform(kitsu_id: @show.reference_id) if @show.kitsu? && force_update?
 
       if navigatable?(@show)
         set_title(before: @show.title)
@@ -149,5 +149,9 @@ class ShowsController < ApplicationController
         episodes: season.published_episodes.each_slice(3).to_a,
       }
     end
+  end
+
+  def force_update?
+    params[:force_update] == 'true'
   end
 end

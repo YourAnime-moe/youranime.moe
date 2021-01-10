@@ -148,7 +148,7 @@ module Kitsu
 
     def show_tags
       show_tags_options&.map do |tag_option|
-        Tag.find_or_create_by(ref_id: tag_option[:ref_id]) do |tag|
+        Tag.find_or_create_by(value: tag_option[:value]) do |tag|
           tag.assign_attributes(tag_option)
         end
       end || []
@@ -161,7 +161,7 @@ module Kitsu
         result[:type] == 'categories'
       end.map do |result|
         {
-          value: result.dig(:attributes, :title),
+          value: result.dig(:attributes, :slug),
           ref_url: result.dig(:links, :self),
           ref_id: result[:id],
           tag_type: search_results[:type],

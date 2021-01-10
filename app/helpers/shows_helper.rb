@@ -259,7 +259,7 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
 
   def like_button(show, info: false)
     colour = show.liked_by?(current_user) ? 'success' : 'light'
-    react_button(show, colour, 'thumb_up', reaction: :like, info: info)
+    react_button(show, colour, 'thumb_up', reaction: :like, info: info, text: 'Like')
   end
 
   def love_button(show, info: false)
@@ -272,13 +272,13 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
     react_button(show, colour, 'thumb_down', reaction: :dislike, info: info)
   end
 
-  def react_button(_show, colour, icon, reaction:, info: false)
+  def react_button(_show, colour, icon, reaction:, info: false, text: nil)
     return unless current_user.can_like?
 
     content_tag(:button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction) do
-      content_tag(:i, class: 'material-icons') do
+      content_tag(:i, class: 'material-icons', style: (text.present? && 'padding-right: 5px;')) do
         icon
-      end
+      end + ((content_tag(:span) { text }) if text.present?).to_s
     end
   end
 
@@ -314,8 +314,7 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
     end
 
     content_tag(:div) do
-      content_tag(:div, style: 'margin-bottom: 5px') { badge(type: :info, content: show_title[:lang]) } +
-      content_tag(:span, class: 'subtitle', style: 'margin-left: 7px') do
+      content_tag(:span, class: 'subtitle', style: 'margin-left: 7px; color: #aaa') do
         show_title[:title]
       end
     end

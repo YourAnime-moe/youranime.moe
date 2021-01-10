@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   module Update
     class ManyShows < ApplicationOperation
@@ -6,7 +7,7 @@ module Shows
       def perform
         Show.where(id: show_ids).each do |show|
           ::Shows::Kitsu::Get.perform(
-            kitsu_id: show.id,
+            kitsu_id: show.reference_id,
             force_update: true,
           ) if show.kitsu?
         rescue => e

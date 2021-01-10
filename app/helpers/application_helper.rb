@@ -115,15 +115,23 @@ module ApplicationHelper
 
   def airing_in(starts_on)
     difference = (starts_on - Time.now.to_date).to_i
-    return if difference < 0
+    difference_this_week = difference.abs % 7
+    return { title: 'time.airing.today.title', content: 'time.airing.today.content' } if difference_this_week == 0
 
-    return { title: 'time.airing.today.title', content: 'time.airing.today.content' } if difference == 0
+    past = difference < 0
+    if difference_this_week == 1
+      return { title: 'time.airing.yesterday.title', content: 'time.airing.yesterday.content' } if past
 
-    if difference == 1
       return { title: 'time.airing.tomorrow.title', content: 'time.airing.tomorrow.content' }
     end
 
-    { title: 'time.airing.future.title', content: 'time.airing.future.content', count: difference }
+    options = if past
+      { title: 'time.airing.past.title', content: 'time.airing.past.content' }
+    else
+      { title: 'time.airing.future.title', content: 'time.airing.future.content' }
+    end
+
+    options.merge({ past: past, count: difference_this_week })
   end
 
   def request_id
