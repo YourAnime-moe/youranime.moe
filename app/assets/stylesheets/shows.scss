@@ -16,7 +16,8 @@
   -o-user-select: none;
   user-select: none;
 
-  border: 1px #cdcdcd solid;
+  border: 1px #888888 solid;
+  color: #aaa;
   padding: 3px 5px;
   border-radius: 10px;
   line-height: 36px;
@@ -52,6 +53,10 @@
   -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
 } // https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css
+
+.description.clamped:after {
+  content: "(more...)";
+}
 
 .main.image {
   height: 480px;

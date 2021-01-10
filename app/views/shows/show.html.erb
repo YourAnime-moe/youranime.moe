@@ -60,21 +60,22 @@
             </div>
             <div class="column">
               <div class="show-title">
-                <h1 style="font-weight: bold;">
-                  <span class="selectable"><%= @show.title %></span>
-                  <%= show_other_title(@show) %>
-                </h1>
-                <p class="description clamped"><%= @show.description %></p>
-
-                <% if @show.links.any? %>
-                  <div class="columns is-multiline">
-                    <% @show.links.each do |link| %>
-                      <div class="column is-4">
-                        <%= link_to_show_url(link) %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
+                <div class="container is-fluid" style="padding-left: 0;">
+                  <h1 style="font-weight: bold;">
+                    <span class="selectable"><%= @show.title %></span>
+                    <%= show_other_title(@show) %>
+                  </h1>
+                  <p id="description" class="description selectable"><%= @show.description %></p>
+                  <% if @show.links.any? %>
+                    <div class="columns is-multiline">
+                      <% @show.links.each do |link| %>
+                        <div class="column is-2">
+                          <%= link_to_show_url(link) %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +137,26 @@
       $target.parent().addClass('is-active');
       $('div[season="' + season + '"]').removeClass('hide');
     });
+
+    const descriptionElement = document.getElementById('description');
+    const lineHeightStyle = document.defaultView.getComputedStyle(descriptionElement, null).lineHeight;
+
+    if (lineHeightStyle && lineHeightStyle.includes('px')) {
+      const lineHeight = parseInt(lineHeightStyle.split('px')[0]);
+      const offsetHeight = descriptionElement.offsetHeight;
+      const linesCount = offsetHeight / lineHeight;
+
+      if (linesCount >= 2) {
+        $('#description').on('click', () => {
+          console.log('click')
+          if ($('#description').hasClass('clamped')) {
+            $('#description').removeClass('clamped');
+          } else {
+            $('#description').addClass('clamped');
+          }
+        });
+      }
+    }
 
     const enableInteractButtonsToShow = function() {
       $('button[reaction]').on('click', reactToShow);
