@@ -158,7 +158,7 @@ class Show < ApplicationRecord
   end
 
   def is?(show_type)
-    self[:show_type] == show_type.to_s
+    self[:show_type] == show_type.to_s || self[:show_category] == show_type.to_s
   end
 
   def airing?
@@ -173,8 +173,16 @@ class Show < ApplicationRecord
     FINISHED_STATUES.include?(status)
   end
 
+  def general_status
+    return :airing if airing?
+    return :coming_soon if coming_soon?
+    return :air_complete if air_complete?
+
+    :unknown
+  end
+
   def no_air_status?
-    status.blank? || airing_status == 'unknown'
+    status.blank? || (!airing? && !coming_soon? && !air_complete? && airing_status == 'unknown')
   end
 
   def has_videos?

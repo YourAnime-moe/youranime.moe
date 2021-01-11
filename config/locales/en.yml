@@ -21,7 +21,7 @@
 
 en:
   app:
-    name: "Have Fun"
+    name: "YourAnime.moe"
 
   lang:
     lang: "English"
@@ -252,16 +252,39 @@ en:
       winter: "Winter"
     date:
       simple-format: '%b %d, %Y'
+      weekday:
+        singular:
+          sunday: Sunday
+          monday: Monday
+          tuesday: Tuesday
+          wednesday: Wednesday
+          thursday: Thursday
+          friday: Friday
+          saturday: Saturday
+        plural:
+          sunday: Sundays
+          monday: Mondays
+          tuesday: Tuesdays
+          wednesday: Wednesdays
+          thursday: Thursdays
+          friday: Fridays
+          saturday: Saturdays
     airing:
       today:
         title: 'Airing'
         content: 'today'
+      yesterday:
+        title: 'Aired'
+        content: 'yesterday'
       tomorrow:
         title: 'Airing'
         content: 'tomorrow'
       future:
         title: 'Airing in about'
         content: '%{count} days'
+      past:
+        title: 'Aired'
+        content: '%{count} days ago'
       date-format: '%b %d'
 
   user:

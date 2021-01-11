@@ -52,7 +52,7 @@ module Shows
         streaming_platforms_from_anilist!(search_results, show)
         try_adding_images(show, results)
 
-        # show.tags = show_tags
+        show.tags = show_tags
 
         show
       end
@@ -65,6 +65,7 @@ module Shows
         new_show.show_type = search_results[:type]
         # new_show.url = search_results.dig(:links, :self)
         new_show.save!
+        new_show.tags = show_tags
 
         streaming_platforms_from_anilist!(search_results, new_show)
         try_adding_images(new_show, search_results[:attributes], force: true)
@@ -77,7 +78,7 @@ module Shows
 
         search_results = ::Kitsu::ApiRequest.perform(
           endpoint: "/anime/#{kitsu_id}",
-          params: { include: 'categories,mappings' }
+          params: { include: 'genres,categories,mappings' }
         )
 
         raise NotFound, "Show with ID: #{kitsu_id} was not found" unless search_results

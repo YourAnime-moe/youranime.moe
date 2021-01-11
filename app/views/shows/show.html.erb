@@ -2,10 +2,39 @@
   $(document).ready(function() {
     url = $('div[target]').attr('target');
     $('div[target]').css('background-image', "url(" + url + ")");
-    $('div[target]').css('margin-bottom', '-70px');
+    $('div[target]').css('margin-bottom', '-100px');
     $('.show-body').fadeIn(2000);
   });
 </script>
+
+<style>
+  <% @show.links.each do |show_url| %>
+    .chip.<%= show_url.platform %> {
+      background-color: <%= show_url.color %>;
+      color: <%= Utils.text_color(from: show_url.color) %>;
+      text-decoration: underline;
+    }
+    .chip.<%= show_url.platform %>:hover {
+      background-color: <%= show_url.color %>50;
+    }
+    .chip.status {
+      background-color: #eee;
+      color: #111;
+    }
+    .chip.anime {
+      background-color: #00d1b2;
+      color: #fff;
+    }
+    .chip.music {
+      background-color: #feecf0;
+      color: #cc0f35;
+    }
+    .chip.movie {
+      background-color: #3298dc;
+      color: #fff;
+    }
+  <% end %>
+</style>
 
 <div class="show-body" style="display: none;">
   <div class="head" target="<%= @show.banner_url %>">
@@ -16,13 +45,7 @@
             <div class="column is-2">
               <div class="show-title">
                 <%= image_tag(@show.poster_url, class: 'title-img level') %>
-              </div>
-            </div>
-            <div class="column">
-              <div class="show-title">
-                <h1 style="font-weight: bold;">
-                  <%= @show.title %>
-                </h1>
+
                 <% if logged_in? %>
                   <div id="action_buttons">
                     <% unless logged_in_as_admin? %>
@@ -30,9 +53,31 @@
                       <%= dislike_button(@show) %>
                     <% end %>
                     <%= queue_button(@show) %>
+                  </div>
+                <% end %>
+                <% if logged_in_as_admin? %>
+                  <div style="margin-top: 10px">
                     <%= admin_button(@show) %>
                   </div>
                 <% end %>
+              </div>
+            </div>
+            <div class="column">
+              <div class="show-title">
+                <div class="container is-fluid" style="padding-left: 0;">
+                  <h1 style="font-weight: bold;">
+                    <span class="selectable"><%= @show.title %></span>
+                    <%= show_other_title(@show) %>
+                  </h1>
+                  <% if @show.links.any? %>
+                    <div class="show-link-holder">
+                    <span class="text-muted" style="margin-right: 7px">Watch now on</span>
+                      <% @show.links.each do |link| %>
+                        <%= link_to_show_url(link) %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
@@ -43,14 +88,17 @@
   <div class="container">
     <div class="columns">
       <div class="column is-2">
-        <% if can_display_airing_badge?(@show) || @show.nsfw? %>
-          <div style="border-bottom-color: #dbdbdb; border-bottom-style: solid; border-bottom-width: 1px; padding-bottom: 14px">
-            <%= show_airing_badge(@show, force: true) %>
-            <%= show_nsfw_badge(@show) %>
-          </div>
-        <% end %>
-        <div style="margin-top: 10px">
-          <%= show_other_title(@show) %>
+        <div class="chip-holder">
+          <% if can_display_airing_badge?(@show) %>
+            <div class="chip <%= @show.show_type %>"><small><%= @show.show_type %></small></div>
+            <div class="chip <%= @show.show_category %>"><small><%= @show.show_category %></small></div>
+            <div class="chip status"><small><%= @show.status %></small></div>
+          <% end %>
+          <% @show.links.each do |show_url| %>
+            <%= link_to(shows_path(by: show_url.platform)) do %>
+              <div class="chip"><small><%= show_url.platform %></small></div>
+            <% end %>
+          <% end %>
         </div>
       </div>
 
@@ -90,6 +138,26 @@
       $target.parent().addClass('is-active');
       $('div[season="' + season + '"]').removeClass('hide');
     });
+
+    /*const descriptionElement = document.getElementById('description');
+    const lineHeightStyle = document.defaultView.getComputedStyle(descriptionElement, null).lineHeight;
+
+    if (lineHeightStyle && lineHeightStyle.includes('px')) {
+      const lineHeight = parseInt(lineHeightStyle.split('px')[0]);
+      const offsetHeight = descriptionElement.offsetHeight;
+      const linesCount = offsetHeight / lineHeight;
+
+      if (linesCount >= 2) {
+        $('#description').on('click', () => {
+          console.log('click')
+          if ($('#description').hasClass('clamped')) {
+            $('#description').removeClass('clamped');
+          } else {
+            $('#description').addClass('clamped');
+          }
+        });
+      }
+    }*/
 
     const enableInteractButtonsToShow = function() {
       $('button[reaction]').on('click', reactToShow);

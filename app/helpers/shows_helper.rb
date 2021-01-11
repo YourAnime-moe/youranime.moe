@@ -259,7 +259,7 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
 
   def like_button(show, info: false)
     colour = show.liked_by?(current_user) ? 'success' : 'light'
-    react_button(show, colour, 'thumb_up', reaction: :like, info: info)
+    react_button(show, colour, 'thumb_up', reaction: :like, info: info, text: 'Like')
   end
 
   def love_button(show, info: false)
@@ -272,13 +272,13 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
     react_button(show, colour, 'thumb_down', reaction: :dislike, info: info)
   end
 
-  def react_button(_show, colour, icon, reaction:, info: false)
+  def react_button(_show, colour, icon, reaction:, info: false, text: nil)
     return unless current_user.can_like?
 
     content_tag(:button, id: reaction, class: "button #{'is-icon' unless info} is-#{colour}", reaction: reaction) do
-      content_tag(:i, class: 'material-icons') do
+      content_tag(:i, class: 'material-icons', style: (text.present? && 'padding-right: 5px;')) do
         icon
-      end
+      end + ((content_tag(:span) { text }) if text.present?).to_s
     end
   end
 
@@ -313,22 +313,30 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
       { lang: '英語', title: show.title_record.en }
     end
 
-    content_tag(:div) do
-      content_tag(:div, style: 'margin-bottom: 5px') { badge(type: :info, content: show_title[:lang]) } +
-      content_tag(:span, class: 'subtitle', style: 'margin-left: 7px') do
+    content_tag(:div, class: 'selectable') do
+      content_tag(:span, class: 'subtitle', style: 'color: #aaa') do
         show_title[:title]
       end
     end
   end
 
   def link_to_show_url(show_url)
-    background_colour = show_url.colour
-    text_colour = text_color(from: background_colour)
-
-    link_to(show_url.value, class: 'button is-fullwidth',
-style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
-      t("anime.platforms.#{show_url.platform}")
+    link_to(show_url.value, class: 'show-url-image', target: :_blank, title: t("anime.platforms.#{show_url.platform}")) do
+      try_show_url_icon_for(show_url.platform, ['png', 'jpg'])
     end
+  end
+
+  def try_show_url_icon_for(platform, extensions)
+    return unless platform.present?
+
+    extensions.each do |ext|
+      p("Image: #{ShowUrl.icon_asset_filename_for(platform, ext: ext)}")
+      return image_tag(ShowUrl.icon_asset_filename_for(platform, ext: ext))
+    rescue Sprockets::Rails::Helper::AssetNotFound
+      next
+    end
+    p("nahh for #{platform}")
+    nil
   end
 
   def link_info(show_url)

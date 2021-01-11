@@ -1,32 +1,13 @@
 <div class="container">
   <%= render 'shows/partial/insights' %>
 
-  <% if @show.links.any? %>
-    <h1 class="subtitle"><%= @show.title %> can be watched on:</h1>
-    <div class="columns is-multiline">
-      <% @show.links.each do |link| %>
-        <div class="column is-4">
-          <%= link_to_show_url(link) %>
-        </div>
+  <div class="hf-section">
+    <div class="chip-holder">
+      <% @show.tags.each do |tag| %>
+        <div class="chip"><small><%= tag.value %></small></div>
       <% end %>
     </div>
-  <% end %>
-  
-  <% if @show.description.present? %>
-    <h1 class="subtitle">Description:</h1>
-    <small><%= @show.description %></small>
-  <% end %>
+  </div>
 
-  <% if @show.info_links.any? %>
-    <p style="margin-top: 1rem">
-      <h1 class="subtitle">More info on <%= @show.title %>:</h1>
-      <div class="columns is-multiline">
-        <% @show.info_links.each do |link| %>
-          <div class="column is-4">
-            <%= link_to_show_url(link) %>
-          </div>
-        <% end %>
-      </div>
-    </p>
-  <% end %>
+  <p id="description" class="description selectable"><%= @show.description %></p>
 </div>
