@@ -9,7 +9,7 @@ module Users
       def update_user_info(user, oauth)
         user.first_name = oauth.info.first_name
         user.last_name = oauth.info.last_name
-        user.active = oauth.info.active
+        user.active = true # oauth.info.active
         user.hex = oauth.info.color_hex
 
         avatar_file = try_download_avatar(oauth.info.image)

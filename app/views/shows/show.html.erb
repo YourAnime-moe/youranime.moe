@@ -53,6 +53,10 @@
                       <%= dislike_button(@show) %>
                     <% end %>
                     <%= queue_button(@show) %>
+                  </div>
+                <% end %>
+                <% if logged_in_as_admin? %>
+                  <div style="margin-top: 10px">
                     <%= admin_button(@show) %>
                   </div>
                 <% end %>
@@ -66,11 +70,10 @@
                     <%= show_other_title(@show) %>
                   </h1>
                   <% if @show.links.any? %>
-                    <div class="columns is-multiline">
+                    <div class="show-link-holder">
+                    <span class="text-muted" style="margin-right: 7px">Watch now on</span>
                       <% @show.links.each do |link| %>
-                        <div class="column">
-                          <%= link_to_show_url(link) %>
-                        </div>
+                        <%= link_to_show_url(link) %>
                       <% end %>
                     </div>
                   <% end %>
@@ -92,7 +95,9 @@
             <div class="chip status"><small><%= @show.status %></small></div>
           <% end %>
           <% @show.links.each do |show_url| %>
-            <div class="chip <%= show_url.platform %>"><small><%= show_url.platform %></small></div>
+            <%= link_to(shows_path(by: show_url.platform)) do %>
+              <div class="chip"><small><%= show_url.platform %></small></div>
+            <% end %>
           <% end %>
         </div>
       </div>

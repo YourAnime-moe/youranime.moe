@@ -1,6 +1,11 @@
 <div style="padding-bottom: 55px;">
   <div class="text-center" style="margin: 40px; display: grid;">
-    <span class="title"><%= @title %></span>
+    <span class="title">
+      <%= @title %>
+      <% if @show_url_platform %>
+        <span class="show-url-image"><%= try_show_url_icon_for(params[:by], ['png', 'jpg']) %></span>
+      <% end %>
+    </span>
     <span class="subtitle"><%= @title_subtitle %></span>
     <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
   </div>

@@ -14,9 +14,9 @@ class ApplicationController < ActionController::Base
 
   def home
     @trending = Show.trending.includes(:title_record).limit(8)
-    @airing_today = Shows::Airing.perform(date: Time.now).trending.limit(8)
-    @airing_tomorrow = Shows::Airing.perform(date: 1.day.from_now).trending.limit(8)
-    @aired_yesterday = Shows::Airing.perform(date: 1.day.ago).trending.limit(8)
+    @airing_today = [] # Shows::Airing.perform(date: Time.now).trending.limit(8)
+    @airing_tomorrow = [] # Shows::Airing.perform(date: 1.day.from_now).trending.limit(8)
+    @aired_yesterday = [] # Shows::Airing.perform(date: 1.day.ago).trending.limit(8)
 
     if logged_in?
       @main_queue = current_user.main_queue.shows_queue_relations

@@ -34,7 +34,9 @@
   <% if @show.coming_soon? && @show.starts_on.present? %>
     <div class="level-item has-text-centered">
       <% airing_info = airing_in(@show.starts_on) %>
-      <% content = airing_info[:count].present? ? t(airing_info[:content], count: airing_info[:count]) : airing_info[:content] %>
+      <% count = airing_info[:count] %>
+      <% content = airing_info[:content] %>
+      <% content = count.present? ? t(content, count: count) : t(content) %>
       <div>
         <p class="heading"><%= t(airing_info[:title]) %></p>
         <p class="title" style="padding-bottom: 0"><%= content %></p>

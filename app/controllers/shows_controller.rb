@@ -106,6 +106,7 @@ class ShowsController < ApplicationController
     return { scope: Show.with_links, title: 'with-links' } if params[:by] == 'watch-online'
 
     if ShowUrl.popular_platforms.include?(params[:by])
+      @show_url_platform = true
       return { scope: Show.streamable_on(params[:by]), platform: true }
     end
 
