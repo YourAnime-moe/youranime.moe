@@ -58,6 +58,12 @@
   content: "(more...)";
 }
 
+.show-url-image img {
+  height: 3rem;
+  width: 3rem;
+  object-fit: cover;
+}
+
 .main.image {
   height: 480px;
   transform: scale(1.1);

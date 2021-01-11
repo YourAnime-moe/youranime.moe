@@ -57,6 +57,14 @@ module HasPlatformConcern
       @@platforms_info.dig(platform.to_sym, :img)
     end
 
+    def icon_asset_filename_for(platform, ext:)
+      filename = img_asset_filename_for(platform)
+      return unless filename.present?
+
+      parts = filename.split('.')
+      [[parts[0], '-icon'].join(''), ext].join('.')
+    end
+
     def info_url_types
       @@info_url_types
     end

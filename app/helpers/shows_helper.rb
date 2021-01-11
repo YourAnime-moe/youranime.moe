@@ -324,10 +324,20 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
     background_colour = show_url.colour
     text_colour = text_color(from: background_colour)
 
-    link_to(show_url.value, class: 'button is-fullwidth',
-style: "background: #{background_colour}; color: #{text_colour}", target: :_blank) do
-      t("anime.platforms.#{show_url.platform}")
+    link_to(show_url.value, class: 'show-url-image', target: :_blank) do
+      try_show_url_icon_for(show_url, ['png', 'jpg'])
     end
+  end
+
+  def try_show_url_icon_for(show_url, extensions)
+    extensions.each do |ext|
+      p("Image: #{ShowUrl.icon_asset_filename_for(show_url.platform, ext: ext)}")
+      return image_tag(ShowUrl.icon_asset_filename_for(show_url.platform, ext: ext))
+    rescue Sprockets::Rails::Helper::AssetNotFound
+      next
+    end
+    p("nahh for #{show_url.platform}")
+    nil
   end
 
   def link_info(show_url)

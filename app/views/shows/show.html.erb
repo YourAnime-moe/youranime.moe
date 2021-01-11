@@ -65,11 +65,10 @@
                     <span class="selectable"><%= @show.title %></span>
                     <%= show_other_title(@show) %>
                   </h1>
-                  <p id="description" class="description selectable"><%= @show.description %></p>
                   <% if @show.links.any? %>
                     <div class="columns is-multiline">
                       <% @show.links.each do |link| %>
-                        <div class="column is-2">
+                        <div class="column">
                           <%= link_to_show_url(link) %>
                         </div>
                       <% end %>
@@ -91,9 +90,6 @@
             <div class="chip <%= @show.show_type %>"><small><%= @show.show_type %></small></div>
             <div class="chip <%= @show.show_category %>"><small><%= @show.show_category %></small></div>
             <div class="chip status"><small><%= @show.status %></small></div>
-          <% end %>
-          <% @show.tags.each do |tag| %>
-            <div class="chip"><small><%= tag.value %></small></div>
           <% end %>
           <% @show.links.each do |show_url| %>
             <div class="chip <%= show_url.platform %>"><small><%= show_url.platform %></small></div>
@@ -138,7 +134,7 @@
       $('div[season="' + season + '"]').removeClass('hide');
     });
 
-    const descriptionElement = document.getElementById('description');
+    /*const descriptionElement = document.getElementById('description');
     const lineHeightStyle = document.defaultView.getComputedStyle(descriptionElement, null).lineHeight;
 
     if (lineHeightStyle && lineHeightStyle.includes('px')) {
@@ -156,7 +152,7 @@
           }
         });
       }
-    }
+    }*/
 
     const enableInteractButtonsToShow = function() {
       $('button[reaction]').on('click', reactToShow);
