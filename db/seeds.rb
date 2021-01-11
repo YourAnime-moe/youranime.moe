@@ -4,7 +4,6 @@ require 'mini_magick'
 
 def seed
   User.transaction { seed_users }
-  seed_show_tags
   seed_shows_later
 end
 
@@ -64,12 +63,6 @@ def seed_users
   #    email: "user#{i}@email.com"
   #  )
   # end
-end
-
-def seed_show_tags
-  Utils.valid_tags.each do |tag|
-    Tag.create(value: tag)
-  end
 end
 
 def seed_shows_later
