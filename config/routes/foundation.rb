@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   # Shows
   get :search, to: 'shows#search_partial' # POST to protect my server :p
+
+  namespace :shows do
+    resources :platforms, only: %i(index show), param: :name
+  end
   resources :shows, only: %i[index show], param: :slug do
     post :react
     post :queue
@@ -23,6 +27,7 @@ Rails.application.routes.draw do
     # Episodes
     resources :episodes, only: %i[show update]
   end
+
   get '/my/queue', to: 'queues#main'
 
   get :trending_shows, to: 'application#trending_shows_partial'

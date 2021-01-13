@@ -138,6 +138,30 @@ module ApplicationHelper
     request.uuid
   end
 
+  def render_breadcrumbs
+    return unless current_breadcrumbs.present?
+
+    render(BreadcrumbsComponent.new(crumbs: current_breadcrumbs, active: @active_crumb))
+  end
+
+  def current_breadcrumbs
+    @current_breadcrumbs ||= []
+  end
+
+  def breadcrumbs(active, *crumbs)
+    @active_crumb = active
+    crumbs |= [active]
+
+    link_builder = ['']
+    @current_breadcrumbs = crumbs.map do |crumb|
+      link_builder << crumb
+      {
+        link: link_builder.join('/'),
+        name: t("breadcrums.names.#{crumb}"),
+      }
+    end
+  end
+
   private
 
   def _logout

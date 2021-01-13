@@ -26,6 +26,7 @@
       <% flash.each do |key, value| %>
         <div class="alert has-background-<%= key %>"><%= value %></div>
       <% end %>
+      <%= render_breadcrumbs %>
       <%= yield %>
     </div>
   </body>
