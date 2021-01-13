@@ -102,8 +102,12 @@ html,
   }
   strong:hover,
   a:hover {
-    color: #fff !important;
+    color: #fff;
   }
+}
+
+.breadcrumb li.is-active a {
+  color: #aaa !important;
 }
 
 .navbar.becomes-transparent {

@@ -8,13 +8,13 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <%= link_to(shows_path(by: :trending), class: 'navbar-item') do %>
+      <%= link_to(platforms_path, class: 'navbar-item') do %>
         <i class="material-icons">star</i>
-        <%= t('anime.shows.trending') %>
+        <%= t('header.available_platforms') %>
       <% end %>
 
       <%= link_to(shows_path, class: 'navbar-item') do %>
-        <i class="material-icons">play_arrow</i>
+        <i class="material-icons" style="padding-right: 5px">visibility</i>
         <%= t('sidebar.anime-movies') %>
       <% end %>
     </div>

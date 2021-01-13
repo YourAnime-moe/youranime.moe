@@ -19,6 +19,12 @@ class Platform < FrozenRecord::Base
 
   def all_shows
     ids = (active_shows.ids + shows.ids).uniq
-    Show.where(id: ids).order('starts_on DESC')
+    Show.where(id: ids).order('starts_on DESC').optimized
+  end
+
+  def random_shows(limit: nil)
+    ids = shows.limit(limit).ids.uniq.shuffle
+
+    ids.map { |id| Show.find(id) }
   end
 end

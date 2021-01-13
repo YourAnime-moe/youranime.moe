@@ -2,56 +2,56 @@
   colour: '#000000'
   detect_from:
     - adultswim.com
-  image: ''
-  icon: ''
+  image: 'adultswim.png'
+  icon: 'adultswim-icon.png'
   url: 'https://www.adultswim.com/'
 
 - name: animelab
   colour: '#350079'
   detect_from:
     - animelab.com
-  image: ''
-  icon: ''
+  image: 'animelab.png'
+  icon: 'animelab-icon.jpg'
   url: 'https://www.animelab.com'
 
 - name: crunchyroll
   colour: '#f78c25'
   detect_from:
     - crunchyroll.com
-  image: ''
-  icon: ''
+  image: 'crunchyroll.svg'
+  icon: 'crunchyroll-icon.png'
   url: 'https://www.crunchyroll.com'
 
 - name: funimation
   colour: '#410099'
   detect_from:
     - funimation.com
-  image: ''
-  icon: ''
+  image: 'funimation.svg'
+  icon: 'funimation-icon.png'
   url: 'https://www.funimation.com'
 
 - name: hidive
   colour: '#00aeef'
   detect_from:
     - hidive.com
-  image: ''
-  icon: ''
+  image: 'hidive.svg'
+  icon: 'hidive-icon.png'
   url: 'https://www.hidive.com'
 
 - name: hulu
   colour: '#1ce783'
   detect_from:
     - hulu.
-  image: ''
-  icon: ''
+  image: 'hulu.png'
+  icon: 'hulu-icon.png'
   url: 'https://www.hulu.com'
 
 - name: netflix
   colour: '#e50914'
   detect_from:
-    - netflix.com
+    - netflix.comtry_show_url_icon_for
   image: ''
-  icon: ''
+  icon: 'netflix-icon.jpg'
   url: 'https://www.netflix.com'
 
 - name: prime
@@ -59,16 +59,16 @@
   detect_from:
     - amazon
     - primevideo.com
-  image: ''
-  icon: ''
+  image: 'primevideo.png'
+  icon: 'primevideo-icon.jpg'
   url: 'https://www.primevideo.com'
 
 - name: tubi
   colour: '#26262d'
   detect_from:
     - tubitv.com
-  image: ''
-  icon: ''
+  image: 'tubi.png'
+  icon: 'tubi-icon.png'
   url: 'https://www.tubitv.com'
 
 - name: vimeo
@@ -76,15 +76,15 @@
   detect_from:
     - vimeo
   image: ''
-  icon: ''
+  icon: 'vimeo-icon.png'
   url: 'https://www.vimeo.com'
 
 - name: vrv
   colour: '#ffea62'
   detect_from:
     - vrv.co
-  image: ''
-  icon: ''
+  image: 'vrv.svg'
+  icon: 'vrv-icon.png'
   url: 'https://vrv.co'
 
 - name: youtube
@@ -92,6 +92,6 @@
   detect_from:
     - youtube.com
     - youtu.be
-  image: ''
-  icon: ''
+  image: 'youtube.png'
+  icon: 'youtube-icon.png'
   url: 'https://www.youtube.com'

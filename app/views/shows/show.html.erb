@@ -95,7 +95,7 @@
             <div class="chip status"><small><%= @show.status %></small></div>
           <% end %>
           <% @show.links.each do |show_url| %>
-            <%= link_to(shows_path(by: show_url.platform)) do %>
+            <%= link_to(platform_path(show_url.platform)) do %>
               <div class="chip"><small><%= show_url.platform %></small></div>
             <% end %>
           <% end %>

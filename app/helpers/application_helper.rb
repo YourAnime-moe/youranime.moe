@@ -102,7 +102,10 @@ module ApplicationHelper
   end
 
   def current_platform
-    (ShowUrl.where(url_type: params[:by]).any? && params[:by]).presence
+    name = (ShowUrl.where(url_type: params[:by]).any? && params[:by]).presence
+    return unless name.present?
+
+    Platform.find_by(name: name)
   end
 
   def login_then_redirect_path
@@ -154,11 +157,20 @@ module ApplicationHelper
 
     link_builder = ['']
     @current_breadcrumbs = crumbs.map do |crumb|
-      link_builder << crumb
-      {
-        link: link_builder.join('/'),
-        name: t("breadcrums.names.#{crumb}"),
-      }
+      if crumb == :home
+        {
+          link: '/',
+          key: :home,
+          name: t('breadcrumbs.names.home'),
+        }
+      else
+        link_builder << crumb
+        {
+          link: link_builder.join('/'),
+          key: crumb.try(:name) || crumb,
+          name: crumb.try(:title) || t("breadcrumbs.names.#{crumb}"),
+        }
+      end
     end
   end
 
