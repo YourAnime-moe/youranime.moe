@@ -66,7 +66,7 @@ module Shows
           params.merge!({
             page: {
               limit: per_page,
-              offset: @current_page * per_page,
+              offset: (@current_page - 1) * per_page,
             },
           })
         end
