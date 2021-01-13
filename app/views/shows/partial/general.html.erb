@@ -10,4 +10,12 @@
   </div>
 
   <p id="description" class="description selectable"><%= @show.description %></p>
+
+  <%= render partial: 'shows/partial/shows_list',
+    locals: {
+      title: 'Related shows',
+      platform: nil,
+      scope: @show.related_shows,
+    }
+  %>
 </div>

@@ -223,6 +223,14 @@ class Show < ApplicationRecord
       !poster.attached?
   end
 
+  def related_shows
+    related_show_ids = urls.map do |show_url|
+      ShowUrl.select(:show_id).where(value: show_url.value).where.not(show_id: id)
+    end.compact.flatten.map(&:show_id).uniq
+
+    Show.where(id: related_show_ids)
+  end
+
   def self.search(by_title)
     by_title = "%#{by_title}%"
 
