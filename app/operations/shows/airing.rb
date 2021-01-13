@@ -2,6 +2,7 @@
 module Shows
   class Airing < ApplicationOperation
     property! :date, converts: :to_date
+    property :scope
 
     def perform
       Show.tv.where(id: airing_shows_ids).order(:status)
@@ -16,6 +17,8 @@ module Shows
     end
 
     def shows_scope
+      return scope unless scope.nil?
+
       @shows_scope ||= Show.with_title
         .trending
         .where(

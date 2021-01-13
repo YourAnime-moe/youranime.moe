@@ -111,6 +111,7 @@ GEM
       path_expander (~> 1.0)
       ruby_parser (~> 3.6)
       sexp_processor (~> 4.5)
+    dedup (0.1.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.4.4)
@@ -136,6 +137,9 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.13.0)
     ffi (1.13.1)
+    frozen_record (0.20.1)
+      activemodel
+      dedup
     gli (2.19.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -414,6 +418,7 @@ DEPENDENCIES
   down (~> 5.0)
   factory_bot
   fasterer
+  frozen_record (~> 0.20.1)
   image_processing (~> 1.2)
   jbuilder
   jquery-rails

@@ -321,7 +321,8 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
   end
 
   def link_to_show_url(show_url)
-    link_to(show_url.value, class: 'show-url-image', target: :_blank, title: t("anime.platforms.#{show_url.platform}")) do
+    link_to(show_url.value, class: 'show-url-image', target: :_blank,
+title: t("anime.platforms.#{show_url.platform}")) do
       try_show_url_icon_for(show_url.platform, ['png', 'jpg'])
     end
   end
@@ -337,6 +338,18 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
     end
     p("nahh for #{platform}")
     nil
+  end
+
+  def render_show_status_badge(show)
+    colour = if show.air_complete?
+      :light
+    elsif show.coming_soon?
+      :primary
+    else
+      :warning
+    end
+
+    render(BadgeComponent.new(content: show.status, type: colour, style: 'position: absolute;'))
   end
 
   def link_info(show_url)
