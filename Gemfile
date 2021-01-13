@@ -99,6 +99,9 @@ gem 'sidekiq'
 # ViewComponent
 gem 'view_component', require: 'view_component/engine'
 
+# Frozen record
+gem "frozen_record", "~> 0.20.1"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

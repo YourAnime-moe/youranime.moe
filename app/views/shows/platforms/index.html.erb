@@ -1,0 +1,36 @@
+<div class="text-center" style="margin: 40px; display: grid;">
+    <span class="title">Available streaming platforms</span>
+    <span class="subtitle">Find out which streaming platforms show your favourite anime!</span>
+    <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
+  </div>
+
+  <% Platform.all.each do |platform| %>
+    <% text_color = Utils.text_color(from: platform.colour) %>
+    <section class="hero is-medium is-bold" style="background-color: <%= platform.colour %>a0">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title" style="color: <%= text_color %> !important">
+            <%= platform.title %>
+          </h1>
+          <h1 class="subtitle" style="color: <%= text_color %>">
+            <span>
+              More info at
+              <u>
+                <%= link_to(platform.url, platform.url, target: '_blank', style: "color: #{text_color} !important") %>
+              </u>
+            </span>
+          </h1>
+          <div class="shows">
+            <div class="columns is-multiline">
+              <% platform.all_shows.limit(11).each do |show| %>
+                <div class="column is-2">
+                  <%= image_tag(show.poster_url, style: 'height: 250px; width: 180px') %>
+                  <div><small><%= show.title %></small></div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
