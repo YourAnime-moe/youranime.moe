@@ -71,20 +71,18 @@ class Show < ApplicationRecord
   scope :streamable_on, -> (platform) do
     optimized.joins(:links)
       .where('show_urls.url_type' => sanitize_sql(platform))
-      .trending
   end
   scope :actively_streamable_on, -> (platform) { streamable_on(platform).active }
   scope :tv, -> { where(show_category: 'TV') }
+  scope :random, -> { order('random()') }
 
   scope :optimized, -> do
-    includes(:ratings,
-      :tags,
+    includes(:tags,
       :title_record,
       :links,
       :urls,
       :queues,
-      shows_queue_relations: :queue,
-      seasons: :episodes)
+      shows_queue_relations: :queue)
   end
   scope :published_with_title, -> { with_title.published }
   scope :with_title, -> { joins(:title_record).optimized }

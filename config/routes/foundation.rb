@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   root 'application#home'
-  get '/home', to: 'application#home', as: :home
+  get '/home', to: redirect('/'), as: :home
   get '/google' => 'application#welcome_google'
 
   resources :issues, only: %i[index new] do
@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   # Shows
   get :search, to: 'shows#search_partial' # POST to protect my server :p
+
+  resources :platforms, only: %i(index show), param: :name
   resources :shows, only: %i[index show], param: :slug do
     post :react
     post :queue
@@ -23,6 +25,7 @@ Rails.application.routes.draw do
     # Episodes
     resources :episodes, only: %i[show update]
   end
+
   get '/my/queue', to: 'queues#main'
 
   get :trending_shows, to: 'application#trending_shows_partial'

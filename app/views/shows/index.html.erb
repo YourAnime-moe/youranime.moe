@@ -10,7 +10,7 @@
     <small class="is-hidden"><i><%= t('anime.shows.search-result', count: @shows_count) %></i></small>
   </div>
   <div class="container is-fluid">
-    <%= render 'shows/partial/tabs' %>
+    <%= render_breadcrumbs %>
     <% if @shows.empty? %>
       <div class="text-center">
         <div class="vertical-center" style="min-height: 50vh">
@@ -22,7 +22,7 @@
     <% else %>
     <div class="columns is-multiline">
       <% @shows.each do |show| %>
-        <div class="column is-3" style="padding: 1px;">
+        <div class="column is-6-tablet is-3-desktop is-2-fullhd" style="padding: 1px;">
           <%= link_to(show) do %>
             <%= render ShowThumbnailComponent.new(show: show, focus_platform: current_platform) %>
           <% end %>
