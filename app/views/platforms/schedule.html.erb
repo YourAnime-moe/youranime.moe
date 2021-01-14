@@ -60,8 +60,35 @@
     </div>
   </div>
 
+<% if true %>
+<div class="table-container">
+  <table class="table is-fullwidth" style="table-layout: fixed; min-width: 950px;">
+    <thead>
+      <tr>
+        <% @raw_schedule.each do |day, _| %>
+          <th><%= t("time.date.weekday.singular.#{day}") %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @results.each do |rows| %>
+        <tr>
+          <% rows.each do |show| %>
+            <% if show %>
+              <td><%= render ShowCardComponent.new(show, platform: current_platform) %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
+
+<% if false %>
   <div class="columns" style="overflow: scroll; margin-top: 40px;">
-    <% @release_schedule.each do |day, schedule| %>
+    <% @raw_schedule.each do |day, schedule| %>
       <div class="column" style="min-width: 250px; min-height: 300px; border: 1px #aaa solid;">
         <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
 
@@ -73,4 +100,5 @@
       </div>
     <% end %>
   </div>
+<% end %>
 </div>
