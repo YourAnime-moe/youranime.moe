@@ -11,6 +11,21 @@
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
   }
+  .card-content {
+    display: flex;
+    padding: 0.75rem 1rem;
+    padding-top: 0;
+  }
+  .card-content img.poster {
+    height: 100px;
+    margin-right: 10px;
+  }
+  .card-content .show-details {
+    display: block;
+  }
+  .card {
+    height: 125px;
+  }
 </style>
 
 <div class="text-center" style="margin: 40px; display: grid;">
@@ -29,21 +44,7 @@
         <p class="title">Filter by...</p>
 
         <% Platform.ordered.each do |platform| %>
-          <% if current_platform && current_platform.name == platform.name %>
-            <%= link_to(schedule_platforms_path, class: 'button is-small is-light') do %>
-              <span class="show-url-image">
-                <%= image_tag(platform.icon, class: 'tiny') %>
-                <%= platform.name %>
-              </span>
-            <% end %>
-          <% else %>
-            <%= link_to(schedule_platforms_path(name: platform.name), class: 'button is-small is-dark') do %>
-              <span class="show-url-image">
-                <%= image_tag(platform.icon, class: 'tiny') %>
-                <%= platform.name %>
-              </span>
-            <% end %>
-          <% end %>
+          <%= render FilterPlatformOptionComponent.new(platform, current_platform: current_platform) %>
         <% end %>
       </div>
     </div>
@@ -61,29 +62,12 @@
 
   <div class="columns" style="overflow: scroll; margin-top: 40px;">
     <% @release_schedule.each do |day, schedule| %>
-      <div class="column" style="min-width: 200px; min-height: 300px; border: 1px #aaa solid;">
+      <div class="column" style="min-width: 250px; min-height: 300px; border: 1px #aaa solid;">
         <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
 
         <div class="schedule">
           <% schedule[:shows].each do |show| %>
-            <div class="is-poster" style="margin-bottom: 3rem;">
-              <%= link_to(show) do %>
-                <div style="position: relative;">
-                  <%= render_show_status_badge(show) %>
-                </div>
-                <%= image_tag(show.poster_url, style: 'height: 250px; width: 100%; object-fit: cover;') %>
-                <small>
-                  <p class="clamped oneliner"><%= show.title %></p>
-                  <% show.platforms(focus_on: current_platform&.name).each do |platform| %>
-                    <%= link_to(platform.name) do %>
-                      <span class="show-url-image">
-                        <%= image_tag(platform.icon, class: 'tiny') %>
-                      </span>
-                    <% end %>
-                  <% end %>
-                </small>
-              <% end %>
-            </div>
+            <%= render ShowCardComponent.new(show, platform: current_platform) %>
           <% end %>
         </div>
       </div>

@@ -59,6 +59,10 @@
   word-break: break-all;
 }
 
+.clamped.long-title {
+  -webkit-line-clamp: 3;
+}
+
 .show-url-image img {
   height: 3rem;
   width: 3rem;
@@ -75,6 +79,9 @@
 .show-url-image img.tiny {
   height: 1.5rem;
   width: 1.5rem;
+}
+.show-url-image img.round {
+  border-radius: 50%;
 }
 
 .main.image {
