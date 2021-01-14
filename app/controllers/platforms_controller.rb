@@ -11,4 +11,17 @@ class PlatformsController < ApplicationController
     breadcrumbs(current_platform, :home, :platforms)
     set_title(before: current_platform.title, after: 'Available Streaming Platforms')
   end
+
+  def schedule
+    options = if current_platform
+      [current_platform, :home, :platforms, :schedule]
+    else
+      [:schedule, :home, :platforms]
+    end
+
+    breadcrumbs(*options)
+    set_title(before: 'Release schedule')
+
+    @release_schedule = Shows::ReleaseSchedule.perform(platform: current_platform)
+  end
 end

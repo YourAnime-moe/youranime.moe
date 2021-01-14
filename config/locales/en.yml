@@ -359,6 +359,7 @@ en:
       tubi: Tubi
       adultswim: Adult Swim
       home: Home page
+      schedule: Release schedule
 
   errors:
     internal:

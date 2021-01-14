@@ -1,10 +1,4 @@
 <style>
-  .platforms-info a {
-    color: #fff !important;
-  }
-  .platforms-info a:hover {
-    color: #ccc !important;
-  }
 </style>
 
 <div class="text-center" style="margin: 40px; display: grid;">
@@ -14,7 +8,14 @@
 </div>
 
 <div class="container">
-  <%= render_breadcrumbs %>
+  <div class="justify-content-between">
+    <div><%= render_breadcrumbs %></div>
+    <div>
+      <%= link_to(schedule_platforms_path, class: 'button is-info', style: 'color: #fff') do %>
+        <i class="material-icons" style="padding-right: 7px">schedule</i> Release schedule
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <% Platform.all.each do |platform| %>
@@ -41,9 +42,9 @@
         <div class="shows">
           <div class="columns is-multiline is-mobile">
             <% platform.all_shows.limit(12).each do |show| %>
-              <div class="column is-2-desktop is-4-tablet is-6-mobile">
+              <div class="column is-2-desktop is-4-tablet is-6-mobile is-poster">
                 <%= link_to(show) do %>
-                  <div style="position: relative;">
+                  <div class="show-poster">
                     <%= render_show_status_badge(show) %>
                   </div>
                   <%= image_tag(show.poster_url, style: 'height: 250px; width: 100%; object-fit: cover;') %>

@@ -231,6 +231,16 @@ class Show < ApplicationRecord
     Show.where(id: related_show_ids)
   end
 
+  def platforms(focus_on: nil)
+    scope = Platform.where(name: urls.pluck(:url_type))
+    return scope unless focus_on
+
+    focus_platform = Platform.find_by(name: focus_on.to_s)
+    return scope unless focus_platform.present?
+
+    [focus_platform, scope.where.not(name: focus_on.to_s)].flatten
+  end
+
   def self.search(by_title)
     by_title = "%#{by_title}%"
 

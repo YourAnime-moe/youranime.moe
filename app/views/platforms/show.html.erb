@@ -19,6 +19,7 @@
         <%= render_breadcrumbs %>
 
         <div class="hf-section">
+          <p><i class="material-icons">schedule</i> <%= link_to('Release schedule', schedule_platforms_path(name: current_platform.name), style: 'color: #fff') %></p>
           <p><i class="material-icons">launch</i> <%= link_to("Visit #{current_platform.title}'s website now", current_platform.url, style: 'color: #fff', target: '_blank') %></p>
           <p><i class="material-icons">trending_up</i> <%= link_to(t('breadcrumbs.names.shows'), shows_path(by: current_platform.name), style: 'color: #ccc') %></p>
         </div>

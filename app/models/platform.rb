@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Platform < FrozenRecord::Base
+  scope :ordered, -> { order(:name) }
+
   def detect_from
     self[:detect_from].map { |pattern| Regexp.new(pattern) }
   end

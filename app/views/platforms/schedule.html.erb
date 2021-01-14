@@ -1,0 +1,92 @@
+<style>
+  .filter {
+    margin-bottom: 1.5rem;
+  }
+  .filter .title {
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .filter .button {
+    margin-bottom: 0.5rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+</style>
+
+<div class="text-center" style="margin: 40px; display: grid;">
+  <span class="title">Release schedule <%= current_platform.presence && "for #{current_platform.title}" %></span>
+  <span class="subtitle">Find out when streaming platforms stream your favourite anime!</span>
+</div>
+
+<div class="container">
+  <%= render_breadcrumbs %>
+</div>
+
+<div class="container is-fluid" style="padding-bottom: 55px">
+  <div class="columns">
+    <div class="column is-9">
+      <div class="filter">
+        <p class="title">Filter by...</p>
+
+        <% Platform.ordered.each do |platform| %>
+          <% if current_platform && current_platform.name == platform.name %>
+            <%= link_to(schedule_platforms_path, class: 'button is-small is-light') do %>
+              <span class="show-url-image">
+                <%= image_tag(platform.icon, class: 'tiny') %>
+                <%= platform.name %>
+              </span>
+            <% end %>
+          <% else %>
+            <%= link_to(schedule_platforms_path(name: platform.name), class: 'button is-small is-dark') do %>
+              <span class="show-url-image">
+                <%= image_tag(platform.icon, class: 'tiny') %>
+                <%= platform.name %>
+              </span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="column is-3">
+      <article class="message">
+        <div class="message-header">
+          <p>About release schedules...</p>
+        </div>
+        <div class="message-body">
+          Please note that is a rough approximation. Some shows may not be available for streaming in your region.
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="columns" style="overflow: scroll; margin-top: 40px;">
+    <% @release_schedule.each do |day, schedule| %>
+      <div class="column" style="min-width: 200px; min-height: 300px; border: 1px #aaa solid;">
+        <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
+
+        <div class="schedule">
+          <% schedule[:shows].each do |show| %>
+            <div class="is-poster" style="margin-bottom: 3rem;">
+              <%= link_to(show) do %>
+                <div style="position: relative;">
+                  <%= render_show_status_badge(show) %>
+                </div>
+                <%= image_tag(show.poster_url, style: 'height: 250px; width: 100%; object-fit: cover;') %>
+                <small>
+                  <p class="clamped oneliner"><%= show.title %></p>
+                  <% show.platforms(focus_on: current_platform&.name).each do |platform| %>
+                    <%= link_to(platform.name) do %>
+                      <span class="show-url-image">
+                        <%= image_tag(platform.icon, class: 'tiny') %>
+                      </span>
+                    <% end %>
+                  <% end %>
+                </small>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

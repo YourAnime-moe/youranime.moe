@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   # Shows
   get :search, to: 'shows#search_partial' # POST to protect my server :p
 
-  resources :platforms, only: %i(index show), param: :name
+  resources :platforms, only: %i(index show), param: :name do
+    get :schedule, on: :collection
+  end
+
   resources :shows, only: %i[index show], param: :slug do
     post :react
     post :queue
