@@ -26,6 +26,15 @@
   .card {
     height: 125px;
   }
+  td.has-background-today {
+    background: #888;
+  }
+  th.has-background-today {
+    text-decoration: underline;
+  }
+  .is-today {
+    font-weight: bold;
+  }
 </style>
 
 <div class="text-center" style="margin: 40px; display: grid;">
@@ -64,11 +73,11 @@
 
   <% if @total_count > 0 %>
     <div class="table-container">
-      <table class="table is-fullwidth" style="table-layout: fixed; min-width: 950px;">
+      <table class="table is-fullwidth is-bordered has-background-dark" style="table-layout: fixed; min-width: 950px; position: relative;">
         <thead>
           <tr>
-            <% @raw_schedule.each do |day, _| %>
-              <th><%= t("time.date.weekday.singular.#{day}") %></th>
+            <% @raw_schedule.each do |day, data| %>
+              <th data-day="<%= data[:id] %>" class="has-text-white" style="position: sticky; top: 0;"><%= t("time.date.weekday.singular.#{day}") %></th>
             <% end %>
           </tr>
         </thead>
@@ -76,12 +85,12 @@
         <tbody>
           <% @results.each do |rows| %>
             <tr>
-              <% rows.each do |show| %>
-                <% if show %>
-                  <td><%= render ShowCardComponent.new(show, platform: current_platform, link: true) %></td>
-                <% else %>
-                  <td></td>
-                <% end %>
+              <% rows.each_with_index do |show, wday| %>
+                <td data-day="<%= wday %>">
+                  <% if show %>
+                    <%= render ShowCardComponent.new(show, platform: current_platform, link: true) %>
+                  <% end %>
+                </td>
               <% end %>
             </tr>
           <% end %>
@@ -110,3 +119,14 @@
     </div>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const today = parseInt("<%= Time.now.to_date.wday %>");
+    const concernedElements = document.querySelectorAll(`[data-day="${today}"]`);
+
+    concernedElements.forEach(element => {
+      element.classList.add('has-background-today');
+    });
+  });
+</script>
