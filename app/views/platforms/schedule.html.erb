@@ -38,67 +38,75 @@
 </div>
 
 <div class="container is-fluid" style="padding-bottom: 55px">
-  <div class="columns">
-    <div class="column is-9">
-      <div class="filter">
-        <p class="title">Filter by...</p>
+  <% if @total_count > 0 || current_platform.present? %>
+    <div class="columns">
+      <div class="column is-9">
+        <div class="filter">
+          <p class="title">Filter by...</p>
 
-        <% Platform.ordered.each do |platform| %>
-          <%= render FilterPlatformOptionComponent.new(platform, current_platform: current_platform) %>
-        <% end %>
+          <% Platform.ordered.each do |platform| %>
+            <%= render FilterPlatformOptionComponent.new(platform, current_platform: current_platform) %>
+          <% end %>
+        </div>
+      </div>
+      <div class="column is-3 is-hidden">
+        <article class="message">
+          <div class="message-header">
+            <p>About release schedules...</p>
+          </div>
+          <div class="message-body">
+            Please note that is a rough approximation. Some shows may not be available for streaming in your region.
+          </div>
+        </article>
       </div>
     </div>
-    <div class="column is-3">
-      <article class="message">
-        <div class="message-header">
-          <p>About release schedules...</p>
-        </div>
-        <div class="message-body">
-          Please note that is a rough approximation. Some shows may not be available for streaming in your region.
-        </div>
-      </article>
-    </div>
-  </div>
+  <% end %>
 
-<% if true %>
-<div class="table-container">
-  <table class="table is-fullwidth" style="table-layout: fixed; min-width: 950px;">
-    <thead>
-      <tr>
-        <% @raw_schedule.each do |day, _| %>
-          <th><%= t("time.date.weekday.singular.#{day}") %></th>
-        <% end %>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @results.each do |rows| %>
-        <tr>
-          <% rows.each do |show| %>
-            <% if show %>
-              <td><%= render ShowCardComponent.new(show, platform: current_platform) %></td>
+  <% if @total_count > 0 %>
+    <div class="table-container">
+      <table class="table is-fullwidth" style="table-layout: fixed; min-width: 950px;">
+        <thead>
+          <tr>
+            <% @raw_schedule.each do |day, _| %>
+              <th><%= t("time.date.weekday.singular.#{day}") %></th>
             <% end %>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<% end %>
+          </tr>
+        </thead>
 
-<% if false %>
-  <div class="columns" style="overflow: scroll; margin-top: 40px;">
-    <% @raw_schedule.each do |day, schedule| %>
-      <div class="column" style="min-width: 250px; min-height: 300px; border: 1px #aaa solid;">
-        <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
-
-        <div class="schedule">
-          <% schedule[:shows].each do |show| %>
-            <%= render ShowCardComponent.new(show, platform: current_platform) %>
+        <tbody>
+          <% @results.each do |rows| %>
+            <tr>
+              <% rows.each do |show| %>
+                <% if show %>
+                  <td><%= render ShowCardComponent.new(show, platform: current_platform, link: true) %></td>
+                <% else %>
+                  <td></td>
+                <% end %>
+              <% end %>
+            </tr>
           <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% elsif current_platform.present? %>
+    <p>Nothing is airing yet on <%= current_platform.title %>.</p>
+  <% else %>
+    <p>Nothing is airing yet here!</p>
+  <% end %>
+
+  <% if params[:old] %>
+    <div class="columns" style="overflow: scroll; margin-top: 40px;">
+      <% @raw_schedule.each do |day, schedule| %>
+        <div class="column" style="min-width: 250px; min-height: 300px; border: 1px #aaa solid;">
+          <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
+
+          <div class="schedule">
+            <% schedule[:shows].each do |show| %>
+              <%= render ShowCardComponent.new(show, platform: current_platform) %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
