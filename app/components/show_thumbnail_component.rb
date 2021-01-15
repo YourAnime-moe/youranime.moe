@@ -102,9 +102,9 @@ class ShowThumbnailComponent < ViewComponent::Base
 
     date = @queue_item.created_at
 
-    if (Time.now - date) < 24 * 60 * 60
+    if (Time.current - date) < 24 * 60 * 60
       t('anime.queue.added-ago', time_ago: time_ago_in_words(date))
-    elsif (Time.now - date) < 48 * 60 * 60
+    elsif (Time.current - date) < 48 * 60 * 60
       t('anime.queue.added-yesterday')
     else
       t('anime.queue.added-on', date: date.strftime(

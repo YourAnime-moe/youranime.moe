@@ -117,7 +117,7 @@ module ApplicationHelper
   end
 
   def airing_in(starts_on)
-    difference = (starts_on - Time.now.to_date).to_i
+    difference = (starts_on - current_time.to_date).to_i
     difference_this_week = difference.abs % 7
     return { title: 'time.airing.today.title', content: 'time.airing.today.content' } if difference_this_week == 0
 
@@ -172,6 +172,16 @@ module ApplicationHelper
         }
       end
     end
+  end
+
+  def browser_timezone
+    @browser_timezone ||= (begin
+      ActiveSupport::TimeZone[-cookies[:tz].to_i.minutes]
+    end if cookies[:tz].present?) || cookies[:timezone].presence
+  end
+
+  def current_time
+    Time.current
   end
 
   private

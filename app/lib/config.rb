@@ -73,11 +73,11 @@ module Config
     end
 
     def current_season
-      season_for(Time.now.utc).merge({ status: :airing })
+      season_for(Time.current).merge({ status: :airing })
     end
 
     def next_season
-      current_date = Time.now.utc
+      current_date = Time.current
       current_season_code = season_code_from(current_date)
 
       next_season_code = (current_season_code + 1) % SEASON_CODES.count

@@ -22,6 +22,6 @@ class PlatformsController < ApplicationController
     breadcrumbs(*options)
     set_title(before: 'Release schedule')
 
-    @raw_schedule, @results, @total_count = Shows::ReleaseSchedule.perform(platform: current_platform)
+    @dates, @results, @total_count = Shows::ReleaseSchedule.perform(platform: current_platform)
   end
 end

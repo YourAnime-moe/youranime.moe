@@ -2,9 +2,11 @@
 module Shows
   class ReleaseSchedule < ApplicationOperation
     property :platform, accepts: Platform
+    property :from_date, converts: :to_date, default: -> { Time.current }
+    property :first_day, converts: :to_sym, default: :sunday
 
     def perform
-      @schedule = {
+      @template = {
         sunday: { id: 0 },
         monday: { id: 1 },
         tuesday: { id: 2 },
@@ -23,16 +25,20 @@ module Shows
     def populate_schedule!
       @longest_column_size = 0
       @total_count = 0
+      @dates = Utilities::Dates::DaysOfWeek.perform(date: from_date, first_day: first_day)
 
-      @schedule.each do |_, day|
-        shows = shows_scope.select do |show|
-          show.starts_on.wday == day[:id]
-        end
-        day[:count] = shows.count
-        day[:shows] = shows
+      @schedule = @dates.map do |date|
+        shows = Shows::Airing.perform(date: date).with_links
+        count = shows.to_a.count
+        @total_count += count
+        @longest_column_size = count if @longest_column_size < count
 
-        @total_count += day[:count]
-        @longest_column_size = day[:count] if @longest_column_size < day[:count]
+        {
+          shows: shows,
+          count: count,
+        }
+      rescue
+        byebug
       end
 
       @schedule
@@ -41,7 +47,7 @@ module Shows
     def schedule_into_2d_array
       actual_schedule = Array.new(7) { Array.new(@longest_column_size) }
       @schedule.each_with_index do |schedule_info, i|
-        actual_schedule[i] = @longest_column_size.times.collect { |j| schedule_info[1][:shows][j] }
+        actual_schedule[i] = @longest_column_size.times.collect { |j| schedule_info[:shows][j] }
       end
 
       # automatic transpose
@@ -57,9 +63,7 @@ module Shows
       #   end
       # end
 
-      # byebug
-
-      [@schedule, results, @total_count]
+      [@dates, results, @total_count]
     end
 
     def shows_scope

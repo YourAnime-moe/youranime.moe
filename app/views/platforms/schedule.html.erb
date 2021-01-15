@@ -76,8 +76,10 @@
       <table class="table is-fullwidth is-bordered has-background-dark" style="table-layout: fixed; min-width: 950px; position: relative;">
         <thead>
           <tr>
-            <% @raw_schedule.each do |day, data| %>
-              <th data-day="<%= data[:id] %>" class="has-text-white" style="position: sticky; top: 0;"><%= t("time.date.weekday.singular.#{day}") %></th>
+            <% @dates.each do |date| %>
+              <th data-day="<%= date.wday %>" class="has-text-grey" style="position: sticky; top: 0;">
+                <%= date.strftime('%b %d, %Y') %>
+              </th>
             <% end %>
           </tr>
         </thead>
@@ -107,7 +109,7 @@
     <div class="columns" style="overflow: scroll; margin-top: 40px;">
       <% @raw_schedule.each do |day, schedule| %>
         <div class="column" style="min-width: 250px; min-height: 300px; border: 1px #aaa solid;">
-          <h1 class="subtitle" style="<%= Time.now.to_date.wday == schedule[:id] ? 'color: #fff;' : '' %>"><%= day %></h1>
+          <h1 class="subtitle" style="<%= current_time.wday == schedule[:id] ? 'color: #fff;' : 'color: #aaa' %>"><%= day %></h1>
 
           <div class="schedule">
             <% schedule[:shows].each do |show| %>
@@ -122,11 +124,15 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const today = parseInt("<%= Time.now.to_date.wday %>");
+    const today = parseInt("<%= current_time.to_date.wday %>");
     const concernedElements = document.querySelectorAll(`[data-day="${today}"]`);
 
     concernedElements.forEach(element => {
       element.classList.add('has-background-today');
+      if (element.tagName === 'TH') {
+        element.classList.add('has-text-white');
+        element.classList.remove('has-text-grey');
+      }
     });
   });
 </script>
