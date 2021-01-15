@@ -13,6 +13,11 @@ class PlatformsController < ApplicationController
   end
 
   def schedule
+    unless can_show_full_release_schedule?
+      redirect_to(platforms_path)
+      return
+    end
+
     options = if current_platform
       [current_platform, :home, :platforms, :schedule]
     else
