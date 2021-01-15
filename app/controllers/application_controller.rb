@@ -210,9 +210,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_timezone
-    if current_user && browser_timezone && browser_timezone.name != current_user.try(:time_zone)
-      current_user.update_attributes(time_zone: browser_timezone.name) if current_user.try(:time_zone)
-    end
-    Time.zone = current_user ? current_user.try(:time_zone) : browser_timezone
+    # if current_user && browser_timezone && browser_timezone.name != current_user.try(:time_zone)
+    #   current_user.update_attributes(time_zone: browser_timezone.name) if current_user.try(:time_zone)
+    # end
+    Time.zone = browser_timezone # current_user ? current_user.try(:time_zone) : browser_timezone
   end
 end
