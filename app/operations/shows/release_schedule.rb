@@ -28,7 +28,7 @@ module Shows
       @dates = Utilities::Dates::DaysOfWeek.perform(date: from_date, first_day: first_day)
 
       @schedule = @dates.map do |date|
-        shows = Shows::Airing.perform(date: date).with_links
+        shows = Shows::Airing.perform(date: date).with_links & shows_scope
         count = shows.to_a.count
         @total_count += count
         @longest_column_size = count if @longest_column_size < count
@@ -37,8 +37,6 @@ module Shows
           shows: shows,
           count: count,
         }
-      rescue
-        byebug
       end
 
       @schedule
