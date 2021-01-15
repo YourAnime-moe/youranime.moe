@@ -10,11 +10,13 @@
 <div class="container">
   <div class="justify-content-between">
     <div><%= render_breadcrumbs %></div>
-    <div>
-      <%= link_to(schedule_platforms_path, class: 'button is-info', style: 'color: #fff') do %>
-        <i class="material-icons" style="padding-right: 7px">schedule</i> Release schedule
-      <% end %>
-    </div>
+    <% if can_show_full_release_schedule? %>
+      <div>
+        <%= link_to(schedule_platforms_path, class: 'button is-info', style: 'color: #fff') do %>
+          <i class="material-icons" style="padding-right: 7px">schedule</i> Release schedule
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
 

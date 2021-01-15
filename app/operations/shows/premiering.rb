@@ -16,7 +16,7 @@ module Shows
       date = date.try(:to_date) || date
       return date if date.is_a?(Date)
 
-      return Time.now.to_date if date == :today
+      return Time.current.to_date if date == :today
       return 1.day.ago.to_date if date == :yesterday
       return 1.day.from_now.to_date if date == :tomorrow
 

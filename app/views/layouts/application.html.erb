@@ -25,4 +25,8 @@
     <%= yield %>
     <%= render 'shared/footer' %>
   </body>
+
+  <script>
+    document.cookie = `timezone=${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+  </script>
 </html>

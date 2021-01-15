@@ -11,4 +11,8 @@ module PlatformsHelper
     return unless params[:name].present? && popular_platforms.include?(params[:name])
     @current_platform = Platform.find_by(name: params[:name])
   end
+
+  def can_show_full_release_schedule?
+    current_user.present? || current_platform.present?
+  end
 end

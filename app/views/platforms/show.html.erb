@@ -32,7 +32,7 @@
       locals: {
         title: 'Airing today',
         platform: current_platform.name,
-        scope: Shows::Airing.perform(date: Time.now, scope: current_platform.shows.active),
+        scope: Shows::Airing.perform(date: Time.current, scope: current_platform.shows.active),
       }
     %>
 

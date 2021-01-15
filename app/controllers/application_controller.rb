@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include PartialsConcern
 
   before_action :find_locale
+  before_action :set_timezone
   before_action :check_is_in_maintenance_mode!, except: [:logout]
   before_action :redirect_to_home_if_logged_in, only: [:login]
 
@@ -206,5 +207,12 @@ class ApplicationController < ActionController::Base
     return 'no_headers' if params[:action] == 'login'
 
     logged_in? ? 'authenticated' : 'application'
+  end
+
+  def set_timezone
+    # if current_user && browser_timezone && browser_timezone.name != current_user.try(:time_zone)
+    #   current_user.update_attributes(time_zone: browser_timezone.name) if current_user.try(:time_zone)
+    # end
+    Time.zone = browser_timezone # current_user ? current_user.try(:time_zone) : browser_timezone
   end
 end

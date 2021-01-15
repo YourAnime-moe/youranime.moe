@@ -13,6 +13,11 @@ class PlatformsController < ApplicationController
   end
 
   def schedule
+    unless can_show_full_release_schedule?
+      redirect_to(platforms_path)
+      return
+    end
+
     options = if current_platform
       [current_platform, :home, :platforms, :schedule]
     else
@@ -22,6 +27,6 @@ class PlatformsController < ApplicationController
     breadcrumbs(*options)
     set_title(before: 'Release schedule')
 
-    @release_schedule = Shows::ReleaseSchedule.perform(platform: current_platform)
+    @dates, @results, @total_count = Shows::ReleaseSchedule.perform(platform: current_platform)
   end
 end

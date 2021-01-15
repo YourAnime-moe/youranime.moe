@@ -5,7 +5,7 @@ module Shows
     property :scope
 
     def perform
-      Show.tv.where(id: airing_shows_ids).order(:status)
+      Show.tv.where(id: airing_shows_ids).active.order(:status)
     end
 
     private
