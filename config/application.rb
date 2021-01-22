@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'boot'
 
 require 'rails/all'
@@ -9,7 +10,7 @@ Bundler.require(*Rails.groups)
 module TanoshimuNew
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults(6.0)
     config.autoload_paths << Rails.root.join('app/lib')
     config.autoload_paths << Rails.root.join('app/operations')
     config.autoload_paths << Rails.root.join('lib/tasks')
@@ -33,6 +34,9 @@ module TanoshimuNew
 
     # Sync settings
     config.allows_crawling = Rails.env.production? || ENV['SYNC_CRAWLING'].present?
+
+    # CORS
+    config.x.cors_allowed_origins = ENV.fetch('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

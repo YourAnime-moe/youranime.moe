@@ -19,4 +19,9 @@ Rails.application.routes.draw do
     end
     match '*all', to: "v1/default_action#not_found", via: :all, constraints: { all: /.*/ }
   end
+
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  end
+  post "/graphql", to: "graphql#execute"
 end

@@ -99,7 +99,7 @@ module HasPlatformConcern
   end
 
   def platform
-    info_for(:name, default: :unknown)
+    Platform.find_by(name: url_type)
   end
 
   def colour

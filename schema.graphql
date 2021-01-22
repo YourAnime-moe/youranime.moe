@@ -1,0 +1,245 @@
+schema {
+  query: Root
+  mutation: Mutation
+}
+
+type AgeRating {
+  guide: String
+  rating: String!
+}
+
+"""
+The airing status of a show. Enum values.
+"""
+enum AiringStatus {
+  COMING_SOON
+  CURRENT
+  FINISHED
+  UNRELEASED
+  UPCOMING
+}
+
+"""
+An ISO 8601-encoded datetime
+"""
+scalar ISO8601DateTime
+
+type Mutation {
+  """
+  An example field added by the generator
+  """
+  testField: String!
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+}
+
+type Platform {
+  activeShows(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
+  colour: String!
+  icon: String!
+  image: String!
+  name: String!
+  shows(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
+  title: String!
+  url: String!
+}
+
+"""
+The connection type for Platform.
+"""
+type PlatformConnection {
+  """
+  A list of edges.
+  """
+  edges: [PlatformEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Platform]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type PlatformEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Platform
+}
+
+type Root {
+  show(slug: String!): Show
+  topPlatforms(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): PlatformConnection!
+  trending(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
+}
+
+type Show {
+  ageRating: AgeRating!
+  bannerUrl: String!
+  description: String!
+  dislikes: Int!
+  endedOn: ISO8601DateTime
+  episodesCount: Int!
+  likes: Int!
+  loves: Int!
+  nsfw: Boolean!
+  platforms(focusOn: String): [Platform!]!
+  popularity: Int!
+  posterUrl: String!
+  rank: Int
+  showType: String!
+  slug: String!
+  startsOn: ISO8601DateTime
+  status: AiringStatus
+  title: String!
+}
+
+"""
+The connection type for Show.
+"""
+type ShowConnection {
+  """
+  A list of edges.
+  """
+  edges: [ShowEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Show]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type ShowEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Show
+}

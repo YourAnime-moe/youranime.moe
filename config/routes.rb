@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     match '/prod' => redirect('https://youranime.moe'), via: [:get]
   end
 
-  #constraints(host: /\w+\.herokuapp.com/) do
+  # constraints(host: /\w+\.herokuapp.com/) do
   #  match '/(*path)' => redirect { |params, _| "https://youranime.moe/#{params[:path]}" }, via: :all
-  #end
+  # end
 end

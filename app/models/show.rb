@@ -21,6 +21,8 @@ class Show < ApplicationRecord
   FINISHED_STATUES = %w(finished)
   COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased)
 
+  SHOW_STATUSES = AIRING_STATUSES + FINISHED_STATUES + COMING_SOON_STATUSES
+
   DEFAULT_BANNER_URL = '/img/404.jpg'
   DEFAULT_POSTER_URL = '/img/404.jpg'
 
@@ -79,6 +81,7 @@ class Show < ApplicationRecord
   scope :optimized, -> do
     includes(:tags,
       :title_record,
+      :description_record,
       :links,
       :urls,
       :queues,

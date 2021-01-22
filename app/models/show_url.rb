@@ -65,7 +65,7 @@ info_url: 'youtube.com'
   def ensure_url_type
     return if url_type.present? || !value.present?
 
-    # url_to_type_regex = /(\w+\.)?(\w+)(\.\w+)/
-    self[:url_type] = platform # value.match(url_to_type_regex)[2]
+    url_to_type_regex = /(\w+\.)?(\w+)(\.\w+)/
+    self[:url_type] = platform&.name || value.match(url_to_type_regex)[2]
   end
 end
