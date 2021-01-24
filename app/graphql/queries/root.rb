@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 module Queries
   class Root < ::Types::BaseObject
-    field :trending, Queries::Types::Show.connection_type, null: false
-    field :top_platforms, Queries::Types::Shows::Platform.connection_type, null: false
+    field :browse_all, Queries::Types::Show.connection_type, null: false
     field :show, Queries::Types::Show, null: true do
       argument :slug, String, required: true
+    end
+    field :trending, Queries::Types::Show.connection_type, null: false
+    field :top_platforms, Queries::Types::Shows::Platform.connection_type, null: false
+
+    def browse_all
+      Show.optimized
+    end
+
+    def show(slug:)
+      Shows::Kitsu::GetBySlug.perform(slug: slug)
     end
 
     def top_platforms
@@ -15,10 +24,6 @@ module Queries
 
     def trending
       Show.trending.includes(:title_record).limit(100)
-    end
-
-    def show(slug:)
-      Shows::Kitsu::GetBySlug.perform(slug: slug)
     end
   end
 end

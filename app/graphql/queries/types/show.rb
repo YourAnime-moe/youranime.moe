@@ -22,6 +22,10 @@ module Queries
       field :platforms, [Queries::Types::Shows::Platform], null: false do
         argument :focus_on, String, required: false
       end
+      field :links, [Queries::Types::Shows::Link], null: false
+      field :tags, [Queries::Types::Shows::Tag], null: false
+      field :related_shows, [Queries::Types::Show], null: false
+      field :title_record, Queries::Types::Shows::Title, null: false
 
       def likes
         @object.likes_count
@@ -40,6 +44,10 @@ module Queries
           rating: @object.age_rating,
           guide: @object.age_rating_guide,
         }
+      end
+
+      def title_record
+        @object.title_record || { en: '', jp: '' }
       end
     end
   end

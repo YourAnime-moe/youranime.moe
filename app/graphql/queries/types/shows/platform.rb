@@ -13,11 +13,11 @@ module Queries
         field :active_shows, Queries::Types::Show.connection_type, null: false
 
         def icon
-          "#{context[:hostname]}/#{@object.icon}"
+          "#{context[:hostname]}/img/platforms/#{@object.icon}"
         end
 
         def image
-          "#{context[:hostname]}/#{@object.image}"
+          "#{context[:hostname]}/img/platforms/#{@object.image}"
         end
       end
     end
