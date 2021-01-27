@@ -40,14 +40,14 @@ class ShowThumbnailComponent < ViewComponent::Base
     end
 
     if @focus_platform
-      platform_colour = ShowUrl.colour_for(@focus_platform)
+      platform_colour = @focus_platform.colour
       options << {
         background: platform_colour,
         colour: Utils.text_color(from: platform_colour),
-        content: t("anime.platforms.#{@focus_platform}"),
+        content: t("anime.platforms.#{@focus_platform.name}"),
       }
 
-      links_scope = @show.links.unless(url_type: @focus_platform)
+      links_scope = @show.links.unless(url_type: @focus_platform.name)
       options << {
         type: :link,
         content: "+#{links_scope.count}",

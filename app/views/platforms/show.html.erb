@@ -31,7 +31,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Airing today',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: Shows::Airing.perform(date: Time.current, scope: current_platform.shows.active),
       }
     %>
@@ -39,7 +39,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Airing tomorrow',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: Shows::Airing.perform(date: 1.day.from_now, scope: current_platform.shows.active),
       }
     %>
@@ -47,7 +47,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Top airing',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.shows.airing,
       }
     %>
@@ -55,7 +55,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Coming soon',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.shows.coming_soon,
       }
     %>
@@ -63,7 +63,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Hot right now',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.shows.active.trending.limit(12),
       }
     %>
@@ -71,7 +71,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Recent additions',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.shows.recent.limit(12),
       }
     %>
@@ -80,7 +80,7 @@
       locals: {
         title: t('breadcrumbs.names.shows'),
         link: shows_path(by: current_platform.name),
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.shows.trending.limit(12),
       }
     %>
@@ -88,7 +88,7 @@
     <%= render partial: 'shows/partial/shows_list',
       locals: {
         title: 'Anything you like? Discover something new!',
-        platform: current_platform.name,
+        platform: current_platform,
         scope: current_platform.random_shows(limit: 12),
       }
     %>

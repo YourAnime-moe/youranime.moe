@@ -33,15 +33,15 @@
 
     <% ShowUrl.popular_platforms[0...5].each do |platform| %>
       <% platform_title = content_tag(:div) do %>
-        <span class="show-url-image"><%= t("anime.platforms.#{platform}") %> <%= try_show_url_icon_for(platform, ['jpg', 'png']) %></span>
+        <span class="show-url-image"><%= t("anime.platforms.#{platform.name}") %> <%= image_tag(platform.icon) %></span>
       <% end %>
 
       <%= render partial: 'shows/partial/shows_list',
         locals: {
           title: platform_title,
-          link: platform_path(platform),
+          link: platform_path(platform.name),
           platform: platform,
-          scope: Show.actively_streamable_on(platform).limit(12),
+          scope: platform.active_shows.limit(12),
         }
       %>
     <% end %>

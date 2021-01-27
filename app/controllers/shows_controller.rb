@@ -105,7 +105,7 @@ class ShowsController < ApplicationController
     return { scope: Show.coming_soon, title: 'coming-soon' } if params[:by] == 'coming-soon'
     return { scope: Show.with_links, title: 'with-links' } if params[:by] == 'watch-online'
 
-    if ShowUrl.popular_platforms.include?(params[:by])
+    if Platform.pluck(:name).include?(params[:by])
       breadcrumbs(:shows, :home, :platforms, params[:by])
       @show_url_platform = true
       return { scope: Show.streamable_on(params[:by]), platform: true }

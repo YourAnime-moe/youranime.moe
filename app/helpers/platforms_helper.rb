@@ -8,7 +8,7 @@ module PlatformsHelper
   def current_platform
     return @current_platform if @current_platform.present?
 
-    return unless params[:name].present? && popular_platforms.include?(params[:name])
+    # return unless params[:name].present? && popular_platforms.include?(params[:name])
     @current_platform = Platform.find_by(name: params[:name])
   end
 

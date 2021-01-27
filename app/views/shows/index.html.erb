@@ -2,8 +2,8 @@
   <div class="text-center" style="margin: 40px; display: grid;">
     <span class="title">
       <%= @title %>
-      <% if @show_url_platform %>
-        <span class="show-url-image"><%= try_show_url_icon_for(params[:by], ['png', 'jpg']) %></span>
+      <% if current_platform.present? %>
+        <span class="show-url-image"><%= image_tag(current_platform.icon) %></span>
       <% end %>
     </span>
     <span class="subtitle"><%= @title_subtitle %></span>

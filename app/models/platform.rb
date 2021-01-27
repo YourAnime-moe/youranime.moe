@@ -30,7 +30,7 @@ class Platform < FrozenRecord::Base
     ids.map { |id| Show.find(id) }
   end
 
-  def to_sym
-    name.to_sym
+  def to_s
+    name.to_s
   end
 end

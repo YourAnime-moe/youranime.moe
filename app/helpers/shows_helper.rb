@@ -330,9 +330,8 @@ title: t("anime.platforms.#{show_url.platform}")) do
   def try_show_url_icon_for(platform, extensions)
     return unless platform.present?
 
-    extensions.each do |ext|
-      p("Image: #{ShowUrl.icon_asset_filename_for(platform, ext: ext)}")
-      return image_tag(ShowUrl.icon_asset_filename_for(platform, ext: ext))
+    extensions.each do |_ext|
+      return image_tag(platform.icon)
     rescue Sprockets::Rails::Helper::AssetNotFound
       next
     end
