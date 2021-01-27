@@ -19,6 +19,7 @@ module Queries
       field :starts_on, GraphQL::Types::ISO8601DateTime, null: true
       field :ended_on, GraphQL::Types::ISO8601DateTime, null: true
       field :status, Queries::Types::Shows::AiringStatus, null: true
+      field :friendly_status, String, null: true
       field :platforms, [Queries::Types::Shows::Platform], null: false do
         argument :focus_on, String, required: false
       end
@@ -54,6 +55,12 @@ module Queries
         return @object.show_type if @object.show_category.blank?
 
         "#{@object.show_category}/#{@object.show_type}"
+      end
+
+      def friendly_status
+        return unless @object.status.present?
+
+        I18n.t("anime.shows.airing_status.#{@object.status}")
       end
     end
   end
