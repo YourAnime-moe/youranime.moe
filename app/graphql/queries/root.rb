@@ -5,6 +5,10 @@ module Queries
     field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
       argument :slug, String, required: true
     end
+    field :search, Queries::Types::Show.connection_type, null: false do
+      argument :query, String, required: true
+      argument :limit, Integer, required: false
+    end
     field :show, Queries::Types::Show, null: true do
       argument :slug, String, required: true
     end
@@ -13,6 +17,10 @@ module Queries
 
     def browse_all
       Show.optimized
+    end
+
+    def search(query:, limit: 100)
+      ::Search.perform(search: query, limit: limit, format: :shows)
     end
 
     def show(slug:)

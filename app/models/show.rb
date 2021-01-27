@@ -250,6 +250,10 @@ class Show < ApplicationRecord
     [focus_platform, scope.where.not(name: focus_on.to_s)].flatten
   end
 
+  def popularity_percentage
+    ((1 - (popularity.to_f / Show.order(:popularity).last.popularity)) * 100).to_i
+  end
+
   def self.search(by_title)
     by_title = "%#{by_title}%"
 
