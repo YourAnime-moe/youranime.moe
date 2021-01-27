@@ -19,7 +19,7 @@ class Show < ApplicationRecord
   SHOW_TYPES = [ANIME, MOVIE]
   AIRING_STATUSES = %w(current)
   FINISHED_STATUES = %w(finished)
-  COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased)
+  COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased tba)
 
   SHOW_STATUSES = AIRING_STATUSES + FINISHED_STATUES + COMING_SOON_STATUSES
 
