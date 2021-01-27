@@ -32,9 +32,7 @@ module Queries
     end
 
     def top_platforms
-      ShowUrl.popular_platforms.map do |platform_name|
-        Platform.find_by(name: platform_name)
-      end.compact
+      ShowUrl.popular_platforms
     end
 
     def trending

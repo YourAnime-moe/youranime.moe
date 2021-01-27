@@ -41,7 +41,7 @@ class Search < ApplicationOperation
   end
 
   def empty_search_result
-    { shows: [] }
+    format == 'whole' ? { shows: [] } : []
   end
 
   def like_search
