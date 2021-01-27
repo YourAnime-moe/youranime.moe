@@ -36,8 +36,8 @@ module Kitsu
       new_show
     end
 
-    def streaming_platforms_from_anilist!(search_results, show)
-      anilist_id = anilist_id_from(search_results)
+    def streaming_platforms_from_anilist!(show)
+      anilist_id = show.anilist_id
       return unless anilist_id.present?
 
       show_urls = Shows::Anilist::Streamers.perform(
@@ -54,20 +54,31 @@ module Kitsu
       show.urls = show_urls
     end
 
-    def anilist_id_from(search_results)
-      return unless @included.is_a?(Array) && @included.any?
+    def save_external_relationships!(search_results, show)
+      options = [{
+        show: show,
+        reference_id: show.reference_id,
+        reference_source: show.reference_source,
+      }].concat(external_relationships_options_from(search_results, show))
 
+      show.external_relationships = ShowExternalRelationship.create!(options)
+    end
+
+    def external_relationships_options_from(search_results, show)
       search_results.dig(:relationships, :mappings, :data).map do |data|
         next unless data[:type] == 'mappings'
 
         @included.filter do |included_data|
           included_data[:type] == 'mappings' &&
-            data[:id] == included_data[:id] &&
-            included_data.dig(:attributes, :externalSite) =~ /anilist/
+            data[:id] == included_data[:id]
         end.map do |included_data|
-          included_data.dig(:attributes, :externalId)
+          {
+            show: show,
+            reference_source: included_data.dig(:attributes, :externalSite),
+            reference_id: included_data.dig(:attributes, :externalId),
+          }
         end
-      end.compact.flatten.first
+      end.compact.flatten
     end
 
     def show_options(results)

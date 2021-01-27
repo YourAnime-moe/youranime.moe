@@ -49,6 +49,12 @@ module Queries
       def title_record
         @object.title_record || { en: '', jp: '' }
       end
+
+      def show_type
+        return @object.show_type if @object.show_category.blank?
+
+        "#{@object.show_category}/#{@object.show_type}"
+      end
     end
   end
 end

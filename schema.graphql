@@ -8,6 +8,12 @@ type AgeRating {
   rating: String!
 }
 
+type AiringSchedule {
+  airingAt: Int!
+  episode: Int!
+  timeUntilAiring: Int!
+}
+
 """
 The airing status of a show. Enum values.
 """
@@ -170,6 +176,7 @@ type Root {
     """
     last: Int
   ): ShowConnection!
+  nextAiringEpisode(slug: String!): AiringSchedule
   show(slug: String!): Show
   topPlatforms(
     """

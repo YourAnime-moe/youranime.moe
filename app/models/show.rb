@@ -42,6 +42,7 @@ class Show < ApplicationRecord
   has_many :urls, -> { ordered }, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
   has_many :links, -> { ordered.streamable.non_watchable }, class_name: 'ShowUrl'
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
+  has_many :external_relationships, class_name: 'ShowExternalRelationship', dependent: :destroy
 
   has_one :title_record, -> {
                            with_slug
@@ -65,7 +66,8 @@ class Show < ApplicationRecord
   scope :recent, -> { published.order('shows.created_at desc') }
   scope :airing, -> { trending.where(status: AIRING_STATUSES) }
   scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
-  scope :active, -> { trending.where(status: AIRING_STATUSES + COMING_SOON_STATUSES) }
+  scope :active, -> { trending.where(status: COMING_SOON_STATUSES + AIRING_STATUSES) }
+  scope :this_year, -> { where("starts_on >= '#{Date.new(Time.current.year)}'") }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
@@ -74,7 +76,7 @@ class Show < ApplicationRecord
     optimized.joins(:links)
       .where('show_urls.url_type' => sanitize_sql(platform))
   end
-  scope :actively_streamable_on, -> (platform) { streamable_on(platform).active }
+  scope :actively_streamable_on, -> (platform) { streamable_on(platform).active.this_year }
   scope :tv, -> { where(show_category: 'TV') }
   scope :random, -> { order('random()') }
 
@@ -214,9 +216,13 @@ class Show < ApplicationRecord
     slug
   end
 
+  def anilist_id
+    external_relationships.find_by(reference_source: 'anilist/anime')&.reference_id
+  end
+
   def needs_update?
     (persisted? && !valid?) ||
-      airing? ||
+      (airing? && external_relationships.empty?) ||
       coming_soon? ||
       no_air_status? ||
       urls.empty? ||

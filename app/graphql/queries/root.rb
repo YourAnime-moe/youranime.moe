@@ -2,6 +2,9 @@
 module Queries
   class Root < ::Types::BaseObject
     field :browse_all, Queries::Types::Show.connection_type, null: false
+    field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
+      argument :slug, String, required: true
+    end
     field :show, Queries::Types::Show, null: true do
       argument :slug, String, required: true
     end
@@ -14,6 +17,10 @@ module Queries
 
     def show(slug:)
       Shows::Kitsu::GetBySlug.perform(slug: slug)
+    end
+
+    def next_airing_episode(slug:)
+      Shows::Anilist::NextAiringEpisode.perform(slug: slug)
     end
 
     def top_platforms

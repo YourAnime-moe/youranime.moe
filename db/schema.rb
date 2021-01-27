@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_09_023919) do
+ActiveRecord::Schema.define(version: 2021_01_26_043830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,15 @@ ActiveRecord::Schema.define(version: 2021_01_09_023919) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["show_id", "user_id"], name: "index_ratings_on_show_id_and_user_id", unique: true
     t.index ["show_id", "value"], name: "index_ratings_on_show_id_and_value"
+  end
+
+  create_table "show_external_relationships", force: :cascade do |t|
+    t.integer "show_id", null: false
+    t.integer "reference_id"
+    t.string "reference_source"
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "show_urls", force: :cascade do |t|

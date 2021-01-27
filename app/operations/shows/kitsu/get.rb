@@ -49,7 +49,8 @@ module Shows
 
         show.save!
 
-        streaming_platforms_from_anilist!(search_results, show)
+        save_external_relationships!(search_results, show)
+        streaming_platforms_from_anilist!(show)
         try_adding_images(show, results)
 
         show.tags = show_tags
@@ -67,7 +68,8 @@ module Shows
         new_show.save!
         new_show.tags = show_tags
 
-        streaming_platforms_from_anilist!(search_results, new_show)
+        save_external_relationships!(search_results, show)
+        streaming_platforms_from_anilist!(new_show)
         try_adding_images(new_show, search_results[:attributes], force: true)
 
         new_show
