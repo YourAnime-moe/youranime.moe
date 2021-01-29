@@ -52,6 +52,10 @@ module Queries
         @object.title_record || { en: '', jp: '' }
       end
 
+      def description
+        @object.description || '- No description -'
+      end
+
       def show_type
         return @object.show_type if @object.show_category.blank?
 

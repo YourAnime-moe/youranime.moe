@@ -220,6 +220,10 @@ class Show < ApplicationRecord
     external_relationships.find_by(reference_source: 'anilist/anime')&.reference_id
   end
 
+  def mal_id
+    external_relationships.find_by(reference_source: 'myanimelist/anime')&.reference_id
+  end
+
   def needs_update?
     (persisted? && !valid?) ||
       (airing? && external_relationships.empty?) ||
@@ -251,7 +255,7 @@ class Show < ApplicationRecord
   end
 
   def popularity_percentage
-    ((1 - (popularity.to_f / Show.order(:popularity).last.popularity)) * 100).to_i
+    ((1 - (popularity.to_f / Show.order(:popularity).limit(1000).last.popularity)) * 100).to_i
   end
 
   def self.search(by_title)
