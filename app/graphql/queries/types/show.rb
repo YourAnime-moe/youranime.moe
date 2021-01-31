@@ -43,7 +43,7 @@ module Queries
 
       def age_rating
         {
-          rating: @object.age_rating,
+          rating: @object.age_rating || 'N/R',
           guide: @object.age_rating_guide,
         }
       end

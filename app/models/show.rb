@@ -254,8 +254,12 @@ class Show < ApplicationRecord
     [focus_platform, scope.where.not(name: focus_on.to_s)].flatten
   end
 
+  # To do: store in DB
   def popularity_percentage
-    ((1 - (popularity.to_f / Show.order(:popularity).limit(1000).last.popularity)) * 100).to_i
+    scope = Show.where(show_category: show_category, status: status).order(:popularity)
+    limit = scope.length * 0.1
+    result = ((1 - (popularity.to_f / scope.limit(scope.count).last.popularity)) * 100).to_i
+    [1, result].max
   end
 
   def self.search(by_title)
