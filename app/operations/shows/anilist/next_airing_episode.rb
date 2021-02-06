@@ -5,7 +5,10 @@ module Shows
       property! :slug
 
       def perform
+        return if show.blank?
         return unless anilist_id.present?
+
+        return if show.air_complete?
 
         next_airing_episode_data
       end
@@ -51,7 +54,7 @@ module Shows
       end
 
       def anilist_id
-        show&.anilist_id
+        show.anilist_id
       end
 
       def show
