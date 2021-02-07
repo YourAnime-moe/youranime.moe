@@ -8,6 +8,7 @@ module Queries
       field :show_type, String, null: false
       field :popularity, Integer, null: false
       field :popularity_percentage, Integer, null: false
+      field :relative_popularity, Integer, null: false
       field :banner_url, String, null: false
       field :poster_url, String, null: false
       field :likes, Integer, null: false

@@ -21,6 +21,7 @@ enum AiringStatus {
   COMING_SOON
   CURRENT
   FINISHED
+  TBA
   UNRELEASED
   UPCOMING
 }
@@ -263,6 +264,7 @@ type Show {
   posterUrl: String!
   rank: Int
   relatedShows: [Show!]!
+  relativePopularity: Int!
   showType: String!
   slug: String!
   startsOn: ISO8601DateTime

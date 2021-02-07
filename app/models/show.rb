@@ -256,10 +256,12 @@ class Show < ApplicationRecord
 
   # To do: store in DB
   def popularity_percentage
-    scope = Show.where(show_category: show_category, status: status).order(:popularity)
-    limit = scope.length * 0.1
-    result = ((1 - (popularity.to_f / scope.limit(scope.count).last.popularity)) * 100).to_i
-    [1, result].max
+    result = (1 - (relative_popularity.to_f / popularity_scope.count)) * 100
+    [1, result.to_i].max
+  end
+
+  def relative_popularity
+    popularity_scope.index(self) + 1
   end
 
   def self.search(by_title)
@@ -312,5 +314,9 @@ class Show < ApplicationRecord
     return if persisted?
 
     self.released_on = Time.now.utc
+  end
+
+  def popularity_scope
+    @popularity_scope ||= Show.where(show_category: show_category, status: status).order(:popularity)
   end
 end
