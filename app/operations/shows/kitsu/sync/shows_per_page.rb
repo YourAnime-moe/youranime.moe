@@ -30,7 +30,7 @@ module Shows
               else
                 results.merge!({ synched_by: requested_by.id })
                 show = find_or_create_show!(results, :kitsu)
-                streaming_platforms_from_anilist!(results, show)
+                streaming_platforms_from_anilist!(show)
 
                 if show.slug.nil?
                   byebug
