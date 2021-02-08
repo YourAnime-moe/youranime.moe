@@ -294,26 +294,12 @@
         },
         {
           "kind": "OBJECT",
-          "name": "PageInfo",
-          "description": "Information about pagination in a connection.",
+          "name": "PaginationInfo",
+          "description": null,
           "fields": [
             {
-              "name": "endCursor",
-              "description": "When paginating forwards, the cursor to continue.",
-              "args": [
-
-              ],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "hasNextPage",
-              "description": "When paginating forwards, are there more items?",
+              "description": null,
               "args": [
 
               ],
@@ -331,7 +317,7 @@
             },
             {
               "name": "hasPreviousPage",
-              "description": "When paginating backwards, are there more items?",
+              "description": null,
               "args": [
 
               ],
@@ -348,15 +334,37 @@
               "deprecationReason": null
             },
             {
-              "name": "startCursor",
-              "description": "When paginating backwards, the cursor to continue.",
+              "name": "totalCount",
+              "description": null,
               "args": [
 
               ],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalPages",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -433,6 +441,24 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "ShowConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "activeShowsCount",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
                   "ofType": null
                 }
               },
@@ -577,6 +603,24 @@
               "deprecationReason": null
             },
             {
+              "name": "showsCount",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "title",
               "description": null,
               "args": [
@@ -663,7 +707,7 @@
             },
             {
               "name": "pageInfo",
-              "description": "Information to aid in pagination.",
+              "description": null,
               "args": [
 
               ],
@@ -672,7 +716,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PageInfo",
+                  "name": "PaginationInfo",
                   "ofType": null
                 }
               },
@@ -1620,7 +1664,7 @@
             },
             {
               "name": "pageInfo",
-              "description": "Information to aid in pagination.",
+              "description": null,
               "args": [
 
               ],
@@ -1629,7 +1673,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PageInfo",
+                  "name": "PaginationInfo",
                   "ofType": null
                 }
               },

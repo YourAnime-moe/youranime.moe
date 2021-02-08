@@ -2,6 +2,8 @@
 module Queries
   module Types
     class Show < ::Types::BaseObject
+      connection_type_class ::Types::Custom::BaseConnection
+
       field :title, String, null: false
       field :description, String, null: false
       field :slug, String, null: false

@@ -44,29 +44,11 @@ type Mutation {
   testField: String!
 }
 
-"""
-Information about pagination in a connection.
-"""
-type PageInfo {
-  """
-  When paginating forwards, the cursor to continue.
-  """
-  endCursor: String
-
-  """
-  When paginating forwards, are there more items?
-  """
+type PaginationInfo {
   hasNextPage: Boolean!
-
-  """
-  When paginating backwards, are there more items?
-  """
   hasPreviousPage: Boolean!
-
-  """
-  When paginating backwards, the cursor to continue.
-  """
-  startCursor: String
+  totalCount: Int!
+  totalPages: Int!
 }
 
 type Platform {
@@ -91,6 +73,7 @@ type Platform {
     """
     last: Int
   ): ShowConnection!
+  activeShowsCount: Int!
   colour: String!
   icon: String!
   image: String!
@@ -116,6 +99,7 @@ type Platform {
     """
     last: Int
   ): ShowConnection!
+  showsCount: Int!
   title: String!
   url: String!
 }
@@ -133,11 +117,7 @@ type PlatformConnection {
   A list of nodes.
   """
   nodes: [Platform]
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
+  pageInfo: PaginationInfo!
 }
 
 """
@@ -287,11 +267,7 @@ type ShowConnection {
   A list of nodes.
   """
   nodes: [Show]
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
+  pageInfo: PaginationInfo!
 }
 
 """
