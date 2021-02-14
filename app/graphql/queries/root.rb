@@ -14,6 +14,9 @@ module Queries
     end
     field :trending, Queries::Types::Show.connection_type, null: false
     field :top_platforms, Queries::Types::Shows::Platform.connection_type, null: false
+    field :platform, Queries::Types::Shows::Platform, null: true do
+      argument :name, String, required: true
+    end
 
     def browse_all
       Show.optimized
@@ -33,6 +36,10 @@ module Queries
 
     def top_platforms
       ShowUrl.popular_platforms
+    end
+
+    def platform(name:)
+      Platform.find_by(name: name)
     end
 
     def trending

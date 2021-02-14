@@ -74,10 +74,73 @@ type Platform {
     last: Int
   ): ShowConnection!
   activeShowsCount: Int!
+  airingNow(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
   colour: String!
+  comingSoon(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
   icon: String!
   image: String!
   name: String!
+  otherShows(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ShowConnection!
   shows(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -158,6 +221,7 @@ type Root {
     last: Int
   ): ShowConnection!
   nextAiringEpisode(slug: String!): AiringSchedule
+  platform(name: String!): Platform
   search(
     """
     Returns the elements in the list that come after the specified cursor.

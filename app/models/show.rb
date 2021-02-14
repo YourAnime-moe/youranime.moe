@@ -67,6 +67,7 @@ class Show < ApplicationRecord
   scope :airing, -> { trending.where(status: AIRING_STATUSES) }
   scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
   scope :active, -> { trending.where(status: COMING_SOON_STATUSES + AIRING_STATUSES) }
+  scope :finished, -> { trending.where(status: FINISHED_STATUES) }
   scope :this_year, -> { where("starts_on >= '#{Date.new(Time.current.year)}'") }
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }

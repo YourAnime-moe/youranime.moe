@@ -5,8 +5,14 @@ class Search < ApplicationOperation
   property :format, accepts: [:whole, :shows], default: :whole, converts: :to_sym
 
   def execute
-    return empty_search_result unless search.present? && search.size > 2
-    final_results = shows_results.trending.order(:show_type)
+    return empty_search_result unless search.present? && search.size >= minimum_query_length
+
+    final_results = if (platform = Platform.find_by(name: search))
+      platform.shows.order(:status)
+    else
+      shows_results
+    end.trending.order(:show_type)
+
     return final_results if format == :shows
 
     show_types = final_results.pluck(:show_type).uniq
@@ -17,6 +23,14 @@ class Search < ApplicationOperation
   end
 
   private
+
+  def minimum_query_length
+    japanese_characters? ? 1 : 3
+  end
+
+  def japanese_characters?
+    !!(search =~ /\p{Han}|\p{Katakana}|\p{Hiragana}/)
+  end
 
   def shows_results
     @shows_results ||= search_shows_by_title

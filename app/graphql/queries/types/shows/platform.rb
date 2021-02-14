@@ -13,6 +13,9 @@ module Queries
         field :url, String, null: false
         field :shows, Queries::Types::Show.connection_type, null: false
         field :active_shows, Queries::Types::Show.connection_type, null: false
+        field :airing_now, Queries::Types::Show.connection_type, null: false
+        field :coming_soon, Queries::Types::Show.connection_type, null: false
+        field :other_shows, Queries::Types::Show.connection_type, null: false
 
         field :shows_count, Integer, null: false
         field :active_shows_count, Integer, null: false

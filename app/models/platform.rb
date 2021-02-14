@@ -15,6 +15,18 @@ class Platform < FrozenRecord::Base
     Show.actively_streamable_on(name)
   end
 
+  def airing_now
+    active_shows.airing
+  end
+
+  def coming_soon
+    active_shows.coming_soon
+  end
+
+  def other_shows
+    shows.finished
+  end
+
   def shows
     Show.streamable_on(name)
   end
