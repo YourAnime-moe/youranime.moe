@@ -68,7 +68,7 @@ module Shows
         new_show.save!
         new_show.tags = show_tags
 
-        save_external_relationships!(search_results, show)
+        save_external_relationships!(search_results, new_show)
         streaming_platforms_from_anilist!(new_show)
         try_adding_images(new_show, search_results[:attributes], force: true)
 

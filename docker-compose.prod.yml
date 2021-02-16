@@ -26,11 +26,13 @@ services:
     env_file:
       - ./.env.prod
     environment:
-      - REDIS_URL=redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      RAILS_ENV: production
+      RACK_ENV: production
 
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && puma config/puma.rb"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
     stdin_open: true
     tty: true
     env_file:
@@ -46,6 +48,8 @@ services:
     environment:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
+      RAILS_ENV: production
+      RACK_ENV: production
     depends_on:
       - db
 
