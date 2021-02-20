@@ -22,7 +22,7 @@ class GraphqlController < ApplicationController
   private
 
   def hostname
-    request.protocol + request.host_with_port
+    Rails.application.config.x.graphql_host || request.protocol + request.host_with_port
   end
 
   # Handle variables in form data, JSON body, or a blank value

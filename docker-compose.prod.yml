@@ -29,6 +29,7 @@ services:
       REDIS_URL: redis://redis:6379
       RAILS_ENV: production
       RACK_ENV: production
+      WEB_CONCURRENCY: 8
 
   web:
     build: .
@@ -50,6 +51,8 @@ services:
       REDIS_URL: redis://redis:6379
       RAILS_ENV: production
       RACK_ENV: production
+      WEB_CONCURRENCY: 8
+      GRAPHQL_HOST: https://jibun.akinyele.ca
     depends_on:
       - db
 

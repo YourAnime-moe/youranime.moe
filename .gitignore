@@ -14,8 +14,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/shared/*
 !/log/.keep
 !/tmp/.keep
+!/shared/log/.keep
+!/shared/pids/.keep
+!/shared/sockets/.keep
 
 # Ignore Byebug command history file.
 .byebug_history

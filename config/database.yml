@@ -35,4 +35,5 @@ test:
 
 production:
   <<: *postgres
+  host: db
   database: tanoshimu
