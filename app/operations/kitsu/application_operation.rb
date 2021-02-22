@@ -61,7 +61,7 @@ module Kitsu
         reference_source: show.reference_source,
       }].concat(external_relationships_options_from(search_results, show))
 
-      show.external_relationships = ShowExternalRelationship.create!(options)
+      show.external_relationships = ShowExternalRelationship.create(options)
     end
 
     def external_relationships_options_from(search_results, show)
