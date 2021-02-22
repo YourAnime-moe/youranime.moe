@@ -18,6 +18,8 @@ module Queries
       argument :name, String, required: true
     end
 
+    field :country_timezone, Queries::Types::CountryTimezone, null: false
+
     def browse_all
       Show.optimized
     end
@@ -44,6 +46,10 @@ module Queries
 
     def trending
       Show.trending.includes(:title_record).limit(100)
+    end
+
+    def country_timezone
+      { country: context[:country], timezone: context[:timezone] }
     end
   end
 end

@@ -26,6 +26,11 @@ enum AiringStatus {
   UPCOMING
 }
 
+type CountryTimezone {
+  country: String
+  timezone: String
+}
+
 """
 An ISO 8601-encoded datetime
 """
@@ -220,6 +225,7 @@ type Root {
     """
     last: Int
   ): ShowConnection!
+  countryTimezone: CountryTimezone!
   nextAiringEpisode(slug: String!): AiringSchedule
   platform(name: String!): Platform
   search(
