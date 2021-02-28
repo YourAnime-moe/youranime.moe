@@ -5,6 +5,12 @@
   image: "adultswim.png"
   icon: "adultswim-icon.png"
   url: "https://www.adultswim.com/"
+  age_limit: yes
+  countries:
+    - CA
+    - US
+    - AU
+    - NZ
 
 - name: animelab
   colour: "#350079"
@@ -13,6 +19,9 @@
   image: "animelab.png"
   icon: "animelab-icon.jpg"
   url: "https://www.animelab.com"
+  countries:
+    - AU
+    - NZ
 
 - name: crunchyroll
   colour: "#f78c25"
@@ -21,6 +30,62 @@
   image: "crunchyroll.svg"
   icon: "crunchyroll-icon.png"
   url: "https://www.crunchyroll.com"
+  countries:
+    - AI
+    - AG
+    - AW
+    - BS
+    - BB
+    - BZ
+    - BM
+    - BQ
+    - CA
+    - KY
+    - CR
+    - CU
+    - CW
+    - DM
+    - DO
+    - SV
+    - GD
+    - GP
+    - GT
+    - HT
+    - HN
+    - JM
+    - MQ
+    - MX
+    - AN
+    - NI
+    - PA
+    - PR
+    - KN
+    - LC
+    - VC
+    - SX
+    - TT
+    - TC
+    - US
+    - VG
+    - VI
+    - AR
+    - BO
+    - BR
+    - CL
+    - CO
+    - EC
+    - FK
+    - GF
+    - GY
+    - PY
+    - PE
+    - SR
+    - UY
+    - VE
+    - AS
+    - GU
+    - MP
+    - UM
 
 - name: funimation
   colour: "#410099"
@@ -29,6 +94,11 @@
   image: "funimation.svg"
   icon: "funimation-icon.png"
   url: "https://www.funimation.com"
+  countries:
+    - CA
+    - US
+    - UK
+    - IE
 
 - name: hidive
   colour: "#00aeef"
@@ -45,6 +115,8 @@
   image: "hulu.png"
   icon: "hulu-icon.png"
   url: "https://www.hulu.com"
+  countries:
+    - US
 
 - name: netflix
   colour: "#e50914"
@@ -53,6 +125,11 @@
   image: ""
   icon: "netflix-icon.jpg"
   url: "https://www.netflix.com"
+  blocked:
+    - RU
+    - CN
+    - KP
+    - SY
 
 - name: prime
   colour: "#266f92"
@@ -70,6 +147,10 @@
   image: "tubi.png"
   icon: "tubi-icon.png"
   url: "https://www.tubitv.com"
+  countries:
+    - CA
+    - AU
+    - US
 
 - name: vimeo
   colour: "#eef1f2"
@@ -86,6 +167,7 @@
   image: "vrv.svg"
   icon: "vrv-icon.png"
   url: "https://vrv.co"
+  countries: US
 
 - name: youtube
   colour: "#ff0000"
