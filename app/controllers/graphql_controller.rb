@@ -9,10 +9,15 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+
+    country = request.headers['X-Country']
+    timezone = request.headers['X-Timezone']
+
     context = {
       hostname: hostname,
-      country: request.headers['X-Country'],
-      timezone: request.headers['X-Timezone'],
+      country: country || 'CA',
+      timezone: timezone || 'America/Toronto',
+      is_default: country.blank? || timezone.blank?,
     }
     result = TanoshimuNewSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render(json: result)

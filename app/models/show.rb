@@ -245,11 +245,11 @@ class Show < ApplicationRecord
     Show.where(id: related_show_ids)
   end
 
-  def platforms(focus_on: nil)
-    scope = Platform.where(name: urls.pluck(:url_type))
+  def platforms(for_country: nil, focus_on: nil)
+    scope = Platform.for_country(for_country).where(name: urls.pluck(:url_type))
     return scope unless focus_on
 
-    focus_platform = Platform.find_by(name: focus_on.to_s)
+    focus_platform = Platform.for_country(for_country).find_by(name: focus_on.to_s)
     return scope unless focus_platform.present?
 
     [focus_platform, scope.where.not(name: focus_on.to_s)].flatten

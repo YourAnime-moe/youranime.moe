@@ -26,9 +26,15 @@ enum AiringStatus {
   UPCOMING
 }
 
+"""
+A valid representation of a country.
+"""
+scalar Country
+
 type CountryTimezone {
-  country: String
-  timezone: String
+  country: Country!
+  isDefault: Boolean!
+  timezone: String!
 }
 
 """
@@ -122,6 +128,8 @@ type Platform {
     """
     last: Int
   ): ShowConnection!
+  countries: [Country!]
+  global: Boolean!
   icon: String!
   image: String!
   name: String!
@@ -203,6 +211,11 @@ type PlatformEdge {
   node: Platform
 }
 
+"""
+A valid representation of a region locked scalar. If true, it returns the {for_country: string}.
+"""
+scalar RegionLocked
+
 type Root {
   browseAll(
     """
@@ -272,6 +285,7 @@ type Root {
     Returns the last _n_ elements from the list.
     """
     last: Int
+    regionLocked: Boolean
   ): PlatformConnection!
   trending(
     """
@@ -305,10 +319,10 @@ type Show {
   episodesCount: Int!
   friendlyStatus: String
   likes: Int!
-  links: [Link!]!
+  links(regionLocked: RegionLocked): [Link!]!
   loves: Int!
   nsfw: Boolean!
-  platforms(focusOn: String): [Platform!]!
+  platforms(focusOn: String, regionLocked: RegionLocked): [Platform!]!
   popularity: Int!
   popularityPercentage: Int!
   posterUrl: String!

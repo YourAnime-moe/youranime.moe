@@ -13,7 +13,9 @@ module Queries
       argument :slug, String, required: true
     end
     field :trending, Queries::Types::Show.connection_type, null: false
-    field :top_platforms, Queries::Types::Shows::Platform.connection_type, null: false
+    field :top_platforms, Queries::Types::Shows::Platform.connection_type, null: false do
+      argument :region_locked, Boolean, required: false
+    end
     field :platform, Queries::Types::Shows::Platform, null: true do
       argument :name, String, required: true
     end
@@ -36,8 +38,11 @@ module Queries
       Shows::Anilist::NextAiringEpisode.perform(slug: slug)
     end
 
-    def top_platforms
-      ShowUrl.popular_platforms
+    def top_platforms(region_locked: false)
+      options = {}
+      options[:for_country] = context[:country] if region_locked
+
+      ShowUrl.popular_platforms(**options)
     end
 
     def platform(name:)

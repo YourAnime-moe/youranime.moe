@@ -55,7 +55,6 @@
     - JM
     - MQ
     - MX
-    - AN
     - NI
     - PA
     - PR
@@ -86,6 +85,7 @@
     - GU
     - MP
     - UM
+    - GB
 
 - name: funimation
   colour: "#410099"
@@ -97,7 +97,7 @@
   countries:
     - CA
     - US
-    - UK
+    - GB
     - IE
 
 - name: hidive
@@ -167,7 +167,8 @@
   image: "vrv.svg"
   icon: "vrv-icon.png"
   url: "https://vrv.co"
-  countries: US
+  countries:
+    - US
 
 - name: youtube
   colour: "#ff0000"

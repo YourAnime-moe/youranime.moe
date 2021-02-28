@@ -26,8 +26,11 @@ module Queries
       field :friendly_status, String, null: true
       field :platforms, [Queries::Types::Shows::Platform], null: false do
         argument :focus_on, String, required: false
+        argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
       end
-      field :links, [Queries::Types::Shows::Link], null: false
+      field :links, [Queries::Types::Shows::Link], null: false do
+        argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
+      end
       field :tags, [Queries::Types::Shows::Tag], null: false
       field :related_shows, [Queries::Types::Show], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
@@ -69,6 +72,19 @@ module Queries
         return unless @object.status.present?
 
         I18n.t("anime.shows.airing_status.#{@object.status}")
+      end
+
+      def links(region_locked: nil)
+        links = @object.links
+        return links if region_locked.blank?
+
+        links.select do |link|
+          link.platform.available?(region_locked[:for_country])
+        end
+      end
+
+      def platforms(focus_on: nil, region_locked: true)
+        @object.platforms(focus_on: focus_on, for_country: (region_locked ? context[:country] : nil))
       end
     end
   end

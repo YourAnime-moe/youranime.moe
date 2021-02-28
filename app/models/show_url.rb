@@ -3,13 +3,10 @@ class ShowUrl < ApplicationRecord
   belongs_to :show, inverse_of: :urls
   before_validation :ensure_url_type, unless: :url_type
 
-  # has_info_link :official, colour: '#bbbbbb'
-  # has_info_link :twitter, colour: '#1DA1F2', detect_from: 'twitter.com'
-
   scope :ordered, -> { order(:url_type) }
   scope :watchable, -> { where(url_type: []) }
   scope :non_watchable, -> { where.not(url_type: Platform.pluck(:name)) }
-  scope :streamable, -> { where(url_type: Platform.pluck(:name)) }
+  scope :streamable, -> (for_country: nil) { where(url_type: Platform.for_country(for_country).pluck(:name)) }
   scope :info, -> { where(url_type: info_url_types) }
 
   with_options presence: true do
@@ -18,7 +15,7 @@ class ShowUrl < ApplicationRecord
   end
 
   class << self
-    def popular_platforms
+    def popular_platforms(for_country: nil)
       platform_names = streamable.select('count(*), url_type')
         .group(:url_type)
         .having('count(*) > 0')
@@ -26,8 +23,11 @@ class ShowUrl < ApplicationRecord
         .reverse_order
         .pluck(:url_type)
 
+      scope = for_country ? :for_country : :all
+      scope_options = for_country ? [for_country] : []
+
       platform_names.map do |platform_name|
-        Platform.find_by(name: platform_name)
+        Platform.send(scope, *scope_options).find_by(name: platform_name)
       end.compact
     end
 

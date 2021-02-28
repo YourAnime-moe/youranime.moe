@@ -17,6 +17,9 @@ module Queries
         field :coming_soon, Queries::Types::Show.connection_type, null: false
         field :other_shows, Queries::Types::Show.connection_type, null: false
 
+        field :countries, [Queries::Types::Shows::Platforms::Country], null: true
+        field :global, Boolean, null: false
+
         field :shows_count, Integer, null: false
         field :active_shows_count, Integer, null: false
 
@@ -34,6 +37,10 @@ module Queries
 
         def active_shows_count
           object.active_shows.count
+        end
+
+        def global
+          @object.countries.blank?
         end
       end
     end
