@@ -102,6 +102,9 @@ gem 'view_component', require: 'view_component/engine'
 # Frozen record
 gem "frozen_record", "~> 0.20.1"
 
+# All things about countries
+gem 'countries'
+
 # For graphql
 gem 'graphql'
 gem 'rack-cors'
