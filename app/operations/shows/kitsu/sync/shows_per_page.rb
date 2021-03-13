@@ -32,10 +32,6 @@ module Shows
                 show = find_or_create_show!(results, :kitsu)
                 streaming_platforms_from_anilist!(show)
 
-                if show.slug.nil?
-                  byebug
-                end
-
                 sync_show_images!(show)
                 show
               end

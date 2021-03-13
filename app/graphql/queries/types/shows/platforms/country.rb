@@ -17,11 +17,13 @@ module Queries
             preferred_alpha = context[:alpha] || 'alpha2'
             puts "\"#{ruby_value}\""
             object = ::ISO3166::Country.new(ruby_value.to_s.strip)
+            code = object.send(preferred_alpha)
 
             {
               continent: object.continent,
-              code: object.send(preferred_alpha),
+              code: code,
               name: object.name,
+              myCountry: code == context[:country],
             }
           end
         end

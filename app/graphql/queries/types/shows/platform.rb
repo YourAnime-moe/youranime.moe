@@ -18,6 +18,8 @@ module Queries
         field :other_shows, Queries::Types::Show.connection_type, null: false
 
         field :countries, [Queries::Types::Shows::Platforms::Country], null: true
+        field :available_in_my_country, Boolean, null: false
+        field :blocked, Boolean, null: false
         field :global, Boolean, null: false
 
         field :shows_count, Integer, null: false
@@ -37,6 +39,21 @@ module Queries
 
         def active_shows_count
           object.active_shows.count
+        end
+
+        def countries
+          platform_countries = Array(object.countries).split(context[:country]).flatten
+          return platform_countries if platform_countries == object.countries
+
+          [context[:country]].concat(platform_countries).flatten
+        end
+
+        def blocked
+          Array(object.blocked).include?(context[:country])
+        end
+
+        def available_in_my_country
+          global || object.countries.include?(context[:country])
         end
 
         def global

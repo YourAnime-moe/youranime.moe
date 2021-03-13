@@ -4,6 +4,7 @@ class Platform < FrozenRecord::Base
   scope :ordered, -> { order(:name) }
   scope :global, -> { where(countries: nil) }
   scope :region_locked, -> { where.not(countries: nil) }
+  scope :restricted, -> { where.not(blocked: nil) }
 
   def detect_from
     self[:detect_from].map { |pattern| Regexp.new(pattern) }
@@ -48,20 +49,24 @@ class Platform < FrozenRecord::Base
     name.to_s
   end
 
+  def countries
+    Array(self[:countries]) - Array(blocked)
+  end
+
   def global?
     countries.blank?
   end
 
   def available?(country_iso_code)
-    global? || countries.include?(country_iso_code)
+    !Array(blocked).include?(country_iso_code) && (global? || countries.include?(country_iso_code))
   end
 
   def self.for_country(country_iso_code)
     return all if country_iso_code.blank?
 
-    platforms = global.to_a
-    region_locked.each do |platform|
-      platforms << platform if platform.countries.include?(country_iso_code)
+    platforms = []
+    all.each do |platform|
+      platforms << platform if platform.available?(country_iso_code)
     end
     where(name: platforms.map(&:name))
   end

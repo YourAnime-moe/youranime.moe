@@ -159,6 +159,8 @@
   image: ""
   icon: "vimeo-icon.png"
   url: "https://www.vimeo.com"
+  blocked:
+    - CN
 
 - name: vrv
   colour: "#ffea62"
