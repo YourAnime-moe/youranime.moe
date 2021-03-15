@@ -8,7 +8,7 @@ class Show
       puts 'Generating URLs for Shows...'
       message = "[#{Time.zone.now}] Preparing Show URL generation..."
       Rails.logger.info(message)
-      # Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
+      Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
 
       @shows = Show.published
       Rails.logger.info("Analyzing #{@shows.count} show(s)...")
