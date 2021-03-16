@@ -37,7 +37,7 @@ module Queries
       field :title_record, Queries::Types::Shows::Title, null: false
 
       def year
-        starts_on&.year
+        @object.starts_on&.year
       end
 
       def likes

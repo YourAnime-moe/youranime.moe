@@ -4,14 +4,18 @@ module Sync
     queue_as :sync
 
     def perform(season, staff:)
-      Rails.logger.info("[Sync::ShowsFromtKitsuJob] Syncing #{season} season...")
+      message = "[Sync::ShowsFromtKitsuJob] Syncing #{season} season..."
+      Rails.logger.info(message)
+      Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
 
       processed_shows = ::Shows::Kitsu::Sync::Airing.perform(season: season)
       updated_shows = ::Shows::Kitsu::Sync::Existing.perform
 
       processed_shows_count = processed_shows.count + updated_shows.count
 
-      Rails.logger.info("[Sync::ShowsFromtKitsuJob] Processed #{processed_shows_count} show(s)!")
+      message = "[Sync::ShowsFromtKitsuJob] Processed #{processed_shows_count} show(s)!"
+      Rails.logger.info(message)
+      Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
     end
   end
 end

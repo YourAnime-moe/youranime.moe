@@ -32,10 +32,10 @@ shared_dir = "#{app_dir}/shared"
 bind "unix://#{shared_dir}/sockets/puma.sock"
 
 # stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
-if env == 'production'
-  pidfile "#{shared_dir}/pids/puma.pid"
-  state_path "#{shared_dir}/pids/puma.state"
-end
+# if env == 'production'
+  # pidfile "#{shared_dir}/pids/puma.pid"
+  # state_path "#{shared_dir}/pids/puma.state"
+# end
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
