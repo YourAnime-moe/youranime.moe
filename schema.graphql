@@ -106,6 +106,7 @@ type Platform {
     """
     last: Int
   ): ShowConnection!
+  anyComingSoon: Boolean!
   availableInMyCountry: Boolean!
   blocked: Boolean!
   colour: String!
