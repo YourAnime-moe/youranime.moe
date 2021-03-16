@@ -20,6 +20,7 @@ module Queries
       field :episodes_count, Integer, null: false
       field :nsfw, GraphQL::Types::Boolean, null: false
       field :age_rating, Queries::Types::Shows::AgeRating, null: false
+      field :year, Integer, null: true
       field :starts_on, GraphQL::Types::ISO8601DateTime, null: true
       field :ended_on, GraphQL::Types::ISO8601DateTime, null: true
       field :status, Queries::Types::Shows::AiringStatus, null: true
@@ -34,6 +35,10 @@ module Queries
       field :tags, [Queries::Types::Shows::Tag], null: false
       field :related_shows, [Queries::Types::Show], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
+
+      def year
+        starts_on&.year
+      end
 
       def likes
         @object.likes_count
