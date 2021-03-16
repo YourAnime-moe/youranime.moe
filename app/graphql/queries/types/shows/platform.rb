@@ -16,6 +16,7 @@ module Queries
         field :airing_now, Queries::Types::Show.connection_type, null: false
         field :coming_soon, Queries::Types::Show.connection_type, null: false
         field :other_shows, Queries::Types::Show.connection_type, null: false
+        field :any_airing_now, Boolean, null: false
         field :any_coming_soon, Boolean, null: false
 
         field :countries, [Queries::Types::Shows::Platforms::Country], null: true
@@ -59,6 +60,10 @@ module Queries
 
         def global
           @object.countries.blank?
+        end
+
+        def any_airing_now
+          @object.airing_now.any?
         end
 
         def any_coming_soon
