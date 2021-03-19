@@ -5,7 +5,6 @@ module Types
       field :has_next_page, Boolean, null: false
       field :has_previous_page, Boolean, null: false
       field :total_count, Integer, null: false
-      field :total_pages, Integer, null: false
 
       def total_count
         if object.respond_to?(:relation_count)

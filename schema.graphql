@@ -37,6 +37,23 @@ type CountryTimezone {
   timezone: String!
 }
 
+enum Filter {
+  """
+  Sort a show by popularity (rank). The smaller the popularity, the more popular it is.
+  """
+  POPULARITY
+
+  """
+  Sort a show by it's start date, i.e. when it started airing.
+  """
+  START_DATE
+
+  """
+  Sort a show by title.
+  """
+  TITLE
+}
+
 """
 An ISO 8601-encoded datetime
 """
@@ -59,7 +76,6 @@ type PaginationInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   totalCount: Int!
-  totalPages: Int!
 }
 
 type Platform {
@@ -269,6 +285,32 @@ type Root {
     query: String!
   ): ShowConnection!
   show(slug: String!): Show
+  streamableShows(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+    airing: Boolean
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+    direction: [Boolean!]
+    filters: [Filter!]
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+    limit: Int
+    regionLocked: Boolean
+  ): ShowConnection!
   topPlatforms(
     """
     Returns the elements in the list that come after the specified cursor.

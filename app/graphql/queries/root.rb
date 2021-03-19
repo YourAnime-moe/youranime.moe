@@ -7,6 +7,21 @@ module Queries
       Show.optimized
     end
 
+    field :streamable_shows, Queries::Types::Show.connection_type, null: false do
+      argument :limit, Integer, required: false
+      argument :filters, [Queries::Types::Shows::Filter], required: false
+      argument :direction, [GraphQL::Types::Boolean], required: false
+      argument :airing, GraphQL::Types::Boolean, required: false
+      argument :region_locked, GraphQL::Types::Boolean, required: false
+    end
+
+    def streamable_shows(**args)
+      params = {
+        country: (context[:country] if args.delete(:region_locked)),
+      }.merge(args)
+      Shows::Streamable.perform(**params)
+    end
+
     field :search, Queries::Types::Show.connection_type, null: false do
       argument :query, String, required: true
       argument :limit, Integer, required: false

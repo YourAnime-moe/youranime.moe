@@ -77,6 +77,7 @@ class Show < ApplicationRecord
     optimized.joins(:links)
       .where('show_urls.url_type' => sanitize_sql(platform))
   end
+  scope :streamable, -> { where(id: ShowUrl.streamable.pluck(:show_id)) }
   scope :actively_streamable_on, -> (platform) { streamable_on(platform).active.this_year }
   scope :tv, -> { where(show_category: 'TV') }
   scope :random, -> { order('random()') }
@@ -307,6 +308,18 @@ class Show < ApplicationRecord
     options = { 'titles.roman' => slug, :reference_source => reference_source }.compact
 
     with_title.find_by(options)
+  end
+
+  def self.filter(*filters)
+    scope = all
+    filters.map do |filter|
+      scope = if filter.use_scope
+        scope.send(filter.use_scope)
+      else
+        scope.order(filter.sql_friendly)
+      end
+    end
+    scope
   end
 
   private
