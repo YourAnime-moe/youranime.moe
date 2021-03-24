@@ -5,7 +5,7 @@ module Queries
       class AiringSchedule < ::Types::BaseObject
         field :airing_at, Int, null: false
         field :time_until_airing, Int, null: false
-        field :episode, Int, null: false
+        field :episode_number, Int, null: false
       end
     end
   end

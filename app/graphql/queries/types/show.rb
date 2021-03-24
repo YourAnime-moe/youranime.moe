@@ -23,6 +23,7 @@ module Queries
       field :year, Integer, null: true
       field :starts_on, GraphQL::Types::ISO8601DateTime, null: true
       field :ended_on, GraphQL::Types::ISO8601DateTime, null: true
+      field :airing_at, Queries::Types::FriendlyDatetime, null: true
       field :status, Queries::Types::Shows::AiringStatus, null: true
       field :friendly_status, String, null: true
       field :platforms, [Queries::Types::Shows::Platform], null: false do

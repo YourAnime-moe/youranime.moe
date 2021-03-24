@@ -48,6 +48,7 @@ class Show < ApplicationRecord
                            with_slug
                          }, class_name: 'Title', foreign_key: :model_id, required: true, dependent: :destroy
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true, dependent: :destroy
+  has_one :next_airing_info
   has_translatable_field :title
   has_translatable_field :description
 
@@ -95,10 +96,18 @@ class Show < ApplicationRecord
   scope :with_title, -> { joins(:title_record).optimized }
   scope :searchable, -> { joins(:title_record).optimized }
   scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:status).trending }
+  scope :with_next_airing_info, -> do
+    joins(:next_airing_info)
+      .order(:airing_at)
+      .group(:id, :airing_at)
+      .having('count(*) > 0')
+  end
 
   # scope :missing_banner, -> { where(banner_url: DEFAULT_BANNER_URL) }
   # scope :missing_poster, -> { where(poster_url: DEFAULT_POSTER_URL) }
   scope :needing_update, -> { where.not(status: FINISHED_STATUES) }
+
+  delegate :airing_at, to: :next_airing_info, allow_nil: true
 
   def publish
     update!(published: true)
@@ -310,11 +319,13 @@ class Show < ApplicationRecord
     with_title.find_by(options)
   end
 
-  def self.filter(*filters)
+  def self.sort(*filters)
     scope = all
     filters.map do |filter|
       scope = if filter.use_scope
-        scope.send(filter.use_scope)
+        scope = scope.send(filter.use_scope)
+        scope = scope.reverse unless filter.ascending?
+        scope
       else
         scope.order(filter.sql_friendly)
       end

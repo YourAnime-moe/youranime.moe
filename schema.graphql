@@ -10,7 +10,7 @@ type AgeRating {
 
 type AiringSchedule {
   airingAt: Int!
-  episode: Int!
+  episodeNumber: Int!
   timeUntilAiring: Int!
 }
 
@@ -38,6 +38,11 @@ type CountryTimezone {
 }
 
 enum Filter {
+  """
+  Sort a show by it's airing date, i.e. when it's next airing.
+  """
+  AIRING_AT
+
   """
   Sort a show by popularity (rank). The smaller the popularity, the more popular it is.
   """
@@ -297,7 +302,6 @@ type Root {
     """
     before: String
     direction: [Boolean!]
-    filters: [Filter!]
 
     """
     Returns the first _n_ elements from the list.
@@ -310,6 +314,7 @@ type Root {
     last: Int
     limit: Int
     regionLocked: Boolean
+    sortFilters: [Filter!]
   ): ShowConnection!
   topPlatforms(
     """
@@ -358,6 +363,7 @@ type Root {
 
 type Show {
   ageRating: AgeRating!
+  airingAt: ISO8601DateTime
   bannerUrl: String!
   description: String!
   dislikes: Int!

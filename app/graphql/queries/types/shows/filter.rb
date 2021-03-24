@@ -20,6 +20,12 @@ module Queries
           "Sort a show by it's start date, i.e. when it started airing.",
           value: :starts_on,
         )
+
+        value(
+          "AIRING_AT",
+          "Sort a show by it's airing date, i.e. when it's next airing.",
+          value: :airing_at,
+        )
       end
     end
   end

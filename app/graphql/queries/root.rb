@@ -9,7 +9,7 @@ module Queries
 
     field :streamable_shows, Queries::Types::Show.connection_type, null: false do
       argument :limit, Integer, required: false
-      argument :filters, [Queries::Types::Shows::Filter], required: false
+      argument :sort_filters, [Queries::Types::Shows::Filter], required: false
       argument :direction, [GraphQL::Types::Boolean], required: false
       argument :airing, GraphQL::Types::Boolean, required: false
       argument :region_locked, GraphQL::Types::Boolean, required: false

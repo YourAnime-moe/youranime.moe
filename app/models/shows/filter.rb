@@ -11,6 +11,7 @@ module Shows
       popularity: { ascending: false },
       title: { ascending: true, use_scope: :ordered }, # Use Show.ordered instead of default scope
       starts_on: { ascending: false },
+      airing_at: { ascending: true, use_scope: :with_next_airing_info },
     }.freeze
 
     def initialize(tag, ascending: nil)
@@ -23,6 +24,10 @@ module Shows
       else
         ascending ? :asc : :desc
       end
+    end
+
+    def ascending?
+      direction == :asc
     end
 
     def sql_friendly

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_043830) do
+ActiveRecord::Schema.define(version: 2021_03_23_130804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,17 @@ ActiveRecord::Schema.define(version: 2021_01_26_043830) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
+  end
+
+  create_table "next_airing_infos", force: :cascade do |t|
+    t.bigint "show_id"
+    t.integer "time_until_airing", null: false
+    t.datetime "airing_at", null: false
+    t.integer "episode_number", null: false
+    t.boolean "past", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["show_id"], name: "index_next_airing_infos_on_show_id"
   end
 
   create_table "ratings", force: :cascade do |t|

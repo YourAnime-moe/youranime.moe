@@ -40,6 +40,18 @@ namespace :sync do
       end
     end
 
+    namespace :anilist do
+      desc 'Fetch additional show information from anilist.co'
+      task airing_schedule: :environment do
+        Show.streamable.airing.find_in_batches(batch_size: 10).each do |shows_batch|
+          ::Sync::Shows::UpdateAiringScheduleJob.perform_later(
+            shows_batch.map(&:id),
+            staff: Users::Admin.system,
+          )
+        end
+      end
+    end
+
     namespace :crawl do
       desc 'Crawls all shows (and updates) all available shows from kitsu.io'
       task :later, [:start, :end] => [:environment] do |_, args|

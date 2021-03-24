@@ -78,7 +78,7 @@
               "deprecationReason": null
             },
             {
-              "name": "episode",
+              "name": "episodeNumber",
               "description": null,
               "args": [
 
@@ -278,6 +278,12 @@
             {
               "name": "START_DATE",
               "description": "Sort a show by it's start date, i.e. when it started airing.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AIRING_AT",
+              "description": "Sort a show by it's airing date, i.e. when it's next airing.",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -1514,7 +1520,7 @@
                   "deprecationReason": null
                 },
                 {
-                  "name": "filters",
+                  "name": "sortFilters",
                   "description": null,
                   "type": {
                     "kind": "LIST",
@@ -1759,6 +1765,20 @@
                   "name": "AgeRating",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "airingAt",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "ISO8601DateTime",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null

@@ -3,19 +3,28 @@ module Shows
   module Anilist
     class NextAiringEpisode < ApplicationOperation
       property! :slug
+      property :force, accepts: [true, false], default: false
+      property :raw, accepts: [true, false], default: false
 
       def perform
         return if show.blank?
         return unless anilist_id.present?
 
         return if show.air_complete?
+        return fetch_data! if raw
 
-        next_airing_episode_data
+        current_next_airing_info = show.next_airing_info
+        if !force && current_next_airing_info.present? && !current_next_airing_info&.past?
+          return current_next_airing_info
+        end
+
+        data = fetch_next_airing_episode_data!
+        update_show!(data)
       end
 
       private
 
-      def next_airing_episode_data
+      def fetch_next_airing_episode_data!
         result = fetch_data!
         data = result.dig(:data, :Media, :nextAiringEpisode)
 
@@ -26,6 +35,21 @@ module Shows
           time_until_airing: data[:timeUntilAiring],
           episode: data[:episode],
         }
+      end
+
+      def update_show!(data)
+        options = {
+          airing_at: Time.at(data[:airing_at]).to_datetime,
+          time_until_airing: data[:time_until_airing],
+          episode_number: data[:episode],
+          past: false,
+        }
+        next_airing_info = show.next_airing_info || show.build_next_airing_info
+
+        next_airing_info.assign_attributes(**options)
+        next_airing_info.save!
+
+        next_airing_info
       end
 
       def query
