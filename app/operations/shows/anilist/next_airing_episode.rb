@@ -38,6 +38,11 @@ module Shows
       end
 
       def update_show!(data)
+        if data.nil?
+          show.next_airing_info&.destroy
+          return
+        end
+
         options = {
           airing_at: Time.at(data[:airing_at]).to_datetime,
           time_until_airing: data[:time_until_airing],
