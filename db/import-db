@@ -1,0 +1,30 @@
+\copy active_storage_blobs from 'db/csv/active_storage_blobs.csv' csv header;
+\copy active_storage_attachments from 'db/csv/active_storage_attachments.csv' csv header;
+\copy active_storage_variant_records from 'db/csv/active_storage_variant_records.csv' csv header;
+
+\copy actors from 'db/csv/actors.csv' csv header;
+\copy issues from 'db/csv/issues.csv' csv header;
+
+\copy users from 'db/csv/users.csv' csv header;
+\copy staffs from 'db/csv/staffs.csv' csv header;
+\copy uploads from 'db/csv/uploads.csv' csv header;
+\copy user_sessions from 'db/csv/user_sessions.csv' csv header;
+
+\copy tags from 'db/csv/tags.csv' csv header;
+\copy shows from 'db/csv/shows.csv' csv header;
+\copy shows_seasons from 'db/csv/shows_seasons.csv' csv header;
+\copy shows_tag_relations from 'db/csv/shows_tag_relations.csv' csv header;
+\copy descriptions from 'db/csv/descriptions.csv' csv header;
+\copy titles from 'db/csv/titles.csv' csv header;
+\copy user_likes from 'db/csv/user_likes.csv' csv header;
+\copy shows_queues from 'db/csv/shows_queues.csv' csv header;
+\copy shows_queue_relations from 'db/csv/shows_queue_relations.csv' csv header;
+\copy episodes from 'db/csv/episodes.csv' csv header;
+\copy next_airing_infos from 'db/csv/next_airing_infos.csv' csv header;
+\copy ratings from 'db/csv/ratings.csv' csv header;
+\copy show_external_relationships from 'db/csv/show_external_relationships.csv' csv header;
+\copy show_urls from 'db/csv/show_urls.csv' csv header;
+
+\copy job_events from 'db/csv/job_events.csv' csv header;
+\copy sync_requests from 'db/csv/sync_requests.csv' csv header;
+
