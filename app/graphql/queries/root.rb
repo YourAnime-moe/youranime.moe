@@ -69,7 +69,7 @@ module Queries
     field :trending, Queries::Types::Show.connection_type, null: false
 
     def trending
-      Show.trending.includes(:title_record).limit(100)
+      Show.trending.limit(100)
     end
 
     field :country_timezone, Queries::Types::CountryTimezone, null: false

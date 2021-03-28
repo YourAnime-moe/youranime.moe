@@ -13,7 +13,8 @@ module Backfill
           jp: title_record.jp,
         }.compact
 
-        show.update(titles: titles, slug: title_record.roman)
+        show.update_attribute(:titles, titles)
+        show.update_attribute(:slug, title_record.roman)
       end
     end
   end

@@ -11,7 +11,7 @@ module Shows
     end
 
     def execute
-      scope = Show.sort(*Array(sort_filters)).streamable.joins(:title_record)
+      scope = Show.sort(*Array(sort_filters)).streamable
       scope = scope.airing if airing
       scope.limit(limit).select do |show|
         show.platforms(for_country: country).any?

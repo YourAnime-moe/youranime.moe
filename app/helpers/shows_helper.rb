@@ -308,9 +308,9 @@ class: "card-img-top descriptive #{'not-avail' if restricted?(show)} #{rules[:di
 
   def show_other_title(show)
     show_title = if I18n.locale == :en
-      { lang: 'Japanese', title: show.title_record.jp }
+      { lang: 'Japanese', title: show.titles[:jp] }
     else
-      { lang: '英語', title: show.title_record.en }
+      { lang: '英語', title: show.titles[:en] }
     end
 
     content_tag(:div, class: 'selectable') do

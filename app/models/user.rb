@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class User < ApplicationRecord
   include LikeableConcern
   include HasSessionsConcern
@@ -10,7 +11,7 @@ class User < ApplicationRecord
 
   has_many :queues, -> {
     includes(shows_queue_relations: {
-      show: [:description_record, :title_record, :ratings],
+      show: [:description_record, :ratings],
     })
   }, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user

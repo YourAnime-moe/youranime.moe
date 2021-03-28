@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   layout :application_layout
 
   def home
-    @trending = Show.trending.includes(:title_record).limit(8)
+    @trending = Show.trending.limit(8)
     @airing_today = [] # Shows::Airing.perform(date: Time.now).trending.limit(8)
     @airing_tomorrow = [] # Shows::Airing.perform(date: 1.day.from_now).trending.limit(8)
     @aired_yesterday = [] # Shows::Airing.perform(date: 1.day.ago).trending.limit(8)

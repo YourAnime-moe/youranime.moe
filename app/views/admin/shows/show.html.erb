@@ -90,11 +90,11 @@
           <div class="columns">
             <div class="column field">
               <%= f.label :title, 'English title', class: 'label' %>
-              <%= text_field_tag('title[en]', @show.title_record.en, class: 'input is-fullwidth') %>
+              <%= text_field_tag('title[en]', @show.titles[:en], class: 'input is-fullwidth') %>
             </div>
             <div class="column field">
               <%= f.label :title, 'Japanese title', class: 'label' %>
-              <%= text_field_tag('title[jp]', @show.title_record.jp, class: 'input is-fullwidth') %>
+              <%= text_field_tag('title[jp]', @show.titles[:jp], class: 'input is-fullwidth') %>
             </div>
           </div>
           <div class="columns">

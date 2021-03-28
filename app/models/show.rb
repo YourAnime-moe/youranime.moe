@@ -44,12 +44,8 @@ class Show < ApplicationRecord
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
   has_many :external_relationships, class_name: 'ShowExternalRelationship', dependent: :destroy
 
-  has_one :title_record, -> {
-                           with_slug
-                         }, class_name: 'Title', foreign_key: :model_id, required: true, dependent: :destroy
   has_one :description_record, class_name: 'Description', foreign_key: :model_id, required: true, dependent: :destroy
   has_one :next_airing_info
-  has_translatable_field :title
   has_translatable_field :description
 
   has_one_attached :banner
@@ -85,7 +81,6 @@ class Show < ApplicationRecord
 
   scope :optimized, -> do
     includes(:tags,
-      :title_record,
       :description_record,
       :links,
       :urls,
@@ -93,8 +88,8 @@ class Show < ApplicationRecord
       shows_queue_relations: :queue)
   end
   scope :published_with_title, -> { with_title.published }
-  scope :with_title, -> { joins(:title_record).optimized }
-  scope :searchable, -> { joins(:title_record).optimized }
+  scope :with_title, -> { optimized }
+  scope :searchable, -> { optimized }
   scope :with_links, -> { joins(:links).group(:id).having('count(*) > 0').order(:status).trending }
   scope :with_next_airing_info, -> do
     joins(:next_airing_info)
@@ -108,6 +103,17 @@ class Show < ApplicationRecord
   scope :needing_update, -> { where.not(status: FINISHED_STATUES) }
 
   delegate :airing_at, to: :next_airing_info, allow_nil: true
+
+  def title
+    current_locale = I18n.locale.to_sym
+    available_locales = titles.keys
+    selected_title_options = available_locales.select do |locale|
+      locale =~ Regexp.new(current_locale.to_s)
+    end
+    return unless selected_title_options.any?
+
+    titles[selected_title_options.first]
+  end
 
   def publish
     update!(published: true)
@@ -219,10 +225,6 @@ class Show < ApplicationRecord
     links.any?
   end
 
-  def slug
-    title_record&.roman
-  end
-
   def to_param
     slug
   end
@@ -288,19 +290,6 @@ class Show < ApplicationRecord
 
     Show.with_title.where('lower(titles.en) LIKE ?', by_title)
       .or(Show.with_title.where('lower(titles.jp) LIKE ?', by_title))
-  end
-
-  def self.find_by_slug(slug)
-    find_by_slug!(slug)
-  rescue ActiveRecord::RecordNotFound
-    nil
-  end
-
-  def self.find_by_slug!(slug)
-    Show
-      .optimized
-      .joins(:title_record)
-      .find_by!('titles.roman' => slug)
   end
 
   def self.find_kitsu!(reference_id)

@@ -18,7 +18,7 @@ module Shows
       private
 
       def kitsu_id_for_slug
-        show = Show.find_slug(slug, reference_source: :kitsu)
+        show = Show.find_by(slug: slug, reference_source: :kitsu)
         return show.reference_id if show.present?
 
         scrap_for_kitsu_id_from_slug

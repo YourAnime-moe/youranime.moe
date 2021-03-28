@@ -36,6 +36,7 @@ module Queries
       field :tags, [Queries::Types::Shows::Tag], null: false
       field :related_shows, [Queries::Types::Show], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
+      field :titles, ::Types::Custom::Map, null: false
 
       def year
         @object.starts_on&.year

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_152115) do
+ActiveRecord::Schema.define(version: 2021_03_28_220151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -242,22 +242,6 @@ ActiveRecord::Schema.define(version: 2021_03_28_152115) do
     t.string "ref_url"
     t.string "ref_id"
     t.index ["value"], name: "index_tags_on_value", unique: true
-  end
-
-  create_table "titles", force: :cascade do |t|
-    t.string "used_by_model"
-    t.bigint "model_id"
-    t.string "en"
-    t.string "fr"
-    t.string "jp"
-    t.string "roman", default: "taitoru", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["en", "fr", "jp"], name: "index_titles_on_en_and_fr_and_jp"
-    t.index ["en", "used_by_model"], name: "index_titles_on_en_and_used_by_model"
-    t.index ["fr", "used_by_model"], name: "index_titles_on_fr_and_used_by_model"
-    t.index ["jp", "used_by_model"], name: "index_titles_on_jp_and_used_by_model"
-    t.index ["roman"], name: "index_titles_on_roman"
   end
 
   create_table "uploads", force: :cascade do |t|

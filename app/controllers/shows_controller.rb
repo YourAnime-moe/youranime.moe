@@ -45,7 +45,7 @@ class ShowsController < ApplicationController
         redirect_to(shows_path)
       end
     elsif (show = Show.find_by(id: params[:slug]))
-      redirect_to(show_path(show.title_record.roman))
+      redirect_to(show_path(show.slug))
     else
       flash[:warning] = "This show does not exist. Please try again later."
       redirect_to(shows_path)

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 module Admin
   class ApplicationController < ::ApplicationController
     layout 'admin'
-    
+
     before_action :ensure_title
 
     def home
@@ -12,7 +13,7 @@ module Admin
       @currently_logged_in_count = currently_logged_in.count
       @top_episodes = Episode.includes(season: :show).limit(10)
       @latest_events = JobEvent.latest.limit(10)
-      @top_shows = Show.includes(:title_record, :ratings).limit(10)
+      @top_shows = Show.includes(:ratings).limit(10)
     end
 
     private
