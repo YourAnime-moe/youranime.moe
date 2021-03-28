@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_23_130804) do
+ActiveRecord::Schema.define(version: 2021_03_28_152115) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -178,6 +179,8 @@ ActiveRecord::Schema.define(version: 2021_03_23_130804) do
     t.date "ended_on"
     t.boolean "nsfw", default: false, null: false
     t.integer "episodes_count", default: 0, null: false
+    t.string "slug"
+    t.hstore "titles", default: {}, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
   end
 
