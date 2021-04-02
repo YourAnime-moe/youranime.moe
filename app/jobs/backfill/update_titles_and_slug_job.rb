@@ -4,13 +4,15 @@ module Backfill
     queue_as :default
 
     def perform(show_ids)
-      Show.where(id: show_ids).each do |show|
-        title_record = show.title_record
-        next unless title_record.present?
+      title_records = ActiveRecord::Base.connection.execute(
+        "select en, jp, model_id from titles where model_id in (#{show_ids.join(', ')})",
+      )
 
+      title_records.each do |record|
+        show = Show.find(record['model_id'])
         titles = {
-          en: title_record.en,
-          jp: title_record.jp,
+          en: record['en'],
+          jp: record['jp'],
         }.compact
 
         show.update_attribute(:titles, titles)

@@ -34,14 +34,12 @@ class Search < ApplicationOperation
 
   def shows_results
     @shows_results ||= search_shows_by_title
-      .or(search_shows_by_genre)
+    # .or(search_shows_by_genre)
     # .or(search_shows_by_tags)
   end
 
   def search_shows_by_title
-    Show.searchable.where('lower(titles.en) LIKE ?', like_search)
-      .or(Show.searchable.where('lower(titles.jp) LIKE ?', like_search))
-      .or(Show.searchable.where('lower(titles.roman) LIKE ?', like_search))
+    Show.search(search, limit: limit || 50)
   end
 
   def search_shows_by_genre

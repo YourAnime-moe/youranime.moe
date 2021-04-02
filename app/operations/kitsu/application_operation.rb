@@ -25,8 +25,6 @@ module Kitsu
     # Accepts: results.data.attributes
     def build_show_from(results)
       new_show = Show.new(show_options(results))
-
-      new_show.title = Title.new(show_title_options(results))
       new_show.description = Description.new({ en: results[:synopsis] || results[:description] })
 
       # new_show.build_cover(results[:coverImage].except(:meta)) if results[:coverImage]
@@ -97,6 +95,8 @@ module Kitsu
         status: results[:status],
         show_category: results[:subtype] || results[:showType],
         popularity: results[:popularityRank] || -1,
+        titles: results[:titles],
+        slug: results[:slug],
         nsfw: nsfw,
         published: !nsfw,
         synched_at: Time.now.utc,

@@ -246,7 +246,9 @@ class Show < ApplicationRecord
       # tags.empty? ||
       nsfw? ||
       !banner.attached? ||
-      !poster.attached?
+      !poster.attached? ||
+      titles.empty? ||
+      slug.blank?
   end
 
   def related_shows
@@ -277,12 +279,29 @@ class Show < ApplicationRecord
     popularity_scope.index(self) + 1
   end
 
-  def self.search(by_title)
+  def self.search(by_title, limit: 50)
     by_title = "%#{by_title}%"
 
-    Show.published_with_title.where('lower(titles.en) LIKE ?', by_title)
-      .or(Show.published_with_title.where('lower(titles.jp) LIKE ?', by_title))
-      .or(Show.published_with_title.where('lower(titles.roman) LIKE ?', by_title))
+    searchable_shows = Show
+      .distinct
+      .select(:id)
+      .from('(select id, svals(titles) as title, slug from shows) as shows_title')
+      .limit(limit)
+
+    shows_by_title = searchable_shows.where('lower(title) LIKE ?', by_title)
+    shows_by_slug = searchable_shows.where('lower(slug) LIKE ?', by_title)
+    shows_by_title_no_special = searchable_shows.where(
+      "lower(regexp_replace(title, '[^[:alnum:]]', '', 'g')) LIKE ?", by_title
+    )
+    shows_by_slug_no_special = searchable_shows.where(
+      "lower(regexp_replace(slug, '[^[:alnum:]]', '', 'g')) LIKE ?", by_title
+    )
+
+    where(id:
+      shows_by_title
+        .or(shows_by_slug)
+        .or(shows_by_title_no_special)
+        .or(shows_by_slug_no_special).ids)
   end
 
   def self.search_all(by_title)

@@ -30,12 +30,6 @@ module Shows
         results = search_results[:attributes]
 
         show.assign_attributes(show_options(results))
-        if show.title_record
-          show.title_record.update(show_title_options(results))
-        else
-          show.build_title_record(show_title_options(results))
-        end
-
         show_description_options = {
           en: (
             results[:synopsis].presence || results[:description].presence || '- No description -'

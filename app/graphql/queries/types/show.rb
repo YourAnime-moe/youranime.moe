@@ -62,7 +62,10 @@ module Queries
       end
 
       def title_record
-        @object.title_record || { en: '', jp: '' }
+        {
+          en: I18n.with_locale(:en) { @object.title },
+          jp: I18n.with_locale(:ja) { @object.title },
+        }
       end
 
       def description

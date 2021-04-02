@@ -22,7 +22,7 @@
     </thead>
 
     <tbody>
-      <% JobEvent.running.each do |job_event| %>
+      <% @running.each do |job_event| %>
         <tr>
           <td><%= job_event.id %></td>
           <td><%= job_event.job_id %></td>
@@ -44,7 +44,11 @@
 </div>
 
 <div style="display: flex; justify-content: space-between;" class="justify-content-between">
-  <h1 class="title">All other job events</h1>
+  <h1 class="title">All other job events (<%= @finished.count %>)</h1>
+</div>
+
+<div style="margin-bottom: 20px">
+  <small><em>Displaying <%= @finished.to_a.count %></em></small>
 </div>
 
 <div class="table-container">
@@ -63,7 +67,7 @@
     </thead>
 
     <tbody>
-      <% JobEvent.finished.each do |job_event| %>
+      <% @finished.each do |job_event| %>
         <tr>
           <td><%= job_event.id %></td>
           <td><%= job_event.job_id %></td>
@@ -92,3 +96,7 @@
     </tbody>
   </table>
 </div>
+
+  <div class="padded">
+    <%= will_paginate @finished, renderer: BulmaPagination::Rails %>
+  </div>
