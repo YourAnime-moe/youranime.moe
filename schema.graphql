@@ -60,6 +60,52 @@ enum Filter {
 }
 
 """
+A human-readable representation of date and time based on the current timezone.
+"""
+scalar FriendlyDatetime
+
+type HomePageCategory {
+  key: String!
+  tags: [String!]!
+  title: String!
+}
+
+"""
+The connection type for HomePageCategory.
+"""
+type HomePageCategoryConnection {
+  """
+  A list of edges.
+  """
+  edges: [HomePageCategoryEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [HomePageCategory]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type HomePageCategoryEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: HomePageCategory
+}
+
+"""
 An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime
@@ -70,11 +116,41 @@ type Link {
   value: String!
 }
 
+"""
+A loose key-value map in GraphQL
+"""
+scalar Map
+
 type Mutation {
   """
   An example field added by the generator
   """
   testField: String!
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
 }
 
 type PaginationInfo {
@@ -264,6 +340,27 @@ type Root {
     last: Int
   ): ShowConnection!
   countryTimezone: CountryTimezone!
+  homePageCategories(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): HomePageCategoryConnection!
   nextAiringEpisode(slug: String!): AiringSchedule
   platform(name: String!): Platform
   search(
@@ -288,8 +385,30 @@ type Root {
     last: Int
     limit: Int
     query: String!
+    tags: [TagFilter!]
   ): ShowConnection!
   show(slug: String!): Show
+  showTags(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): TagConnection!
   streamableShows(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -358,12 +477,14 @@ type Root {
     Returns the last _n_ elements from the list.
     """
     last: Int
+    limit: Int
+    tags: [TagFilter!]
   ): ShowConnection!
 }
 
 type Show {
   ageRating: AgeRating!
-  airingAt: ISO8601DateTime
+  airingAt: FriendlyDatetime
   bannerUrl: String!
   description: String!
   dislikes: Int!
@@ -388,6 +509,7 @@ type Show {
   tags: [Tag!]!
   title: String!
   titleRecord: Title!
+  titles: Map!
   year: Int
 }
 
@@ -428,6 +550,43 @@ type Tag {
   tagType: String!
   value: String!
 }
+
+"""
+The connection type for Tag.
+"""
+type TagConnection {
+  """
+  A list of edges.
+  """
+  edges: [TagEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Tag]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type TagEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Tag
+}
+
+scalar TagFilter
 
 type Title {
   en: String

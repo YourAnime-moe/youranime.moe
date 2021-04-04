@@ -2,10 +2,11 @@
 class Search < ApplicationOperation
   property :search, accepts: String, converts: :downcase
   property :limit, accepts: Integer
+  property :tags, accepts: Array
   property :format, accepts: [:whole, :shows], default: :whole, converts: :to_sym
 
   def execute
-    return empty_search_result unless search.present? && search.size >= minimum_query_length
+    return empty_search_result unless any_search_attributes?
 
     final_results = if (platform = Platform.find_by(name: search))
       platform.shows.order(:status)
@@ -13,7 +14,7 @@ class Search < ApplicationOperation
       shows_results
     end.trending.order(:show_type)
 
-    return final_results if format == :shows
+    return final_results.by_tags(*Array(tags)) if format == :shows
 
     show_types = final_results.pluck(:show_type).uniq
 
@@ -23,6 +24,10 @@ class Search < ApplicationOperation
   end
 
   private
+
+  def any_search_attributes?
+    search.present? && search.size >= minimum_query_length || tags.present?
+  end
 
   def minimum_query_length
     japanese_characters? ? 1 : 3

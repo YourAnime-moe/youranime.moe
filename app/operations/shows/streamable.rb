@@ -13,9 +13,10 @@ module Shows
     def execute
       scope = Show.sort(*Array(sort_filters)).streamable
       scope = scope.airing if airing
-      scope.limit(limit).select do |show|
+
+      scope.uniq.select do |show|
         show.platforms(for_country: country).any?
-      end
+      end.take(limit)
     end
   end
 end

@@ -25,10 +25,17 @@ module Queries
     field :search, Queries::Types::Show.connection_type, null: false do
       argument :query, String, required: true
       argument :limit, Integer, required: false
+      argument :tags, [Queries::Types::Shows::Scalars::TagFilter], required: false
     end
 
-    def search(query:, limit: 100)
-      ::Search.perform(search: query, limit: limit, format: :shows)
+    def search(query:, limit: 100, tags: [])
+      ::Search.perform(search: query, limit: limit, tags: tags, format: :shows)
+    end
+
+    field :show_tags, Queries::Types::Shows::Tag.connection_type, null: false
+
+    def show_tags
+      Tag.popular
     end
 
     field :show, Queries::Types::Show, null: true do
@@ -66,16 +73,44 @@ module Queries
       Platform.find_by(name: name)
     end
 
-    field :trending, Queries::Types::Show.connection_type, null: false
+    field :trending, Queries::Types::Show.connection_type, null: false do
+      argument :tags, [Queries::Types::Shows::Scalars::TagFilter], required: false
+      argument :limit, Integer, required: false
+    end
 
-    def trending
-      Show.trending.limit(100)
+    def trending(tags: [], limit: 20)
+      if tags.any?
+        Search.perform(tags: tags, limit: limit, format: :shows)
+      else
+        Show.trending.limit(limit)
+      end
     end
 
     field :country_timezone, Queries::Types::CountryTimezone, null: false
 
     def country_timezone
       { country: context[:country], timezone: context[:timezone] }
+    end
+
+    field :home_page_categories, Queries::Types::HomePageCategory.connection_type, null: false
+
+    def home_page_categories
+      [
+        { tags: ['shounen', 'adventure'], title: 'Go on an adventure with Shounen anime', key: 'shounen-adventure' },
+        { tags: ['comedy'], title: 'Get ready to laugh', key: 'comedy' },
+        { tags: ['slice-of-life'], title: 'Everyday life', key: 'slice-of-life' },
+        { tags: ['drama'], title: 'Lots of conflicts (drama)', key: 'drama' },
+        { tags: ['psychological'], title: "Psychological anime", key: 'psychological' },
+        { tags: ['thriller'], title: "Watch something exciting", key: 'thriller' },
+        { tags: ['magic'], title: "Enter the world of magic 💫", key: 'magic' },
+        { tags: ['music'], title: "It's all about the music", key: 'music' },
+        { tags: ['ecchi'], title: "Sprinkles of fan-service", key: 'ecchi' },
+        { tags: ['science-fiction'], title: "Sci-fi anime", key: 'science-fiction' },
+        { tags: ['sports'], title: "What's it like to break a sweat?", key: 'sports' },
+        { tags: ['horror'], title: "S-scary stuff", key: 'horror' },
+        { tags: ['idol'], title: "Idol anime ✨", key: 'idol' },
+        { tags: ['isekai'], title: "Let's go to another world!", key: 'isekai' },
+      ]
     end
   end
 end

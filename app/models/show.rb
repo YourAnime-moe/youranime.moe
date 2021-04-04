@@ -74,7 +74,9 @@ class Show < ApplicationRecord
     optimized.joins(:links)
       .where('show_urls.url_type' => sanitize_sql(platform))
   end
-  scope :streamable, -> { where(id: ShowUrl.streamable.pluck(:show_id)) }
+  scope :streamable, -> {
+                       joins(:urls).where('show_urls.url_type' => Platform.pluck(:name))
+                     }
   scope :actively_streamable_on, -> (platform) { streamable_on(platform).active.this_year }
   scope :tv, -> { where(show_category: 'TV') }
   scope :random, -> { order('random()') }
@@ -286,7 +288,6 @@ class Show < ApplicationRecord
       .distinct
       .select(:id)
       .from('(select id, svals(titles) as title, slug from shows) as shows_title')
-      .limit(limit)
 
     shows_by_title = searchable_shows.where('lower(title) LIKE ?', by_title)
     shows_by_slug = searchable_shows.where('lower(slug) LIKE ?', by_title)
@@ -302,6 +303,20 @@ class Show < ApplicationRecord
         .or(shows_by_slug)
         .or(shows_by_title_no_special)
         .or(shows_by_slug_no_special).ids)
+      .limit(limit)
+  end
+
+  def self.by_tags(*tags)
+    return all if tags.empty?
+
+    tags = tags.map do |tag|
+      tag.is_a?(Tag) ? tag.value : tag.to_s
+    end
+
+    Show.joins(:tags)
+      .where('tags.value in (?)', tags)
+      .group('shows.id')
+      .having('count(tags.*) = ?', tags.count)
   end
 
   def self.search_all(by_title)
@@ -339,6 +354,12 @@ class Show < ApplicationRecord
       end
     end
     scope
+  end
+
+  def self.filter(*scopes)
+    scopes.inject(all) do |current_scope, new_scope|
+      current_scope.send(new_scope)
+    end
   end
 
   private
