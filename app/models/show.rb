@@ -110,7 +110,7 @@ class Show < ApplicationRecord
     current_locale = I18n.locale.to_sym
     available_locales = titles.keys
     selected_title_options = available_locales.select do |locale|
-      locale =~ Regexp.new(current_locale.to_s)
+      locale =~ Regexp.new(current_locale.to_s) && titles[locale].present?
     end
     return unless selected_title_options.any?
 

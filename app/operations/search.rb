@@ -12,7 +12,7 @@ class Search < ApplicationOperation
       platform.shows.order(:status)
     else
       shows_results
-    end.trending.order(:show_type)
+    end.active.order(:show_type)
 
     return final_results.by_tags(*Array(tags)) if format == :shows
 

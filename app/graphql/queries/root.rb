@@ -98,18 +98,19 @@ module Queries
       [
         { tags: ['shounen', 'adventure'], title: 'Go on an adventure with Shounen anime', key: 'shounen-adventure' },
         { tags: ['comedy'], title: 'Get ready to laugh', key: 'comedy' },
+        { tags: ['romance'], title: 'Love is in the air', key: 'romance' },
         { tags: ['slice-of-life'], title: 'Everyday life', key: 'slice-of-life' },
         { tags: ['drama'], title: 'Lots of conflicts (drama)', key: 'drama' },
         { tags: ['psychological'], title: "Psychological anime", key: 'psychological' },
-        { tags: ['thriller'], title: "Watch something exciting", key: 'thriller' },
+        { tags: ['thriller', 'psychological'], title: "Watch something exciting", key: 'thriller' },
         { tags: ['magic'], title: "Enter the world of magic 💫", key: 'magic' },
         { tags: ['music'], title: "It's all about the music", key: 'music' },
-        { tags: ['ecchi'], title: "Sprinkles of fan-service", key: 'ecchi' },
+        { tags: ['ecchi', 'comedy'], title: "Sprinkles of fan-service", key: 'ecchi' },
         { tags: ['science-fiction'], title: "Sci-fi anime", key: 'science-fiction' },
         { tags: ['sports'], title: "What's it like to break a sweat?", key: 'sports' },
-        { tags: ['horror'], title: "S-scary stuff", key: 'horror' },
+        { tags: ['horror', 'action'], title: "Dark stuff", key: 'horror' },
         { tags: ['idol'], title: "Idol anime ✨", key: 'idol' },
-        { tags: ['isekai'], title: "Let's go to another world!", key: 'isekai' },
+        { tags: ['isekai', 'adventure'], title: "Let's go to another world!", key: 'isekai' },
       ]
     end
   end

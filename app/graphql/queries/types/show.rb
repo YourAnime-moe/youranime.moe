@@ -12,7 +12,9 @@ module Queries
       field :popularity_percentage, Integer, null: false
       field :relative_popularity, Integer, null: false
       field :banner_url, String, null: false
-      field :poster_url, String, null: false
+      field :poster_url, String, null: false do
+        argument :dimensions, Queries::Types::Shows::Scalars::ActiveStorage::Dimensions, required: false
+      end
       field :likes, Integer, null: false
       field :dislikes, Integer, null: false
       field :loves, Integer, null: false
@@ -95,6 +97,12 @@ module Queries
 
       def platforms(focus_on: nil, region_locked: true)
         @object.platforms(focus_on: focus_on, for_country: (region_locked ? context[:country] : nil))
+      end
+
+      def poster_url(dimensions: nil)
+        return @object.poster_url unless dimensions.present?
+
+        @object.poster.variant(resize: dimensions).processed.url
       end
     end
   end

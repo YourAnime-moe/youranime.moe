@@ -71,15 +71,12 @@ module Shows
         { 'id' => anilist_id }
       end
 
-      def payload
-        { query: query, variables: variables }
-      end
-
       def fetch_data!
-        response = RestClient.post('https://graphql.anilist.co', payload)
-        response = JSON.parse(response)
-
-        response.deep_symbolize_keys
+        Graphql::QueryOperation.perform(
+          variables: variables,
+          query: query,
+          endpoint: 'https://graphql.anilist.co'
+        )
       end
 
       def anilist_id

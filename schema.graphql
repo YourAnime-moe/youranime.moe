@@ -37,6 +37,8 @@ type CountryTimezone {
   timezone: String!
 }
 
+scalar Dimensions
+
 enum Filter {
   """
   Sort a show by it's airing date, i.e. when it's next airing.
@@ -498,7 +500,7 @@ type Show {
   platforms(focusOn: String, regionLocked: RegionLocked): [Platform!]!
   popularity: Int!
   popularityPercentage: Int!
-  posterUrl: String!
+  posterUrl(dimensions: Dimensions): String!
   rank: Int
   relatedShows: [Show!]!
   relativePopularity: Int!
