@@ -3,6 +3,7 @@ class Search < ApplicationOperation
   property :search, accepts: String, converts: :downcase
   property :limit, accepts: Integer
   property :tags, accepts: Array
+  property :active, accepts: [true, false], default: false
   property :format, accepts: [:whole, :shows], default: :whole, converts: :to_sym
 
   def execute
@@ -12,9 +13,10 @@ class Search < ApplicationOperation
       platform.shows.order(:status)
     else
       shows_results
-    end.active.order(:show_type)
+    end.by_tags(*Array(tags)).order(:show_type)
 
-    return final_results.by_tags(*Array(tags)) if format == :shows
+    final_results = final_results.active if active
+    return final_results if format == :shows
 
     show_types = final_results.pluck(:show_type).uniq
 
