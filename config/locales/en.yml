@@ -366,8 +366,8 @@ en:
       login: "We are currently experiencing issues with our servers. Please come back soon!"
 
   categories:
-    coming_up_next:
-      title: "Coming up next in %{country}"
+    top_simulcasts:
+      title: "Simulcasts in: %{country}"
     top_coming_soon:
       title: "Coming soon"
       description: "Look forward to these shows! Streaming platforms may not be available until the show starts airing."

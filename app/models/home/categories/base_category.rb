@@ -127,6 +127,12 @@ module Home
       end
 
       def compute_shows
+        default_scope = self.class.default_scope
+        if default_scope.is_a?(Array)
+          Rails.logger.warn('Ignoring #scopes due to default scope being an array')
+          return default_scope
+        end
+
         scopes.inject(self.class.default_scope) do |current_scope, new_scope|
           current_scope.send(new_scope)
         end

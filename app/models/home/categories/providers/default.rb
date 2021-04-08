@@ -5,13 +5,14 @@ module Home
       class Default
         # Order matters ;)
         USE_CATEGORIES = [
-          Home::Categories::ComingUpNext,
+          Home::Categories::TopSimulcasts,
           Home::Categories::TopThisSeason,
           Home::Categories::TopComingSoon,
           Home::Categories::TopAiringNow,
           Home::Categories::FromLastSeason,
           Home::Categories::BestOfAllTime,
           Home::Categories::Platforms::NewOnFunimation,
+          Home::Categories::Platforms::NewOnCrunchyroll,
         ].freeze
 
         def self.categories(context:)

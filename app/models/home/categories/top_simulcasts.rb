@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 module Home
   module Categories
-    class ComingUpNext < Home::Categories::BaseCategory
+    class TopSimulcasts < Home::Categories::BaseCategory
       def title_template
-        "categories.coming_up_next.title"
+        "categories.top_simulcasts.title"
       end
 
       def title_params
@@ -12,6 +12,10 @@ module Home
 
       def enabled?
         true
+      end
+
+      def self.default_scope
+        Shows::Streamable.perform(airing: true, sort_filters: :airing_at)
       end
     end
   end

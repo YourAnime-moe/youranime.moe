@@ -352,7 +352,7 @@ class Show < ApplicationRecord
     with_title.find_by(options)
   end
 
-  def self.sort(*filters)
+  def self.sort_filters(*filters)
     scope = all
     filters.map do |filter|
       scope = if filter.use_scope

@@ -11,7 +11,7 @@ module Shows
     end
 
     def execute
-      scope = Show.sort(*Array(sort_filters)).streamable
+      scope = Show.sort_filters(*Array(sort_filters)).streamable
       scope = scope.airing if airing
 
       scope.uniq.select do |show|

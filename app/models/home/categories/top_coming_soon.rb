@@ -6,6 +6,10 @@ module Home
         "categories.top_coming_soon.title"
       end
 
+      def scopes
+        [:trending, :coming_soon]
+      end
+
       def enabled?
         true
       end
