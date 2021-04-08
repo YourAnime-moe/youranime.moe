@@ -95,7 +95,7 @@ module Queries
     field :home_page_categories, Queries::Types::HomePageCategory.connection_type, null: false
 
     def home_page_categories
-      Home::CategoryProvider.categories(context: context)
+      Home::Categories::Providers::Default.categories(context: context)
       # [
       #   { tags: ['shounen', 'adventure'], title: 'Go on an adventure with Shounen anime', key: 'shounen-adventure' },
       #   { tags: ['comedy'], title: 'Get ready to laugh', key: 'comedy' },

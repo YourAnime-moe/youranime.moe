@@ -369,10 +369,19 @@ en:
     coming_up_next:
       title: "Coming up next in %{country}"
     top_coming_soon:
-      title: "Look forward to these shows!"
+      title: "Coming soon"
+      description: "Look forward to these shows! Streaming platforms may not be available until the show starts airing."
     top_airing_now:
       title: "Top shows airing of all time"
     top_this_season:
       title: "What's popular this season"
     from_last_season:
-      title: "You may have missed those..."
+      title: "Check these out from last season"
+    best_of_all_time:
+      title: "Best of all time"
+    new_on_platform:
+      title: "New on %{platform}"
+    exclusive_on_platform:
+      title: "Exclusive on %{platform}"
+    top_anime_of_type:
+      title: "%{type}: %{one_word_description}"
