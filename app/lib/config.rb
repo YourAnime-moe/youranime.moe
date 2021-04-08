@@ -106,6 +106,21 @@ module Config
       end
     end
 
+    def season_date_range(date)
+      range = case date.month
+      when 1..3
+        [[1, 1], [3, 31]]
+      when 4..6
+        [[4, 1], [6, 30]]
+      when 7..9
+        [[7, 1], [9, 30]]
+      when 10..12
+        [[10, 1], [12, 31]]
+      end
+
+      range.map { |month_date| Date.new(date.year, *month_date) }
+    end
+
     def season_name_from(date)
       season_name_for(season_code_from(date))
     end

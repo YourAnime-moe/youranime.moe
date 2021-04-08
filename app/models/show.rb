@@ -80,6 +80,16 @@ class Show < ApplicationRecord
   scope :actively_streamable_on, -> (platform) { streamable_on(platform).active.this_year }
   scope :tv, -> { where(show_category: 'TV') }
   scope :random, -> { order('random()') }
+  scope :new_this_season, -> do
+    from, til = Config.season_date_range(Time.current)
+    where("starts_on >= '#{from}' AND starts_on <= '#{til}'")
+  end
+  scope :from_last_season, -> do
+    # Each season is every 3 months. So last season is guarenteed to
+    # be at most 3 months ago.
+    from, til = Config.season_date_range(3.months.ago)
+    where("starts_on >= '#{from}' AND starts_on <= '#{til}'")
+  end
 
   scope :optimized, -> do
     includes(:tags,

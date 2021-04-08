@@ -364,3 +364,15 @@ en:
   errors:
     internal:
       login: "We are currently experiencing issues with our servers. Please come back soon!"
+
+  categories:
+    coming_up_next:
+      title: "Coming up next in %{country}"
+    top_coming_soon:
+      title: "Look forward to these shows!"
+    top_airing_now:
+      title: "Top shows airing of all time"
+    top_this_season:
+      title: "What's popular this season"
+    from_last_season:
+      title: "You may have missed those..."
