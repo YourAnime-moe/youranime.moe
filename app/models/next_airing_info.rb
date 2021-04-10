@@ -10,4 +10,11 @@ class NextAiringInfo < ApplicationRecord
 
     is_past
   end
+
+  def up_to_date!
+    return self if past?
+
+    update!(time_until_airing: (airing_at - Time.current).to_i)
+    self
+  end
 end

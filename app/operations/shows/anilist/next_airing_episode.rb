@@ -15,7 +15,7 @@ module Shows
 
         current_next_airing_info = show.next_airing_info
         if !force && current_next_airing_info.present? && !current_next_airing_info&.past?
-          return current_next_airing_info
+          return current_next_airing_info.up_to_date!
         end
 
         data = fetch_next_airing_episode_data!

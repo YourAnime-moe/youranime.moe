@@ -16,7 +16,7 @@ class Search < ApplicationOperation
     end.by_tags(*Array(tags)).order(:show_type)
 
     final_results = final_results.active if active
-    return final_results if format == :shows
+    return final_results.trending if format == :shows
 
     show_types = final_results.pluck(:show_type).uniq
 
