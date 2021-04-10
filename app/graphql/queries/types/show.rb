@@ -8,9 +8,11 @@ module Queries
       field :description, String, null: false
       field :slug, String, null: false
       field :show_type, String, null: false
+      field :show_category, String, null: true
       field :popularity, Integer, null: false
       field :popularity_percentage, Integer, null: false
       field :relative_popularity, Integer, null: false
+      field :youtube_trailer_url, String, null: true
       field :banner_url, String, null: false
       field :poster_url, String, null: false do
         argument :dimensions, Queries::Types::Shows::Scalars::ActiveStorage::Dimensions, required: false

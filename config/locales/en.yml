@@ -382,6 +382,13 @@ en:
     new_on_platform:
       title: "New on %{platform}"
     exclusive_on_platform:
-      title: "Exclusive on %{platform}"
+      title: "%{platform} exclusives!"
     top_anime_of_type:
       title: "%{type}: %{one_word_description}"
+    music_videos:
+      title: "🎵 Anime-themed music videos"
+    of_type:
+      exciting:
+        title: "Exciting shows: Action, Adventure"
+      dark:
+        title: "Dark-ish shows"

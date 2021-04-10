@@ -14,6 +14,10 @@ module Home
         true
       end
 
+      def layout
+        :expanded
+      end
+
       def self.default_scope
         Shows::Streamable.perform(airing: true, sort_filters: :airing_at)
       end

@@ -7,8 +7,15 @@ module Queries
       def self.coerce_result(ruby_value, context)
         Time.use_zone(context[:timezone]) do
           datetime = ruby_value.to_datetime.in_time_zone
+          friendly_date = if datetime.tomorrow?
+            "Tomorrow"
+          elsif datetime.today?
+            "Today"
+          else
+            "%b %-d, %Y"
+          end
 
-          datetime.strftime("%b %-d, %Y at %H:%M")
+          datetime.strftime("#{friendly_date} at %H:%M")
         end
       end
     end

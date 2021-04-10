@@ -21,8 +21,9 @@
 module Home
   module Categories
     class BaseCategory
-      LAYOUT = %i(
+      LAYOUTS = %i(
         simple
+        expanded
       ).freeze
 
       class NotImplemented < StandardError
@@ -103,6 +104,10 @@ module Home
         @shows ||= compute_shows
       end
 
+      def validate!
+        ensure_layout!
+      end
+
       def inspect
         "#<#{self.class.name} title=\"#{title}\" scopes=[#{scopes.join(', ')}]>"
       rescue
@@ -124,6 +129,12 @@ module Home
       rescue => e
         Rails.logger.error(e)
         false
+      end
+
+      def ensure_layout!
+        unless LAYOUTS.include?(layout)
+          raise ConfigurationError, "Invalid layout: #{layout}. Must be one of: #{LAYOUTS.join(', ')}"
+        end
       end
 
       def compute_shows

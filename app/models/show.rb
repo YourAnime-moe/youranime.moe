@@ -69,10 +69,10 @@ class Show < ApplicationRecord
   scope :trending, -> { published.order(:popularity).where('popularity > 0') }
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
-  scope :as_music, -> { ordered.where(show_category: :music) }
+  scope :as_music, -> { where(show_category: :music) }
   scope :streamable_on, -> (platform) do
-    optimized.joins(:links)
-      .where('show_urls.url_type' => sanitize_sql(platform))
+    # optimized.joins(:links).
+    joins(:links).where('show_urls.url_type' => sanitize_sql(platform))
   end
   scope :streamable, -> {
                        joins(:urls).where('show_urls.url_type' => Platform.pluck(:name))
@@ -229,6 +229,10 @@ class Show < ApplicationRecord
     youtube_trailer_id.presence && "#{EMBED_YOUTUBE_BASE_URL}/#{youtube_trailer_id}"
   end
 
+  def official_url
+    urls.find_by(url_type: :official)&.value
+  end
+
   def watchable?
     urls.watchable.any?
   end
@@ -289,6 +293,27 @@ class Show < ApplicationRecord
 
   def relative_popularity
     popularity_scope.index(self) + 1
+  end
+
+  def self.exclusive_on(platform)
+    # select * from shows inner join
+    # (select count(su.url_type), shows.slug
+    #   from shows inner join show_urls su on su.show_id = shows.id
+    #   where su.url_type = 'funimation'
+    #   group by shows.slug, su.url_type
+    #   having count(*) = 1 order by count desc)
+    # as exclusive_shows
+    # on exclusive_shows.slug = shows.slug;
+
+    Show.joins([
+      'INNER JOIN',
+      "(select count(su.url_type), shows.slug",
+      "from shows inner join show_urls su on su.show_id = shows.id",
+      "where su.url_type = '#{platform}'",
+      "group by shows.slug, su.url_type",
+      "having count(*) = 1 order by count desc) as exclusive_shows",
+      'on exclusive_shows.slug = shows.slug',
+    ].join(' '))
   end
 
   def self.search(by_title, limit: 50)

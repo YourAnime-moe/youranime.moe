@@ -6,7 +6,7 @@ module Queries
       field :title, String, null: false
       field :description, String, null: true
       field :warning, String, null: true
-      field :layout, String, null: false
+      field :layout, Queries::Types::Home::Categories::Layout, null: false
       field :shows, Queries::Types::Show.connection_type, null: false
       field :can_fetch_more, GraphQL::Types::Boolean, null: false
 
