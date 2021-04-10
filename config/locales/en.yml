@@ -392,3 +392,11 @@ en:
         title: "Exciting shows: Action, Adventure"
       dark:
         title: "Dark-ish shows"
+      romance:
+        title: "Romance anime"
+      funny:
+        title: "Comedy anime"
+      scifi:
+        title: "Sci-fi anime"
+      everyday_life:
+        title: "Everyday life (Slice-of-life)"

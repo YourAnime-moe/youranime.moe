@@ -8,21 +8,24 @@ module Home
           Home::Categories::TopSimulcasts,
           Home::Categories::TopThisSeason,
           Home::Categories::TopComingSoon,
-          Home::Categories::TopAiringNow,
           Home::Categories::FromLastSeason,
-          Home::Categories::BestOfAllTime,
           Home::Categories::Platforms::ExclusiveOnCrunchyroll,
           Home::Categories::Platforms::NewOnCrunchyroll,
           Home::Categories::Platforms::ExclusiveOnNetflix,
           Home::Categories::Platforms::NewOnNetflix,
           Home::Categories::Platforms::ExclusiveOnFunimation,
           Home::Categories::Platforms::NewOnFunimation,
-        ].freeze
-
-        TAGGED_CATEGORIES = [
+          Home::Categories::OfType::Romance,
+          Home::Categories::OfType::Funny,
           Home::Categories::OfType::Exciting,
           Home::Categories::OfType::Dark,
+          Home::Categories::OfType::EverydayLife,
+          Home::Categories::OfType::ScienceFiction,
+          Home::Categories::TopAiringNow,
+          Home::Categories::BestOfAllTime,
         ].freeze
+
+        TAGGED_CATEGORIES = [].freeze
 
         def self.categories_classes
           BASIC_CATEGORIES + TAGGED_CATEGORIES

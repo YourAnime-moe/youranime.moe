@@ -3,6 +3,14 @@ module Home
   module Categories
     module OfType
       class Funny < BaseCategory
+        def title_template
+          "categories.of_type.funny.title"
+        end
+
+        def enabled?
+          true
+        end
+
         def self.default_scope
           Show.by_tags(:comedy)
         end
