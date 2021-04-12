@@ -41,6 +41,7 @@ class Show < ApplicationRecord
   has_many :queues, through: :shows_queue_relations
   has_many :urls, -> { ordered }, class_name: 'ShowUrl', inverse_of: :show, dependent: :destroy
   has_many :links, -> { ordered.streamable }, class_name: 'ShowUrl'
+  has_many :other_links, -> { non_watchable }, class_name: 'ShowUrl'
   has_many :info_links, -> { info }, class_name: 'ShowUrl'
   has_many :external_relationships, class_name: 'ShowExternalRelationship', dependent: :destroy
 

@@ -142,6 +142,7 @@ enum Layout {
 }
 
 type Link {
+  color: String
   platform: Platform
   urlType: String!
   value: String!
@@ -526,6 +527,7 @@ type Show {
   links(regionLocked: RegionLocked): [Link!]!
   loves: Int!
   nsfw: Boolean!
+  otherLinks: [Link!]!
   platforms(focusOn: String, regionLocked: RegionLocked): [Platform!]!
   popularity: Int!
   popularityPercentage: Int!

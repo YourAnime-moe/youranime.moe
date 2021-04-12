@@ -21,6 +21,7 @@ module Home
           Home::Categories::OfType::Dark,
           Home::Categories::OfType::EverydayLife,
           Home::Categories::OfType::ScienceFiction,
+          Home::Categories::MusicVideos,
           Home::Categories::TopAiringNow,
           Home::Categories::BestOfAllTime,
         ].freeze

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 class ShowUrl < ApplicationRecord
+  COLOURS = {
+    twitter: '#00ACEE',
+  }.with_indifferent_access.freeze
+
   belongs_to :show, inverse_of: :urls
   before_validation :ensure_url_type, unless: :url_type
 
@@ -48,7 +52,7 @@ class ShowUrl < ApplicationRecord
   end
 
   def colour
-    platform&.colour
+    platform&.colour || COLOURS[url_type]
   end
   alias_method :color, :colour
 

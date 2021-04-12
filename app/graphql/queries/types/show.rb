@@ -37,6 +37,7 @@ module Queries
       field :links, [Queries::Types::Shows::Link], null: false do
         argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
       end
+      field :other_links, [Queries::Types::Shows::Link], null: false
       field :tags, [Queries::Types::Shows::Tag], null: false
       field :related_shows, [Queries::Types::Show], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
