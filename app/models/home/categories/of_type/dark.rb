@@ -2,7 +2,7 @@
 module Home
   module Categories
     module OfType
-      class Dark < BaseCategoryw
+      class Dark < BaseCategory
         def title_template
           "categories.of_type.dark.title"
         end
