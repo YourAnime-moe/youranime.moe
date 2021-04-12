@@ -2,13 +2,17 @@
 module Home
   module Categories
     module OfType
-      class Dark < BaseCategory
+      class Dark < BaseCategoryw
         def title_template
           "categories.of_type.dark.title"
         end
 
         def enabled?
           true
+        end
+
+        def scopes
+          [:trending]
         end
 
         def self.default_scope

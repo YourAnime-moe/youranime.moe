@@ -11,6 +11,10 @@ module Home
           true
         end
 
+        def scopes
+          [:trending]
+        end
+
         def self.default_scope
           Show.by_tags(:action, :drama).or(Show.by_tags(:action, :adventure)).trending
         end
