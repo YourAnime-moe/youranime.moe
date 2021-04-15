@@ -380,7 +380,7 @@ en:
     best_of_all_time:
       title: "Best of all time"
     new_on_platform:
-      title: "New on %{platform}"
+      title: "Available on %{platform}"
     exclusive_on_platform:
       title: "%{platform} exclusives!"
     top_anime_of_type:

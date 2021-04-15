@@ -6,6 +6,10 @@ module Home
         "categories.top_simulcasts.title"
       end
 
+      def key
+        'top-simulcasts'
+      end
+
       def title_params
         { country: ISO3166::Country.new(context[:country]) }
       end

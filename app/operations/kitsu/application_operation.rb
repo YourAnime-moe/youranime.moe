@@ -131,6 +131,7 @@ module Kitsu
         end
       end
 
+      sync_show_images!(show, force: force)
       show
     end
 

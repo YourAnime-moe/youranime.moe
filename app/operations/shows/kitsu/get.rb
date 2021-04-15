@@ -45,7 +45,7 @@ module Shows
 
         save_external_relationships!(search_results, show)
         streaming_platforms_from_anilist!(show)
-        try_adding_images(show, results)
+        try_adding_images(show, results, force: force_update)
 
         show.tags = show_tags
 

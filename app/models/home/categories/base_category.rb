@@ -96,6 +96,10 @@ module Home
         I18n.translate(title_template, title_params)
       end
 
+      def key
+        title.parameterize
+      end
+
       def visible?
         enabled? && valid_title?
       end

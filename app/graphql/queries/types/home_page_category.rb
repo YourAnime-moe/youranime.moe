@@ -10,10 +10,6 @@ module Queries
       field :shows, Queries::Types::Show.connection_type, null: false
       field :can_fetch_more, GraphQL::Types::Boolean, null: false
 
-      def key
-        @object.try(:key) || @object.title.parameterize
-      end
-
       def can_fetch_more
         @object.can_fetch_more?
       end
