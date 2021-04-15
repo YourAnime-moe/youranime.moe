@@ -186,8 +186,10 @@ type PageInfo {
 }
 
 type PaginationInfo {
+  endCursor: String
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
+  startCursor: String
   totalCount: Int!
 }
 
