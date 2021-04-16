@@ -12,7 +12,7 @@ module Home
         end
 
         def enabled?
-          true
+          context[:country] ? platform.available?(context[:country]) : true
         end
 
         def self.default_scope

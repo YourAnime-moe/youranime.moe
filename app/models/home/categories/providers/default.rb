@@ -11,13 +11,22 @@ module Home
           Home::Categories::FromLastSeason,
         ].freeze
 
+        PLATFORM_CATEGORIES = [
+          Home::Categories::Platforms::NewOnCrunchyroll,
+          Home::Categories::Platforms::NewOnVrv,
+          Home::Categories::Platforms::NewOnFunimation,
+          Home::Categories::Platforms::NewOnAnimelab,
+          Home::Categories::Platforms::NewOnHidive,
+          Home::Categories::Platforms::NewOnHulu,
+          Home::Categories::Platforms::NewOnPrime,
+          Home::Categories::Platforms::NewOnNetflix,
+          Home::Categories::Platforms::NewOnTubi,
+        ].freeze
+
         OTHER_CATEGORIES = [
           Home::Categories::Platforms::ExclusiveOnCrunchyroll,
-          Home::Categories::Platforms::NewOnCrunchyroll,
           Home::Categories::Platforms::ExclusiveOnNetflix,
-          Home::Categories::Platforms::NewOnNetflix,
           Home::Categories::Platforms::ExclusiveOnFunimation,
-          Home::Categories::Platforms::NewOnFunimation,
           # Home::Categories::OfType::Romance,
           # Home::Categories::OfType::Funny,
           # Home::Categories::OfType::Exciting,
@@ -30,7 +39,7 @@ module Home
         ].freeze
 
         def self.main_categories_classes
-          HOME_PAGE_CATEGORIES + OTHER_CATEGORIES
+          HOME_PAGE_CATEGORIES + PLATFORM_CATEGORIES
         end
 
         def self.all_categories_classes
