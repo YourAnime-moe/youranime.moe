@@ -121,7 +121,7 @@
 - name: netflix
   colour: "#e50914"
   detect_from:
-    - netflix.comtry_show_url_icon_for
+    - netflix.com
   image: ""
   icon: "netflix-icon.jpg"
   url: "https://www.netflix.com"
@@ -135,7 +135,7 @@
   colour: "#266f92"
   detect_from:
     - amazon
-    - primevideo.com
+    - prime
   image: "primevideo.png"
   icon: "primevideo-icon.jpg"
   url: "https://www.primevideo.com"

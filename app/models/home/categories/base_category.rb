@@ -41,14 +41,15 @@ module Home
 
       class ConfigurationError < StandardError; end
 
-      def initialize(context:)
+      def initialize(context:, filters: [])
         @context = Hash(context)
+        @filters = filters
       end
 
       ## Must override
       # The template for the title of the category. Built title
       # available with method #title. Must be an I18n string.
-      def title_template
+      def title_templatecompute_shows
         raise Home::Categories::BaseCategory::NotImplemented
       end
 
@@ -160,6 +161,7 @@ module Home
       protected
 
       attr_reader :context
+      attr_reader :filters
 
       private
 
@@ -183,9 +185,35 @@ module Home
           return default_scope
         end
 
-        scopes.inject(self.class.default_scope) do |current_scope, new_scope|
+        all_shows = scopes.inject(self.class.default_scope) do |current_scope, new_scope|
           current_scope.send(new_scope)
         end
+
+        return all_shows if filters.empty?
+
+        searched_show_ids = if filters[:search_term].present?
+          Show.search(filters[:search_term]).ids
+        else
+          []
+        end
+
+        if filters[:tags].present?
+          all_shows = all_shows.by_tags(*filters[:tags])
+        end
+
+        if filters[:platforms].present?
+          all_shows = all_shows.streamable_on(filters[:platforms])
+        end
+
+        if filters[:year].present?
+          all_shows = if filters[:season].present?
+            all_shows.by_season(season: filters[:season], year: filters[:year])
+          else
+            all_shows.by_year(filters[:year])
+          end
+        end
+
+        searched_show_ids.any? ? all_shows.where(id: searched_show_ids) : all_shows
       end
     end
   end

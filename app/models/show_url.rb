@@ -51,11 +51,7 @@ class ShowUrl < ApplicationRecord
     result = Platform.find_by(name: url_type)
     return result if result.present?
 
-    Platform.all.detect do |platform|
-      platform.detect_from.detect do |regex|
-        value =~ regex
-      end
-    end
+    Platform.from(value)
   end
 
   def colour

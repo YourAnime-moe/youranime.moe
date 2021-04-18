@@ -12,6 +12,8 @@ module Config
   SUMMER_SEASON = :summer
   FALL_SEASON = :fall
 
+  SEASONS = [WINTER_SEASON, SPRING_SEASON, SUMMER_SEASON, FALL_SEASON].freeze
+
   SEASON_CODES = {
     WINTER_SEASON => 0,
     SPRING_SEASON => 1,
@@ -119,6 +121,24 @@ module Config
       end
 
       range.map { |month_date| Date.new(date.year, *month_date) }
+    end
+
+    def dates_range_for_season(season:, year:)
+      season = season.to_sym
+      raise "Unknown season: #{season}" unless SEASONS.include?(season)
+
+      range = case season
+      when :winter
+        [[1, 1], [3, 31]]
+      when :spring
+        [[4, 1], [6, 30]]
+      when :summer
+        [[7, 1], [9, 30]]
+      when :fall
+        [[10, 1], [12, 31]]
+      end
+
+      range.map { |month_date| Date.new(year, *month_date) }
     end
 
     def season_name_from(date)

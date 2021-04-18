@@ -38,6 +38,37 @@ module Queries
       Tag.popular
     end
 
+    field :show_seasons, [Queries::Types::Shows::Season], null: false
+
+    def show_seasons
+      Config::SEASONS.map do |season|
+        { value: season }
+      end
+    end
+
+    field :show_season_years, [Int], null: false
+
+    def show_season_years
+      first_year = Show.where.not(starts_on: nil).order(:starts_on).first.year
+      last_year = Show.where.not(starts_on: nil).order(:starts_on).last.year
+
+      (first_year..last_year).to_a.reverse
+    end
+
+    field :show_platforms, [Queries::Types::Shows::Platform], null: false do
+      argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
+    end
+
+    def show_platforms(**args)
+      Platform.for_country(**args)
+    end
+
+    field :show_types, [String], null: false
+
+    def show_types
+      Show.distinct.pluck(:show_category).compact.sort
+    end
+
     field :show, Queries::Types::Show, null: true do
       argument :slug, String, required: true
     end
@@ -108,10 +139,21 @@ module Queries
 
     field :home_page_category_shows, Queries::Types::Show.connection_type, null: false do
       argument :slug, String, required: true
+      argument :search_term, String, required: false
+      argument :tags, [Queries::Types::Shows::Scalars::TagFilter], required: false
+      argument :platforms, [String], required: false
+      argument :season, String, required: false
+      argument :year, Int, required: false
+      argument :show_types, [String], required: false
     end
 
-    def home_page_category_shows(slug:)
-      Home::Categories::Providers::Default.find_category(slug, context: context).shows || []
+    def home_page_category_shows(**args)
+      slug = args.delete(:slug)
+      Home::Categories::Providers::Default.find_category(
+        slug,
+        context: context,
+        filters: args,
+      ).shows || []
     end
   end
 end

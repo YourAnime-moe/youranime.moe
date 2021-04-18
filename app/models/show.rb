@@ -71,9 +71,18 @@ class Show < ApplicationRecord
   scope :highly_rated, -> { published.includes(:ratings) }
   scope :ordered, -> { published.with_title.order("titles.#{I18n.locale}") }
   scope :as_music, -> { where(show_category: :music) }
-  scope :streamable_on, -> (platform) do
+  scope :streamable_on, -> (platforms) do
     # optimized.joins(:links).
-    joins(:links).where('show_urls.url_type' => sanitize_sql(platform))
+    platforms = Array(platforms) unless platforms.is_a?(Array)
+
+    search_by_platforms = platforms.map do |platform|
+      if platform.is_a?(Platform)
+        platform
+      else
+        Platform.find_by(name: platform.to_s) || Platform.from(platform.to_s)
+      end
+    end.compact
+    joins(:links).where(['show_urls.url_type in (?)', search_by_platforms.map(&:name)])
   end
   scope :streamable, -> {
                        joins(:urls).where('show_urls.url_type' => Platform.pluck(:name))
@@ -355,6 +364,19 @@ class Show < ApplicationRecord
       .where('tags.value in (?)', tags)
       .group('shows.id')
       .having('count(tags.*) = ?', tags.count)
+  end
+
+  def self.by_year(year)
+    from = Date.new(year.to_i)
+    til = Date.new(year.to_i + 1) - 1
+
+    where("starts_on >= '#{from}' AND starts_on < '#{til}'")
+  end
+
+  def self.by_season(season:, year:)
+    from, til = Config.dates_range_for_season(season: season, year: year)
+
+    where("starts_on >= '#{from}' AND starts_on < '#{til}'")
   end
 
   def self.search_all(by_title)

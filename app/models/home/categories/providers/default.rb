@@ -46,11 +46,11 @@ module Home
           HOME_PAGE_CATEGORIES + OTHER_CATEGORIES
         end
 
-        def self.categories(context:, include_others: false)
+        def self.categories(context:, filters: {}, include_others: false)
           categories_classes = include_others ? all_categories_classes : main_categories_classes
 
           categories_classes.map do |category_class|
-            category = category_class.new(context: context)
+            category = category_class.new(context: context, filters: filters)
             next unless category.visible?
 
             category.validate!
@@ -58,8 +58,8 @@ module Home
           end.compact
         end
 
-        def self.find_category(key, context:, include_others: false)
-          categories(context: context, include_others: include_others).find do |category|
+        def self.find_category(key, context:, filters: {}, include_others: false)
+          categories(context: context, filters: filters, include_others: include_others).find do |category|
             category.key.to_s == key.to_s
           end
         end

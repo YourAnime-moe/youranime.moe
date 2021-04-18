@@ -71,7 +71,29 @@ class Platform < FrozenRecord::Base
     where(name: platforms.map(&:name))
   end
 
-  def self.detect_from(urls)
-    where(name: urls.map(&:platform).compact.map(&:name))
+  def self.from(name)
+    Platform.all.detect do |platform|
+      platform.detect_from.detect do |regex|
+        name =~ regex
+      end
+    end
+  end
+
+  def self.detect_from(urls_or_names)
+    urls_or_names = Array(urls_or_names) unless urls_or_names.is_a?(Array)
+
+    names = urls_or_names.map do |url_or_name|
+      if url_or_name.is_a?(String) || url_or_name.is_a?(Symbol)
+        next url_or_name.to_s
+      end
+
+      if url_or_name.is_a?(ShowUrl)
+        next url_or_name.value
+      end
+    end.compact.map do |name|
+      Platform.from(name)&.name
+    end.compact
+
+    where(name: names)
   end
 end

@@ -21,7 +21,6 @@ enum AiringStatus {
   COMING_SOON
   CURRENT
   FINISHED
-  TBA
   UNRELEASED
   UPCOMING
 }
@@ -419,7 +418,13 @@ type Root {
     Returns the last _n_ elements from the list.
     """
     last: Int
+    platforms: [String!]
+    searchTerm: String
+    season: String
+    showTypes: [String!]
     slug: String!
+    tags: [TagFilter!]
+    year: Int
   ): ShowConnection!
   nextAiringEpisode(slug: String!): AiringSchedule
   platform(name: String!): Platform
@@ -448,6 +453,9 @@ type Root {
     tags: [TagFilter!]
   ): ShowConnection!
   show(slug: String!): Show
+  showPlatforms(regionLocked: RegionLocked): [Platform!]!
+  showSeasonYears: [Int!]!
+  showSeasons: [Season!]!
   showTags(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -469,6 +477,7 @@ type Root {
     """
     last: Int
   ): TagConnection!
+  showTypes: [String!]!
   streamableShows(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -540,6 +549,10 @@ type Root {
     limit: Int
     tags: [TagFilter!]
   ): ShowConnection!
+}
+
+type Season {
+  value: String!
 }
 
 type Show {
