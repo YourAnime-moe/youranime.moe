@@ -15,6 +15,10 @@ module Home
           context[:country] ? platform.available?(context[:country]) : true
         end
 
+        def thumbnail_attributes
+          [:year, :friendly_status]
+        end
+
         def self.default_scope
           Show.streamable_on(platform_name).order('starts_on desc')
         end

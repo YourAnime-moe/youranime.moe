@@ -22,6 +22,10 @@ module Home
         :expanded
       end
 
+      def thumbnail_attributes
+        [:airing_at]
+      end
+
       def self.default_scope
         Shows::Streamable.perform(airing: true, sort_filters: :airing_at)
       end

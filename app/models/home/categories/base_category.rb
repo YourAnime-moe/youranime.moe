@@ -26,6 +26,12 @@ module Home
         expanded
       ).freeze
 
+      ALLOWED_FEATURED_PROPS = %i(
+        airing_at
+        year
+        friendly_status
+      )
+
       class NotImplemented < StandardError
         def message
           'This category was not implemented!'
@@ -91,6 +97,15 @@ module Home
         false
       end
 
+      # Show attributes that should be displayed on the thumbnail.
+      # See possible values on: ALLOWED_FEATURED_PROPS
+      # Used by Queries::Types::Categories::FeaturedProp.
+      # Please use #featured_props to get the clean list of thumbnail props.
+      # Please do not override #featured_props. This could result in unnecessary server errors.
+      def thumbnail_attributes
+        [:year]
+      end
+
       ## Internal attributes
       def title
         I18n.translate(title_template, title_params)
@@ -114,6 +129,16 @@ module Home
         grouped_shows = shows.where.not(starts_on: nil).order(:starts_on).group_by(&:year)
         @shows_by_year = grouped_shows.each_with_object([]) do |item, result|
           result << ::Shows::GroupByYear.new(year: item[0], shows: item[1])
+        end
+      end
+
+      def featured_props
+        thumbnail_attributes.map do |attribute|
+          attribute.to_sym
+        rescue
+          nil
+        end.compact.select do |attribute|
+          ALLOWED_FEATURED_PROPS.include?(attribute)
         end
       end
 

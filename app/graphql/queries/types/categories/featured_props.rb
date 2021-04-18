@@ -3,9 +3,9 @@ module Queries
   module Types
     module Categories
       class FeaturedProp < ::Types::BaseEnum
-        value('AIRING_AT', value: 'airing_at')
-        value('FRIENDLY_STATUS', value: 'friendly_status')
-        value('YEAR', value: 'year')
+        ::Home::Categories::BaseCategory::ALLOWED_FEATURED_PROPS.each do |layout|
+          value(layout.to_s.upcase, value: layout)
+        end
       end
     end
   end
