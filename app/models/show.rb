@@ -115,6 +115,7 @@ class Show < ApplicationRecord
   # scope :missing_poster, -> { where(poster_url: DEFAULT_POSTER_URL) }
   scope :needing_update, -> { where.not(status: FINISHED_STATUES) }
 
+  delegate :year, to: :starts_on, allow_nil: true
   delegate :airing_at, to: :next_airing_info, allow_nil: true
 
   def title

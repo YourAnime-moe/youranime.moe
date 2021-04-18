@@ -108,6 +108,15 @@ module Home
         @shows ||= compute_shows
       end
 
+      def shows_by_year
+        return @shows_by_year if @shows_by_year
+
+        grouped_shows = shows.where.not(starts_on: nil).order(:starts_on).group_by(&:year)
+        @shows_by_year = grouped_shows.each_with_object([]) do |item, result|
+          result << ::Shows::GroupByYear.new(year: item[0], shows: item[1])
+        end
+      end
+
       def validate!
         ensure_layout!
       end

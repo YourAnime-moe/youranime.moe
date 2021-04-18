@@ -43,10 +43,6 @@ module Queries
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
 
-      def year
-        @object.starts_on&.year
-      end
-
       def likes
         @object.likes_count
       end
