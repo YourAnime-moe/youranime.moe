@@ -11,6 +11,7 @@ module Queries
       field :shows, Queries::Types::Show.connection_type, null: false
       field :shows_by_year, Queries::Types::ShowsByYear.connection_type, null: false
       field :can_fetch_more, GraphQL::Types::Boolean, null: false
+      field :featured_props, [Queries::Types::Categories::FeaturedProp], null: false
 
       def can_fetch_more
         @object.can_fetch_more?
