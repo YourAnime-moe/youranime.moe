@@ -270,11 +270,11 @@ class Show < ApplicationRecord
   end
 
   def related_shows
-    related_show_ids = urls.map do |show_url|
-      ShowUrl.select(:show_id).where(value: show_url.value).where.not(show_id: id)
-    end.compact.flatten.map(&:show_id).uniq
-
-    Show.where(id: related_show_ids)
+    Show.joins(:urls)
+      .where(['show_urls.value in (?)', urls.pluck(:value)])
+      .where.not(id: id)
+      .order(:starts_on)
+      .reverse_order
   end
 
   def platforms(for_country: nil, focus_on: nil)
