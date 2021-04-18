@@ -70,4 +70,8 @@ class Platform < FrozenRecord::Base
     end
     where(name: platforms.map(&:name))
   end
+
+  def self.detect_from(urls)
+    where(name: urls.map(&:platform).compact.map(&:name))
+  end
 end

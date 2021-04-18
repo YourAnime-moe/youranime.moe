@@ -36,7 +36,7 @@ class ShowUrl < ApplicationRecord
     end
 
     def refresh_all!
-      all.each { |show_url| show_url.refresh! }
+      all.each(&:refresh!)
     end
   end
 
@@ -48,7 +48,14 @@ class ShowUrl < ApplicationRecord
   end
 
   def platform
-    Platform.find_by(name: url_type)
+    result = Platform.find_by(name: url_type)
+    return result if result.present?
+
+    Platform.all.detect do |platform|
+      platform.detect_from.detect do |regex|
+        value =~ regex
+      end
+    end
   end
 
   def colour

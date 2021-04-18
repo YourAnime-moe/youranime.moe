@@ -7,7 +7,7 @@ module Home
       end
 
       def scopes
-        [:trending, :coming_soon]
+        [:coming_soon]
       end
 
       def enabled?

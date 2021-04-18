@@ -23,7 +23,7 @@ module Home
       end
 
       def thumbnail_attributes
-        [:airing_at]
+        [:next_episode, :airing_at]
       end
 
       def self.default_scope

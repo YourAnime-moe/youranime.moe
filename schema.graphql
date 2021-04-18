@@ -42,6 +42,7 @@ scalar Dimensions
 enum FeaturedProp {
   AIRING_AT
   FRIENDLY_STATUS
+  NEXT_EPISODE
   YEAR
 }
 
@@ -66,11 +67,6 @@ enum Filter {
   """
   TITLE
 }
-
-"""
-A human-readable representation of date and time based on the current timezone.
-"""
-scalar FriendlyDatetime
 
 type HomePageCategory {
   canFetchMore: Boolean!
@@ -548,7 +544,7 @@ type Root {
 
 type Show {
   ageRating: AgeRating!
-  airingAt: FriendlyDatetime
+  airingAt: ISO8601DateTime
   bannerUrl: String!
   description: String!
   dislikes: Int!
@@ -558,6 +554,7 @@ type Show {
   likes: Int!
   links(regionLocked: RegionLocked): [Link!]!
   loves: Int!
+  nextEpisode: Int
   nsfw: Boolean!
   otherLinks: [Link!]!
   platforms(focusOn: String, regionLocked: RegionLocked): [Platform!]!

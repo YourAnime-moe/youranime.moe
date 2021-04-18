@@ -4,6 +4,8 @@ class NextAiringInfo < ApplicationRecord
 
   scope :ordered, -> { order(:airing_at) }
 
+  alias_attribute :next_episode, :episode_number
+
   def past?
     is_past = Time.current >= airing_at || time_until_airing <= 0
     update!(past: is_past)

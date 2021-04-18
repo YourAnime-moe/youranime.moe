@@ -19,7 +19,7 @@ class Show < ApplicationRecord
   SHOW_TYPES = [ANIME, MOVIE]
   AIRING_STATUSES = %w(current)
   FINISHED_STATUES = %w(finished)
-  COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased tba)
+  COMING_SOON_STATUSES = %w(coming_soon upcoming unreleased)
 
   SHOW_STATUSES = AIRING_STATUSES + FINISHED_STATUES + COMING_SOON_STATUSES
 
@@ -63,7 +63,7 @@ class Show < ApplicationRecord
   scope :published, -> { includes(:seasons).where(published: true) }
   scope :recent, -> { published.order('shows.created_at desc') }
   scope :airing, -> { trending.where(status: AIRING_STATUSES) }
-  scope :coming_soon, -> { trending.where(status: COMING_SOON_STATUSES) }
+  scope :coming_soon, -> { where(status: COMING_SOON_STATUSES).order(:starts_on) }
   scope :active, -> { trending.where(status: COMING_SOON_STATUSES + AIRING_STATUSES) }
   scope :finished, -> { trending.where(status: FINISHED_STATUES) }
   scope :this_year, -> { where("starts_on >= '#{Date.new(Time.current.year)}'") }
@@ -116,7 +116,7 @@ class Show < ApplicationRecord
   scope :needing_update, -> { where.not(status: FINISHED_STATUES) }
 
   delegate :year, to: :starts_on, allow_nil: true
-  delegate :airing_at, to: :next_airing_info, allow_nil: true
+  delegate :airing_at, :next_episode, to: :next_airing_info, allow_nil: true
 
   def title
     current_locale = I18n.locale.to_sym
@@ -279,10 +279,10 @@ class Show < ApplicationRecord
   end
 
   def platforms(for_country: nil, focus_on: nil)
-    scope = Platform.for_country(for_country).where(name: urls.pluck(:url_type))
+    scope = Platform.detect_from(urls).for_country(for_country)
     return scope unless focus_on
 
-    focus_platform = Platform.for_country(for_country).find_by(name: focus_on.to_s)
+    focus_platform = scope.find_by(name: focus_on.to_s)
     return scope unless focus_platform.present?
 
     [focus_platform, scope.where.not(name: focus_on.to_s)].flatten

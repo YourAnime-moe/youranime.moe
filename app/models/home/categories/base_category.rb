@@ -30,6 +30,7 @@ module Home
         airing_at
         year
         friendly_status
+        next_episode
       )
 
       class NotImplemented < StandardError
