@@ -275,6 +275,7 @@ class Show < ApplicationRecord
       .where.not(id: id)
       .order(:starts_on)
       .reverse_order
+      .distinct
   end
 
   def platforms(for_country: nil, focus_on: nil)
