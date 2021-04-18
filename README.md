@@ -1,43 +1,33 @@
-# Welcome to YourAnime (formerly Tanoshimu)! 
+# Welcome to YourAnime.mow (formerly Tanoshimu)! 
 [![Actions Status](https://github.com/thedrummeraki/tanoshimu/workflows/Ruby/badge.svg)](https://github.com/thedrummeraki/tanoshimu/actions)
 <a href="https://codeclimate.com/github/thedrummeraki/tanoshimu/maintainability"><img src="https://api.codeclimate.com/v1/badges/abb303c2f3865a743c34/maintainability" /></a>
 [![Coverage Status](https://coveralls.io/repos/github/thedrummeraki/tanoshimu/badge.svg?branch=heroku)](https://coveralls.io/github/thedrummeraki/tanoshimu?branch=heroku)
-### 楽しむ (lit. To have fun)
-<a href="https://tanoshimu.herokuapp.com"><img src="https://youranime.moe/img/tanoshimu.png" width="100" height="100"/></a>
+
+### What is this?
+
+#### The next go-to anime streaming information website.
+
+Find out when your favourite anime airs and where you can watch it. In the near future, you will be able to organize your watch list per streaming platform (integration with anime-management sites like Anilist or MAL may be implemented).
 
 #### How can I use it?
-You can visit [demo.youranime.moe](http://demo.youranime.moe)
-to get started (may take a couple of seconds to load up). 
-**Please note that the contents (ie: videos) of this application 
-are not available publicly for copyright reasons. This application is by all means not built 
-for commercial use.**
-
-##### Side note
-Also, the version online is running the latest code on the branch `heroku`. So this
-means, whatever is on `heroku` is being used in production! The `master` is just more
-of a formality. Also, I don't want to make `heroku` my main branch to avoid desasters.
+You can visit [youranime.moe](https://youranime.moe) to get started.
 
 #### Technologies
 The following technologies made this app into what it is today:
-- [Ruby on Rails 6](http://rubyonrails.org/) (Server-side and API development)
-- [Bulma.io](https://bulma.io/) (CSS library)
-- [jQuery](https://jquery.com/) (Various JavaScript libraries, mostly used for AJAX here)
-- Ruby (Other than Ruby of Rails, lots of cool Ruby libraries are used - See [Gemfile](Gemfile))
-- _and more to come!_
+- [Ruby on Rails 6.1](http://rubyonrails.org/) (Server-side and API development)
+- [React](https://reactjs.org) (A JavaScript library for building user interfaces)
+- [Material-UI](https://material-ui.com/) (React components for faster and easier web development)
+- [GraphQL](https://graphql.org) (A graph-based query language, alternative to REST)
+- [Docker](https://www.docker.com) (For running in app in a containerized environment)
+- [Heroku](https://heroku.com) (Used mostly for background jobs and proxy security)
+- [DigitalOcean](https://www.digitalocean.com) (Alternative to AWS)
+- [Vercel](https://vercel.com) (Hosting the front-end application)
 
 #### How do I contribute or check out the project?
-This is a Rails application, however you will need to have [Docker](https://www.docker.com) 
-and [Docker compose](https://docs.docker.com/compose/) installed on your computer.
-```
-git clone git@github.com:/thedrummeraki/tanoshimu.git
-cd tanoshimu
-bundle install
-```
-Once the server is running, you can go to http://localhost:3000. You can login with the username ```admin```
-(password is `password`).
+I do not accept public contributions at the moment. Please contact me by email if you wish to run the project locally. Please note that this is not my full time job so I may take a little before answering. 😅
 
 #### Is this project alive? 
-YES YES YES! When was the last commit? ;)
+Yes.
 
 ### About Tanoshimu
 This project was originally called *My Akinyele* and was running Rails 4. The UI and the code design 
@@ -53,8 +43,7 @@ requirement very soon become out of scope
 
 In June 2019, after a long pause of development from May 2018 to April 2019 (hey I have school you know!), I worked
 hard refactoring the code (making it better) and decided it was time for this site to become public. The app was
-now renamed to [YourAnime.moe](http://demo.youranime.moe). A new look was implemented in February 2019, then once more
+now renamed to [YourAnime.moe](https://youranime.moe). A new look was implemented in February 2019, then once more
 in April 2019.
 
-**Please note that the contents (ie: videos) of this application are not available publicly for copyright reasons. 
-This application is by all means not built for commercial use.**
+In early 2021, the site's new goal was now about to promoting which anime can be watched legally in your country. I've decided to convert the Rails app into a GraphQL API that is used by a rich client, written in React. The interface has changed a lot since then and the focus is now to put then enphasis on **where** certain anime can be watched.
