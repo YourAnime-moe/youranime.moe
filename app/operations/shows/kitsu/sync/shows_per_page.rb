@@ -32,7 +32,7 @@ module Shows
                 show = find_or_create_show!(results, :kitsu)
                 streaming_platforms_from_anilist!(show)
 
-                sync_show_images!(show)
+                sync_show_images!(show, force: true)
                 show
               end
 
