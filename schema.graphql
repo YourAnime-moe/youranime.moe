@@ -39,6 +39,12 @@ type CountryTimezone {
 
 scalar Dimensions
 
+enum FeaturedProp {
+  AIRING_AT
+  FRIENDLY_STATUS
+  YEAR
+}
+
 enum Filter {
   """
   Sort a show by it's airing date, i.e. when it's next airing.
@@ -69,6 +75,7 @@ scalar FriendlyDatetime
 type HomePageCategory {
   canFetchMore: Boolean!
   description: String
+  featuredProps: [FeaturedProp!]!
   key: String!
   layout: Layout!
   shows(
@@ -92,27 +99,6 @@ type HomePageCategory {
     """
     last: Int
   ): ShowConnection!
-  showsByYear(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): ShowsByYearConnection!
   title: String!
   warning: String
 }
@@ -623,66 +609,6 @@ type ShowEdge {
   The item at the end of the edge.
   """
   node: Show
-}
-
-type ShowsByYear {
-  shows(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): ShowConnection!
-  year: Int!
-}
-
-"""
-The connection type for ShowsByYear.
-"""
-type ShowsByYearConnection {
-  """
-  A list of edges.
-  """
-  edges: [ShowsByYearEdge]
-
-  """
-  A list of nodes.
-  """
-  nodes: [ShowsByYear]
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type ShowsByYearEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: ShowsByYear
 }
 
 type Tag {
