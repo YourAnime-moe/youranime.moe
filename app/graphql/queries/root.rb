@@ -77,6 +77,14 @@ module Queries
       Shows::Kitsu::GetBySlug.perform(slug: slug)
     end
 
+    field :shows, Queries::Types::Show.connection_type, null: false do
+      argument :slugs, [String], required: true
+    end
+
+    def shows(slugs:)
+      Show.where(slug: slugs)
+    end
+
     field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
       argument :slug, String, required: true
     end
