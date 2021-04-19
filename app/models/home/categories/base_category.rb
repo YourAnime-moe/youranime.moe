@@ -213,7 +213,7 @@ module Home
           end
         end
 
-        searched_show_ids.any? ? all_shows.where(id: searched_show_ids) : all_shows
+        filters[:search_term].present? ? all_shows.where(id: searched_show_ids) : all_shows
       end
     end
   end
