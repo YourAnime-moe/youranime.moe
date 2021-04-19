@@ -82,7 +82,8 @@ module Queries
     end
 
     def shows(slugs:)
-      Show.where(slug: slugs)
+      ids = slugs.map { |slug| Show.find_by_slug(slug).id }.compact
+      Show.find(ids).index_by(&:id).slice(*ids).values
     end
 
     field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
