@@ -77,6 +77,15 @@ module Queries
       Shows::Kitsu::GetBySlug.perform(slug: slug)
     end
 
+    field :shows, Queries::Types::Show.connection_type, null: false do
+      argument :slugs, [String], required: true
+    end
+
+    def shows(slugs:)
+      ids = slugs.map { |slug| Show.find_by_slug(slug).id }.compact
+      Show.find(ids).index_by(&:id).slice(*ids).values
+    end
+
     field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
       argument :slug, String, required: true
     end
