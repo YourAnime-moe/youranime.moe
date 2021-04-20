@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_220151) do
+ActiveRecord::Schema.define(version: 2021_04_20_173034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -77,6 +77,12 @@ ActiveRecord::Schema.define(version: 2021_03_28_220151) do
     t.index ["number"], name: "index_episodes_on_number"
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true
     t.index ["thumbnail_url"], name: "index_episodes_on_thumbnail_url"
+  end
+
+  create_table "graphql_users", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "issues", force: :cascade do |t|
@@ -192,7 +198,7 @@ ActiveRecord::Schema.define(version: 2021_03_28_220151) do
   end
 
   create_table "shows_queues", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "graphql_user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

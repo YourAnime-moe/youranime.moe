@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Shows
   class Queue < ApplicationRecord
-    belongs_to :user, inverse_of: :queues
+    belongs_to :graphql_user, inverse_of: :queues
 
     has_many :shows_queue_relations, -> { includes(:show, :queue).reverse_order }, inverse_of: :queue
     has_many :shows, through: :shows_queue_relations

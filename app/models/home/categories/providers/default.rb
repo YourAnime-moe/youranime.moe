@@ -5,6 +5,7 @@ module Home
       class Default
         # Order matters ;)
         HOME_PAGE_CATEGORIES = [
+          Home::Categories::WatchList,
           Home::Categories::TopSimulcasts,
           Home::Categories::TopThisSeason,
           Home::Categories::TopComingSoon,

@@ -366,6 +366,9 @@ en:
       login: "We are currently experiencing issues with our servers. Please come back soon!"
 
   categories:
+    watch_list:
+      title: "Your watch list"
+      description: "This list is your main watch list (your main queue). Add and remove shows."
     top_simulcasts:
       title: "Simulcasts in: %{country}"
     top_coming_soon:

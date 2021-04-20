@@ -35,7 +35,7 @@ module Home
 
       class NotImplemented < StandardError
         def message
-          'This category was not implemented!'
+          "This category's title was not implemented!"
         end
       end
 
@@ -49,7 +49,7 @@ module Home
       ## Must override
       # The template for the title of the category. Built title
       # available with method #title. Must be an I18n string.
-      def title_templatecompute_shows
+      def title_template
         raise Home::Categories::BaseCategory::NotImplemented
       end
 
@@ -108,6 +108,9 @@ module Home
         [:year]
       end
 
+      def shows_override
+      end
+
       ## Internal attributes
       def title
         I18n.translate(title_template, title_params)
@@ -122,7 +125,10 @@ module Home
       end
 
       def shows
-        @shows ||= compute_shows
+        ensure_enabled!
+        return @shows if @shows.present?
+
+        @shows = shows_override || compute_shows
       end
 
       def shows_by_year
@@ -175,6 +181,12 @@ module Home
       def ensure_layout!
         unless LAYOUTS.include?(layout)
           raise ConfigurationError, "Invalid layout: #{layout}. Must be one of: #{LAYOUTS.join(', ')}"
+        end
+      end
+
+      def ensure_enabled!
+        unless enabled?
+          raise ConfigurationError, "#{self.class.name} is not enabled"
         end
       end
 

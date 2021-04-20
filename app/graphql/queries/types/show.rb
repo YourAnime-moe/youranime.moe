@@ -43,6 +43,7 @@ module Queries
       field :related_shows, [Queries::Types::Show], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
+      field :added_to_main_queue, GraphQL::Types::Boolean, null: true
 
       def likes
         @object.likes_count
@@ -103,6 +104,12 @@ module Queries
         return @object.poster_url unless dimensions.present?
 
         @object.poster.variant(resize: dimensions).processed.url
+      end
+
+      def added_to_main_queue
+        return unless context[:current_user].present?
+
+        context[:current_user].main_queue.include?(@object)
       end
     end
   end

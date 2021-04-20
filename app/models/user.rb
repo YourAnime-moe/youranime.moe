@@ -8,12 +8,6 @@ class User < ApplicationRecord
 
   before_save :ensure_hex, unless: :hex_initialized?
   can_like_as :user
-
-  has_many :queues, -> {
-    includes(shows_queue_relations: {
-      show: [:description_record, :ratings],
-    })
-  }, class_name: 'Shows::Queue', inverse_of: :user
   has_many :issues, inverse_of: :user
   has_many :ratings
   has_many :shows, through: :ratings
@@ -34,24 +28,6 @@ class User < ApplicationRecord
 
   def rated_shows
     Show.joins(:ratings).where('user_id = ?', id)
-  end
-
-  def add_show_to_main_queue(show)
-    return if main_queue.include?(show)
-
-    main_queue << show
-  end
-
-  def remove_show_from_main_queue(show)
-    main_queue - show
-  end
-
-  def has_show_in_main_queue?(show)
-    main_queue.include?(show)
-  end
-
-  def main_queue
-    @main_queue ||= queues.empty? ? queues.create! : queues.first
   end
 
   def can_login?

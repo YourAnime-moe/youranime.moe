@@ -156,6 +156,9 @@ A loose key-value map in GraphQL
 scalar Map
 
 type Mutation {
+  addToMainQueue(slug: String!): Show
+  removeFromMainQueue(slug: String!): Show
+
   """
   An example field added by the generator
   """
@@ -578,6 +581,7 @@ type Season {
 }
 
 type Show {
+  addedToMainQueue: Boolean
   ageRating: AgeRating!
   airingAt: ISO8601DateTime
   bannerUrl: String!

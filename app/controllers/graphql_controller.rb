@@ -18,6 +18,7 @@ class GraphqlController < ApplicationController
       country: country || 'CA',
       timezone: timezone || 'America/Toronto',
       is_default: country.blank? || timezone.blank?,
+      current_user: current_user,
     }
     result = TanoshimuNewSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render(json: result)
@@ -57,5 +58,14 @@ class GraphqlController < ApplicationController
     logger.error(e.backtrace.join("\n"))
 
     render(json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500)
+  end
+
+  def current_user
+    return @current_user if @current_user.present?
+
+    proxied_auth_uuid = request.headers['X-Proxied-Auth-ID']
+    return unless proxied_auth_uuid.present?
+
+    @current_user ||= GraphqlUser.find_or_create_by(uuid: proxied_auth_uuid)
   end
 end
