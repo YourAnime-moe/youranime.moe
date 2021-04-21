@@ -11,6 +11,8 @@ module Types
       def total_count
         if object.respond_to?(:relation_count)
           object.relation_count(object.items)
+        elsif object.respond_to?(:items)
+          object.items.count
         elsif object.respond_to?(:nodes)
           object.nodes.count
         else
