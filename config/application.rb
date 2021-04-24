@@ -38,7 +38,9 @@ module TanoshimuNew
     # CORS
     config.x.cors_allowed_origins = ENV.fetch('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')
 
+    # API
     config.x.graphql_host = ENV.fetch('GRAPHQL_HOST') { 'http://localhost:3000' }
+    # config.api_only = true
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

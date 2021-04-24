@@ -17,14 +17,25 @@
       <tbody>
         <% @users.each do |user| %>
           <tr>
-            <td><%= link_to 'View', admin_users_path(user), class: 'button is-primary is-small' %></td>
-            <td><%= user.id %></td>
-            <td><%= user.username %></td>
-            <td><%= user.name %></td>
-            <td><%= user.email.presence || '-' %></td>
-            <td title="<%= user.type %>"><%= user_type(user) %></td>
-            <td><%= user_color(user) %></td>
-            <td><%= user_status(user) %></td>
+            <% if user.is_a?(GraphqlUser) %>
+              <td>-</td>
+              <td><%= user.uuid %></td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td title="OAuth user">OAuth user</td>
+              <td>-</td>
+              <td>-</td>
+            <% else %>
+              <td><%= link_to 'View', admin_users_path(user), class: 'button is-primary is-small' %></td>
+              <td><%= user.id %></td>
+              <td><%= user.username %></td>
+              <td><%= user.name %></td>
+              <td><%= user.email.presence || '-' %></td>
+              <td title="<%= user.type %>"><%= user_type(user) %></td>
+              <td><%= user_color(user) %></td>
+              <td><%= user_status(user) %></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>

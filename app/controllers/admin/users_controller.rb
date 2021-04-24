@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Admin
   class UsersController < ApplicationController
     include Admin::UsersHelper
@@ -5,7 +6,7 @@ module Admin
     def index
       @users = if params[:oauth] == 'true'
         set_title(before: 'OAuth Users')
-        User.where(user_type: [User::GOOGLE, User::MISETE])
+        GraphqlUser.all
       else
         set_title(before: 'Users')
         User.all
@@ -15,6 +16,4 @@ module Admin
     def update
     end
   end
-
-  private
 end

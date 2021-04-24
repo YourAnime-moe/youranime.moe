@@ -6,7 +6,7 @@ module Admin
         redirect_to(admin_show_path(show_from_query))
       else
         @shows = if params[:query].present?
-          Show.search_all(params[:query])
+          Show.search(params[:query])
         else
           Show.optimized.reverse_order # .order("titles.#{I18n.locale}")
         end
