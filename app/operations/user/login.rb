@@ -6,19 +6,17 @@ class User
     input :password, accepts: String, type: :keyword, required: true
     input :fingerprint, type: :keyword, required: true
     input :maintenance, type: :keyword, required: false
-    input :request, type: :keyword, required: false
 
     before do
-      raise LoginError.new('welcome.login.errors.no-credentials') if username.blank? && password.blank?
-      raise LoginError.new('welcome.login.errors.no-username') if username.blank?
-      raise LoginError.new('welcome.login.errors.no-password') if password.blank? 
-      raise LoginError.new('fingerprint.missing') if fingerprint.blank?
+      raise LoginError, 'welcome.login.errors.no-credentials' if username.blank? && password.blank?
+      raise LoginError, 'welcome.login.errors.no-username' if username.blank?
+      raise LoginError, 'welcome.login.errors.no-password' if password.blank?
+      raise LoginError, 'fingerprint.missing' if fingerprint.blank?
     end
 
     def execute
       check_user_unknown!
       check_wrong_password!
-      check_if_admin_if_viewing_as_admin!
       check_if_maintenance_and_not_admin_user!
       check_user_deactivated!
 
@@ -41,7 +39,7 @@ class User
     private
 
     def user
-      @user ||= User.find_by(username: username.downcase)
+      @user ||= Users::Admin.find_by(username: username.downcase)
     end
 
     def check_user_unknown!
@@ -53,21 +51,12 @@ class User
       raise LoginError.new('welcome.login.errors.wrong-password', user: username) unless user.authenticate(password)
     end
 
-    def check_if_admin_if_viewing_as_admin!
-      return unless request.present?
-      return unless Config.viewing_as_admin_from?(request)
-
-      unless user.can_manage?
-        raise LoginError.new('welcome.login.errors.cannot-manage')
-      end
-    end
-
     def check_if_maintenance_and_not_admin_user!
-      raise LoginError.new('welcome.login.errors.maintenance') if maintenance && !user.admin?
+      raise LoginError, 'welcome.login.errors.maintenance' if maintenance && !user.admin?
     end
 
     def check_user_deactivated!
-      raise LoginError.new('welcome.login.errors.deactivated') unless user.active?
+      raise LoginError, 'welcome.login.errors.deactivated' unless user.active?
     end
 
     def activate_session!

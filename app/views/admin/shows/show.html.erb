@@ -27,13 +27,6 @@
       <%= show_thumb(@show) %>
     </div>
     <div class="hf-section">
-      <% if @show.published? %>
-        <%= link_to('View as a user', show_path(@show), class: 'button is-fullwidth', target: :_blank) %>
-      <% else %>
-        <%= link_to('Preview', show_path(@show, as_admin: true), class: 'button is-fullwidth', target: :_blank) %>
-      <% end %>
-    </div>
-    <div class="hf-section">
     
       <h2 class="subtitle">General info</h2>
       <div class="tile box">
@@ -86,7 +79,7 @@
 
       <h2 class="subtitle">Edit show information</h2>
       <div class="tile is-child box">
-        <%= form_with(model: @show) do |f| %>
+        <%= form_with(model: [:admin, @show]) do |f| %>
           <div class="columns">
             <div class="column field">
               <%= f.label :title, 'English title', class: 'label' %>
@@ -116,7 +109,7 @@
       <div class="card">
         <div class="holder">
           <div class="overlay">
-            <%= image_tag(@show.poster_url) %>
+            <%= @show.banner.attached? ? image_tag(@show.banner) : image_tag(@show.banner_url) %>
           </div>
         </div>
       </div>

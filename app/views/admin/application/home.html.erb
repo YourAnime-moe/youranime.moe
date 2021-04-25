@@ -69,7 +69,7 @@
     <div class="card events-card">
       <header class="card-header">
         <p class="card-header-title">
-          Trending shows on the platform
+          Latest additions on YourAnime.moe
         </p>
         <a href="#" class="card-header-icon" aria-label="more options">
         <span class="icon">
@@ -81,13 +81,13 @@
         <div class="content">
           <table class="table is-fullwidth is-striped">
             <tbody>
-              <% @top_shows.each do |show| %>
+            <% @latest_additions.each do |show| %>
               <tr>
                 <td>
                   <%= show.title %>
                   <p class="has-text-grey">
                     <small>
-                    Rating: <%= show.rating %> (<%= show.ratings.count %>) - <%= show.views_count %> views
+                    Added: <%= time_ago_in_words(show.created_at) %> ago (<%= show.created_at.strftime('%B %d, %Y at %H:%M') %>)
                     </small>
                   </p>
                 </td>

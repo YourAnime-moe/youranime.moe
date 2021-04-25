@@ -1,23 +1,54 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  # Application foundation
-  load 'config/routes/foundation.rb'
-  # Admin console
-  load 'config/routes/admin.rb'
-  # API interface
-  load 'config/routes/api.rb'
-  # OAuth and authentication
-  load 'config/routes/auth_oauth.rb'
+  get '/', to: redirect('/login')
+  get '/home', to: redirect('/admin')
 
-  # global options responder -> makes sure OPTION request for CORS endpoints work
-  match '*path', via: [:options], to: lambda { |_| [204, { 'Content-Type' => 'text/plain' }] }
+  # Admin console
+  get '/admin' => 'admin/application#home'
+  namespace :admin do
+    mount Sidekiq::Web => '/sidekiq'
+
+    resources :shows do
+      post :process_csv, on: :collection
+      post :sync, on: :collection
+      post :sync_now
+      post :sync_episodes
+
+      post :publish
+      post :unpublish
+
+      resources :seasons, path: :shows_seasons
+
+      resources :episodes, except: [:new] do
+        post :subtitles, to: 'episodes#create_subs'
+      end
+    end
+
+    resources :users, except: [:new] do
+      resources :sessions, only: [:index, :show]
+    end
+
+    resources :job_events, only: [:index]
+  end
+
+  # API interface
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  end
+  post "/graphql", to: "graphql#execute"
+
+  # Authentication
+  get '/login', to: 'application#login'
+  get '/logout' => 'application#logout'
+  post '/login' => 'application#login_post'
+
+  # Locale management
+  get '/get/current/locale' => 'application#locale'
+  put '/set/current/locale' => 'application#set_locale'
 
   constraints(host: /localhost|0.0.0.0/) do
     match '/prod' => redirect('https://youranime.moe'), via: [:get]
   end
-
-  # constraints(host: /\w+\.herokuapp.com/) do
-  #  match '/(*path)' => redirect { |params, _| "https://youranime.moe/#{params[:path]}" }, via: :all
-  # end
 end
