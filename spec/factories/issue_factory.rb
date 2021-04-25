@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :issue do
     open
-    user
+    graphql_user
     title { 'My issue' }
     description { 'This is a sentence. ' * 100 }
 

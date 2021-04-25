@@ -8,11 +8,17 @@ RSpec.describe(Show, type: :model) do
   end
 
   it 'is invalid without required fields' do
-    show = FactoryBot.build(:show, slug: nil, titles: {}, released_on: nil, banner_url: nil)
+    show = FactoryBot.build(:show, slug: nil, titles: {})
     expect(show).not_to(be_valid)
+
     expect(show.errors.messages[:slug]).to(include("can't be blank"))
-    expect(show.errors.messages[:released_on]).to(include("can't be blank"))
-    expect(show.errors.messages[:banner_url]).to(include("can't be blank"))
     expect(show.errors.messages[:titles]).to(include("can't be blank"))
+  end
+
+  it 'sets default released_on with nil' do
+    show = FactoryBot.build(:show, released_on: nil)
+    expect(show.released_on).to(be_nil)
+    expect(show).to(be_valid)
+    expect(show.released_on).to(be_today)
   end
 end
