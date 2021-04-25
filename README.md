@@ -2,7 +2,6 @@
 
 <img src="https://badge.buildkite.com/98ef2a29fa705886db86496540edd3be0b331fcdc7cedbecad.svg?branch=heroku" alt="Buildkite CI">
 <a href="https://codeclimate.com/github/thedrummeraki/tanoshimu/maintainability"><img src="https://api.codeclimate.com/v1/badges/abb303c2f3865a743c34/maintainability" /></a>
-[![Coverage Status](https://coveralls.io/repos/github/thedrummeraki/tanoshimu/badge.svg?branch=heroku)](https://coveralls.io/github/thedrummeraki/tanoshimu?branch=heroku)
 
 ### What is this?
 
