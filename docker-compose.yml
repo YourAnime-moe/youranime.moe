@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres
@@ -9,10 +9,10 @@ services:
       POSTGRES_PASSWORD: isyourstoconquer
 
   redis:
-    image: 'redis:6'
+    image: "redis:6"
     command: redis-server
     volumes:
-      - 'redis:/data'
+      - "redis:/data"
 
   sidekiq:
     build: .
@@ -36,7 +36,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - '80:3000'
+      - "80:3000"
     volumes:
       - .:/app
       - /app/node_modules
@@ -45,10 +45,11 @@ services:
     environment:
       BUNDLE_PATH: /gems
       REDIS_URL: redis://redis:6379
-      DISABLE_GOOGLE_LOGIN: '1'
+      DISABLE_GOOGLE_LOGIN: "1"
       GOOGLE_OAUTH_REDIRECT_HOST: http://tanoshimu.aki
     depends_on:
       - db
+      - redis
 
 volumes:
   gems:

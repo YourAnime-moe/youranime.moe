@@ -21,6 +21,8 @@ def seed_users
 end
 
 def seed_shows_later
+  return if Rails.env.test?
+
   %i(current next).each do |season|
     Sync::ShowsFromKitsuJob.perform_later(season, staff: Users::Admin.system)
   end

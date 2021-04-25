@@ -56,7 +56,7 @@ class Show < ApplicationRecord
 
   respond_to_types SHOW_TYPES
 
-  validates_presence_of :released_on, :banner_url
+  validates_presence_of :released_on, :banner_url, :titles, :slug
   validates_inclusion_of :top_entry, :published, in: [true, false]
   # validates_inclusion_of :show_type, in: SHOW_TYPES
 
