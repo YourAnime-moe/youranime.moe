@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
@@ -7,7 +8,7 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def errors_string(default=nil)
+  def errors_string(default = nil)
     return default unless errors.any?
     errors.to_a.join(', ')
   end

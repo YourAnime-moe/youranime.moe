@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   class Sync < ApplicationOperation
     property! :sync_type, accepts: [:airing, :episodes, :crawl, :show, :shows]
@@ -17,11 +18,12 @@ module Shows
     end
 
     private
+
     attr_accessor :current_page
 
     def sync_shows
       @current_page = 0
-      create_shows_then_next_page({season: by_season, year: by_year})
+      create_shows_then_next_page({ season: by_season, year: by_year })
     end
 
     def sync_airing
@@ -146,7 +148,6 @@ module Shows
       synched_show.published = !synched_show.persisted? || synched_show.published?
       synched_show.save!
 
-      duration = synched_show.is?(:movie) ? fetched_attrs[:totalLength] || fetched_attrs[:episodeLength] : fetched_attrs[:episodeLength]
       override_episodes_for(synched_show)
 
       poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
@@ -166,15 +167,22 @@ module Shows
         poster_file.unlink
       end
 
-      set_streamer_urls_for(synched_show)
+      streamer_urls_for!(synched_show)
 
       synched_show
     end
 
     def find_show_from_attributes(fetched_attrs)
       found_title_record = Title.find_by(roman: fetched_attrs[:slug])
-      english_title = fetched_attrs.dig(:titles, :en) || fetched_attrs.dig(:titles, :en_us) || fetched_attrs.dig(:titles, :en_jp) || fetched_attrs[:canonicalTitle]
-      japanese_title = fetched_attrs.dig(:titles, :jp) || fetched_attrs.dig(:titles, :ja) || fetched_attrs.dig(:titles, :ja_jp)
+      english_title = fetched_attrs.dig(:titles, :en) ||
+        fetched_attrs.dig(:titles, :en_us) ||
+        fetched_attrs.dig(:titles, :en_jp) ||
+        fetched_attrs[:canonicalTitle]
+
+      japanese_title = fetched_attrs.dig(:titles, :jp) ||
+        fetched_attrs.dig(:titles, :ja) ||
+        fetched_attrs.dig(:titles, :ja_jp)
+
       description_content = fetched_attrs[:synopsis] || fetched_attrs[:description]
 
       if found_title_record.blank?
@@ -212,7 +220,7 @@ module Shows
       )
     end
 
-    def set_streamer_urls_for(show)
+    def streamer_urls_for!(show)
       return if show.reference_id.blank?
 
       response = RestClient.get(request_streamer_url(show))
@@ -285,7 +293,7 @@ module Shows
     end
 
     def as_params(array, param_type)
-      array.map{ |k, v| "#{param_type}[#{k}]=#{v}" }.join('&')
+      array.map { |k, v| "#{param_type}[#{k}]=#{v}" }.join('&')
     end
 
     def try_downloading(url)

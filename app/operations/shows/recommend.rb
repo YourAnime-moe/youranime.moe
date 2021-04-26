@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   class Recommend < ApplicationOperation
     property! :user

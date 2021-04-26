@@ -10,11 +10,11 @@ module LocaleConcern
 
   def set_locale
     new_locale = memorize_locale.to_s
-    render json: {
+    render(json: {
       success: true,
       reload: new_locale == requested_locale,
-      locale: locale_state_response(requested: requested_locale)
-    }
+      locale: locale_state_response(requested: requested_locale),
+    })
   end
 
   def find_locale
@@ -22,7 +22,7 @@ module LocaleConcern
     begin
       I18n.locale = try_to_set || :en
     rescue I18n::InvalidLocale
-      Rails.logger.warn "Invalid locale #{try_to_set}. Defaulting to :en..."
+      Rails.logger.warn("Invalid locale #{try_to_set}. Defaulting to :en...")
       I18n.locale = :en
     end
   end
@@ -32,15 +32,15 @@ module LocaleConcern
   def render_if_not_set_first
     return if set_locale?
 
-    render json: {
+    render(json: {
       success: true,
       reload: false,
-      locale: locale_state_response
-    }
+      locale: locale_state_response,
+    })
   end
 
   def locale_state_response(requested: nil)
-    {requested: requested, old: current_locale, current: I18n.locale}
+    { requested: requested, old: current_locale, current: I18n.locale }
   end
 
   def requested_locale
@@ -74,5 +74,4 @@ module LocaleConcern
   def current_locale
     @current_locale ||= I18n.locale
   end
-
 end

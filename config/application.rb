@@ -20,7 +20,6 @@ module TanoshimuNew
 
     # UI
     config.bulma_version = nil
-    config.videojs_version = nil
 
     # Misc
     config.is_demo = ENV['DEMO'].to_s.downcase.strip == 'true'

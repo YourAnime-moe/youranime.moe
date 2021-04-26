@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class TrackableJob < ApplicationJob
   # How to use this:
   # 1) Extend the job to keep track of to 'TrackableJob'
@@ -6,7 +7,7 @@ class TrackableJob < ApplicationJob
   around_perform do |job, block|
     event = before_perform(job)
     begin
-      block.call if block
+      block&.call
 
       after_perform(event)
     rescue => e
@@ -42,16 +43,16 @@ class TrackableJob < ApplicationJob
 
   def model_from_args!(job)
     model = job.arguments.first
-    return unless model.kind_of?(ApplicationRecord)
+    return unless model.is_a?(ApplicationRecord)
 
     model
   end
 
   def fetch_arg_from_args(job, klass, type)
     job.arguments.each do |arg|
-      return arg if arg.kind_of?(klass)
+      return arg if arg.is_a?(klass)
 
-      if arg.kind_of?(Hash)
+      if arg.is_a?(Hash)
         return arg[type] if arg.keys.include?(type)
       end
     end

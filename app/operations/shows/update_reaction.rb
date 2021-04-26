@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   class UpdateReaction < ApplicationOperation
     LIKE_REACTION = 'like'

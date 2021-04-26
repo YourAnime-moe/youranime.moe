@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Shows
   module Kitsu
     module Sync
@@ -5,7 +6,6 @@ module Shows
         property! :years, accepts: Range
 
         def perform
-          shows = []
           years.each do |year|
             Shows::Kitsu::Sync::ShowsPerPage.perform(
               params: {

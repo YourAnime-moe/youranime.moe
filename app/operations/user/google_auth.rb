@@ -18,7 +18,7 @@ class User
     succeeded do
       I18n.locale = access_token.locale
     rescue StandardError
-      Rails.logger.error "Unsupported locale provided by Google: #{access_token.info.locale}"
+      Rails.logger.error("Unsupported locale provided by Google: #{access_token.info.locale}")
     end
 
     class NotGoogleUser < StandardError; end

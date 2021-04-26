@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class BatchOperationJob < ApplicationJob
   queue_as :batch_queue
 

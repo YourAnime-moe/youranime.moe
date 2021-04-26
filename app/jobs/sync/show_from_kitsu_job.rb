@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Sync
   class ShowFromKitsuJob < TrackableJob
     queue_as :sync
