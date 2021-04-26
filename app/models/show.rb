@@ -186,7 +186,7 @@ class Show < ApplicationRecord
     average_rating = ratings.average(:value)
     return 'N/A' if average_rating.nil? || average_rating.zero?
 
-    '%.2f' % average_rating
+    format('%.2f', average_rating)
   end
 
   def views_count

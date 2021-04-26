@@ -14,8 +14,7 @@ module UsersHelper
 
   def thumb_class_for(model, index)
     rules = home_thumbnails_rules
-    last_possible = rules.last[:id]
-    rule = rules.select { |rule| rule[:id] == index }[0]
+    rule = rules.select { |r| r[:id] == index }[0]
     rule[:display] = 'd-none' if model.nil?
     rule
   end

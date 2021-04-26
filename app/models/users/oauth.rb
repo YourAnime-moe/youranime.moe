@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Users
   class Oauth < User
     include OauthConcern
@@ -39,7 +40,6 @@ module Users
     def initialize(*args)
       super
       self.user_type = provider
-      self
     end
 
     def provider

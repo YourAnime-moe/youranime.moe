@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'omniauth-oauth2'
 
 module OmniAuth
@@ -6,8 +7,8 @@ module OmniAuth
       option :name, 'misete'
 
       option :client_options, {
-        :site => ENV['MISETE_OAUTH_HOST'],
-        :authorize_url => "/oauth/authorize"
+        site: ENV['MISETE_OAUTH_HOST'],
+        authorize_url: "/oauth/authorize",
       }
 
       uid { raw_info["uuid"] }

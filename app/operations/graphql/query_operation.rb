@@ -5,7 +5,7 @@ module Graphql
     property :method, accepts: [:get, :post], default: :post
     property! :query, accepts: String
     property! :endpoint, converts: -> (endpoint) do
-      return if URI === endpoint
+      return if endpoint.is_a?(URI)
 
       unless (endpoint = endpoint.to_s) =~ URI.regexp
         raise SmartProperties::ConfigurationError, "Invalid URI: #{endpoint}"

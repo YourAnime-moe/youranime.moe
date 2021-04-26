@@ -80,4 +80,3 @@ end
 def files_at(*args)
   Dir.entries(Rails.root.join(*args))
 end
-

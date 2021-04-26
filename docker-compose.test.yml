@@ -4,7 +4,6 @@ services:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
-    user: "${UID}:${GID}"
     environment:
       POSTGRES_USER: anime
       POSTGRES_PASSWORD: isyourstoconquer

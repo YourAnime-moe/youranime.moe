@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Admin
   module ApplicationHelper
     def boolean_tag(value, yes: :success, no: :danger, true_text: 'yes', false_text: 'no', light: false)

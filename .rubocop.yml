@@ -19,7 +19,15 @@ Metrics/PerceivedComplexity:
 Style/DateTime:
   Enabled: false
 
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Naming/PredicateName:
+  Exclude:
+    - app/graphql/**/*
+
 AllCops:
+  TargetRubyVersion: 2.6
   Exclude:
     - Rakefile
     - Gemfile

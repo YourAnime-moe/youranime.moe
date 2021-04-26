@@ -4,9 +4,6 @@ module Config
   class Error < StandardError
   end
 
-  mattr_accessor :videojs
-  @@videojs = nil
-
   WINTER_SEASON = :winter
   SPRING_SEASON = :spring
   SUMMER_SEASON = :summer
