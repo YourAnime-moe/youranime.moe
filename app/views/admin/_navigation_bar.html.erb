@@ -13,15 +13,13 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <%= link_to('Admin home', admin_path, class: 'navbar-item') %>
-
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           More
         </a>
 
         <div class="navbar-dropdown">
-          <%= link_to('Shows & Episodes', admin_shows_path, class: 'navbar-item') %>
+          <%= link_to('Browse shows', admin_shows_path, class: 'navbar-item') %>
           <%= link_to('Users', admin_users_path, class: 'navbar-item') %>
 
           <hr class="navbar-divider">

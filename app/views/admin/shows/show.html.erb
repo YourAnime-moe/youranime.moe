@@ -24,7 +24,7 @@
   <div class="column is-4">
     <div class="hf-section">
       <h2 class="subtitle">Thumbnail preview</h2>
-      <%= show_thumb(@show) %>
+      <%= render ShowThumbnailComponent.new(show: @show) %>
     </div>
     <div class="hf-section">
     
@@ -61,7 +61,7 @@
           <p>Avg. Rating: <code><%= @show.rating %></code></p>
           <p>Ratings count: <code><%= @show.ratings.count %></code></p>
           <p>Queues count: <code><%= @show.queues.count %></code></p>
-          <p>Tags: <%= show_tags(@show).presence || 'N/A' %></p>
+          <p>Tags: <%= @show.tags.map(&:value).join(', ').presence || 'N/A' %></p>
         </div>
       </div>
     </div>
@@ -127,7 +127,6 @@
     <% end %>
 
     <h2 class="subtitle">Seasons and episodes</h2>
-    <%= seasons_tabs(@show, admin: true) %>
     <div class="row no-margin">
       <div class="container-fluid">
         <% @show.seasons.each do |season| %>
