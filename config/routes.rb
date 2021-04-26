@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
 
     resources :shows do
-      post :process_csv, on: :collection
       post :sync, on: :collection
       post :sync_now
       post :sync_episodes

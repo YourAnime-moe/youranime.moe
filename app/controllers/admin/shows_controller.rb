@@ -62,15 +62,6 @@ module Admin
       redirect_to(admin_show_path(show))
     end
 
-    def process_csv
-      Import::ShowsCsv.perform(
-        by_author: current_user,
-        file: params[:shows_data].tempfile,
-      )
-
-      redirect_to(admin_shows_path)
-    end
-
     private
 
     def show_from_query
