@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Staff < ApplicationRecord
   include TanoshimuUtils::Concerns::Identifiable
   include TanoshimuUtils::Concerns::RespondToTypes
@@ -22,9 +23,12 @@ class Staff < ApplicationRecord
   def to_user!
     return user if user.present?
 
+    first_name, last_name = name.split(' ')
+
     new_user = Users::Admin.create!(
       username: username,
-      name: name,
+      first_name: first_name,
+      last_name: last_name,
       active: true,
       limited: false,
       password: password,

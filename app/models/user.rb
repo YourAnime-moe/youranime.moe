@@ -83,7 +83,7 @@ class User < ApplicationRecord
     code = hash_code & 0x00FFFFFF
     code = code.to_s(16).upcase
 
-    self[:hex] = '#' << '00000'[0, 6 - code.size] + code
+    self[:hex] = '#' + ('00000'[0, 6 - code.size] + code)
   end
 
   def valid_user_type

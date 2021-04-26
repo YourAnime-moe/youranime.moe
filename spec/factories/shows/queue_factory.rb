@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :shows_queue, class: 'Shows::Queue' do
-    user
+    graphql_user
   end
 end

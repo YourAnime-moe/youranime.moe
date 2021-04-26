@@ -113,7 +113,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 4'
 end
 
 group :development do
@@ -133,7 +133,8 @@ group :development do
 end
 
 group :test do
-  gem 'factory_bot'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec'
   gem 'rspec_junit_formatter'
 end
