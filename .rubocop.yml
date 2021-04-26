@@ -18,3 +18,14 @@ Metrics/PerceivedComplexity:
 
 Style/DateTime:
   Enabled: false
+
+AllCops:
+  Exclude:
+    - Rakefile
+    - Gemfile
+    - bin/**/*
+    - config/**/*
+    - db/migrate/**/*
+    - db/schema.rb
+    - node_modules/**/*
+    - vendor/**/*
