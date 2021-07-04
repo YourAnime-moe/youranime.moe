@@ -92,6 +92,7 @@ GEM
     bindex (0.8.1)
     builder (3.2.4)
     byebug (11.0.1)
+    childprocess (3.0.0)
     codeclimate-engine-rb (0.4.1)
       virtus (~> 1.0)
     coderay (1.1.2)
@@ -293,6 +294,7 @@ GEM
       parser (>= 2.5.0.0, < 2.7, != 2.5.1.1)
       psych (~> 3.1.0)
       rainbow (>= 2.0, < 4.0)
+    regexp_parser (2.1.1)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -339,6 +341,7 @@ GEM
       ffi (~> 1.9)
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
+    rubyzip (2.3.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -349,6 +352,9 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    selenium-webdriver (3.142.7)
+      childprocess (>= 0.5, < 4.0)
+      rubyzip (>= 1.2.2)
     sexp_processor (4.12.1)
     sidekiq (6.1.1)
       connection_pool (>= 2.2.2)
@@ -405,6 +411,9 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
+    watir (6.19.1)
+      regexp_parser (>= 1.2, < 3)
+      selenium-webdriver (>= 3.142.7)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -482,6 +491,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier
   view_component
+  watir
   web-console (>= 3.3.0)
   webpacker
   webvtt

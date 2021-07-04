@@ -164,5 +164,24 @@ module Queries
         filters: args,
       ).shows || []
     end
+
+    field :funimation_episodes, Queries::Types::Shows::Episode.connection_type, null: true do
+      argument :slug, String, required: true
+    end
+
+    def funimation_episodes(slug:)
+      show = Show.find_by_slug(slug)
+      ::Crawl::Funimation.perform(show: show)
+    end
+
+    field :crunchyroll_episodes, [Queries::Types::Shows::Season], null: true do
+      argument :slug, String, required: true
+      argument :include_all, GraphQL::Types::Boolean, required: false
+    end
+
+    def crunchyroll_episodes(slug:, include_all: false)
+      show = Show.find_by_slug(slug)
+      ::Crawl::Crunchyroll.perform(show: show, include_all: include_all)
+    end
   end
 end

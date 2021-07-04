@@ -38,6 +38,48 @@ type CountryTimezone {
 
 scalar Dimensions
 
+type Episode {
+  img: String!
+  name: String!
+  number: Int
+  url: String!
+}
+
+"""
+The connection type for Episode.
+"""
+type EpisodeConnection {
+  """
+  A list of edges.
+  """
+  edges: [EpisodeEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Episode]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type EpisodeEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Episode
+}
+
 enum FeaturedProp {
   AIRING_AT
   FRIENDLY_STATUS
@@ -379,6 +421,29 @@ type Root {
     last: Int
   ): ShowConnection!
   countryTimezone: CountryTimezone!
+  crunchyrollEpisodes(includeAll: Boolean, slug: String!): [Season!]
+  funimationEpisodes(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+    slug: String!
+  ): EpisodeConnection
   homePageCategories(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -577,7 +642,28 @@ type Root {
 }
 
 type Season {
-  value: String!
+  episodes(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): EpisodeConnection!
+  season: String
 }
 
 type Show {

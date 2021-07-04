@@ -221,7 +221,7 @@ ActiveRecord::Schema.define(version: 2021_04_20_173034) do
     t.index ["show_id", "tag_id"], name: "index_shows_tag_relations_on_show_id_and_tag_id", unique: true
   end
 
-  create_table "staffs", force: :cascade do |t|
+  create_table "easos", force: :cascade do |t|
     t.string "username", null: false
     t.string "identification", null: false
     t.string "name", null: false

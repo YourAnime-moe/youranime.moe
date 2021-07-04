@@ -3,7 +3,8 @@ module Queries
   module Types
     module Shows
       class Season < ::Types::BaseObject
-        field :value, String, null: false
+        field :season, String, null: true
+        field :episodes, Episode.connection_type, null: false
       end
     end
   end
