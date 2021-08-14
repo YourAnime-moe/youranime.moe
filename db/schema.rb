@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_173034) do
+ActiveRecord::Schema.define(version: 2021_08_14_144001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -123,6 +123,16 @@ ActiveRecord::Schema.define(version: 2021_04_20_173034) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["show_id"], name: "index_next_airing_infos_on_show_id"
+  end
+
+  create_table "posters", force: :cascade do |t|
+    t.string "original", default: "/img/404.jpg", null: false
+    t.string "large", default: "/img/404.jpg"
+    t.string "medium", default: "/img/404.jpg"
+    t.string "small", default: "/img/404.jpg"
+    t.string "tiny", default: "/img/404.jpg"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "ratings", force: :cascade do |t|

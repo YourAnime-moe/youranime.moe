@@ -13,6 +13,10 @@ module Home
       def enabled?
         true
       end
+
+      def thumbnail_attributes
+        [:next_episode, :airing_at]
+      end
     end
   end
 end
