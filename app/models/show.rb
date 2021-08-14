@@ -54,6 +54,8 @@ class Show < ApplicationRecord
   has_resource :banner, default_url: DEFAULT_BANNER_URL, expiry: 3.days
   has_resource :poster, default_url: DEFAULT_POSTER_URL, expiry: 3.days
 
+  has_one :poster_record, class_name: 'Poster'
+
   respond_to_types SHOW_TYPES
 
   validates_presence_of :released_on, :banner_url, :titles, :slug
@@ -274,6 +276,8 @@ class Show < ApplicationRecord
       nsfw? ||
       !banner.attached? ||
       !poster.attached? ||
+      poster_record.nil? ||
+      poster_record&.missing? ||
       titles.empty? ||
       slug.blank?
   end

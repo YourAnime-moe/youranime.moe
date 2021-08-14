@@ -17,6 +17,7 @@ module Queries
       field :poster_url, String, null: false do
         argument :dimensions, Queries::Types::Shows::Scalars::ActiveStorage::Dimensions, required: false
       end
+      field :poster, Queries::Types::Shows::Poster, null: false
       field :likes, Integer, null: false
       field :dislikes, Integer, null: false
       field :loves, Integer, null: false
@@ -104,6 +105,10 @@ module Queries
         return @object.poster_url unless dimensions.present?
 
         @object.poster.variant(resize: dimensions).processed.url
+      end
+
+      def poster
+        @object.poster_record
       end
 
       def added_to_main_queue

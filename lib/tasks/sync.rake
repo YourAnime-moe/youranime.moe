@@ -38,6 +38,39 @@ namespace :sync do
           Sync::ShowsFromKitsuJob.perform_now(season, staff: Users::Admin.system)
         end
       end
+
+      namespace :update do
+        desc 'Update the existing shows from kitsu.io'
+        task now: :environment do
+          Sync::UpdateExistingShowsJob.perform_now(
+            force_update: false,
+            staff: Users::Admin.system,
+          )
+        end
+
+        task later: :environment do
+          Sync::UpdateExistingShowsJob.perform_later(
+            force_update: false,
+            staff: Users::Admin.system,
+          )
+        end
+
+        namespace :force do
+          task now: :environment do
+            Sync::UpdateExistingShowsJob.perform_now(
+              force_update: true,
+              staff: Users::Admin.system,
+            )
+          end
+
+          task later: :environment do
+            Sync::UpdateExistingShowsJob.perform_later(
+              force_update: true,
+              staff: Users::Admin.system,
+            )
+          end
+        end
+      end
     end
 
     namespace :anilist do
