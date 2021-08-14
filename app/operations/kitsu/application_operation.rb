@@ -133,9 +133,10 @@ module Kitsu
 
       poster_record = show.poster_record || show.build_poster_record
       image_options = show_options[:posterImage]
-      poster_record.assign_attributes(image_options.slice(*Poster.column_names.map(&:to_sym)))
-
-      poster_record.save
+      if image_options
+        poster_record.assign_attributes(image_options.slice(*Poster.column_names.map(&:to_sym)))
+        poster_record.save
+      end
 
       sync_show_images!(show, force: force)
       show
