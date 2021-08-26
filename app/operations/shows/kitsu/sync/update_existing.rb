@@ -13,6 +13,8 @@ module Shows
               kitsu_id: show.reference_id,
               force_update: force_update,
             )
+          rescue Shows::Kitsu::Get::NotFound => e
+            puts "Error while getting show: #{e}"
           end
         end
       end
