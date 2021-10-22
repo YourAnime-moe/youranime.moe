@@ -332,7 +332,7 @@ class Show < ApplicationRecord
     ].join(' '))
   end
 
-  def self.search(by_title, limit: 50)
+  def self.search(by_title, limit: 20)
     by_title = "%#{by_title}%"
 
     searchable_shows = Show

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class TanoshimuNewSchema < GraphQL::Schema
+  default_max_page_size(20)
+
   mutation(Types::MutationType)
   query(Queries::Root)
 

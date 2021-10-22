@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class Search < ApplicationOperation
   property :search, accepts: String, converts: :downcase
-  property :limit, accepts: Integer
+  property! :limit, accepts: Integer # Max: 20
   property :tags, accepts: Array
   property :active, accepts: [true, false], default: false
   property :format, accepts: [:whole, :shows], default: :whole, converts: :to_sym
@@ -46,7 +46,7 @@ class Search < ApplicationOperation
   end
 
   def search_shows_by_title
-    Show.search(search, limit: limit || 50)
+    Show.search(search, limit: ensure_limit)
   end
 
   def search_shows_by_genre
@@ -65,5 +65,11 @@ class Search < ApplicationOperation
 
   def like_search
     "%#{search}%"
+  end
+
+  private
+
+  def ensure_limit
+    limit < 20 ? limit : 20
   end
 end

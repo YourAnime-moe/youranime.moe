@@ -22,9 +22,9 @@ module Queries
       Shows::Streamable.perform(**params)
     end
 
-    field :search, Queries::Types::Show.connection_type, null: false do
+    field :search, Queries::Types::Show.connection_type, null: false, max_page_size: 20 do
       argument :query, String, required: true
-      argument :limit, Integer, required: false
+      argument :limit, Integer, required: true
       argument :tags, [Queries::Types::Shows::Scalars::TagFilter], required: false
     end
 
@@ -79,6 +79,7 @@ module Queries
 
     field :shows, Queries::Types::Show.connection_type, null: false do
       argument :slugs, [String], required: true
+      extension ::Types::Custom::ConnectionExtension
     end
 
     def shows(slugs:)
@@ -163,6 +164,20 @@ module Queries
         context: context,
         filters: args,
       ).shows || []
+    end
+
+    private
+
+    def ensure_first_argument!
+      limit = context.dig(:current_arguments, :first)
+      raise "Field :first is required" if limit.blank?
+
+      max_page_size = context.schema.default_max_page_size
+      return limit if limit < max_page_size
+
+      warn "Warning: Maximum items list length is #{max_page_size}."
+      warn "Returning #{max_page_size} items instead of #{limit}"
+      max_page_size
     end
   end
 end
