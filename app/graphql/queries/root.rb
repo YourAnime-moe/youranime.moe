@@ -87,6 +87,14 @@ module Queries
       Show.find(ids).index_by(&:id).slice(*ids).values
     end
 
+    field :kitsu_search, [Queries::Types::Shows::KitsuResult], null: false do
+      argument :text, String, required: true
+    end
+
+    def kitsu_search(text:)
+      KitsuSearch.new(text).run!
+    end
+
     field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
       argument :slug, String, required: true
     end
