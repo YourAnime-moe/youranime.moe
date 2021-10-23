@@ -9,6 +9,7 @@ class KitsuSearch
       :poster_image,
       :year,
       :nsfw,
+      :status,
       :kitsu_id
 
     attr_reader :similarity
@@ -95,6 +96,7 @@ class KitsuSearch
       result.poster_image = attributes[:posterImage]
       result.year = attributes[:year]
       result.nsfw = attributes[:nsfw]
+      result.status = attributes[:status]
       result.kitsu_id = data[:id]
 
       result

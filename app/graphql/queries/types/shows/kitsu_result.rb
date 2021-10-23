@@ -7,6 +7,7 @@ module Queries
         field :canonical_title, String, null: false
         field :slug, String, null: false
         field :poster_image, Shows::Poster, null: false
+        field :status, String, null: false
         field :year, Integer, null: true
         field :nsfw, GraphQL::Types::Boolean, null: false
         field :platforms, [Shows::Platform], null: false do
