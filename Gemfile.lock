@@ -128,6 +128,19 @@ GEM
       railties (>= 3.2)
     down (5.1.1)
       addressable (~> 2.5)
+    elasticsearch (7.5.0)
+      elasticsearch-api (= 7.5.0)
+      elasticsearch-transport (= 7.5.0)
+    elasticsearch-api (7.5.0)
+      multi_json
+    elasticsearch-model (7.2.0)
+      activesupport (> 3)
+      elasticsearch (~> 7)
+      hashie
+    elasticsearch-rails (7.2.0)
+    elasticsearch-transport (7.5.0)
+      faraday (>= 0.14, < 1)
+      multi_json
     equalizer (0.0.11)
     erubi (1.10.0)
     execjs (2.7.0)
@@ -439,6 +452,8 @@ DEPENDENCIES
   debride
   dotenv-rails
   down (~> 5.0)
+  elasticsearch-model (~> 7.2)
+  elasticsearch-rails (~> 7.2)
   factory_bot_rails
   faker
   fasterer

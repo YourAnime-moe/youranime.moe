@@ -8,6 +8,8 @@ class Show < ApplicationRecord
   include TanoshimuUtils::Concerns::ResourceFetch
   include TanoshimuUtils::Concerns::HasTranslatableField
   include TanoshimuUtils::Validators::PresenceOneOf
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
 
   EMBED_YOUTUBE_BASE_URL = "https://www.youtube.com/embed"
 
