@@ -83,7 +83,7 @@ module Queries
     end
 
     def shows(slugs:)
-      ids = slugs.map { |slug| Show.find_by_slug(slug).id }.compact
+      ids = slugs.map { |slug| Show.find_by_slug(slug)&.id }.compact
       Show.find(ids).index_by(&:id).slice(*ids).values
     end
 
