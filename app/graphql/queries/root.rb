@@ -29,7 +29,8 @@ module Queries
     end
 
     def search(query:, limit: 100, tags: [])
-      ::Search.perform(search: query, limit: limit, tags: tags, format: :shows)
+      # ::Search.perform(search: query, limit: limit, tags: tags, format: :shows)
+      ::Show.where(id: ::Show.__elasticsearch__.search(query).records.ids)
     end
 
     field :show_tags, Queries::Types::Shows::Tag.connection_type, null: false
