@@ -77,6 +77,9 @@ module Shows
           query: query,
           endpoint: 'https://graphql.anilist.co'
         )
+      rescue RestClient::NotFound
+        Rails.logger.error("[#{self.class}] AniList#{anilist_id} was not found")
+        nil
       end
 
       def anilist_id
