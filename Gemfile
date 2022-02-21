@@ -68,9 +68,6 @@ gem 'image_processing', '~> 1.2'
 # Subtitle parsing
 gem 'webvtt'
 
-# Webpack
-gem 'webpacker'
-
 # ActiveOperation
 gem 'active_operation'
 

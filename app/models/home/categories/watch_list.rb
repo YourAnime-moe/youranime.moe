@@ -13,6 +13,10 @@ module Home
       def shows_override
         context[:current_user].main_queue.shows
       end
+
+      def cacheable?
+        false
+      end
     end
   end
 end

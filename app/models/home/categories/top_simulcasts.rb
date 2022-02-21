@@ -26,6 +26,10 @@ module Home
         [:next_episode, :airing_at]
       end
 
+      def cache_expires_in
+        10.minutes
+      end
+
       def self.default_scope
         Shows::Streamable.perform(airing: true, sort_filters: :airing_at)
       end

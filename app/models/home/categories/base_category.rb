@@ -111,6 +111,14 @@ module Home
       def shows_override
       end
 
+      def cacheable?
+        true
+      end
+
+      def cache_expires_in
+        1.day
+      end
+
       ## Internal attributes
       def title
         I18n.translate(title_template, title_params)
@@ -127,8 +135,9 @@ module Home
       def shows
         ensure_enabled!
         return @shows if @shows.present?
+        return @shows if (@shows = shows_override).present?
 
-        @shows = shows_override || compute_shows
+        @shows = cacheable? ? cached_compute_shows : compute_shows
       end
 
       def shows_by_year
@@ -188,6 +197,22 @@ module Home
         unless enabled?
           raise ConfigurationError, "#{self.class.name} is not enabled"
         end
+      end
+
+      def cached_compute_shows
+        cache_key = "category-#{key}"
+
+        cached_ids = Rails.cache.read(cache_key)
+        if cached_ids.present?
+          Rails.logger.info("[#{self.class}] Restauring from cache key `#{cache_key}`")
+          return ::Show.where(id: cached_ids)
+        end
+
+        shows_to_cache = compute_shows
+        ids_to_cache = shows_to_cache.respond_to?(:ids) ? shows_to_cache.ids : shows_to_cache.map(&:id)
+
+        Rails.cache.write(cache_key, ids_to_cache, expires_in: cache_expires_in)
+        shows_to_cache
       end
 
       def compute_shows
