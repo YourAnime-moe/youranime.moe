@@ -84,7 +84,7 @@ class Show < ApplicationRecord
         Platform.find_by(name: platform.to_s) || Platform.from(platform.to_s)
       end
     end.compact
-    joins(:links).where(['show_urls.url_type in (?)', search_by_platforms.map(&:name)])
+    optimized.joins(:links).where(['show_urls.url_type in (?)', search_by_platforms.map(&:name)])
   end
   scope :streamable, -> {
                        joins(:urls).where('show_urls.url_type' => Platform.pluck(:name))

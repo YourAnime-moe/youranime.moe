@@ -202,17 +202,15 @@ module Home
       def cached_compute_shows
         cache_key = "category-#{key}"
 
-        cached_ids = Rails.cache.read(cache_key)
-        if cached_ids.present?
+        cached_shows = Rails.cache.read(cache_key)
+        if cached_shows.present?
           Rails.logger.info("[#{self.class}] Restauring from cache key `#{cache_key}`")
-          return ::Show.where(id: cached_ids)
+          return cached_shows
         end
 
-        shows_to_cache = compute_shows
-        ids_to_cache = shows_to_cache.respond_to?(:ids) ? shows_to_cache.ids : shows_to_cache.map(&:id)
-
-        Rails.cache.write(cache_key, ids_to_cache, expires_in: cache_expires_in)
-        shows_to_cache
+        shows = compute_shows
+        Rails.cache.write(cache_key, shows, expires_in: cache_expires_in)
+        shows
       end
 
       def compute_shows
