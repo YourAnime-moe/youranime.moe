@@ -283,8 +283,12 @@ class Show < ApplicationRecord
   end
 
   def related_shows
+    cleaned_urls = urls.select do |url|
+      url.platform ? URI.parse(url.platform.url) != URI.parse(url.value) : true
+    end
+
     Show.joins(:urls)
-      .where(['show_urls.value in (?)', urls.pluck(:value)])
+      .where(['show_urls.value in (?)', cleaned_urls.pluck(:value)])
       .where.not(id: id)
       .order(:starts_on)
       .reverse_order

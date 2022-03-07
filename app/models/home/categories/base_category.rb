@@ -112,7 +112,7 @@ module Home
       end
 
       def cacheable?
-        true
+        false
       end
 
       def cache_expires_in
