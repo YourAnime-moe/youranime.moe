@@ -1,11 +1,11 @@
-FROM ruby:2.6.7
+FROM ruby:3.0.1
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update -qq && apt-get install -y yarn postgresql-client
 RUN apt-get install -y software-properties-common
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
-RUN gem install bundler:1.17.3
+RUN gem install bundler:2.2.19
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock

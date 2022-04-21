@@ -482,7 +482,7 @@ DEPENDENCIES
   will_paginate-bulma
 
 RUBY VERSION
-   ruby 2.6.7p197
+   ruby 3.0.1p64
 
 BUNDLED WITH
-   1.17.3
+   2.2.19
