@@ -63,7 +63,7 @@ gem 'will_paginate'
 gem 'will_paginate-bulma'
 
 # Image processing
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 
 # Subtitle parsing
 gem 'webvtt'
