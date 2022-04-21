@@ -93,11 +93,11 @@
           <div class="columns">
             <div class="column field">
               <%= f.label :description, 'English description', class: 'label' %>
-              <%= text_area_tag('description[en]', @show.description_record.en, class: 'textarea is-fullwidth', rows: 4) %>
+              <%= text_area_tag('description[en]', @show.description_record&.en, class: 'textarea is-fullwidth', rows: 4) %>
             </div>
             <div class="column field">
               <%= f.label :description, 'Japanese description', class: 'label' %>
-              <%= text_area_tag('description[jp]', @show.description_record.jp, class: 'textarea is-fullwidth', rows: 4, placeholder: 'Notice: English description is used by default.') %>
+              <%= text_area_tag('description[jp]', @show.description_record&.jp, class: 'textarea is-fullwidth', rows: 4, placeholder: 'Notice: English description is used by default.') %>
             </div>
           </div>
         <% end %>

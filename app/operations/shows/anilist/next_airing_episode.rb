@@ -26,6 +26,8 @@ module Shows
 
       def fetch_next_airing_episode_data!
         result = fetch_data!
+        return unless result.present?
+
         data = result.dig(:data, :Media, :nextAiringEpisode)
 
         return unless data.present?
@@ -77,6 +79,9 @@ module Shows
           query: query,
           endpoint: 'https://graphql.anilist.co'
         )
+      rescue RestClient::NotFound
+        Rails.logger.error("[#{self.class}] AniList#{anilist_id} was not found")
+        nil
       end
 
       def anilist_id

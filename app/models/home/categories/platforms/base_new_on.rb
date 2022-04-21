@@ -20,7 +20,7 @@ module Home
         end
 
         def self.default_scope
-          Show.streamable_on(platform_name).order('starts_on desc')
+          Show.streamable_on(platform_name).includes(:next_airing_info, :urls).order('starts_on desc')
         end
 
         def self.platform_name
