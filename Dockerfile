@@ -11,7 +11,7 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 COPY package.json /app/package.json
 ENV BUNDLE_PATH /gems
-# RUN bundle install --jobs 4 --retry 5
+RUN bundle install --jobs 4 --retry 5
 RUN yarn install --check-files
 COPY . /app
 

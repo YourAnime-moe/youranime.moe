@@ -50,14 +50,6 @@ class User < ApplicationRecord
     false
   end
 
-  def self.from_google_omniauth(auth)
-    where(email: auth.info.email).first_or_initialize do |user|
-      user.name = auth.info.name
-      user.email = auth.info.email
-      user.username = auth.info.email
-    end
-  end
-
   def self.demo
     where(username: 'demo').first_or_initialize do |user|
       user.name = 'Demo User'

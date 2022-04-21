@@ -6,7 +6,6 @@ module Sync
     def perform(season, staff:)
       message = "[Sync::ShowsFromtKitsuJob] Syncing #{season} season..."
       Rails.logger.info(message)
-      Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
 
       processed_shows = ::Shows::Kitsu::Sync::Airing.perform(season: season)
       updated_shows = ::Shows::Kitsu::Sync::Existing.perform
@@ -15,7 +14,6 @@ module Sync
 
       message = "[Sync::ShowsFromtKitsuJob] Processed #{processed_shows_count} show(s)!"
       Rails.logger.info(message)
-      Config.slack_client&.chat_postMessage(channel: '#tasks', text: message)
     end
   end
 end

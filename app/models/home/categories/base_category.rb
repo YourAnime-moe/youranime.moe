@@ -121,7 +121,7 @@ module Home
 
       ## Internal attributes
       def title
-        I18n.translate(title_template, title_params)
+        I18n.translate(title_template, **title_params)
       end
 
       def key

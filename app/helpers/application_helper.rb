@@ -187,9 +187,5 @@ module ApplicationHelper
     user.delete_auth_token!
     session.delete(:user_id)
     session.delete(:current_show_id)
-    return if Config.slack_client.nil?
-
-    Config.slack_client.chat_postMessage(channel: '#sign-ins',
-text: "[SIGN OUT] User #{user.username}-#{user.id} at #{Time.zone.now}.")
   end
 end
