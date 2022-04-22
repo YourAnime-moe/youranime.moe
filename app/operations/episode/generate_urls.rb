@@ -8,7 +8,6 @@ class Episode
       puts 'Generating URLs for Episodes...'
       message = "[#{Time.zone.now}] Preparing Episode URL generation..."
       Rails.logger.info(message)
-      Config.slack_client.chat_postMessage(channel: '#tasks', text: message)
 
       @episodes = Episode.published
       Rails.logger.info("Analyzing #{@episodes.count} episode(s)...")
@@ -25,10 +24,6 @@ class Episode
     end
 
     succeeded do
-      Config.slack_client.chat_postMessage(
-        channel: '#tasks',
-        text: "[#{Time.zone.now}] URL for #{@successful_ids.count} episode(s) URL generation complete."
-      )
       Rails.logger.info('Done.')
     end
   end

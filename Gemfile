@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-ruby '2.6.7'
+ruby '3.0.1'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
@@ -41,16 +41,8 @@ gem 'jbuilder'
 gem 'bcrypt'
 gem 'rest-client'
 
-# Single Sign on
-gem 'omniauth-google-oauth2'
-gem 'omniauth-oauth2'
-gem 'omniauth-rails_csrf_protection'
-
 # Shopify's code styles
 gem 'rubocop-shopify', require: false
-
-# Slack client
-gem 'slack-ruby-client'
 
 # Coveralls
 gem 'coveralls', require: false
@@ -100,10 +92,10 @@ gem 'view_component', require: 'view_component/engine'
 gem "frozen_record", "~> 0.20.1"
 
 # All things about countries
-gem 'countries'
+gem 'countries', '~> 3.0'
 
 # For graphql
-gem 'graphql'
+gem 'graphql', '~> 1.11'
 gem 'rack-cors'
 
 group :development, :test do

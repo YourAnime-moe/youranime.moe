@@ -6,8 +6,6 @@ module Admin
     include ::UsersHelper
 
     USER_TYPES_MAP = {
-      Users::Google.name => 'Google User',
-      Users::Misete.name => 'Misete User',
       Users::Regular.name => 'Regular',
       Users::Admin.name => 'Admin',
     }.with_indifferent_access.freeze
