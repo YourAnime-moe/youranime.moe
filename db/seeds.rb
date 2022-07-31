@@ -1,31 +1,7 @@
-# encoding: utf-8
-# frozen_string_literal: true
-require 'mini_magick'
-
-def seed
-  User.transaction { seed_users }
-  seed_shows_later
-end
-
-def seed_users
-  Users::Admin.system
-
-  Users::Admin.create(
-    username: 'admin',
-    first_name: 'Admin',
-    last_name: 'User',
-    limited: false,
-    password: Rails.env.development? ? 'password' : Rails.application.credentials.admin_password,
-    email: 'admin@youranime.moe',
-  )
-end
-
-def seed_shows_later
-  return if Rails.env.test?
-
-  %i(current next).each do |season|
-    Sync::ShowsFromKitsuJob.perform_later(season, staff: Users::Admin.system)
-  end
-end
-
-seed
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
+#   Character.create(name: "Luke", movie: movies.first)

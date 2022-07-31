@@ -1,138 +1,50 @@
-# frozen_string_literal: true
-source 'https://rubygems.org'
+source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.1'
+ruby "3.0.1"
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
-  "https://github.com/#{repo_name}.git"
-end
+# Use main development branch of Rails
+gem "rails", github: "rails/rails", branch: "main"
 
-# Suggested updates
-gem 'activejob'
-gem 'activestorage'
-gem 'loofah'
-gem 'nokogiri'
-gem 'rack'
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", "~> 5.0"
 
-# Rollbar
-gem 'rollbar'
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+# gem "jbuilder"
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
-# Use Puma as the app server
-gem 'puma'
-# Use SCSS for stylesheets
-gem 'sass-rails'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+# gem "kredis"
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-# gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-gem 'bcrypt'
-gem 'rest-client'
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
 
-# Shopify's code styles
-gem 'rubocop-shopify', require: false
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
-# Coveralls
-gem 'coveralls', require: false
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
 
-# AWS S3 SDK
-gem 'aws-sdk-s3', require: false
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
 
-# Pagination
-gem 'will_paginate'
-gem 'will_paginate-bulma'
-
-# Image processing
-gem 'image_processing', '~> 1.2'
-
-# Subtitle parsing
-gem 'webvtt'
-
-# ActiveOperation
-gem 'active_operation'
-
-# As a state machine (AASM)
-gem 'aasm'
-
-# Code quality
-gem 'debride'
-gem 'fasterer'
-gem 'reek'
-gem 'rubocop', require: false
-gem 'ruby-lint'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# My gems
-gem 'tanoshimu_utils'
-
-# Downloading files
-gem 'down', '~> 5.0'
-
-# Sidekiq
-gem 'sidekiq'
-
-# ViewComponent
-gem 'view_component', require: 'view_component/engine'
-
-# Frozen record
-gem "frozen_record", "~> 0.20.1"
-
-# All things about countries
-gem 'countries', '~> 3.0'
-
-# For graphql
-gem 'graphql', '~> 1.11'
-gem 'rack-cors'
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+# gem "rack-cors"
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
-  gem 'dotenv-rails'
-  gem 'rspec-rails', '~> 4'
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+
+  # Sqlite for dev
+  gem "sqlite3", "~> 1.4"
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'listen', '~> 3.0.5'
-  gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  # Use sqlite3 as the database for Active Record
-  gem 'pry'
-  gem 'pry-rails'
-  gem 'sqlite3'
-
-  # Use GraphiQL
-  gem 'graphiql-rails'
-end
-
-group :test do
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'rspec'
-  gem 'rspec_junit_formatter'
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"
 end
 
 group :production do
-  gem 'pg'
-  gem 'rack-cache', require: 'rack/cache'
-  gem 'rails_12factor'
+  # Use postgresql as the database for Active Record
+  gem "pg", "~> 1.1"
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
