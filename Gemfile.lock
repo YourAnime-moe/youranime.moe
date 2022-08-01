@@ -95,6 +95,9 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    active_operation (1.0.0)
+      activesupport (> 5.0)
+      smart_properties (~> 1.17)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -108,6 +111,10 @@ GEM
     erubi (1.10.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    graphql (2.0.12)
+    graphql-client (0.18.0)
+      activesupport (>= 3.0)
+      graphql
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.5.11)
@@ -155,6 +162,7 @@ GEM
     rake (13.0.6)
     reline (0.3.1)
       io-console (~> 0.5)
+    smart_properties (1.17.0)
     sqlite3 (1.4.4)
     strscan (3.0.4)
     thor (1.2.1)
@@ -170,8 +178,10 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_operation (~> 1.0)
   bootsnap
   debug
+  graphql-client (~> 0.18)
   pg (~> 1.1)
   puma (~> 5.0)
   rails!

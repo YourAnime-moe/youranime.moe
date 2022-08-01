@@ -30,6 +30,9 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
+# GraphQL client
+gem "graphql-client", "~> 0.18"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
@@ -48,3 +51,5 @@ group :production do
   gem "pg", "~> 1.1"
 end
 
+
+gem "active_operation", "~> 1.0"
