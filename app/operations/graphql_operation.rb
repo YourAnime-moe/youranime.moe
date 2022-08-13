@@ -4,6 +4,10 @@ class GraphqlOperation < ApplicationOperation
 
   attr_reader :result
 
+  before do
+    Rails.logger.info("[#{self.class.name}] variable=#{variables} context=#{context}")
+  end
+
   protected
 
   def client

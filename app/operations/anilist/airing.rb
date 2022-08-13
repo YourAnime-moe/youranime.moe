@@ -1,5 +1,5 @@
 module Anilist
-  class Search < Base  
+  class Airing < Base  
     def execute
       @result = Anilist::Result.new(client.query(Query, **graphql_params))
     end
@@ -7,12 +7,10 @@ module Anilist
     Query = Anilist::Client.parse <<-GRAPHQL
         query (
           $page: Int = 1
-          $id: Int
           $type: MediaType
           $isAdult: Boolean = false
           $search: String
           $format: [MediaFormat]
-          $status: MediaStatus
           $countryOfOrigin: CountryCode
           $source: MediaSource
           $season: MediaSeason
@@ -25,10 +23,6 @@ module Anilist
           $episodeGreater: Int
           $durationLesser: Int
           $durationGreater: Int
-          $chapterLesser: Int
-          $chapterGreater: Int
-          $volumeLesser: Int
-          $volumeGreater: Int
           $licensedBy: [Int]
           $isLicensed: Boolean
           $genres: [String]
@@ -47,11 +41,10 @@ module Anilist
               hasNextPage
             }
             media(
-              id: $id
               type: $type
               season: $season
               format_in: $format
-              status: $status
+              status: RELEASING
               countryOfOrigin: $countryOfOrigin
               source: $source
               search: $search
@@ -64,10 +57,6 @@ module Anilist
               episodes_greater: $episodeGreater
               duration_lesser: $durationLesser
               duration_greater: $durationGreater
-              chapters_lesser: $chapterLesser
-              chapters_greater: $chapterGreater
-              volumes_lesser: $volumeLesser
-              volumes_greater: $volumeGreater
               licensedById_in: $licensedBy
               isLicensed: $isLicensed
               genre_in: $genres

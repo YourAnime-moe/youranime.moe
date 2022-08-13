@@ -22,6 +22,10 @@ module Anilist
       @graphql_result.to_h
     end
 
+    def as_json(*args, **kwargs)
+      to_h.as_json(*args, **kwargs)
+    end
+
     def raw
       to_h
     end
