@@ -28,10 +28,12 @@ namespace :sync do
       desc 'Fetch and update the currently airing and upcoming shows from kitsu.io'
       task later: :environment do
         %i(current next).each do |season|
+          Sync::ShowsFromKitsuJob.perform_later(season)
         end
       end
       task now: :environment do
         %i(current next).each do |season|
+          Sync::ShowsFromKitsuJob.perform_now(season)
         end
       end
 

@@ -4,7 +4,7 @@ module Sync
     class UpdateShowsJob < TrackableJob
       queue_as :sync
 
-      def perform(show_ids, staff:)
+      def perform(show_ids)
         ::Shows::Update::ManyShows.perform(
           show_ids: show_ids,
         )
