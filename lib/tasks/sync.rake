@@ -9,7 +9,6 @@ namespace :sync do
 
           ::Sync::Shows::UpdateShowsJob.perform_later(
             show_ids,
-            staff: Users::Admin.system,
           )
         end
       end
@@ -20,7 +19,6 @@ namespace :sync do
 
           ::Sync::Shows::UpdateShowsJob.perform_now(
             show_ids,
-            staff: Users::Admin.system,
           )
         end
       end
@@ -30,12 +28,10 @@ namespace :sync do
       desc 'Fetch and update the currently airing and upcoming shows from kitsu.io'
       task later: :environment do
         %i(current next).each do |season|
-          Sync::ShowsFromKitsuJob.perform_later(season, staff: Users::Admin.system)
         end
       end
       task now: :environment do
         %i(current next).each do |season|
-          Sync::ShowsFromKitsuJob.perform_now(season, staff: Users::Admin.system)
         end
       end
 
@@ -44,14 +40,12 @@ namespace :sync do
         task now: :environment do
           Sync::UpdateExistingShowsJob.perform_now(
             force_update: false,
-            staff: Users::Admin.system,
           )
         end
 
         task later: :environment do
           Sync::UpdateExistingShowsJob.perform_later(
             force_update: false,
-            staff: Users::Admin.system,
           )
         end
 
@@ -59,14 +53,12 @@ namespace :sync do
           task now: :environment do
             Sync::UpdateExistingShowsJob.perform_now(
               force_update: true,
-              staff: Users::Admin.system,
             )
           end
 
           task later: :environment do
             Sync::UpdateExistingShowsJob.perform_later(
               force_update: true,
-              staff: Users::Admin.system,
             )
           end
         end
@@ -79,7 +71,6 @@ namespace :sync do
         Show.streamable.airing.find_in_batches(batch_size: 10).each do |shows_batch|
           ::Sync::Shows::UpdateAiringScheduleJob.perform_later(
             shows_batch.map(&:id),
-            staff: Users::Admin.system,
           )
         end
       end
@@ -91,14 +82,12 @@ namespace :sync do
         Sync::Shows::CrawlFromKitsuJob.perform_later(
           args[:start].to_i,
           args[:end].to_i,
-          staff: Users::Admin.system,
         )
       end
       task :now, [:start, :end] => [:environment] do |_, args|
         Sync::Shows::CrawlFromKitsuJob.perform_now(
           args[:start].to_i,
           args[:end].to_i,
-          staff: Users::Admin.system,
         )
       end
     end

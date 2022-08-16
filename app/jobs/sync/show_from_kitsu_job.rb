@@ -3,7 +3,7 @@ module Sync
   class ShowFromKitsuJob < TrackableJob
     queue_as :sync
 
-    def perform(show, staff:)
+    def perform(show)
       ::Shows::Sync.perform(sync_type: :show, show: show, requested_by: staff)
     end
   end

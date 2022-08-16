@@ -3,7 +3,7 @@ module Sync
   class ShowsFromKitsuJob < TrackableJob
     queue_as :sync
 
-    def perform(season, staff:)
+    def perform(season)
       message = "[Sync::ShowsFromtKitsuJob] Syncing #{season} season..."
       Rails.logger.info(message)
 
