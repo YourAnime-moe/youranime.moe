@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Shows
   class GenerateUrlsJob < TrackableJob
-    def perform(force: true)
-      Show::GenerateUrls.perform(force: force)
+    def perform(show_ids, force: true)
+      Show::GenerateUrls.perform(shows: Show.find(show_ids), force: force)
     end
   end
 end

@@ -2,21 +2,19 @@
 
 class Show
   class GenerateUrls < ApplicationOperation
+    input :shows, type: :keyword, required: true
     input :force, type: :keyword, required: false
 
     before do
       puts 'Generating URLs for Shows...'
-      message = "[#{Time.zone.now}] Preparing Show URL generation..."
-      Rails.logger.info(message)
-
-      @shows = Show.published
-      Rails.logger.info("Analyzing #{@shows.count} show(s)...")
+      Rails.logger.info("[#{Time.zone.now}] Preparing Show URL generation...")
+      Rails.logger.info("Analyzing #{shows.count} show(s)...")
     end
 
     def execute
       printf('Generating for shows: ')
       @successful_ids = []
-      @shows.find_each do |show|
+      shows.each do |show|
         result = show.generate_banner_url!(force: force) && show.generate_poster_url!(force: force)
         @successful_ids << show.id if result && show.banner? && show.poster?
         printf(result ? '.' : 'F')
