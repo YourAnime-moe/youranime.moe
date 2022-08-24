@@ -1,0 +1,23 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=your
+      - POSTGRES_PASSWORD=anime
+  api:
+    build: .
+    command: bash -c "bundle exec rails server -b 0.0.0.0"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://your:anime@db
+    depends_on:
+      - db
