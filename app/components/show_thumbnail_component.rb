@@ -30,12 +30,12 @@ class ShowThumbnailComponent < ViewComponent::Base
     options = []
 
     options << badge_options
-    options << { type: :light, content: t("anime.shows.airing_status.#{@show.status}") } unless @show.air_complete?
+    options << { type: :light, text: t("anime.shows.airing_status.#{@show.status}") } unless @show.air_complete?
 
     if @queue_item.present?
       options << {
         type: :warning,
-        content: queue_item_added_date_or_ago,
+        text: queue_item_added_date_or_ago,
       }
     end
 
@@ -44,26 +44,26 @@ class ShowThumbnailComponent < ViewComponent::Base
       options << {
         background: platform_colour,
         colour: Utils.text_color(from: platform_colour),
-        content: t("anime.platforms.#{@focus_platform.name}"),
+        text: t("anime.platforms.#{@focus_platform.name}"),
       }
 
       links_scope = @show.links.unless(url_type: @focus_platform.name)
       options << {
         type: :link,
-        content: "+#{links_scope.count}",
+        text: "+#{links_scope.count}",
       } if links_scope.any?
     elsif @show.links.count == 1
       link = @show.links.first
       options << {
         background: link.colour,
         colour: Utils.text_color(from: link.colour),
-        content: t("anime.platforms.exclusively",
+        text: t("anime.platforms.exclusively",
           on: t("anime.platforms.#{link.platform}")),
       }
     elsif @show.links.count > 1
       options << {
         type: :link,
-        content: t("anime.platforms.streamable",
+        text: t("anime.platforms.streamable",
           count: @show.links.count),
       }
     end
@@ -75,17 +75,17 @@ class ShowThumbnailComponent < ViewComponent::Base
     options = {}
 
     if show_type == 'movie'
-      options.merge!({ type: :info, content: t('anime.shows.movie') })
+      options.merge!({ type: :info, text: t('anime.shows.movie') })
     elsif show_type == 'game'
-      options.merge!({ type: :warning, content: t('anime.shows.game') })
+      options.merge!({ type: :warning, text: t('anime.shows.game') })
     elsif show_type == 'music'
-      options.merge!({ type: :danger, content: t('anime.shows.music'), light: true })
+      options.merge!({ type: :danger, text: t('anime.shows.music'), light: true })
     elsif show_type == 'special'
-      options.merge!({ type: :light, content: t('anime.shows.special') })
+      options.merge!({ type: :light, text: t('anime.shows.special') })
     elsif ['ONA', 'OVA'].include?(show_type)
-      options.merge!({ type: :primary, content: t("anime.shows.#{show_type.downcase}"), light: true })
+      options.merge!({ type: :primary, text: t("anime.shows.#{show_type.downcase}"), light: true })
     else
-      options.merge!({ type: :primary, content: t("anime.shows.#{show_type.downcase}") })
+      options.merge!({ type: :primary, text: t("anime.shows.#{show_type.downcase}") })
     end
 
     options

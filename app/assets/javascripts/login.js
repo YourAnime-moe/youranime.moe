@@ -1,6 +1,4 @@
-
 function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
-
 	function edForm(form, readOnly) {
 		if (form && form.elements) {
 			var elements = form.elements;
@@ -67,7 +65,6 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 	// }
 
 	Fingerprint2.get((components) => {
-		console.log(components);
 		const items = [
 			components[0],
 			components[9],
@@ -75,49 +72,81 @@ function login(error_p_id, waiting_p_id, success_p_id, form_id, callback) {
 		];
 		const urlParams = new URLSearchParams(window.location.search);
 		const nextParam = urlParams.get('next') || undefined;
-		$.ajax({
-			url: '/login',
-			method: 'post',
-			data: {
-				username: one,
-				password: two,
-				next: nextParam,
-				fingerprint: {
-					print: handleFingerprint(components),
-					items: items
-				},
-			},
-			success: function(e) {
-				error_container.innerHTML = "";
-				if (!e.success) {
-					enableForm(form_container);
-					error_container.innerHTML = e.message;
-					if (typeof(callback) === 'function') {
-						callback();
-					}
-				} else {
-					success_container.innerHTML = e.message;
-					document.location.replace(e.new_url);
-				}
-			},
-			failure: function(e) {
-				enableForm(form_container);
-				error_container.innerHTML = e.message;
-				if (typeof(callback) === 'function') {
-					callback();
-				}
-			},
-			error: function(e) {
-				enableForm(form_container);
-				error_container.innerHTML = e.toString();
-				if (typeof(callback) === 'function') {
-					callback();
-				}
-			},
-			complete: function() {
-				waiting_container.innerHTML = "";
+
+		const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+		fetch('/login', {method: 'post', body: JSON.stringify({
+			username: one,
+			password: two,
+			next: nextParam,
+			fingerprint: {
+				print: handleFingerprint(components),
+				items: items,
 			}
+		}), headers: {'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json'}}).then((res) => res.json()).then((res) => {
+			if (res.success) {
+				success_container.innerHTML = res.message;
+				document.location.replace(res.new_url);
+			} else {
+				enableForm(form_container);
+				error_container.innerHTML = res.message;
+				if (typeof(callback) === 'function') {
+					callback();
+				}
+			}
+		}).catch((e) => {
+			enableForm(form_container);
+			error_container.innerHTML = e.message || e.toString();
+			if (typeof(callback) === 'function') {
+				callback();
+			}
+		}).finally(() => {
+			waiting_container.innerHTML = "";
 		});
+
+		// $.ajax({
+		// 	url: '/login',
+		// 	method: 'post',
+		// 	data: {
+		// 		username: one,
+		// 		password: two,
+		// 		next: nextParam,
+		// 		fingerprint: {
+		// 			print: handleFingerprint(components),
+		// 			items: items
+		// 		},
+		// 	},
+		// 	success: function(e) {
+		// 		error_container.innerHTML = "";
+		// 		if (!e.success) {
+		// 			enableForm(form_container);
+		// 			error_container.innerHTML = e.message;
+		// 			if (typeof(callback) === 'function') {
+		// 				callback();
+		// 			}
+		// 		} else {
+		// 			success_container.innerHTML = e.message;
+		// 			document.location.replace(e.new_url);
+		// 		}
+		// 	},
+		// 	failure: function(e) {
+		// 		enableForm(form_container);
+		// 		error_container.innerHTML = e.message;
+		// 		if (typeof(callback) === 'function') {
+		// 			callback();
+		// 		}
+		// 	},
+		// 	error: function(e) {
+		// 		enableForm(form_container);
+		// 		error_container.innerHTML = e.toString();
+		// 		if (typeof(callback) === 'function') {
+		// 			callback();
+		// 		}
+		// 	},
+		// 	complete: function() {
+		// 		waiting_container.innerHTML = "";
+		// 	}
+		// });
 	});
 	return false;
 }

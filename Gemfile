@@ -1,22 +1,12 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-ruby '3.0.1'
+ruby '3.1.2'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
-
-# Suggested updates
-gem 'activejob'
-gem 'activestorage'
-gem 'loofah'
-gem 'nokogiri'
-gem 'rack'
-
-# Rollbar
-gem 'rollbar'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1'
@@ -24,79 +14,40 @@ gem 'rails', '~> 6.1'
 gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-# gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+# Rest client
 gem 'rest-client'
-
 # Shopify's code styles
 gem 'rubocop-shopify', require: false
-
-# Coveralls
-gem 'coveralls', require: false
-
 # AWS S3 SDK
 gem 'aws-sdk-s3', require: false
-
 # Pagination
 gem 'will_paginate'
 gem 'will_paginate-bulma'
-
 # Image processing
 gem 'image_processing', '~> 1.2'
-
-# Subtitle parsing
-gem 'webvtt'
-
 # ActiveOperation
 gem 'active_operation'
-
 # As a state machine (AASM)
 gem 'aasm'
-
 # Code quality
-gem 'debride'
-gem 'fasterer'
-gem 'reek'
 gem 'rubocop', require: false
 gem 'ruby-lint'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# My gems
+# Tanoshimu Utilities
 gem 'tanoshimu_utils'
-
 # Downloading files
 gem 'down', '~> 5.0'
-
 # Sidekiq
 gem 'sidekiq'
-
 # ViewComponent
 gem 'view_component', require: 'view_component/engine'
-
 # Frozen record
 gem "frozen_record", "~> 0.20.1"
-
 # All things about countries
 gem 'countries', '~> 3.0'
-
 # For graphql
 gem 'graphql', '~> 1.11'
-gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

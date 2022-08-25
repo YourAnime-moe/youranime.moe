@@ -40,7 +40,7 @@
                 <input type="password" id="password" class="input is-rounded is-dark" placeholder="<%= t('welcome.login.password') %>">
               </div>
             </div>
-            <div style="margin-top: 10px;"
+            <div style="margin-top: 10px;">
               <button class="button is-fullwidth is-primary" type="submit"><%= t('welcome.login.login') %></button>
             </div>
 
@@ -78,26 +78,46 @@
 </section>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    var $submit = $('[type="submit"]');
-    $('#login-form').find('input').keypress(function(e) {
-       // Enter pressed?
-       if(e.which == 10 || e.which == 13) {
-         $submit.trigger('click');
-       }
-     });
+  document.addEventListener('DOMContentLoaded', () => {
+    function execLogin() {
+      submit.style.display = 'none';
+      login('error-message', 'waiting-message', 'success-message', 'login-form', () => {
+        submit.style.display = 'block';
+      }); 
+    }
+    const submit = document.querySelector('[type="submit"]');
+    if (!submit) {
+      return;
+    }
 
-     $submit.on('click', function() {
+    submit.addEventListener('click', () => {
       execLogin();
-     });
-
-     function execLogin() {
-       $submit.hide();
-       login('error-message', 'waiting-message', 'success-message', 'login-form', function() {
-         $submit.show();
-       });
-     }
+    });
   });
+
+
+  // $(document).ready(function() {
+  //   const submit = document.query
+
+  //   var $submit = $('[type="submit"]');
+  //   $('#login-form').find('input').keypress(function(e) {
+  //      // Enter pressed?
+  //      if(e.which == 10 || e.which == 13) {
+  //        $submit.trigger('click');
+  //      }
+  //    });
+
+  //    $submit.on('click', function() {
+  //     execLogin();
+  //    });
+
+  //    function execLogin() {
+  //      $submit.hide();
+  //      login('error-message', 'waiting-message', 'success-message', 'login-form', function() {
+  //        $submit.show();
+  //      });
+  //    }
+  // });
 </script>
 
 <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
