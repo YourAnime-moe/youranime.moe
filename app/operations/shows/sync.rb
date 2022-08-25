@@ -156,17 +156,16 @@ module Shows
       banner_file = try_downloading(banner_url)
       if banner_file
         synched_show.banner.attach(io: banner_file, filename: "show-#{synched_show.id}-banner")
-        synched_show.generate_banner_url!(force: true)
         banner_file.unlink
       end
 
       poster_file = try_downloading(poster_url)
       if poster_file
         synched_show.poster.attach(io: poster_file, filename: "show-#{synched_show.id}-poster")
-        synched_show.generate_poster_url!(force: true)
         poster_file.unlink
       end
 
+      synched_show.update_banner_and_poster_urls!(force: true)
       streamer_urls_for!(synched_show)
 
       synched_show
@@ -206,7 +205,7 @@ module Shows
       data = JSON.parse(response.body).deep_symbolize_keys
       return if data[:data].blank?
 
-      show.generate_banner_url!(force: true)
+      show.update_banner_and_poster_urls!(force: true)
 
       # Delete and replace all episods from the first season.
       season = show.seasons.first_or_create!

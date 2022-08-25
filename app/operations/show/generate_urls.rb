@@ -15,7 +15,7 @@ class Show
       printf('Generating for shows: ')
       @successful_ids = []
       shows.each do |show|
-        result = show.generate_banner_url!(force: force) && show.generate_poster_url!(force: force)
+        result = show.update_banner_and_poster_urls!(force: force)
         @successful_ids << show.id if result && show.banner? && show.poster?
         printf(result ? '.' : 'F')
       end

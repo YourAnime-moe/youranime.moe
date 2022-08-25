@@ -9,7 +9,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -39,7 +39,8 @@ gem 'tanoshimu_utils'
 # Downloading files
 gem 'down', '~> 5.0'
 # Sidekiq
-gem 'sidekiq'
+gem 'sidekiq', '6.4.2'
+gem 'redis', '4.6.0'
 # ViewComponent
 gem 'view_component', require: 'view_component/engine'
 # Frozen record
@@ -47,7 +48,7 @@ gem "frozen_record", "~> 0.20.1"
 # All things about countries
 gem 'countries', '~> 3.0'
 # For graphql
-gem 'graphql', '~> 1.11'
+gem 'graphql', '>= 1.11', '< 1.12'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -60,10 +61,6 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'listen', '~> 3.0.5'
   gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  # Use sqlite3 as the database for Active Record
   gem 'pry'
   gem 'pry-rails'
   gem 'sqlite3'

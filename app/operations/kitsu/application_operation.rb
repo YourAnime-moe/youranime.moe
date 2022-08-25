@@ -143,8 +143,7 @@ module Kitsu
     end
 
     def sync_show_images!(show, force: false)
-      show.generate_banner_url!(force: true) if force || show.banner_url == Show::DEFAULT_BANNER_URL
-      show.generate_poster_url!(force: true) if force || show.poster_url == Show::DEFAULT_POSTER_URL
+      show.update_banner_and_poster_urls!(force: force)
     end
 
     def try_image(type, options)

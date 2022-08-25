@@ -315,6 +315,29 @@ class Show < ApplicationRecord
     popularity_scope.index(self) + 1
   end
 
+  def poster_url?
+    self[:poster_url].present? && poster.attached?
+  end
+
+  def banner_url?
+    self[:banner_url].present? && banner.attached?
+  end
+
+  def update_banner_and_poster_urls!(**options)
+    force = options[:force] || false
+    return nil unless persisted?
+    if !force
+      return true if poster_url? && banner_url?
+    end
+
+    attributes = {
+      poster_url: poster.url,
+      banner_url: banner.url,
+    }.compact
+
+    update(**attributes)
+  end
+
   def self.exclusive_on(platform)
     # select * from shows inner join
     # (select count(su.url_type), shows.slug
