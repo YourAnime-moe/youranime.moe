@@ -17,7 +17,7 @@ You can visit [youranime.moe](https://youranime.moe) to get started.
 
 The following technologies made this app into what it is today:
 
-- [Ruby on Rails 6.1](http://rubyonrails.org/) (Server-side and API development)
+- [Ruby on Rails 7.0](http://rubyonrails.org/) (Server-side and API development)
 - [React](https://reactjs.org) (A JavaScript library for building user interfaces)
 - [Material-UI](https://material-ui.com/) (React components for faster and easier web development)
 - [GraphQL](https://graphql.org) (A graph-based query language, alternative to REST)
