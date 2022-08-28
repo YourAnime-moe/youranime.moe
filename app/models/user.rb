@@ -2,11 +2,11 @@
 class User < ApplicationRecord
   include LikeableConcern
   include HasSessionsConcern
-  include TanoshimuUtils::Concerns::Identifiable
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   before_save :ensure_hex, unless: :hex_initialized?
+  after_initialize :ensure_identification, unless: :identification?
   can_like_as :user
   has_many :issues, inverse_of: :user
   has_many :ratings
@@ -20,6 +20,7 @@ class User < ApplicationRecord
   validate :valid_user_type
   validates :email, uniqueness: true, if: :email?
   validates :first_name, presence: true
+  validates :identification, presence: true
   validates_format_of :email, with: EMAIL_REGEX, if: :email?
 
   def name
@@ -76,6 +77,12 @@ class User < ApplicationRecord
     code = code.to_s(16).upcase
 
     self[:hex] = '#' + ('00000'[0, 6 - code.size] + code)
+  end
+
+  def ensure_identification
+    return if identification.present?
+
+    self[:identification] = SecureRandom.uuid
   end
 
   def valid_user_type

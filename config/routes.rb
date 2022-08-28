@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     end
 
     resources :job_events, only: [:index]
+
+    post "/graphql", to: 'graphql#execute'
   end
 
   # API interface
