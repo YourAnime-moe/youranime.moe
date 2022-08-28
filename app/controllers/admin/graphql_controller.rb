@@ -88,9 +88,9 @@ class Admin::GraphqlController < ActionController::API
       return
     end
 
-    user = Users::Admin.find_or_initialize_by(identification: body['uuid'])
+    user = Users::Admin.find_or_initialize_by(username: body['username'])
 
-    user.username = body['username']
+    user.identification = body['uuid']
     user.first_name = body['first_name']
     user.last_name = body['last_name']
     unless user.persisted?
