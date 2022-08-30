@@ -47,6 +47,7 @@ module Admin
       field :related_shows, [Admin::Types::ShowRecord], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
+      field :added_by_users_count, Integer, null: false
 
       def current_poster_url
         @object.poster.url
@@ -127,6 +128,10 @@ module Admin
 
       def poster
         @object.poster_record
+      end
+
+      def added_by_users_count
+        @object.queues.count
       end
     end
   end
