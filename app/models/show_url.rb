@@ -65,6 +65,11 @@ class ShowUrl < ApplicationRecord
     return if url_type.present? || !value.present?
 
     url_to_type_regex = /(\w+\.)?(\w+)(\.\w+)/
-    self[:url_type] = platform&.name || value.match(url_to_type_regex)[2]
+    url_type = platform&.name
+    unless url_type
+      match = value.match(url_to_type_regex)
+      url_type = match[2] if match
+    end
+    self[:url_type] = url_type
   end
 end

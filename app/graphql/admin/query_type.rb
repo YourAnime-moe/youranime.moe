@@ -34,5 +34,22 @@ module Admin
     def show(slug:)
       Show.find_by(slug: slug)
     end
+
+    field :detect_platforms, type: [Queries::Types::Shows::Platform], null: false do
+      argument :links, type: [String], required: true
+    end
+    def detect_platforms(links:)
+      Platform.detect_from(links)
+    end
+
+    field :analyze_link, type: Queries::Types::Shows::Link, null: true do
+      argument :link, type: String, required: true
+    end
+    def analyze_link(link:)
+      link = ShowUrl.new(value: link)
+      link.validate
+
+      link
+    end
   end
 end
