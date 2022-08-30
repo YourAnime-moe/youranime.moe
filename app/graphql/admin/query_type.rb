@@ -59,5 +59,12 @@ module Admin
     def next_airing_episode(slug:, update: false)
       Shows::Anilist::NextAiringEpisode.perform(slug: slug, update: update)
     end
+
+    field :tags, [Queries::Types::Shows::Tag], null: false do
+      argument :query, String, required: false
+    end
+    def tags(query: nil)
+      query.blank? ? Tag.popular : Tag.popular.where(["value like ?", "%#{query}%"])
+    end
   end
 end
