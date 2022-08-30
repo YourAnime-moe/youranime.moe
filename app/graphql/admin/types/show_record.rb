@@ -17,6 +17,7 @@ module Admin
       field :banner_url, String, null: false
       field :poster_url, String, null: true
       field :current_poster_url, String, null: true
+      field :current_banner_url, String, null: true
       field :published, GraphQL::Types::Boolean, null: false
       field :poster, Queries::Types::Shows::Poster, null: false
       field :likes, Integer, null: false
@@ -51,6 +52,10 @@ module Admin
 
       def current_poster_url
         @object.poster.url
+      end
+
+      def current_banner_url
+        @object.banner.url
       end
 
       def starts_on

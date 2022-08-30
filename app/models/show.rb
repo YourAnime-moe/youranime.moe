@@ -331,8 +331,8 @@ class Show < ApplicationRecord
     end
 
     attributes = {
-      poster_url: poster.url,
-      banner_url: banner.url,
+      poster_url: poster.url(expires_in: 3.days),
+      banner_url: banner.url(expires_in: 3.days),
     }.compact
 
     update(**attributes)
