@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class AdminSchema < GraphQL::Schema
-  default_max_page_size(20)
+  default_max_page_size(50)
 
   mutation(Admin::MutationType)
   query(Admin::QueryType)

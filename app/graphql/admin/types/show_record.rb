@@ -7,6 +7,7 @@ module Admin
       field :title, String, null: false
       field :description, String, null: false
       field :slug, String, null: false
+      field :id, ID, null: false
       field :show_type, String, null: false
       field :show_category, String, null: true
       field :popularity, Integer, null: false
@@ -15,6 +16,7 @@ module Admin
       field :youtube_trailer_url, String, null: true
       field :banner_url, String, null: false
       field :poster_url, String, null: true
+      field :current_poster_url, String, null: true
       field :published, GraphQL::Types::Boolean, null: false
       field :poster, Queries::Types::Shows::Poster, null: false
       field :likes, Integer, null: false
@@ -25,9 +27,9 @@ module Admin
       field :nsfw, GraphQL::Types::Boolean, null: false
       field :age_rating, Queries::Types::Shows::AgeRating, null: false
       field :year, Integer, null: true
-      field :starts_on, GraphQL::Types::ISO8601DateTime, null: true
-      field :ended_on, GraphQL::Types::ISO8601DateTime, null: true
-      field :airing_at, GraphQL::Types::ISO8601DateTime, null: true
+      field :starts_on, Integer, null: true
+      field :ended_on, Integer, null: true
+      field :airing_at, Integer, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
       field :next_episode, Integer, null: true
@@ -46,8 +48,20 @@ module Admin
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
 
-      def poster_url
-        nil
+      def current_poster_url
+        @object.poster.url
+      end
+
+      def starts_on
+        @object.starts_on&.to_time&.to_i
+      end
+
+      def ended_on
+        @object.ended_on&.to_time&.to_i
+      end
+
+      def airing_at
+        @object.airing_at&.to_time&.to_i
       end
 
       def likes
