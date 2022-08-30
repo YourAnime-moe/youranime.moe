@@ -44,7 +44,7 @@ module Admin
       end
       field :other_links, [Queries::Types::Shows::Link], null: false
       field :tags, [Queries::Types::Shows::Tag], null: false
-      field :related_shows, [Queries::Types::Show], null: false
+      field :related_shows, [Admin::Types::ShowRecord], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
 
