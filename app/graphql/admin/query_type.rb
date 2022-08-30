@@ -51,5 +51,13 @@ module Admin
 
       link
     end
+
+    field :next_airing_episode, Queries::Types::Shows::AiringSchedule, null: true do
+      argument :slug, String, required: true
+      argument :update, GraphQL::Types::Boolean, required: false
+    end
+    def next_airing_episode(slug:, update: false)
+      Shows::Anilist::NextAiringEpisode.perform(slug: slug, update: update)
+    end
   end
 end

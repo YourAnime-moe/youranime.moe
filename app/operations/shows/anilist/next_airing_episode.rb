@@ -5,6 +5,7 @@ module Shows
       property! :slug
       property :force, accepts: [true, false], default: false
       property :raw, accepts: [true, false], default: false
+      property :update, accepts: [true, false], default: true
 
       def perform
         return if show.blank?
@@ -40,7 +41,7 @@ module Shows
       end
 
       def update_show!(data)
-        if data.nil?
+        if data.nil? && update
           show.next_airing_info&.destroy
           return
         end
@@ -54,7 +55,7 @@ module Shows
         next_airing_info = show.next_airing_info || show.build_next_airing_info
 
         next_airing_info.assign_attributes(**options)
-        next_airing_info.save!
+        next_airing_info.save! if update
 
         next_airing_info
       end
