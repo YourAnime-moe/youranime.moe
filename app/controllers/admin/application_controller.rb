@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 module Admin
   class ApplicationController < ::ApplicationController
+    include BearerTokenHelper
+
     layout 'admin'
 
+    before_action :log_user_in_from_token, except: [:login, :login_post]
     before_action :ensure_logging_in_as_admin
     before_action :ensure_title
 
@@ -18,6 +21,13 @@ module Admin
     end
 
     private
+
+    def log_user_in_from_token
+      token = params[:token]
+      return if token.blank?
+
+
+    end
 
     def currently_logged_in
       Users::Session.all.select(&:active?).map(&:user).uniq

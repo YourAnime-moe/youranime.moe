@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 require 'sidekiq/web'
 
+class BearerTokenConstraint
+  include BearerTokenHelper
+
+  # pros: we know for sure that the token is valid
+  # cons: relies on external service for token check
+  def self.matches?(request)
+    token = request.params[:token]
+    return unless token.present?
+
+    new.find_user_from_token(token)
+  end
+end
+
 Rails.application.routes.draw do
   get '/', to: redirect('/login')
   get '/home', to: redirect('/admin')
@@ -8,7 +21,9 @@ Rails.application.routes.draw do
   # Admin console
   get '/admin' => 'admin/application#home'
   namespace :admin do
-    mount Sidekiq::Web => '/sidekiq'
+    constraints(BearerTokenConstraint) do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 
     resources :shows do
       post :sync, on: :collection
