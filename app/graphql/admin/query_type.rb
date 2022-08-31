@@ -10,7 +10,7 @@ module Admin
     def home_feed
       {
         users: GraphqlUser.count,
-        admin_users: Admin::User.count,
+        admin_users: Users::Admin.count,
         jobs_running: JobEvent.running.count,
         shows: Show.count,
         issues: Issue.count,
@@ -24,7 +24,7 @@ module Admin
       if query.present?
         Search.perform(search: query, limit: 20, format: :shows)
       else
-        Show.all.with_attached_poster
+        Show.recent.with_attached_poster
       end
     end
 
