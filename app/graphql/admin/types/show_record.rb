@@ -39,10 +39,10 @@ module Admin
         argument :focus_on, String, required: false
         argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
       end
-      field :links, [Queries::Types::Shows::Link], null: false do
+      field :links, [Admin::Types::ShowLink], null: false do
         argument :region_locked, Queries::Types::Shows::Platforms::RegionLocked, required: false
       end
-      field :other_links, [Queries::Types::Shows::Link], null: false
+      field :other_links, [Admin::Types::ShowLink], null: false
       field :tags, [Queries::Types::Shows::Tag], null: false
       field :related_shows, [Admin::Types::ShowRecord], null: false
       field :title_record, Queries::Types::Shows::Title, null: false
