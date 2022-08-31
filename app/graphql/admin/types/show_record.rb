@@ -19,7 +19,6 @@ module Admin
       field :current_poster_url, String, null: true
       field :current_banner_url, String, null: true
       field :published, GraphQL::Types::Boolean, null: false
-      field :poster, Queries::Types::Shows::Poster, null: false
       field :likes, Integer, null: false
       field :dislikes, Integer, null: false
       field :loves, Integer, null: false
@@ -50,6 +49,14 @@ module Admin
       field :titles, ::Types::Custom::Map, null: false
       field :added_by_users_count, Integer, null: false
 
+      field :synchable, GraphQL::Types::Boolean, null: false
+      field :reference_id, Integer, null: true
+      field :reference_source, String, null: true
+      field :synched_at, Integer, null: true
+      field :synched_by_user, Admin::Types::User, null: true
+      field :sync_source_page, String, null: true
+      field :sync_source_api_url, String, null: true
+
       def current_poster_url
         @object.poster.url
       end
@@ -68,6 +75,26 @@ module Admin
 
       def airing_at
         @object.airing_at&.to_time&.to_i
+      end
+
+      def synchable
+        @object.synchable?
+      end
+
+      def synched_at
+        @object.synched_at&.to_time&.to_i
+      end
+
+      def sync_source_page
+        return unless @object.reference_source == "kitsu"
+
+        "https://kitsu.io/anime/#{@object.reference_id}"
+      end
+
+      def sync_source_api_url
+        return unless @object.reference_source == "kitsu"
+
+        "https://kitsu.io/api/edge/anime/#{@object.reference_id}"
       end
 
       def likes
@@ -96,43 +123,10 @@ module Admin
         }
       end
 
-      def description
-        @object.description || '- No description -'
-      end
-
-      def show_type
-        return @object.show_type if @object.show_category.blank?
-
-        "#{@object.show_category}/#{@object.show_type}"
-      end
-
       def friendly_status
         return unless @object.status.present?
 
         I18n.t("anime.shows.airing_status.#{@object.status}")
-      end
-
-      def links(region_locked: nil)
-        links = @object.links
-        return links if region_locked.blank?
-
-        links.select do |link|
-          link.platform.available?(region_locked[:for_country])
-        end
-      end
-
-      def platforms(focus_on: nil, region_locked: true)
-        @object.platforms(focus_on: focus_on, for_country: (region_locked ? context[:country] : nil))
-      end
-
-      def poster_url(dimensions: nil)
-        return @object.poster_url unless dimensions.present?
-
-        @object.poster.variant(resize: dimensions).processed.url
-      end
-
-      def poster
-        @object.poster_record
       end
 
       def added_by_users_count
