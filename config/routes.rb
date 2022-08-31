@@ -7,10 +7,15 @@ class BearerTokenConstraint
   # pros: we know for sure that the token is valid
   # cons: relies on external service for token check
   def self.matches?(request)
-    token = request.params[:token]
+    token = request.params[:token] || request.session[:token]
     return unless token.present?
 
-    new.find_user_from_token(token)
+    user = new.find_user_from_token(token)
+    if user
+      request.session[:token] = token
+    end
+
+    user.present?
   end
 end
 

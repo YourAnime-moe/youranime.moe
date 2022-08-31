@@ -24,6 +24,7 @@ module BearerTokenHelper
     end
 
     user.save!
+    user
   rescue RestClient::Unauthorized => error
     Rails.logger.error(error)
     nil
