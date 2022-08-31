@@ -5,7 +5,7 @@ module Admin
       connection_type_class ::Types::Custom::BaseConnection
 
       field :title, String, null: false
-      field :description, String, null: false
+      field :description, String, null: true
       field :slug, String, null: false
       field :id, ID, null: false
       field :show_type, String, null: false
