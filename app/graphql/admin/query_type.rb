@@ -17,6 +17,22 @@ module Admin
       }
     end
 
+    field :jobs, type: Admin::Types::JobEvent.connection_type, null: false do
+      argument :status, Admin::Types::JobEventStatus, required: false
+      argument :job_name, String, required: false
+      argument :used_by_model, String, required: false
+      argument :model_id, Integer, required: false
+    end
+    def jobs(status: nil, job_name: nil, used_by_model: nil, model_id: nil)
+      attributes = { status: status, job_name: job_name }.compact
+      if used_by_model && model_id
+        attributes[:used_by_model] = used_by_model
+        attributes[:model_id] = model_id
+      end
+
+      JobEvent.where(attributes).order(created_at: :desc)
+    end
+
     field :shows, type: Types::ShowRecord.connection_type, null: false do 
       argument :query, type: String, required: false
     end

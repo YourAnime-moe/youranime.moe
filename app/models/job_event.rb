@@ -6,6 +6,8 @@ class JobEvent < ApplicationRecord
   FAILED = 'failed'
   COMPLETE = 'complete'
 
+  STATUSES = [RUNNING, FAILED, COMPLETE].freeze
+
   belongs_to :user, class_name: 'Users::Admin'
 
   scope :latest, -> { order(:started_at, :ended_at).reverse_order }
