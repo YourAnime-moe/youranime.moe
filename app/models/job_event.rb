@@ -15,6 +15,12 @@ class JobEvent < ApplicationRecord
   scope :complete, -> { latest.where(status: COMPLETE) }
   scope :failed, -> { latest.where(status: FAILED) }
   scope :finished, -> { complete.or(failed) }
+  scope :latest_by_job_name, -> do
+    counts = select(:job_name).group(:job_name).having('count(*) > 1').count
+    ids = counts.keys.map { |key| where(job_name: key).last.id }
+
+    where(id: ids).order(started_at: :desc)
+  end
 
   def mark_as_complete!
     update(status: COMPLETE, ended_at: Time.now.utc)
