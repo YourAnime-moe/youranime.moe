@@ -22,6 +22,7 @@ class TrackableJob < ApplicationJob
 
   def before_perform(job)
     model = model_from_args!(job)
+    task = task_name_from_args(job)
 
     JobEvent.create!(
       job_id: job.job_id,
@@ -30,6 +31,7 @@ class TrackableJob < ApplicationJob
       used_by_model: model&.class&.table_name,
       job_name: self.class.name,
       started_at: Time.now.utc,
+      task: task,
     )
   end
 
@@ -46,6 +48,10 @@ class TrackableJob < ApplicationJob
     return unless model.is_a?(ApplicationRecord)
 
     model
+  end
+
+  def task_name_from_args(job)
+    fetch_arg_from_args(job, String, :task)
   end
 
   def fetch_arg_from_args(job, klass, type)

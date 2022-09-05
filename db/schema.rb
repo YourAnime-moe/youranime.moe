@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_14_145651) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_09_05_154447) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -21,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -33,7 +32,7 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -48,8 +47,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "last_name"
     t.string "first_name"
     t.string "label"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "descriptions", force: :cascade do |t|
@@ -58,8 +57,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "en"
     t.string "fr"
     t.string "jp"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "episodes", force: :cascade do |t|
@@ -71,8 +70,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "thumbnail_url"
     t.string "caption_url"
     t.boolean "published"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["caption_url"], name: "index_episodes_on_caption_url"
     t.index ["number"], name: "index_episodes_on_number"
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true
@@ -81,8 +80,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
 
   create_table "graphql_users", force: :cascade do |t|
     t.string "uuid", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "issues", force: :cascade do |t|
@@ -91,9 +90,9 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "status", null: false
     t.string "page_url"
     t.integer "user_id", null: false
-    t.datetime "closed_on"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "closed_on", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["closed_on"], name: "index_issues_on_closed_on"
     t.index ["title"], name: "index_issues_on_title"
     t.index ["user_id"], name: "index_issues_on_user_id"
@@ -102,26 +101,27 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
   create_table "job_events", force: :cascade do |t|
     t.string "status", default: "running", null: false
     t.string "job_name", null: false
-    t.datetime "started_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "ended_at"
+    t.datetime "started_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "ended_at", precision: nil
     t.bigint "job_id"
     t.bigint "model_id"
     t.string "used_by_model"
     t.string "failed_reason_key"
     t.string "failed_reason_text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.string "task"
   end
 
   create_table "next_airing_infos", force: :cascade do |t|
     t.bigint "show_id"
     t.integer "time_until_airing", null: false
-    t.datetime "airing_at", null: false
+    t.datetime "airing_at", precision: nil, null: false
     t.integer "episode_number", null: false
     t.boolean "past", default: true, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["show_id"], name: "index_next_airing_infos_on_show_id"
   end
 
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "medium", default: "/img/404.jpg"
     t.string "small", default: "/img/404.jpg"
     t.string "tiny", default: "/img/404.jpg"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "show_id", null: false
   end
 
@@ -141,8 +141,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.integer "user_id", null: false
     t.integer "value", null: false
     t.text "comment", default: ""
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["show_id", "user_id"], name: "index_ratings_on_show_id_and_user_id", unique: true
     t.index ["show_id", "value"], name: "index_ratings_on_show_id_and_value"
   end
@@ -152,16 +152,16 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.integer "reference_id"
     t.string "reference_source"
     t.string "url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "show_urls", force: :cascade do |t|
     t.string "url_type", null: false
     t.string "value", null: false
     t.bigint "show_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["show_id"], name: "index_show_urls_on_show_id"
   end
 
@@ -174,11 +174,11 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.date "released_on", null: false
     t.string "banner_url", default: "/img/404.jpg", null: false
     t.integer "queue_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "reference_id"
     t.string "reference_source"
-    t.datetime "synched_at"
+    t.datetime "synched_at", precision: nil
     t.bigint "synched_by"
     t.integer "likes_count", default: 0, null: false
     t.integer "dislikes_count", default: 0, null: false
@@ -204,14 +204,14 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
   create_table "shows_queue_relations", force: :cascade do |t|
     t.integer "show_id", null: false
     t.integer "queue_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "shows_queues", force: :cascade do |t|
     t.integer "graphql_user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "shows_seasons", force: :cascade do |t|
@@ -219,16 +219,16 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.integer "number", default: 1, null: false
     t.string "name", default: ""
     t.string "banner_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["show_id", "number"], name: "index_shows_seasons_on_show_id_and_number", unique: true
   end
 
   create_table "shows_tag_relations", force: :cascade do |t|
     t.integer "show_id"
     t.integer "tag_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["show_id", "tag_id"], name: "index_shows_tag_relations_on_show_id_and_tag_id", unique: true
   end
 
@@ -241,15 +241,15 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.boolean "active", default: true, null: false
     t.boolean "limited", default: true, null: false
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email"
   end
 
   create_table "tags", force: :cascade do |t|
     t.string "value", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "tag_type", default: "anime", null: false
     t.string "ref_url"
     t.string "ref_id"
@@ -261,8 +261,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "uuid", null: false
     t.string "upload_type", null: false
     t.string "upload_status", default: "pending", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_uploads_on_user_id"
   end
 
@@ -271,8 +271,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.bigint "user_id", null: false
     t.boolean "value", null: false
     t.boolean "is_disabled", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_sessions", force: :cascade do |t|
@@ -280,15 +280,15 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "user_type", null: false
     t.string "token", null: false
     t.boolean "deleted", default: false, null: false
-    t.datetime "active_until", null: false
-    t.datetime "deleted_on"
+    t.datetime "active_until", precision: nil, null: false
+    t.datetime "deleted_on", precision: nil
     t.string "device_id", default: "", null: false
     t.string "device_name", default: "", null: false
     t.string "device_location", default: "", null: false
     t.string "device_os", default: "", null: false
     t.boolean "device_unknown", default: true, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["deleted", "token"], name: "index_user_sessions_on_deleted_and_token"
     t.index ["token"], name: "index_user_sessions_on_token", unique: true
     t.index ["updated_at"], name: "index_user_sessions_on_updated_at"
@@ -307,8 +307,8 @@ ActiveRecord::Schema.define(version: 2021_08_14_145651) do
     t.string "oauth_token"
     t.string "oauth_refresh_token"
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "first_name", default: "", null: false
     t.string "last_name"
     t.string "type", null: false

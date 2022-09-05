@@ -33,7 +33,7 @@ module Admin
         return unless @object.started_at
 
         end_date = @object.ended_at || DateTime.now
-        distance_of_time_in_words(end_date - @object.started_at)
+        distance_of_time_in_words(end_date.to_time - @object.started_at.to_time)
       end
     end
   end
