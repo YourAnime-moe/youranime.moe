@@ -32,6 +32,18 @@ module Admin
 
       JobEvent.where(attributes).order(created_at: :desc)
     end
+    
+    field :job, type: Admin::Types::JobEvent, null: true do
+      argument :id, ID, required: true
+    end
+    def job(id:)
+      JobEvent.find_by(id: id)
+    end
+
+    field :runnable_tasks, [String], null: false
+    def runnable_tasks
+      Admin::FetchRunnableTasks.perform prefix: ['sync:shows', 'generate']
+    end
 
     field :shows, type: Types::ShowRecord.connection_type, null: false do 
       argument :query, type: String, required: false
@@ -48,7 +60,7 @@ module Admin
       argument :slug, type: String, required: true
     end
     def show(slug:)
-      Show.find_by(slug: slug)
+      Show.find_by(id: slug) || Show.find_by(slug: slug)
     end
 
     field :detect_platforms, type: [Queries::Types::Shows::Platform], null: false do

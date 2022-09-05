@@ -151,7 +151,7 @@ module Shows
       override_episodes_for(synched_show)
 
       poster_url = fetched_attrs.dig(:posterImage, :large) || fetched_attrs.dig(:posterImage, :original)
-      banner_url = fetched_attrs.dig(:coverImage, :large) || fetched_attrs.dig(:coverImage, :original) || poster_url
+      banner_url = fetched_attrs.dig(:coverImage, :large) || fetched_attrs.dig(:coverImage, :original)
 
       banner_file = try_downloading(banner_url)
       if banner_file
@@ -296,6 +296,8 @@ module Shows
     end
 
     def try_downloading(url)
+      return if url.blank?
+
       Down.download(url)
     rescue Down::Error
       nil

@@ -11,6 +11,7 @@ module Admin
       field :job_name, String, null: false
       field :started_at, Integer, null: false
       field :ended_at, Integer, null: true
+      field :ran_for, String, null: true
       field :started_ago, String, null: false
       field :ended_ago, String, null: true
       field :job_id, Integer, null: true
@@ -26,6 +27,13 @@ module Admin
 
       def ended_ago
         time_ago_in_words(@object.ended_at) if @object.ended_at
+      end
+
+      def ran_for
+        return unless @object.started_at
+
+        end_date = @object.ended_at || DateTime.now
+        distance_of_time_in_words(end_date - @object.started_at)
       end
     end
   end
