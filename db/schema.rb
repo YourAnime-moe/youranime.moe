@@ -112,6 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_06_140951) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.text "backtrace"
+    t.string "task"
   end
 
   create_table "next_airing_infos", force: :cascade do |t|

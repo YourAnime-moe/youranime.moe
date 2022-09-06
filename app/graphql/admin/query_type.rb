@@ -30,7 +30,7 @@ module Admin
         attributes[:model_id] = model_id
       end
 
-      JobEvent.where(attributes).order(created_at: :desc)
+      JobEvent.where(attributes).order(created_at: :desc).includes(:user)
     end
     
     field :job, type: Admin::Types::JobEvent, null: true do
