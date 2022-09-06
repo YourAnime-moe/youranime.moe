@@ -32,6 +32,7 @@ class JobEvent < ApplicationRecord
       ended_at: Time.now.utc,
       failed_reason_key: exception&.class&.name,
       failed_reason_text: exception&.message || 'Unknown internal server error',
+      backtrace: exception&.backtrace&.join("\n"),
     )
   end
 
