@@ -33,7 +33,6 @@ gem 'active_operation'
 gem 'aasm'
 # Code quality
 gem 'rubocop', require: false
-gem 'ruby-lint'
 # Tanoshimu Utilities
 gem 'tanoshimu_utils'
 # Downloading files
