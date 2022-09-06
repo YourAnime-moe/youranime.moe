@@ -335,7 +335,7 @@ class Show < ApplicationRecord
       banner_url: banner.url(expires_in: 3.days),
     }.compact
 
-    update(**attributes)
+    attributes.present? ? update(attributes) : false
   end
 
   def self.exclusive_on(platform)
