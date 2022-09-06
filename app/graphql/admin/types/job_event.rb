@@ -14,11 +14,12 @@ module Admin
       field :ran_for, String, null: true
       field :started_ago, String, null: false
       field :ended_ago, String, null: true
-      field :job_id, Integer, null: true
+      field :job_id, String, null: true
       field :model_id, Integer, null: true
       field :used_by_model, String, null: true
       field :failed_reason_key, String, null: true
       field :failed_reason_text, String, null: true
+      field :backtrace, String, null: true
       field :user, Admin::Types::User, null: true
 
       def started_ago
