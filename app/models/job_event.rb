@@ -5,8 +5,9 @@ class JobEvent < ApplicationRecord
   RUNNING = 'running'
   FAILED = 'failed'
   COMPLETE = 'complete'
+  CANCELED = 'canceled'
 
-  STATUSES = [RUNNING, FAILED, COMPLETE].freeze
+  STATUSES = [RUNNING, FAILED, COMPLETE, CANCELED].freeze
 
   belongs_to :user, class_name: 'Users::Admin'
 
@@ -36,10 +37,24 @@ class JobEvent < ApplicationRecord
     )
   end
 
+  def mark_as_canceled!(user, canceled_reason: nil)
+    update(
+      status: CANCELED,
+      ended_at: Time.now.utc,
+      canceled_at: Time.now.utc,
+      canceled_by: user.id,
+      canceled_reason: canceled_reason,
+    )
+  end
+
   def record_name
     return if [used_by_model, model_id].include?(nil)
 
     "#{used_by_model.classify}##{model_id}"
+  end
+
+  def cancelable?
+    [RUNNING].include?(status)
   end
 
   def complete?

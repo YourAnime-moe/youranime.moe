@@ -21,6 +21,8 @@ module Admin
       field :failed_reason_text, String, null: true
       field :backtrace, String, null: true
       field :user, Admin::Types::User, null: true
+      field :cancelable, GraphQL::Types::Boolean, null: false
+      field :canceled_by_user, Admin::Types::User, null: true
 
       def started_ago
         time_ago_in_words(@object.started_at)
@@ -35,6 +37,14 @@ module Admin
 
         end_date = @object.ended_at || DateTime.now
         distance_of_time_in_words(end_date.to_time - @object.started_at.to_time)
+      end
+
+      def cancelable
+        @object.cancelable?
+      end
+
+      def canceled_by_user
+        Users::Admin.find_by(id: @object.canceled_by) if @object.canceled_by
       end
     end
   end

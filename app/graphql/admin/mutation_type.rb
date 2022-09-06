@@ -24,5 +24,14 @@ module Admin
     def run_task(task:)
       Admin::InvokeTask.perform(task: task)
     end
+
+    field :cancel_job, GraphQL::Types::Boolean, null: true do
+      argument :job_id, String, required: true
+    end
+    def cancel_job(job_id:)
+      Admin::CancelJob.perform(job_id: job_id, user: context[:current_user])
+    rescue ActiveRecord::RecordNotFound
+      nil
+    end
   end
 end

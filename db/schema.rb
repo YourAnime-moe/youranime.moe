@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_06_140951) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_06_223903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -113,6 +113,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_06_140951) do
     t.bigint "user_id"
     t.text "backtrace"
     t.string "task"
+    t.datetime "canceled_at"
+    t.bigint "canceled_by"
+    t.text "canceled_reason"
   end
 
   create_table "next_airing_infos", force: :cascade do |t|
