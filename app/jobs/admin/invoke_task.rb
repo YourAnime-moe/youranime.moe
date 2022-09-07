@@ -3,13 +3,13 @@ module Admin
     property! :task, accepts: String
 
     def execute
-      task_name = Admin::FetchRunnableTasks.perform.find do |existing_task|
-        task == existing_task
-      end
-      unless task_name.present?
+      runnable_task = Admin::FetchRunnableTasks.perform.where(name: task).first
+      unless runnable_task.present?
         Rails.logger.error("No task found for #{task}")
         return
       end
+
+      task_name = runnable_task.name
 
       task = Rake::Task[task_name]
       task.execute

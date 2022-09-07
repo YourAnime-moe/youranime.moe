@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   namespace :admin do
     constraints(BearerTokenConstraint) do
       mount Sidekiq::Web => '/sidekiq'
+      mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
     end
 
     resources :shows do
@@ -55,9 +56,6 @@ Rails.application.routes.draw do
   end
 
   # API interface
-  if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
-  end
   post "/graphql", to: "graphql#execute"
 
   # Authentication

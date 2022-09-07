@@ -40,7 +40,7 @@ module Admin
       JobEvent.find_by(id: id)
     end
 
-    field :runnable_tasks, [String], null: false
+    field :runnable_tasks, [Admin::Types::RunnableTask], null: false
     def runnable_tasks
       Admin::FetchRunnableTasks.perform prefix: ['sync:shows', 'generate']
     end

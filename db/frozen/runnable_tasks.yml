@@ -1,0 +1,21 @@
+- name: generate:urls
+  description: Generate the CDN URLs for Shows
+  operation_ids:
+    - show-generateurls
+
+- name: sync:shows:kitsu:later
+  description: Fetch and update the currently airing and upcoming shows from kitsu.io (async)
+  operation_ids:
+    - shows-kitsu-sync-airing
+    - shows-kitsu-sync-existing
+
+- name: sync:shows:kitsu:now
+  description: Fetch and update the currently airing and upcoming shows from kitsu.io
+  operation_ids:
+    - shows-kitsu-sync-airing
+    - shows-kitsu-sync-existing
+
+- name: sync:shows:anilist:airing_schedule
+  description: Fetch additional show information from anilist.co
+  operation_ids:
+    - shows-update-airing-schedule

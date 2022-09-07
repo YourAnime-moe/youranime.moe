@@ -4,7 +4,16 @@ module Admin
 
     def execute
       load_tasks!
+      find_tasks
+    end
 
+    private
+
+    def find_tasks
+      RunnableTask.where(name: tasks)
+    end
+
+    def tasks
       Rake::Task.tasks.map(&:name).filter do |task_name|
         next true if prefix.blank?
 
@@ -13,8 +22,6 @@ module Admin
         end
       end
     end
-
-    private
 
     def load_tasks!
       Rails.application.load_tasks

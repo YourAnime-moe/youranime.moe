@@ -1,0 +1,19 @@
+- id: show-generateurls
+  klass:
+    parent: Show
+    name: GenerateUrls
+
+- id: shows-kitsu-sync-airing
+  klass:
+    parent: Shows::Kitsu::Sync
+    name: Airing
+
+- id: shows-kitsu-sync-existing
+  klass:
+    parent: Shows::Kitsu::Sync
+    name: Existing
+
+- id: shows-update-airing-schedule
+  klass:
+    parent: Shows::Update
+    name: AiringSchedule
