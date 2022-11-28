@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 class NextAiringInfo < ApplicationRecord
   belongs_to :show
-
   scope :ordered, -> { order(:airing_at) }
+  
+  after_create :notify_subscribed_users_create
+  after_update :notify_subscribed_users_update
 
   alias_attribute :next_episode, :episode_number
 
@@ -18,5 +20,23 @@ class NextAiringInfo < ApplicationRecord
 
     update!(time_until_airing: (airing_at - Time.current).to_i)
     self
+  end
+
+  private
+
+  def notify_subscribed_users_create
+    notify_subscribed_users(action: :create)
+  end
+
+  def notify_subscribed_users_update
+    notify_subscribed_users(action: :update)
+  end
+
+  def notify_subscribed_users(action:)
+    Subscriptions::NotifyUsers.perform(
+      model: self,
+      action: action,
+      subscription_type: 'airing-info',
+    )
   end
 end
