@@ -28,6 +28,16 @@ services:
       - RAILS_LOG_TO_STDOUT=enabled
       - SYNC_CRAWLING=enabled
 
+  discord-bot:
+    build: .
+    command: "echo 'started'"
+    volumes:
+      - .:/app
+      - gems:/gems
+      - tmp:/tmp
+    environment:
+      - START_DISCORD_BOT=true  
+
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"

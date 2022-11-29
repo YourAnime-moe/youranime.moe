@@ -12,6 +12,8 @@ class SubscriptionTarget < ApplicationRecord
 
       Rails.logger.info("Notifying discord user #{user_subscription.platform_user_id}")
       Rails.logger.info("Action #{action}. Data #{model.as_json}")
+
+      Subscriptions::Discord::Notifier.new(user_subscription).notify(action, model)
     end
   end
 

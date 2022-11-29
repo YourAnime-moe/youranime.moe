@@ -105,6 +105,14 @@ GEM
     dedup (0.1.4)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    discordrb (3.4.0)
+      discordrb-webhooks (~> 3.3.0)
+      ffi (>= 1.9.24)
+      opus-ruby
+      rest-client (>= 2.0.0)
+      websocket-client-simple (>= 0.3.0)
+    discordrb-webhooks (3.3.0)
+      rest-client (>= 2.1.0.rc1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
@@ -114,6 +122,7 @@ GEM
     down (5.3.1)
       addressable (~> 2.8)
     erubi (1.11.0)
+    event_emitter (0.2.6)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.2.0)
@@ -177,6 +186,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
+    opus-ruby (1.0.1)
+      ffi
     parallel (1.22.1)
     parser (2.7.2.0)
       ast (~> 2.4.1)
@@ -324,6 +335,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    websocket (1.2.9)
+    websocket-client-simple (0.6.0)
+      event_emitter
+      websocket
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -343,6 +358,7 @@ DEPENDENCIES
   bcrypt
   byebug
   countries (~> 3.0)
+  discordrb (~> 3.4)
   dotenv-rails
   down (~> 5.0)
   factory_bot_rails
