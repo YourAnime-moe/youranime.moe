@@ -7,6 +7,8 @@ class BearerTokenConstraint
   # pros: we know for sure that the token is valid
   # cons: relies on external service for token check
   def self.matches?(request)
+    return true if Rails.env.development?
+
     token = request.params[:token] || request.session[:token]
     return unless token.present?
 

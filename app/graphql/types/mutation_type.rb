@@ -25,5 +25,22 @@ module Types
       show = Show.find_by(slug: slug)
       context[:current_user]&.remove_show_from_main_queue(show) ? show : nil
     end
+
+    field :subscribe_to_airing_schedule, GraphQL::Types::Boolean, null: true do
+      argument :slug, String, required: true
+      argument :subscription_id, Int, required: true
+    end
+
+    def subscribe_to_airing_schedule(slug:, subscription_id:)
+      return if context[:current_user].blank?
+
+      show = Show.find_by(slug: slug)
+      return false if show.next_airing_info.blank?
+
+      subscription = context[:current_user].subscriptions.find_by(subscription_id: subscription_id)
+      return false if subscription.blank?
+
+      subscription.build_target(show.next_airing_info).save!
+    end
   end
 end

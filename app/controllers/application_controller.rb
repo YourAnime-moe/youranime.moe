@@ -47,7 +47,6 @@ class ApplicationController < ActionController::Base
 
   def ensure_logging_in_as_admin
     return unless viewing_as_admin?
-    return if logged_in?
 
     redirect_to('/login')
   end

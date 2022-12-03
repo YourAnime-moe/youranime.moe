@@ -8,8 +8,17 @@ class NotifySubscribedUsersJob < TrackableJob
     end
 
     target_ids.each do |target_id|
-      subscription_target = SubscriptionTarget.find(target_id)
-      subscription_target.notify!(action, model)
+      try_to_notify(target_id, action, model)
     end
+  end
+
+  private
+
+  def try_to_notify(target_id, action, model)
+    subscription_target = SubscriptionTarget.find(target_id)
+    subscription_target.notify!(action, model)
+  rescue Exception => error
+    Rails.logger.error("[#{self.class.name}] Could not notify target #{target_id} (action: #{action}) with model #{model}")
+    Rails.logger.error("[#{self.class.name}] Details: #{error}")
   end
 end

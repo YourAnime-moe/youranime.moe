@@ -2,8 +2,7 @@
 class NextAiringInfo < ApplicationRecord
   belongs_to :show
   scope :ordered, -> { order(:airing_at) }
-  
-  after_create :notify_subscribed_users_create
+
   after_update :notify_subscribed_users_update
 
   alias_attribute :next_episode, :episode_number
@@ -29,7 +28,9 @@ class NextAiringInfo < ApplicationRecord
   end
 
   def notify_subscribed_users_update
-    notify_subscribed_users(action: :update)
+    if previous_changes.any?
+      notify_subscribed_users(action: :update)
+    end
   end
 
   def notify_subscribed_users(action:)
