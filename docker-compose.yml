@@ -40,7 +40,6 @@ services:
       - bot_gems:/gems
     environment:
       - BUNDLE_PATH=/gems
-      - BOT_TOKEN=MTA0ODY1MTE5NDkxNjE1NTQyMg.G61ENa.mwmVRHpJE6e_aNM96Y9407_IJl2tkEbKtlBFjM
 
   web:
     build: .
