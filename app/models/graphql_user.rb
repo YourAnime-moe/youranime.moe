@@ -7,6 +7,7 @@ class GraphqlUser < ApplicationRecord
     })
   }, class_name: 'Shows::Queue', inverse_of: :graphql_user
   has_many :issues, inverse_of: :graphql_user
+  has_many :subscriptions, class_name: 'UserSubscription'
 
   def add_show_to_main_queue(show)
     return unless show.present?
