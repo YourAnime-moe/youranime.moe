@@ -13,7 +13,10 @@ module Subscriptions
             'HS512',
           )
 
-          RestClient.post('http://bot:9292/webhook/message', {jwt_token: jwt_token}.to_json)
+          RestClient.post(
+            "#{ENV.fetch("BOT_API_HOST") { 'http://bot:9292' }}/webhook/message",
+            { jwt_token: jwt_token }.to_json,
+          )
         end
       end
     end
