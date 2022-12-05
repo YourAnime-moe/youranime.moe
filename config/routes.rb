@@ -67,6 +67,14 @@ Rails.application.routes.draw do
   get '/logout' => 'application#logout'
   post '/login' => 'application#login_post'
 
+  namespace :discord do
+    resources :bot, only: [] do
+      collection do
+        post :register
+      end
+    end
+  end
+
   # Locale management
   get '/get/current/locale' => 'application#locale'
   put '/set/current/locale' => 'application#set_locale'

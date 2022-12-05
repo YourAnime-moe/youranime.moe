@@ -85,3 +85,5 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem "discordrb", "~> 3.4", require: false
+
+gem "jwt", "~> 2.5"

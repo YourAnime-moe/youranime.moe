@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: bundle exec puma
+    ports:
+      - "3000:9292"
+    volumes:
+      - .:/app
+      - gems:/gems
+    environment:
+      - BUNDLE_PATH=/gems
+    
+volumes:
+  gems:

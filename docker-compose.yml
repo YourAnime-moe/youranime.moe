@@ -28,6 +28,20 @@ services:
       - RAILS_LOG_TO_STDOUT=enabled
       - SYNC_CRAWLING=enabled
 
+  bot:
+    build: ./bot
+    command: bundle exec puma
+    profiles:
+      - bot
+    ports:
+      - "81:9292"
+    volumes:
+      - ./bot:/bot
+      - bot_gems:/gems
+    environment:
+      - BUNDLE_PATH=/gems
+      - BOT_TOKEN=MTA0ODY1MTE5NDkxNjE1NTQyMg.G61ENa.mwmVRHpJE6e_aNM96Y9407_IJl2tkEbKtlBFjM
+
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -52,6 +66,8 @@ services:
       - redis
 
 volumes:
+  bot:
   gems:
+  bot_gems:
   redis:
   tmp:

@@ -3,7 +3,7 @@ require 'discordrb'
 module Subscriptions
   module Discord
     class Notifier < Subscriptions::BaseNotifier
-      def notify(action, model)
+      def notify(action, model, changes)
         unless user_subscription.platform == "discord"
           Rails.logger.warn("Skipping irrelevant user subscription (#{user_subscription.platform})...")
           return
@@ -14,20 +14,20 @@ module Subscriptions
           return
         end
 
-        embed = message_embed(action, model)
+        embed = message_embed(action, model, changes)
         if embed
-          Subscriptions::Discord::Bot.instance.command_bot.send_message(
-            user_subscription.platform_user_id,
-            nil,
-            false,
-            embed,
+          Subscriptions::Discord::Bot.send(
+            {
+              channel_id: user_subscription.platform_user_id,
+              embed: embed.to_hash,
+            }
           )
         end
       end
 
       private
 
-      def message_embed(action, model)
+      def message_embed(action, model, changes)
         if model.is_a?(NextAiringInfo)
           show = model.show
           platforms_info = show.platforms.map(&:title).join(", ").presence || "- streaming platforms unknown -"
@@ -37,7 +37,7 @@ module Subscriptions
           )
 
           footer = Discordrb::Webhooks::EmbedFooter.new(
-            text: "Information pulled on: #{Date.current}"
+            text: "Airs: #{model.airing_at}"
           )
 
           return Discordrb::Webhooks::Embed.new(

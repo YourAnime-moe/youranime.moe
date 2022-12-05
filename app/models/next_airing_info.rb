@@ -21,6 +21,20 @@ class NextAiringInfo < ApplicationRecord
     self
   end
 
+  def targets
+    @targets ||= SubscriptionTarget.where(
+      targetable_type: self.class.name,
+      targetable_id: id,
+    )
+  end
+
+  def subscriptions
+    return @subscriptions if @subscriptions
+
+    user_subscription_ids = targets.pluck(:user_subscription_id)
+    @subscriptions = UserSubscription.where(id: user_subscription_ids)
+  end
+
   private
 
   def notify_subscribed_users_create
@@ -29,15 +43,16 @@ class NextAiringInfo < ApplicationRecord
 
   def notify_subscribed_users_update
     if previous_changes.any?
-      notify_subscribed_users(action: :update)
+      notify_subscribed_users(action: :update, changes: previous_changes.keys)
     end
   end
 
-  def notify_subscribed_users(action:)
+  def notify_subscribed_users(action:, changes: [])
     Subscriptions::NotifyUsers.perform(
       model: self,
       action: action,
       subscription_type: 'airing-info',
+      changes: changes,
     )
   end
 end

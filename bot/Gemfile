@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+source 'https://rubygems.org'
+
+ruby '3.1.2'
+
+gem 'sinatra'
+gem 'jwt'
+gem 'discordrb'
+gem 'rest-client'
+gem 'puma'
+gem 'redis'
+gem 'json'
+
+group :development do
+  gem 'byebug'
+end

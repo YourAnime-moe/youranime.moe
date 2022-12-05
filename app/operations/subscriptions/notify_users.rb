@@ -3,11 +3,19 @@ module Subscriptions
     property! :model
     property! :action, accepts: [:create, :update, :delete]
     property! :subscription_type
+    property :changes
 
     def execute
-      subscription_targets.find_in_batches.each do |batch|
-        NotifySubscribedUsersJob.perform_later(action, batch.map(&:id), model.class.name, model.id)
+      subscriptions = model.subscriptions
+      return unless subscriptions.any?
+
+      target = model.targets.to_a.find do |target|
+        target.is?(model)
       end
+
+      return unless target.present?
+
+      NotifySubscribedUsersJob.perform_later(action, target.id, model.class.name, model.id, changes)
     end
 
     private
