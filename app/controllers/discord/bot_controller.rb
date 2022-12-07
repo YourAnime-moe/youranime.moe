@@ -9,7 +9,8 @@ module Discord
 
       user_subscription = UserSubscription.find_or_initialize_by(
         platform: "discord",
-        platform_user_id: channel_id.to_s,
+        platform_user_id: user_id,
+        channel_id: channel_id,
       )
 
       if user_subscription.persisted?
@@ -32,10 +33,6 @@ module Discord
     private
   
     def ensure_valid_bot_request!
-    end
-
-    def find_user_by_discord_user_id(discord_user_id)
-      puts("DISOCRD ID #{discord_user_id}")
     end
   end
 end

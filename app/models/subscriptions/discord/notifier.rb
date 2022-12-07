@@ -9,19 +9,9 @@ module Subscriptions
           return
         end
 
-        if user_subscription.platform_user_id.blank?
-          Rails.logger.error("Missing platform user ID.")
-          return
-        end
-
         embed = message_embed(action, model, changes)
         if embed
-          Subscriptions::Discord::Bot.send(
-            {
-              channel_id: user_subscription.platform_user_id,
-              embed: embed.to_hash,
-            }
-          )
+          Subscriptions::Discord::Bot.send(user_subscription, embed)
         end
       end
 

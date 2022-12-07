@@ -35,6 +35,13 @@ class NextAiringInfo < ApplicationRecord
     @subscriptions = UserSubscription.where(id: user_subscription_ids)
   end
 
+  def human_friendly_data
+    {
+      subscription_type: 'schedule',
+      model_title: show.title,
+    }
+  end
+
   private
 
   def notify_subscribed_users_create

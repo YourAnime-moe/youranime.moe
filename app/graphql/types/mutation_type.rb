@@ -26,22 +26,41 @@ module Types
       context[:current_user]&.remove_show_from_main_queue(show) ? show : nil
     end
 
-    field :subscribe_to_airing_schedule, GraphQL::Types::Boolean, null: true do
+    field :subscribe_to_airing_schedule, Queries::Types::Show, null: true do
       argument :slug, String, required: true
-      argument :subscription_id, Int, required: true
       argument :platform, String, required: false # todo change to enum!
     end
 
-    def subscribe_to_airing_schedule(slug:, subscription_id:)
-      return if context[:current_user].blank?
+    def subscribe_to_airing_schedule(slug:, platform:)
+      return if context[:current_user].blank? || context[:current_user_data].blank?
 
       show = Show.find_by(slug: slug)
-      return false if show.next_airing_info.blank?
+      if show.next_airing_info.blank?
+        Rails.logger.info("No airing info")
+        return
+      end
 
-      subscription = context[:current_user].subscriptions.find_by(subscription_id: subscription_id)
-      return false if subscription.blank?
+      oauth_grant = context[:current_user_data][:external_oauth_grants].find do |oauth_grant|
+        oauth_grant[:grant_name] == platform
+      end
+
+      if oauth_grant.blank?
+        Rails.logger.info("No discord account linked")
+        return
+      end
+
+      subscription = context[:current_user].subscriptions.find_by(
+        platform: platform,
+        platform_user_id: oauth_grant[:grant_user_id],
+      )
+      if subscription.blank?
+        Rails.logger.info("Discord account was not linked on discord")
+        return
+      end
 
       subscription.build_target(show.next_airing_info).save!
+
+      show
     end
   end
 end

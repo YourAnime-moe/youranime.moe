@@ -24,4 +24,8 @@ class UserSubscription < ApplicationRecord
       expiry_condition: expiry_condition,
     )
   end
+
+  def destination_id
+    channel_id || platform_user_id
+  end
 end

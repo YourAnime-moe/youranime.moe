@@ -174,6 +174,12 @@ module Queries
       ).shows || []
     end
 
+    def active_subscriptions
+      return if context[:current_user].blank?
+
+      
+    end
+
     private
 
     def ensure_first_argument!

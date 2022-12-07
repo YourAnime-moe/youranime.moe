@@ -14,6 +14,7 @@ class GraphqlController < ActionController::API
       timezone: timezone || 'America/Toronto',
       is_default: country.blank? || timezone.blank?,
       current_user: current_user,
+      current_user_data: @current_user_data&.with_indifferent_access,
     }
     result = TanoshimuNewSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render(json: result)
@@ -58,9 +59,21 @@ class GraphqlController < ActionController::API
   def current_user
     return @current_user if @current_user.present?
 
-    proxied_auth_uuid = request.headers['X-Proxied-Auth-ID']
-    return unless proxied_auth_uuid.present?
+    bearer_token = request.headers['Authorization']
+    return unless bearer_token.present?
 
-    @current_user ||= GraphqlUser.find_or_create_by(uuid: proxied_auth_uuid)
+    @current_user ||= ensure_valid_access_token(bearer_token)
+  end
+
+  def ensure_valid_access_token(bearer_token)
+    accounts_host = ENV.fetch("ACCOUNTS_API_HOST") { 'https://id.youranime.moe' }
+    response = RestClient.get("#{accounts_host}/me.json", {"Authorization": bearer_token})
+    data = JSON.parse(response)
+
+    @current_user_data = data
+    GraphqlUser.find_or_create_by(uuid: data['uuid'])
+  rescue RestClient::Unauthorized => error
+    Rails.logger.error(error)
+    nil
   end
 end

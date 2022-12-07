@@ -45,6 +45,10 @@ module Queries
       field :title_record, Queries::Types::Shows::Title, null: false
       field :titles, ::Types::Custom::Map, null: false
       field :added_to_main_queue, GraphQL::Types::Boolean, null: true
+      field :can_follow_on_platform, GraphQL::Types::Boolean, null: true do
+        argument :platform, String, required: true
+      end
+      field :following_on_platforms, [String], null: true
 
       def likes
         @object.likes_count
@@ -115,6 +119,39 @@ module Queries
         return unless context[:current_user].present?
 
         context[:current_user].main_queue.include?(@object)
+      end
+
+      def can_follow_on_platform(platform:)
+        return if context[:current_user].blank? || context[:current_user_data].blank?
+
+        oauth_grant = context[:current_user_data][:external_oauth_grants].find do |oauth_grant|
+          oauth_grant[:grant_name] == platform
+        end
+
+        if oauth_grant.blank?
+          Rails.logger.info("No discord account linked")
+          return false
+        end
+
+        context[:current_user].subscriptions.find_by(
+          platform: platform,
+          platform_user_id: oauth_grant[:grant_user_id],
+        ).present?
+      end
+
+      def following_on_platforms
+        return if @object.next_airing_info.blank?
+        return if context[:current_user].blank?
+
+        subscriptions = context[:current_user]
+          .subscriptions
+          .joins(:targets)
+          .where(targets: {
+            targetable_id: @object.next_airing_info.id,
+            targetable_type: 'NextAiringInfo',
+          })
+        
+        subscriptions.pluck(:platform)
       end
     end
   end
