@@ -39,6 +39,7 @@ class NextAiringInfo < ApplicationRecord
     {
       subscription_type: 'schedule',
       model_title: show.title,
+      image: show.poster_url,
     }
   end
 
@@ -49,7 +50,7 @@ class NextAiringInfo < ApplicationRecord
   end
 
   def notify_subscribed_users_update
-    if previous_changes.any?
+    if previous_changes.key?(:episode_number)
       notify_subscribed_users(action: :update, changes: previous_changes.keys)
     end
   end

@@ -135,7 +135,7 @@ module Home
       def shows
         ensure_enabled!
         return @shows if @shows.present?
-        return @shows if (@shows = shows_override).present?
+        return @shows if !(@shows = shows_override).nil?
 
         @shows = cacheable? ? cached_compute_shows : compute_shows
       end

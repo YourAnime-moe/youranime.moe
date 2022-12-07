@@ -6,6 +6,7 @@ module Home
         # Order matters ;)
         HOME_PAGE_CATEGORIES = [
           Home::Categories::WatchList,
+          Home::Categories::FollowingOnDiscord,
           Home::Categories::TopSimulcasts,
           Home::Categories::TopThisSeason,
           Home::Categories::TopComingSoon,

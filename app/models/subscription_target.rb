@@ -37,9 +37,12 @@ class SubscriptionTarget < ApplicationRecord
     require 'discordrb'
 
     info = model.human_friendly_data
+    thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: info[:image]) if info[:image]
+
     embed = Discordrb::Webhooks::Embed.new(
       title: "New subscription",
-      description: "You've successfully subscribed to the #{info[:subscription_type]} for #{info[:model_title]}."
+      description: "You've successfully subscribed to the #{info[:subscription_type]} for #{info[:model_title]}.",
+      thumbnail: thumbnail,
     )
 
     Subscriptions::Discord::Bot.send(user_subscription, embed)
