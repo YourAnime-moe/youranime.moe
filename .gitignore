@@ -55,3 +55,5 @@ vendor/
 
 *.gem
 *.diff
+
+docker-compose.override.yml

@@ -29,6 +29,7 @@ module Types
     field :subscribe_to_airing_schedule, GraphQL::Types::Boolean, null: true do
       argument :slug, String, required: true
       argument :subscription_id, Int, required: true
+      argument :platform, String, required: false # todo change to enum!
     end
 
     def subscribe_to_airing_schedule(slug:, subscription_id:)

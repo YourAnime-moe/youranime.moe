@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_05_225950) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_051116) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -76,6 +76,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_05_225950) do
     t.index ["number"], name: "index_episodes_on_number"
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true
     t.index ["thumbnail_url"], name: "index_episodes_on_thumbnail_url"
+  end
+
+  create_table "external_connections", force: :cascade do |t|
+    t.string "connection_type", null: false
+    t.string "connection_user_id", null: false
+    t.string "access_token"
+    t.string "refresh_token"
+    t.datetime "access_token_expiry"
+    t.datetime "refresh_token_expiry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "graphql_users", force: :cascade do |t|

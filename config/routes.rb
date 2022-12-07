@@ -68,12 +68,14 @@ Rails.application.routes.draw do
   post '/login' => 'application#login_post'
 
   namespace :discord do
+    get '/oauth/authorize', to: 'oauth#new'
     resources :bot, only: [] do
       collection do
         post :register
       end
     end
   end
+  match '/auth/discord/callback', to: 'discord/oauth#create', via: [:get, :post]
 
   # Locale management
   get '/get/current/locale' => 'application#locale'

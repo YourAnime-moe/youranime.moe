@@ -1,0 +1,2 @@
+class ExternalConnection < ApplicationRecord
+end
