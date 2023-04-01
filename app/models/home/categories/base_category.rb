@@ -24,6 +24,7 @@ module Home
       LAYOUTS = %i(
         simple
         expanded
+        featured
       ).freeze
 
       ALLOWED_FEATURED_PROPS = %i(

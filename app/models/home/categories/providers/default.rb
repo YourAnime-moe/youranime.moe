@@ -5,11 +5,12 @@ module Home
       class Default
         # Order matters ;)
         HOME_PAGE_CATEGORIES = [
+          Home::Categories::FeaturedShow,
           Home::Categories::WatchList,
           Home::Categories::FollowingOnDiscord,
-          Home::Categories::TopSimulcasts,
           Home::Categories::TopThisSeason,
           Home::Categories::TopComingSoon,
+          Home::Categories::TopSimulcasts,
           Home::Categories::FromLastSeason,
         ].freeze
 
