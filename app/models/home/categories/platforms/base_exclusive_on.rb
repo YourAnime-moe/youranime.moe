@@ -12,7 +12,7 @@ module Home
         end
 
         def enabled?
-          false
+          true
         end
 
         def self.default_scope

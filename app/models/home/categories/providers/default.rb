@@ -4,7 +4,7 @@ module Home
     module Providers
       class Default
         # Order matters ;)
-        HOME_PAGE_CATEGORIES = [
+        DEFAULT_CATEGORIES = [
           Home::Categories::FeaturedShow,
           Home::Categories::WatchList,
           Home::Categories::FollowingOnDiscord,
@@ -30,23 +30,23 @@ module Home
           Home::Categories::Platforms::ExclusiveOnCrunchyroll,
           Home::Categories::Platforms::ExclusiveOnNetflix,
           Home::Categories::Platforms::ExclusiveOnFunimation,
-          # Home::Categories::OfType::Romance,
-          # Home::Categories::OfType::Funny,
-          # Home::Categories::OfType::Exciting,
-          # Home::Categories::OfType::Dark,
-          # Home::Categories::OfType::EverydayLife,
-          # Home::Categories::OfType::ScienceFiction,
-          # Home::Categories::MusicVideos,
-          # Home::Categories::TopAiringNow,
-          # Home::Categories::BestOfAllTime,
+          Home::Categories::OfType::Romance,
+          Home::Categories::OfType::Funny,
+          Home::Categories::OfType::Exciting,
+          Home::Categories::OfType::Dark,
+          Home::Categories::OfType::EverydayLife,
+          Home::Categories::OfType::ScienceFiction,
+          Home::Categories::MusicVideos,
+          Home::Categories::TopAiringNow,
+          Home::Categories::BestOfAllTime,
         ].freeze
 
         def self.main_categories_classes
-          HOME_PAGE_CATEGORIES + PLATFORM_CATEGORIES
+          DEFAULT_CATEGORIES + PLATFORM_CATEGORIES
         end
 
         def self.all_categories_classes
-          HOME_PAGE_CATEGORIES + OTHER_CATEGORIES
+          DEFAULT_CATEGORIES + PLATFORM_CATEGORIES + OTHER_CATEGORIES
         end
 
         def self.categories(context:, filters: {}, include_others: false)

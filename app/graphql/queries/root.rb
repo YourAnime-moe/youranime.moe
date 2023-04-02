@@ -144,7 +144,7 @@ module Queries
     field :home_page_categories, Queries::Types::HomePageCategory.connection_type, null: false
 
     def home_page_categories
-      Home::Categories::Providers::Default.categories(context: context)
+      Home::Categories::Providers::Default.categories(context: context, include_others: true)
     end
 
     field :home_page_category, Queries::Types::HomePageCategory, null: true do
@@ -171,6 +171,7 @@ module Queries
         slug,
         context: context,
         filters: args,
+        include_others: true,
       ).shows || []
     end
 

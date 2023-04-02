@@ -6,6 +6,10 @@ module Home
         "categories.from_last_season.title"
       end
 
+      def layout
+        :expanded
+      end
+
       def scopes
         [:trending, :from_last_season]
       end
