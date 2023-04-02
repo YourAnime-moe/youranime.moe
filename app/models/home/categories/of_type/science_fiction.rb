@@ -16,7 +16,7 @@ module Home
         end
 
         def self.default_scope
-          Show.by_tags(:science_fiction)
+          Show.by_tags('science-fiction')
         end
       end
     end

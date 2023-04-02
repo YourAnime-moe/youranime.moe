@@ -16,7 +16,7 @@ module Home
         end
 
         def self.default_scope
-          Show.by_tags(:slice_of_life)
+          Show.by_tags('slice-of-life')
         end
       end
     end
