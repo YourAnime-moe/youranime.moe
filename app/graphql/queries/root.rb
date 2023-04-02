@@ -38,6 +38,13 @@ module Queries
       Tag.popular
     end
 
+    # Added to avoid breaking current frontend
+    field :tags, [Queries::Types::Shows::Tag], null: false
+
+    def tags
+      Tag.popular
+    end
+
     field :show_seasons, [Queries::Types::Shows::Season], null: false
 
     def show_seasons
