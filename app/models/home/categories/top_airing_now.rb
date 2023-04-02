@@ -6,6 +6,10 @@ module Home
         "categories.top_airing_now.title"
       end
 
+      def layout
+        :expanded
+      end
+
       def scopes
         [:trending, :airing]
       end

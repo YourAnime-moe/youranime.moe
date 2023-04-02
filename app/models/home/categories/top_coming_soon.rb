@@ -6,6 +6,10 @@ module Home
         "categories.top_coming_soon.title"
       end
 
+      def layout
+        :expanded
+      end
+
       def scopes
         [:coming_soon]
       end

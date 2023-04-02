@@ -4,35 +4,36 @@ module Home
     module Providers
       class Default
         # Order matters ;)
-        DEFAULT_CATEGORIES = [
+
+        PRIMARY_CATEGORIES = [
           Home::Categories::FeaturedShow,
           Home::Categories::WatchList,
           Home::Categories::FollowingOnDiscord,
-          Home::Categories::TopThisSeason,
+        ]
+        
+        BASIC_CATEGORIES = [
           Home::Categories::TopComingSoon,
-          Home::Categories::TopSimulcasts,
-          Home::Categories::FromLastSeason,
-        ].freeze
-
-        PLATFORM_CATEGORIES = [
           Home::Categories::Platforms::NewOnCrunchyroll,
           Home::Categories::Platforms::NewOnVrv,
           Home::Categories::Platforms::NewOnFunimation,
           Home::Categories::Platforms::NewOnAnimelab,
           Home::Categories::Platforms::NewOnHidive,
+          Home::Categories::TopSimulcasts,
           Home::Categories::Platforms::NewOnHulu,
           Home::Categories::Platforms::NewOnPrime,
           Home::Categories::Platforms::NewOnNetflix,
           Home::Categories::Platforms::NewOnTubi,
+          Home::Categories::TopThisSeason,
         ].freeze
 
         OTHER_CATEGORIES = [
-          Home::Categories::Platforms::ExclusiveOnCrunchyroll,
-          Home::Categories::Platforms::ExclusiveOnNetflix,
-          Home::Categories::Platforms::ExclusiveOnFunimation,
+          # Home::Categories::Platforms::ExclusiveOnCrunchyroll,
+          # Home::Categories::Platforms::ExclusiveOnNetflix,
+          # Home::Categories::Platforms::ExclusiveOnFunimation,
           Home::Categories::OfType::Romance,
           Home::Categories::OfType::Funny,
           Home::Categories::OfType::Exciting,
+          Home::Categories::FromLastSeason,
           Home::Categories::OfType::Dark,
           Home::Categories::OfType::EverydayLife,
           Home::Categories::OfType::ScienceFiction,
@@ -42,11 +43,11 @@ module Home
         ].freeze
 
         def self.main_categories_classes
-          DEFAULT_CATEGORIES + PLATFORM_CATEGORIES
+          PRIMARY_CATEGORIES + BASIC_CATEGORIES
         end
 
         def self.all_categories_classes
-          DEFAULT_CATEGORIES + PLATFORM_CATEGORIES + OTHER_CATEGORIES
+          PRIMARY_CATEGORIES + BASIC_CATEGORIES + OTHER_CATEGORIES
         end
 
         def self.categories(context:, filters: {}, include_others: false)
