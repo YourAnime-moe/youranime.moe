@@ -10,6 +10,8 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0'
+# PostgreSQL
+gem 'pg', '~> 1.4.3'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -62,7 +64,6 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'pry'
   gem 'pry-rails'
-  gem 'sqlite3'
 
   # Use GraphiQL
   gem 'graphiql-rails'
@@ -76,7 +77,6 @@ group :test do
 end
 
 group :production do
-  gem 'pg'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rails_12factor'
 end

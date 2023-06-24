@@ -15,7 +15,9 @@ services:
       - "redis:/data"
 
   sidekiq:
-    build: .
+    build:
+      - context: .
+      - target: dev
     command: bundle exec sidekiq -q active_storage_analysis -q active_storage_purge -q batch_queue -q sync -q default
     volumes:
       - .:/app
@@ -29,7 +31,9 @@ services:
       - SYNC_CRAWLING=enabled
 
   web:
-    build: .
+    build:
+      - context: .
+      - target: dev
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     stdin_open: true
     tty: true
