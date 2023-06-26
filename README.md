@@ -13,6 +13,66 @@ Find out when your favourite anime airs and where you can watch it. In the near 
 
 You can visit [youranime.moe](https://youranime.moe) to get started.
 
+##### With Docker
+
+Once you've install Docker, you can get the pre-built image from Docker Hub (https://hub.docker.com/r/drummeraki/tanoshimu). You will need at the very least a postgres image running as well.
+
+The steps below also include redis. This will be needed to fill the database with data.
+
+Initial setup: environment file
+
+```bash
+# Create an .env
+cat <<EOF > .env
+TANOSHIMU_SPACE_ACCESS_KEY_ID=test
+TANOSHIMU_SPACE_SECRET_ACCESS_KEY=test
+REDIS_URL=redis://redis:6379
+POSTGRES_USER=anime
+POSTGRES_PASSWORD=isyourstoconquer
+EOF
+```
+
+Database setup
+
+```bash
+# Create network and initialize database container in the background
+docker network create tanoshimu
+docker run --rm --env-file .env --network=tanoshimu --hostname=db --detach postgres
+
+# Set up the database
+docker run --rm --network=tanoshimu --env-file .env drummeraki/tanoshimu:dev bin/rails db:create db:migrate
+```
+
+Start the server
+
+```bash
+docker run -p 3000:3000 --rm --network=tanoshimu --env-file .env drummeraki/tanoshimu:dev
+```
+
+Test the API with cURL (or any other client like Postman). The following should print how many shows exist (there won't be any unless data is seeded into the DB).
+
+```bash
+curl -X POST http://localhost:3000/graphql -H 'Content-Type: application/json' -d '{"query": "{browseAll {pageInfo {totalCount}}}"}'
+```
+
+Optional: seeding data
+
+> Note: seeding data from Kitsu may require secrets
+
+```bash
+# Optional: seed the data
+# Start redis in the background
+docker run --rm --network=tanoshimu --hostname=redis --detach redis
+
+# Start sidekiq in the background (you may need to wait for redis to be created)
+docker run --rm --network=tanoshimu --env-file .env --detach drummeraki/tanoshimu:dev bundle exec sidekiq -q active_storage_analysis -q active_storage_purge -q batch_queue -q sync -q default
+
+# Seed the database
+docker run --rm --network=tanoshimu --env-file .env drummeraki/tanoshimu:dev bin/rails db:seed
+```
+
+You can check the progress by viewing the logs for the image `drummeraki/tanoshimu:dev` running the `entrypoint.sh bundle exec sidekiq...` command, using `docker ps`. More info on `docker logs` on the [official docs](https://docs.docker.com/engine/reference/commandline/logs).
+
 #### Technologies
 
 The following technologies made this app into what it is today:
