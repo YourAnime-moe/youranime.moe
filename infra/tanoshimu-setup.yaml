@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanoshimu-deployment
+  labels:
+    app: tanoshimu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanoshimu
+  template:
+    metadata:
+      labels:
+        app: tanoshimu
+    spec:
+      containers:
+        - name: tanoshimu
+          image: docker.io/drummeraki/tanoshimu:live
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          command: ["bin/rails", "db:setup"]
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres-url
+            - name: POSTGRES_DATABASE
+              value: tanoshimu
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-config
+                  key: redis-url
+            - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
+              value: "1"

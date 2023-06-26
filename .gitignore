@@ -55,3 +55,6 @@ vendor/
 
 *.gem
 *.diff
+
+# Kube stuff
+infra/*secret*

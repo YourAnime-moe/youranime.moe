@@ -64,4 +64,5 @@ Rails.application.configure do
 
   # Local hosts
   config.hosts << /((\w+.)+)?tanoshimu\.aki/
+  config.hosts << /api/
 end

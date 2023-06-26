@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tanoshimu
+spec:
+  template:
+    spec:
+      containers:
+        - name: tanoshimu-job
+          image: docker.io/drummeraki/tanoshimu:live
+          imagePullPolicy: Always
+          command: ["bin/rails", "db:migrate"]
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres-url
+            - name: POSTGRES_DATABASE
+              value: tanoshimu
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-config
+                  key: redis-url
+            - name: TANOSHIMU_SPACE_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-id
+            - name: TANOSHIMU_SPACE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-secret
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: rails-master-key
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: secret-key-base
+      restartPolicy: Never
+  backoffLimit: 3

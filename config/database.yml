@@ -14,8 +14,8 @@ postgres: &postgres
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  user: anime
-  password: isyourstoconquer
+  user: <%= ENV.fetch("POSTGRES_USER") { "anime" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "isyourstoconquer" } %>
 
 replica: &replica
   <<: *default
@@ -36,5 +36,5 @@ test:
 
 production:
   <<: *postgres
-  host: db
-  database: tanoshimu
+  host: <%= ENV.fetch("POSTGRES_HOST") { "db" } %>
+  database: <%= ENV.fetch("POSTGES_DATABASE") { "tanoshimu" } %>

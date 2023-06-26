@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanoshimu-deployment
+  labels:
+    app: tanoshimu
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tanoshimu
+  template:
+    metadata:
+      labels:
+        app: tanoshimu
+    spec:
+      containers:
+        - name: tanoshimu
+          image: docker.io/drummeraki/tanoshimu:live
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: PORT
+              value: "80"
+            - name: TANOSHIMU_SPACE_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-id
+            - name: TANOSHIMU_SPACE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-secret
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: rails-master-key
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: secret-key-base
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres-url
+            - name: POSTGRES_DATABASE
+              value: tanoshimu
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tanoshimu-service
+spec:
+  type: NodePort
+  selector:
+    app: tanoshimu
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31000

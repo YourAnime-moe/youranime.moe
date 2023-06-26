@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_06_223903) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_231712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -203,6 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_06_223903) do
     t.string "slug"
     t.hstore "titles", default: {}, null: false
     t.index ["banner_url"], name: "index_shows_on_banner_url"
+    t.index ["slug"], name: "index_shows_on_slug", unique: true
   end
 
   create_table "shows_queue_relations", force: :cascade do |t|

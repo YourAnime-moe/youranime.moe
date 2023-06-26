@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq-deployment
+  labels:
+    app: sidekiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidekiq
+  template:
+    metadata:
+      labels:
+        app: sidekiq
+    spec:
+      containers:
+        - name: sidekiq
+          image: docker.io/drummeraki/tanoshimu:live
+          command:
+            [
+              "bundle",
+              "exec",
+              "sidekiq",
+              "-q",
+              "active_storage_analysis",
+              "-q",
+              "active_storage_purge",
+              "-q",
+              "batch_queue",
+              "-q",
+              "sync",
+              "-q",
+              "default",
+            ]
+          imagePullPolicy: Always
+          env:
+            - name: TANOSHIMU_SPACE_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-id
+            - name: TANOSHIMU_SPACE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: space-secret
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: rails-master-key
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: tanoshimu-secret
+                  key: secret-key-base
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres-url
+            - name: POSTGRES_DATABASE
+              value: tanoshimu
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-config
+                  key: redis-url

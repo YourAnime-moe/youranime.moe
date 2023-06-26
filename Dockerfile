@@ -13,14 +13,17 @@ COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
 FROM build as dev
+EXPOSE 3000
+RUN apt-get install iputils-ping
 RUN bundle config set --local without production
 RUN bundle install --jobs 4 --retry 5
 COPY . /app
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]
 
 FROM build as live
+EXPOSE 80
 ENV RAILS_ENV production
 ENV RACK_ENV production
 ENV RAILS_LOG_TO_STDOUT enabled
@@ -29,4 +32,4 @@ RUN bundle install --jobs 4 --retry 5
 COPY . /app
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "80"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]
