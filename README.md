@@ -15,11 +15,11 @@ You can visit [youranime.moe](https://youranime.moe) to get started.
 
 ##### With Docker
 
-Once you've install Docker, you can get the pre-built image from Docker Hub (https://hub.docker.com/r/drummeraki/tanoshimu). You will need at the very least a postgres image running as well.
+You can run the application without checking-out the code and building app. All images are published on the official Docker Hub, under my username (https://hub.docker.com/r/drummeraki/tanoshimu).
 
-The steps below also include redis. This will be needed to fill the database with data.
+The `postgres` docker image is required for the app to run. `redis` is required for sidekiq to run (background jobs, but mostly for seeding data), but optional for the app itself.
 
-Initial setup: environment file
+Initial setup: create an environment file
 
 ```bash
 # Create an .env
